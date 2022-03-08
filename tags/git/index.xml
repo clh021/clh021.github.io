@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on 良宏</title>
+    <link>/tags/git/</link>
+    <description>Recent content in git on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 26 Feb 2022 15:54:47 +0800</lastBuildDate><atom:link href="/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Update Fork</title>
+      <link>/p/update-fork/</link>
+      <pubDate>Sat, 26 Feb 2022 15:54:47 +0800</pubDate>
+      
+      <guid>/p/update-fork/</guid>
+      <description>原因 希望可以自动合并所有 Fork 项目的上游提交 实现 // ==UserScript== // @name Github AutoMergeFork // @namespace http://tampermonkey.net/ // @version 0.1 // @description try to take over the world! // @author clh021@gmail.com // @match https://github.com/clh021? // @icon https://www.google.com/s2/favicons?sz=64&amp;amp;domain=github.com // @grant none // ==/UserScript== (function () { &amp;#34;use strict&amp;#34;; const targetName = &amp;#34;auto_merge_fork_win_&amp;#34;; function openAllForkProj() { let forkProjs</description>
+    </item>
+    
+  </channel>
+</rss>

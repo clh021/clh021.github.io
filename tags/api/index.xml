@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>API on 良宏</title>
+    <link>/tags/api/</link>
+    <description>Recent content in API on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 20 Feb 2014 10:10:05 +0000</lastBuildDate><atom:link href="/tags/api/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>API DOC</title>
+      <link>/p/api-doc/</link>
+      <pubDate>Thu, 20 Feb 2014 10:10:05 +0000</pubDate>
+      
+      <guid>/p/api-doc/</guid>
+      <description>api.doc $wait=array(&amp;#39;待更新&amp;#39;=&amp;gt; array(&amp;#39;待更新&amp;#39;,&amp;#39;待更新&amp;#39;,&amp;#39;</description>
+    </item>
+    
+  </channel>
+</rss>

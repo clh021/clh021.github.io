@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tmux on 良宏</title>
+    <link>/tags/tmux/</link>
+    <description>Recent content in tmux on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Dec 2021 15:57:05 +0800</lastBuildDate><atom:link href="/tags/tmux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tmux</title>
+      <link>/p/tmux/</link>
+      <pubDate>Fri, 24 Dec 2021 15:57:05 +0800</pubDate>
+      
+      <guid>/p/tmux/</guid>
+      <description>tmux的快捷键以ctrl+B起始，也就是以下所有快捷键之前先用ctrl+B进入tmux快捷键模式 快捷键 s 列出会话，可进行切换 $ 重命名会话 d</description>
+    </item>
+    
+  </channel>
+</rss>

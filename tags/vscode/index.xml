@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vscode on 良宏</title>
+    <link>/tags/vscode/</link>
+    <description>Recent content in vscode on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Dec 2021 15:57:25 +0800</lastBuildDate><atom:link href="/tags/vscode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vscode</title>
+      <link>/p/vscode/</link>
+      <pubDate>Fri, 24 Dec 2021 15:57:25 +0800</pubDate>
+      
+      <guid>/p/vscode/</guid>
+      <description>https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf https://blog.poychang.net/vscode-shortcuts/ https://segmentfault.com/a/1190000007688656 https://github.com/skywind3000/awesome-cheatsheets/blob/cd8d0cebfe32c9263db8291a270bd33a162dc924/editors/keyboard-shortcuts-windows.pdf https://github.com/crper/Visual-Studio-Code-CNKEYMAP 前言 VSCode的快捷键继承了一些IDE风格，有VS的身影，也有Emacs的身影。 快捷键组合方式 Ctrl + Shift + ? : 常规按键组合 Ctrl + V Ctrl +V</description>
+    </item>
+    
+  </channel>
+</rss>

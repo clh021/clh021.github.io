@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>portainer on 良宏</title>
+    <link>/tags/portainer/</link>
+    <description>Recent content in portainer on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 09 Feb 2022 13:55:05 +0800</lastBuildDate><atom:link href="/tags/portainer/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Portainer</title>
+      <link>/p/portainer/</link>
+      <pubDate>Wed, 09 Feb 2022 13:55:05 +0800</pubDate>
+      
+      <guid>/p/portainer/</guid>
+      <description>介绍 Portainer 是一个非常方便实用的 基于 Web 的 容器管理工具。 使用 # 删除可能已运行的容器 # docker rm -f portainer || true # 启动 portainer 容器管理服务 docker run -d --restart always --name portainer -p 47200:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce # 数据持</description>
+    </item>
+    
+  </channel>
+</rss>

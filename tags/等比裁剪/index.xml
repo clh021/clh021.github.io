@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>等比裁剪 on 良宏</title>
+    <link>/tags/%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA/</link>
+    <description>Recent content in 等比裁剪 on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 13 Dec 2018 12:45:26 +0800</lastBuildDate><atom:link href="/tags/%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PHP等比裁剪图像</title>
+      <link>/p/php%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA%E5%9B%BE%E5%83%8F/</link>
+      <pubDate>Thu, 13 Dec 2018 12:45:26 +0800</pubDate>
+      
+      <guid>/p/php%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA%E5%9B%BE%E5%83%8F/</guid>
+      <description>在PHP中裁剪的某个部分以进行文字识别，试图提高证件的识别的效果。 因为整张证件的识别，噪音数据太多。很多证件不止打印不规则不工整会压到线，有</description>
+    </item>
+    
+  </channel>
+</rss>

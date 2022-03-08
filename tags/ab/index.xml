@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ab on 良宏</title>
+    <link>/tags/ab/</link>
+    <description>Recent content in ab on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 Dec 2015 15:54:47 +0800</lastBuildDate><atom:link href="/tags/ab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ab</title>
+      <link>/p/ab/</link>
+      <pubDate>Thu, 24 Dec 2015 15:54:47 +0800</pubDate>
+      
+      <guid>/p/ab/</guid>
+      <description>Install apt-get install apache2-utils Use ./ab -c 100 -n 10000 http://127.0.0.1/index.php #-c 100 即：每次并发100个 #-n 10000 即： 共发送10000个请求 #用ab测试时，最大并发不能超过1024，其实ab本身没有做这个</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Oracle on 良宏</title>
+    <link>/tags/oracle/</link>
+    <description>Recent content in Oracle on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 24 Jun 2019 15:57:25 +0800</lastBuildDate><atom:link href="/tags/oracle/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Oracle to Mysql</title>
+      <link>/p/oracle-to-mysql/</link>
+      <pubDate>Mon, 24 Jun 2019 15:57:25 +0800</pubDate>
+      
+      <guid>/p/oracle-to-mysql/</guid>
+      <description>docker run --name oracle -p 9090:8080 -p 1521:1521 sath89/oracle-xe-11g docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=wordpress --restart=always -d mysql:5.7; docker exec -it oracle bash sqlplus sys/oracle@127.0.0.1:1521/xe as sysdba sqlplus system/oracle@//localhost:1521/xe cat /u01/app/oracle/product/11.2.0/xe/network/admin/tnsnames.ora|grep SERVICE_NAME sqlplus sys/oracle@xe as sysdba create tablespace myts datafile &#39;/u01/app/oracle/oradata/XE/myts.dbf&#39; size 100M autoextend on next 5M maxsize 400M; create user scott identified by tiger; grant connect, resource to scott; alter user scott default tablespace myts; alter user scott identified by your-passwd; create user ESSMWEB identified by oracle; grant connect, resource to ESSMWEB; alter user ESSMWEB default tablespace myts; alter user ESSMWEB identified by oracle; createtableimport_result2asselectk.</description>
+    </item>
+    
+  </channel>
+</rss>

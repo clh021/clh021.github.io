@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='安装 windows 包管理工具 打开 windows powershell 管理员模式 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&amp;#39;https://chocolatey.org/install.ps1&amp;#39;)) 升级 windows 包管理工具 choco upgrade chocolatey 换源操作 sudo sed -i &amp;#39;s/http:/https:/g&amp;#39; /etc/apt/sources.list #ubuntu sed -i &amp;#39;s/archive.ubuntu.com/mirrors.aliyun.com/g&amp;#39; /etc/apt/sources.list; \ sed -i &amp;#34;s/security.ubuntu.com/mirrors.aliyun.com/g&amp;#34; /etc/apt/sources.list sudo sed -i &amp;#39;s/archive.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list; \ sudo sed -i &amp;#39;s/security.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list #alpine sed -i &amp;#39;s/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g&amp;#39;'><title>windows系统工作环境</title>
+
+<link rel='canonical' href='/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='windows系统工作环境'>
+<meta property='og:description' content='安装 windows 包管理工具 打开 windows powershell 管理员模式 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&amp;#39;https://chocolatey.org/install.ps1&amp;#39;)) 升级 windows 包管理工具 choco upgrade chocolatey 换源操作 sudo sed -i &amp;#39;s/http:/https:/g&amp;#39; /etc/apt/sources.list #ubuntu sed -i &amp;#39;s/archive.ubuntu.com/mirrors.aliyun.com/g&amp;#39; /etc/apt/sources.list; \ sed -i &amp;#34;s/security.ubuntu.com/mirrors.aliyun.com/g&amp;#34; /etc/apt/sources.list sudo sed -i &amp;#39;s/archive.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list; \ sudo sed -i &amp;#39;s/security.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list #alpine sed -i &amp;#39;s/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g&amp;#39;'>
+<meta property='og:url' content='/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='windows' /><meta property='article:tag' content='choco' /><meta property='article:tag' content='wsl' /><meta property='article:tag' content='docker' /><meta property='article:published_time' content='2019-04-11T12:01:20&#43;08:00'/><meta property='article:modified_time' content='2019-04-11T12:01:20&#43;08:00'/>
+<meta name="twitter:title" content="windows系统工作环境">
+<meta name="twitter:description" content="安装 windows 包管理工具 打开 windows powershell 管理员模式 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&amp;#39;https://chocolatey.org/install.ps1&amp;#39;)) 升级 windows 包管理工具 choco upgrade chocolatey 换源操作 sudo sed -i &amp;#39;s/http:/https:/g&amp;#39; /etc/apt/sources.list #ubuntu sed -i &amp;#39;s/archive.ubuntu.com/mirrors.aliyun.com/g&amp;#39; /etc/apt/sources.list; \ sed -i &amp;#34;s/security.ubuntu.com/mirrors.aliyun.com/g&amp;#34; /etc/apt/sources.list sudo sed -i &amp;#39;s/archive.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list; \ sudo sed -i &amp;#39;s/security.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list #alpine sed -i &amp;#39;s/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g&amp;#39;">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/live/" style="background-color: #2a9d8f; color: #fff;">
+                Live
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/">windows系统工作环境</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 11, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h2 id="安装-windows-包管理工具">安装 windows 包管理工具</h2>
+<p>打开 windows powershell 管理员模式</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">Set-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="n">-Scope</span> <span class="k">Process</span> <span class="n">-Force</span><span class="p">;</span> <span class="nb">iex </span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">WebClient</span><span class="p">).</span><span class="n">DownloadString</span><span class="p">(</span><span class="s1">&#39;https://chocolatey.org/install.ps1&#39;</span><span class="p">))</span>
+</code></pre></div><h2 id="升级-windows-包管理工具">升级 windows 包管理工具</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">choco</span> <span class="n">upgrade</span> <span class="n">chocolatey</span>
+</code></pre></div><h2 id="换源操作">换源操作</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">sudo sed -i <span class="s1">&#39;s/http:/https:/g&#39;</span> /etc/apt/sources.list
+
+<span class="c1">#ubuntu</span>
+sed -i <span class="s1">&#39;s/archive.ubuntu.com/mirrors.aliyun.com/g&#39;</span> /etc/apt/sources.list<span class="p">;</span> <span class="se">\
+</span><span class="se"></span>    sed -i <span class="s2">&#34;s/security.ubuntu.com/mirrors.aliyun.com/g&#34;</span> /etc/apt/sources.list
+
+sudo sed -i <span class="s1">&#39;s/archive.ubuntu.com/mirrors.ustc.edu.cn/g&#39;</span> /etc/apt/sources.list<span class="p">;</span> <span class="se">\
+</span><span class="se"></span>    sudo sed -i <span class="s1">&#39;s/security.ubuntu.com/mirrors.ustc.edu.cn/g&#39;</span> /etc/apt/sources.list
+
+<span class="c1">#alpine</span>
+sed -i <span class="s1">&#39;s/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g&#39;</span> /etc/apk/repositories<span class="p">;</span> <span class="se">\
+</span><span class="se"></span>    sed -i <span class="s1">&#39;s/http/https/g&#39;</span> /etc/apk/repositories<span class="p">;</span>
+
+<span class="c1">#debian</span>
+sed -i <span class="s1">&#39;s/deb.debian.org/mirrors.ustc.edu.cn/g&#39;</span> /etc/apt/sources.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s/cdn-fastly.deb.debian.org/mirrors.ustc.edu.cn/g&#39;</span> /etc/apt/sources.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s|security.debian.org/debian-security|mirrors.ustc.edu.cn/debian-security|g&#39;</span> /etc/apt/sources.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s|security-cdn.debian.org/debian-security|mirrors.ustc.edu.cn/debian-security|g&#39;</span> /etc/apt/sources.list
+
+sed -i <span class="s1">&#39;s/deb.debian.org/mirrors.ustc.edu.cn/g&#39;</span> /etc/apt/sources.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s/cdn-fastly.deb.debian.org/mirrors.ustc.edu.cn/g&#39;</span> /etc/apt/sources.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s|security.debian.org/debian-security|mirrors.ustc.edu.cn/debian-security|g&#39;</span> /etc/apt/sources.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s|security-cdn.debian.org/debian-security|mirrors.ustc.edu.cn/debian-security|g&#39;</span> /etc/apt/sources.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s/deb.debian.org/mirrors.ustc.edu.cn/g&#39;</span> /etc/apt/sources.list.d/buster.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s/cdn-fastly.deb.debian.org/mirrors.ustc.edu.cn/g&#39;</span> /etc/apt/sources.list.d/buster.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s|security.debian.org/debian-security|mirrors.ustc.edu.cn/debian-security|g&#39;</span> /etc/apt/sources.list.d/buster.list<span class="se">\
+</span><span class="se"></span>    <span class="o">&amp;&amp;</span> sed -i <span class="s1">&#39;s|security-cdn.debian.org/debian-security|mirrors.ustc.edu.cn/debian-security|g&#39;</span> /etc/apt/sources.list.d/buster.list
+
+</code></pre></div><h2 id="常规软件安装">常规软件安装</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="nb">wsl-alpine</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">wechat</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="nb">google-chrome</span><span class="n">-x64</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="nb">office-online</span><span class="n">-chrome</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">vscode</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="nb">wget
+</span><span class="nb"></span><span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="nb">curl
+</span><span class="nb"></span><span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">freedownloadmanager</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">7zip</span><span class="p">.</span><span class="n">install</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">potplayer</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">fscapture</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">shadowsocks</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">office365proplus</span> <span class="c"># 安装后直接激活，不行就转vl再激活</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">autohotkey</span><span class="p">.</span><span class="n">portable</span>
+
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">openssh</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">ultraiso</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">wudt</span> <span class="c">#create a bootable DVD or USB flash drive, download the ISO file</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">rufus</span>
+
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">procexp</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">fiddler</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">wireshark</span> <span class="c"># 抓包及网络分析工具</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">nmap</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">nvm</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">git</span><span class="p">.</span><span class="n">install</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="nb">git-credential</span><span class="n">-manager-for-windows</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">golang</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">chocolateygui</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">ccleaner</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">docker</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">SublimeText3</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">teamviewer</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="nb">wps-office</span><span class="n">-free</span>
+
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">wsl</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="nb">wsl-debiangnulinux</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="nb">wsl-ubuntu</span><span class="p">-</span><span class="n">1804</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">-y</span> <span class="n">wsltty</span>
+</code></pre></div><h1 id="其他常用软件">其他常用软件</h1>
+<p><a class="link" href="https://chocolatey.org/packages"  target="_blank" rel="noopener"
+    >官方软件列表</a></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">choco</span> <span class="n">install</span> <span class="n">autoruns</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">virtualbox</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">nginx</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">php</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">mysql</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">mariadb</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">sqlite</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">wamp-server</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">onedrive</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">mactype</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">filezilla</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">postman</span> <span class="c"># 接口测试</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">atom</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">chocolateyexplorer</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">android-sdk</span> <span class="c">#安装 Android SDK</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">jdk8</span> <span class="c">#安装jdk8</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">jre8</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">nodejs</span><span class="p">.</span><span class="n">install</span> <span class="c">#安装Node.js</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">yarn</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">vim</span> <span class="c">#安装 Vim</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">dropbox</span> <span class="c">#安装 Dropbox</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">kubernetes-cli</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">docker-compose</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">docker-kitematic</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">gitlab-runner</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">docker-machine</span><span class="n">-vmwareworkstation</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">phpstorm</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">intellijidea-community</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">electron</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">tortoisegit</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">sqlite</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">dbeaver</span> <span class="c">#数据库（MySQL，Oracle，DB2，SQL Server，PostgreSQL ...管理</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">anaconda3</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">shadowsocks</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">ultraiso</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">screentogif</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">ruby</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">cmder</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">conemu</span> <span class="c">#安装ConEmu</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">msys2</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">msys2-installer</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">putty</span><span class="p">.</span><span class="n">install</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">vagrant</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">vmwareworkstation</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">vmware-tools</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="n">laragon</span><span class="p">.</span><span class="n">install</span>
+<span class="n">choco</span> <span class="n">install</span> <span class="nb">tiny-pxe</span><span class="n">-server</span>
+
+</code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/windows/">windows</a>
+        
+            <a href="/tags/choco/">choco</a>
+        
+            <a href="/tags/wsl/">wsl</a>
+        
+            <a href="/tags/docker/">Docker</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/ts%E6%B5%81%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">TS流文件合并</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/windows%E7%B3%BB%E7%BB%9F%E6%BF%80%E6%B4%BB/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">windows系统激活</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/%E5%8E%BB%E9%99%A4%E6%9D%82%E5%BF%B5%E7%9A%84%E6%96%B9%E6%B3%95/">
+        
+        
+            <div class="article-image">
+                <img src="/p/%E5%8E%BB%E9%99%A4%E6%9D%82%E5%BF%B5%E7%9A%84%E6%96%B9%E6%B3%95/1.1bd98ec03974b55f49784c6ecc26c85e_hu944e5d37804bfc917447bfd7e0fd26df_31971_250x150_fill_q75_box_smart1.jpeg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 去除杂念的方法"
+                        
+                        data-hash="md5-G9mOwDl0tV9JeExuzCbIXg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">去除杂念的方法</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/nas-%E7%9B%B8%E5%85%B3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">NAS 相关</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/child1/">
+        
+        
+            <div class="article-image">
+                <img src="/p/child1/child.friend.dded522500caebaf65be4cbde1722acf_hu5b36bba415a98670564935ce34fad947_181782_250x150_fill_q75_box_smart1.jpeg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Child1"
+                        
+                        data-hash="md5-3e1SJQDK669lvky94XIqzw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Child1</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#安装-windows-包管理工具">安装 windows 包管理工具</a></li>
+        <li><a href="#升级-windows-包管理工具">升级 windows 包管理工具</a></li>
+        <li><a href="#换源操作">换源操作</a></li>
+        <li><a href="#常规软件安装">常规软件安装</a></li>
+      </ol>
+    </li>
+    <li><a href="#其他常用软件">其他常用软件</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

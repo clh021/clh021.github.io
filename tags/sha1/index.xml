@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sha1 on 良宏</title>
+    <link>/tags/sha1/</link>
+    <description>Recent content in sha1 on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 24 Jun 2019 15:57:25 +0800</lastBuildDate><atom:link href="/tags/sha1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>sha1 from Java to Php</title>
+      <link>/p/sha1-from-java-to-php/</link>
+      <pubDate>Mon, 24 Jun 2019 15:57:25 +0800</pubDate>
+      
+      <guid>/p/sha1-from-java-to-php/</guid>
+      <description>将一个sha1加密算法从Java改写到PHP // 身份证简项认证 public static void idenAuth() { String appId = APP_ID; String serviceCode = &amp;#34;idc0001&amp;#34;; String name = &amp;#34;南建坤&amp;#34;; String idCard= &amp;#34;130521198709140030&amp;#34;; String selfUrl= null; String selfImg= null; String</description>
+    </item>
+    
+  </channel>
+</rss>

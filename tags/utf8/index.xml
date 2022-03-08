@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>utf8 on 良宏</title>
+    <link>/tags/utf8/</link>
+    <description>Recent content in utf8 on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 28 Dec 2021 08:58:50 +0800</lastBuildDate><atom:link href="/tags/utf8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CharCode</title>
+      <link>/p/charcode/</link>
+      <pubDate>Tue, 28 Dec 2021 08:58:50 +0800</pubDate>
+      
+      <guid>/p/charcode/</guid>
+      <description>Unicode是什么 目前，Unicode的最新版本是7.0版，一共收入了109449个符号，其中的中日韩文字为74500个。可以近似认为，全</description>
+    </item>
+    
+  </channel>
+</rss>

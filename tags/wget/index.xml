@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wget on 良宏</title>
+    <link>/tags/wget/</link>
+    <description>Recent content in Wget on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 May 2017 15:57:25 +0800</lastBuildDate><atom:link href="/tags/wget/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Wget</title>
+      <link>/p/wget/</link>
+      <pubDate>Wed, 24 May 2017 15:57:25 +0800</pubDate>
+      
+      <guid>/p/wget/</guid>
+      <description>wget -r -p -k -nc -o laravel-china.org.down.log http://laravel-china.org/docs wget -r -p -k -nc -o administrator.frozennode.com.down.log http://administrator.frozennode.com/docs wget -r -p -k -nc -o laravel.com.down.log http://laravel.com/api/4.2 wget -r -p -k -nc -o www.shouce.ren.log www.shouce.ren wget -r -p -k -nc -o laozi.log http://www.8bei8.com/book/laozi.html </description>
+    </item>
+    
+  </channel>
+</rss>

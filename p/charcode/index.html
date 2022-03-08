@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Unicode是什么 目前，Unicode的最新版本是7.0版，一共收入了109449个符号，其中的中日韩文字为74500个。可以近似认为，全'><title>CharCode</title>
+
+<link rel='canonical' href='/p/charcode/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='CharCode'>
+<meta property='og:description' content='Unicode是什么 目前，Unicode的最新版本是7.0版，一共收入了109449个符号，其中的中日韩文字为74500个。可以近似认为，全'>
+<meta property='og:url' content='/p/charcode/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='javascript' /><meta property='article:tag' content='gecko' /><meta property='article:tag' content='unicode' /><meta property='article:tag' content='utf8' /><meta property='article:tag' content='utf16' /><meta property='article:published_time' content='2021-12-28T08:58:50&#43;08:00'/><meta property='article:modified_time' content='2021-12-28T08:58:50&#43;08:00'/>
+<meta name="twitter:title" content="CharCode">
+<meta name="twitter:description" content="Unicode是什么 目前，Unicode的最新版本是7.0版，一共收入了109449个符号，其中的中日韩文字为74500个。可以近似认为，全">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            <a href="/categories/javascript/" style="background-color: #2a9d8f; color: #fff;">
+                Javascript
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/charcode/">CharCode</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 28, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="unicode是什么">Unicode是什么</h1>
+<p>目前，Unicode的最新版本是7.0版，一共收入了109449个符号，其中的中日韩文字为74500个。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文&quot;好&quot;的码点是十六进制的597D。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">// 查询一个中文的
+</span><span class="c1"></span><span class="s2">&#34;好&#34;</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span> <span class="c1">// output: &#39;597d&#39;
+</span><span class="c1"></span><span class="nb">String</span><span class="p">.</span><span class="nx">fromCodePoint</span><span class="p">(</span><span class="s1">&#39;0x597d&#39;</span><span class="p">);</span> <span class="c1">// output: &#39;好&#39;
+</span><span class="c1"></span><span class="s1">&#39;\u597d&#39;</span> <span class="c1">// output: &#39;好&#39;
+</span><span class="c1"></span><span class="s2">&#34;好&#34;</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// output: 22909
+</span><span class="c1"></span><span class="s2">&#34;好&#34;</span><span class="p">.</span><span class="nx">codePointAt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// output: 22909
+</span><span class="c1"></span><span class="nb">String</span><span class="p">.</span><span class="nx">fromCodePoint</span><span class="p">(</span><span class="mi">22909</span><span class="p">);</span> <span class="c1">// output: &#39;好&#39;
+</span><span class="c1"></span><span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="s2">&#34;22909&#34;</span><span class="p">);</span> <span class="c1">// output: &#39;好&#39;
+</span></code></pre></div><p>Unicode不是一次性定义的，而是分区定义。每个区可以存放65536个（216）字符，称为一个平面（plane）。目前，一共有17个（25）平面，也就是说，整个Unicode字符集的大小现在是221。</p>
+<p>最前面的65536个字符位，称为基本平面（缩写BMP），它的码点范围是从0一直到216-1，写成16进制就是从U+0000到U+FFFF。所有最常见的字符都放在这个平面，这是Unicode最先定义和公布的一个平面。</p>
+<p>剩下的字符都放在辅助平面（缩写SMP），码点范围从U+010000一直到U+10FFFF。</p>
+<p>Unicode只规定了每个字符的码点，到底用什么样的字节序表示这个码点，就涉及到编码方法。</p>
+<h1 id="utf-32与utf-8">UTF-32与UTF-8</h1>
+<h2 id="utf-32">UTF-32</h2>
+<p>优点：</p>
+<ul>
+<li>转换规则简单直观</li>
+<li>查找效率高</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>浪费空间，同样内容的英语文本，它会比ASCII编码大四倍</li>
+</ul>
+<p>结果：
+没有人使用这种编码方法，HTML 5标准明文规定，网页不得编码成UTF-32。</p>
+<h2 id="utf-8">UTF-8</h2>
+<p>是一种变长的编码方法，字符长度从1个字节到4个字节不等。越是常用的字符，字节越短，最前面的128个字符，只使用1个字节表示，与ASCII码完全相同。
+编号范围	            字节
+0x0000 - 0x007F	       1
+0x0080 - 0x07FF	       2
+0x0800 - 0xFFFF	       3
+0x010000 - 0x10FFFF	   4</p>
+<h1 id="example-func">Example Func</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">hexBuf</span><span class="p">(</span><span class="nx">buffer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[...</span><span class="k">new</span> <span class="nx">Uint8Array</span><span class="p">(</span><span class="nx">buffer</span><span class="p">)]</span>
+        <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="p">=&gt;</span> <span class="nx">x</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">).</span><span class="nx">padStart</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">))</span>
+        <span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">strToUint8Arr</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">byteArray</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Uint8Array</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">byteArray</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">byteArray</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">utf8_ByteLength</span><span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">c</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">)</span>
+            <span class="nx">len</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">&lt;</span> <span class="mi">2048</span><span class="p">)</span>
+            <span class="nx">len</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="nx">c</span> <span class="o">&amp;</span> <span class="mh">0xFC00</span><span class="p">)</span> <span class="o">===</span> <span class="mh">0xD800</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">string</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFC00</span><span class="p">)</span> <span class="o">===</span> <span class="mh">0xDC00</span><span class="p">)</span> <span class="p">{</span>
+            <span class="o">++</span><span class="nx">i</span><span class="p">;</span>
+            <span class="nx">len</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span>
+            <span class="nx">len</span> <span class="o">+=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">len</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">utf8_read</span><span class="p">(</span><span class="nx">buffer</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">end</span> <span class="o">-</span> <span class="nx">start</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">len</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&#34;&#34;</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">parts</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="nx">chunk</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// char offset
+</span><span class="c1"></span>        <span class="nx">t</span><span class="p">;</span>     <span class="c1">// temporary
+</span><span class="c1"></span>    <span class="k">while</span> <span class="p">(</span><span class="nx">start</span> <span class="o">&lt;</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">t</span> <span class="o">=</span> <span class="nx">buffer</span><span class="p">[</span><span class="nx">start</span><span class="o">++</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">t</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">)</span>
+            <span class="nx">chunk</span><span class="p">[</span><span class="nx">i</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">t</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">t</span> <span class="o">&gt;</span> <span class="mi">191</span> <span class="o">&amp;&amp;</span> <span class="nx">t</span> <span class="o">&lt;</span> <span class="mi">224</span><span class="p">)</span>
+            <span class="nx">chunk</span><span class="p">[</span><span class="nx">i</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">t</span> <span class="o">&amp;</span> <span class="mi">31</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span> <span class="o">|</span> <span class="nx">buffer</span><span class="p">[</span><span class="nx">start</span><span class="o">++</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">t</span> <span class="o">&gt;</span> <span class="mi">239</span> <span class="o">&amp;&amp;</span> <span class="nx">t</span> <span class="o">&lt;</span> <span class="mi">365</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">t</span> <span class="o">=</span> <span class="p">((</span><span class="nx">t</span> <span class="o">&amp;</span> <span class="mi">7</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">18</span> <span class="o">|</span> <span class="p">(</span><span class="nx">buffer</span><span class="p">[</span><span class="nx">start</span><span class="o">++</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span> <span class="o">|</span> <span class="p">(</span><span class="nx">buffer</span><span class="p">[</span><span class="nx">start</span><span class="o">++</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span> <span class="o">|</span> <span class="nx">buffer</span><span class="p">[</span><span class="nx">start</span><span class="o">++</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">)</span> <span class="o">-</span> <span class="mh">0x10000</span><span class="p">;</span>
+            <span class="nx">chunk</span><span class="p">[</span><span class="nx">i</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xD800</span> <span class="o">+</span> <span class="p">(</span><span class="nx">t</span> <span class="o">&gt;&gt;</span> <span class="mi">10</span><span class="p">);</span>
+            <span class="nx">chunk</span><span class="p">[</span><span class="nx">i</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xDC00</span> <span class="o">+</span> <span class="p">(</span><span class="nx">t</span> <span class="o">&amp;</span> <span class="mi">1023</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span>
+            <span class="nx">chunk</span><span class="p">[</span><span class="nx">i</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">t</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span> <span class="o">|</span> <span class="p">(</span><span class="nx">buffer</span><span class="p">[</span><span class="nx">start</span><span class="o">++</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span> <span class="o">|</span> <span class="nx">buffer</span><span class="p">[</span><span class="nx">start</span><span class="o">++</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;</span> <span class="mi">8191</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">(</span><span class="nx">parts</span> <span class="o">||</span> <span class="p">(</span><span class="nx">parts</span> <span class="o">=</span> <span class="p">[])).</span><span class="nx">push</span><span class="p">(</span><span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nb">String</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">));</span>
+            <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">parts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+            <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nb">String</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">i</span><span class="p">)));</span>
+        <span class="k">return</span> <span class="nx">parts</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nb">String</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">i</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">utf8_write</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">,</span> <span class="nx">offset</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">offset</span><span class="p">,</span>
+        <span class="nx">c1</span><span class="p">,</span> <span class="c1">// character 1
+</span><span class="c1"></span>        <span class="nx">c2</span><span class="p">;</span> <span class="c1">// character 2
+</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">c1</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">c1</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">c1</span> <span class="o">&lt;</span> <span class="mi">2048</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span> <span class="o">|</span> <span class="mi">192</span><span class="p">;</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span> <span class="o">&amp;</span> <span class="mi">63</span> <span class="o">|</span> <span class="mi">128</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="nx">c1</span> <span class="o">&amp;</span> <span class="mh">0xFC00</span><span class="p">)</span> <span class="o">===</span> <span class="mh">0xD800</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="nx">c2</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xFC00</span><span class="p">)</span> <span class="o">===</span> <span class="mh">0xDC00</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">c1</span> <span class="o">=</span> <span class="mh">0x10000</span> <span class="o">+</span> <span class="p">((</span><span class="nx">c1</span> <span class="o">&amp;</span> <span class="mh">0x03FF</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">c2</span> <span class="o">&amp;</span> <span class="mh">0x03FF</span><span class="p">);</span>
+            <span class="o">++</span><span class="nx">i</span><span class="p">;</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span> <span class="o">&gt;&gt;</span> <span class="mi">18</span> <span class="o">|</span> <span class="mi">240</span><span class="p">;</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span> <span class="o">&gt;&gt;</span> <span class="mi">12</span> <span class="o">&amp;</span> <span class="mi">63</span> <span class="o">|</span> <span class="mi">128</span><span class="p">;</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span> <span class="o">&amp;</span> <span class="mi">63</span> <span class="o">|</span> <span class="mi">128</span><span class="p">;</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span> <span class="o">&amp;</span> <span class="mi">63</span> <span class="o">|</span> <span class="mi">128</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span> <span class="o">&gt;&gt;</span> <span class="mi">12</span> <span class="o">|</span> <span class="mi">224</span><span class="p">;</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span> <span class="o">&amp;</span> <span class="mi">63</span> <span class="o">|</span> <span class="mi">128</span><span class="p">;</span>
+            <span class="nx">buffer</span><span class="p">[</span><span class="nx">offset</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c1</span> <span class="o">&amp;</span> <span class="mi">63</span> <span class="o">|</span> <span class="mi">128</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">offset</span> <span class="o">-</span> <span class="nx">start</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">utf16ToStr</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="nx">i</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&lt;</span> <span class="mh">0x80</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">str</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&gt;</span> <span class="mh">0xBF</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&lt;</span> <span class="mh">0xE0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">str</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">((</span><span class="nx">value</span> <span class="o">&amp;</span> <span class="mh">0x1F</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span> <span class="o">|</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x3F</span><span class="p">);</span>
+            <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&gt;</span> <span class="mh">0xDF</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&lt;</span> <span class="mh">0xF0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">str</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">((</span><span class="nx">value</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span> <span class="o">|</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x3F</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span> <span class="o">|</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x3F</span><span class="p">);</span>
+            <span class="nx">i</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// surrogate pair
+</span><span class="c1"></span>            <span class="kd">var</span> <span class="nx">charCode</span> <span class="o">=</span> <span class="p">((</span><span class="nx">value</span> <span class="o">&amp;</span> <span class="mh">0x07</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">18</span> <span class="o">|</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x3F</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span> <span class="o">|</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x3F</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span> <span class="o">|</span> <span class="nx">data</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x3F</span><span class="p">)</span> <span class="o">-</span> <span class="mh">0x010000</span><span class="p">;</span>
+
+            <span class="nx">str</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">charCode</span> <span class="o">&gt;&gt;</span> <span class="mi">10</span> <span class="o">|</span> <span class="mh">0xD800</span><span class="p">,</span> <span class="nx">charCode</span> <span class="o">&amp;</span> <span class="mh">0x03FF</span> <span class="o">|</span> <span class="mh">0xDC00</span><span class="p">);</span>
+            <span class="nx">i</span> <span class="o">+=</span> <span class="mi">3</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">str</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/javascript/">javascript</a>
+        
+            <a href="/tags/gecko/">gecko</a>
+        
+            <a href="/tags/unicode/">unicode</a>
+        
+            <a href="/tags/utf8/">utf8</a>
+        
+            <a href="/tags/utf16/">utf16</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D%E6%94%B6%E8%97%8F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">技术书籍收藏</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E8%87%AA%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">自建一个当前系统的基础镜像</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/update-fork/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Update Fork</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/apt/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">apt</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/portainer/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Portainer</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#unicode是什么">Unicode是什么</a></li>
+    <li><a href="#utf-32与utf-8">UTF-32与UTF-8</a>
+      <ol>
+        <li><a href="#utf-32">UTF-32</a></li>
+        <li><a href="#utf-8">UTF-8</a></li>
+      </ol>
+    </li>
+    <li><a href="#example-func">Example Func</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

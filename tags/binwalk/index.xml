@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>binwalk on 良宏</title>
+    <link>/tags/binwalk/</link>
+    <description>Recent content in binwalk on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Dec 2021 15:55:36 +0800</lastBuildDate><atom:link href="/tags/binwalk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Binwalk</title>
+      <link>/p/binwalk/</link>
+      <pubDate>Fri, 24 Dec 2021 15:55:36 +0800</pubDate>
+      
+      <guid>/p/binwalk/</guid>
+      <description>本周一 安恒萌新粉丝群：928102972分享的工具为 binwalk。 Binwalk是一款快速、易用，用于分析，逆向工程和提取固件映像的工具。</description>
+    </item>
+    
+  </channel>
+</rss>

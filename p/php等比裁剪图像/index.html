@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='在PHP中裁剪的某个部分以进行文字识别，试图提高证件的识别的效果。 因为整张证件的识别，噪音数据太多。很多证件不止打印不规则不工整会压到线，有'><title>PHP等比裁剪图像</title>
+
+<link rel='canonical' href='/p/php%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA%E5%9B%BE%E5%83%8F/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='PHP等比裁剪图像'>
+<meta property='og:description' content='在PHP中裁剪的某个部分以进行文字识别，试图提高证件的识别的效果。 因为整张证件的识别，噪音数据太多。很多证件不止打印不规则不工整会压到线，有'>
+<meta property='og:url' content='/p/php%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA%E5%9B%BE%E5%83%8F/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='等比裁剪' /><meta property='article:tag' content='PHP' /><meta property='article:published_time' content='2018-12-13T12:45:26&#43;08:00'/><meta property='article:modified_time' content='2018-12-13T12:45:26&#43;08:00'/>
+<meta name="twitter:title" content="PHP等比裁剪图像">
+<meta name="twitter:description" content="在PHP中裁剪的某个部分以进行文字识别，试图提高证件的识别的效果。 因为整张证件的识别，噪音数据太多。很多证件不止打印不规则不工整会压到线，有">
+    </head>
+    <body class="
+    article-page 
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        on-phone--column extended
+    
+">
+    
+        <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hub08581134c092243b209205c3073808c_6075_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <h1 class="site-name"><a href="/">良宏</a></h1>
+        <h2 class="site-description">好好学习，天天向上。</h2></header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/live/" style="background-color: #2a9d8f; color: #fff;">
+                Live
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/php%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA%E5%9B%BE%E5%83%8F/">PHP等比裁剪图像</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 13, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p>在PHP中裁剪的某个部分以进行文字识别，试图提高证件的识别的效果。
+因为整张证件的识别，噪音数据太多。很多证件不止打印不规则不工整会压到线，有的可能上下行会严重错开，导致字段名和值无法定位。
+另外解决了噪音数据的问题后，还需要解决另一个头疼的问题：打印的文字中，8和B，L和1 ，5和S，区别真的太小了了</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">function</span> <span class="nf">getEndPointPercentForDengjizhengLeft</span><span class="p">(</span><span class="nv">$x_percent_begin</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span><span class="nv">$y_percent_begin</span><span class="o">=</span><span class="mf">0.6</span><span class="p">){</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nv">$x_percent_begin</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">,</span><span class="nv">$y_percent_begin</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="sd">/**
+</span><span class="sd"> * 根据百分比裁剪一张图片
+</span><span class="sd"> * $src_path          图片原路径
+</span><span class="sd"> * $save_path         裁剪图片的保存路径
+</span><span class="sd"> * $x_percent_begin   裁剪左上角坐标的横向(从左至右)位置百分比，使用小数表示
+</span><span class="sd"> * $y_percent_begin   裁剪左上角坐标的竖向(从上至下)位置百分比，使用小数表示
+</span><span class="sd"> * $x_percent_end     裁剪右下角坐标的横向(从左至右)位置百分比，使用小数表示
+</span><span class="sd"> * $y_percent_end     裁剪右下角坐标的竖向(从上至下)位置百分比，使用小数表示
+</span><span class="sd"> */</span>
+<span class="k">function</span> <span class="nf">cutByPercent</span><span class="p">(</span><span class="nv">$src_path</span><span class="p">,</span><span class="nv">$save_path</span><span class="p">,</span><span class="nv">$x_percent_begin</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span><span class="nv">$y_percent_begin</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span><span class="nv">$x_percent_end</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span><span class="nv">$y_percent_end</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 得知图片宽高
+</span><span class="c1"></span>    <span class="k">list</span><span class="p">(</span><span class="nv">$pic_width</span><span class="p">,</span> <span class="nv">$pic_height</span><span class="p">,</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$attr</span><span class="p">)</span> <span class="o">=</span> <span class="nx">getimagesize</span><span class="p">(</span><span class="nv">$src_path</span><span class="p">);</span>
+    <span class="c1">// 裁剪区域左上角的坐标
+</span><span class="c1"></span>    <span class="nv">$x</span> <span class="o">=</span> <span class="nv">$x_percent_begin</span> <span class="o">*</span> <span class="nv">$pic_width</span><span class="p">;</span>
+    <span class="nv">$y</span> <span class="o">=</span> <span class="nv">$y_percent_begin</span> <span class="o">*</span> <span class="nv">$pic_height</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;br /&gt;裁剪左上角坐标:&#39;</span><span class="p">;</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$x</span><span class="p">);</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$y</span><span class="p">);</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;br /&gt;图片宽高:&#39;</span><span class="p">;</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$pic_width</span><span class="p">);</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$pic_height</span><span class="p">);</span>
+    <span class="c1">// echo &#39;&lt;br /&gt;相减:&#39;;
+</span><span class="c1"></span>    <span class="c1">// var_dump($x_percent_end - $x_percent_begin);
+</span><span class="c1"></span>    <span class="c1">// echo &#39;&lt;br /&gt;abs 相减:&#39;;
+</span><span class="c1"></span>    <span class="c1">// var_dump(abs($x_percent_end - $x_percent_begin));
+</span><span class="c1"></span>    <span class="c1">// 裁剪的区域宽高(新图片的宽高)  取正整数
+</span><span class="c1"></span>    <span class="nv">$width</span> <span class="o">=</span> <span class="nx">abs</span><span class="p">(</span><span class="nv">$x_percent_end</span> <span class="o">-</span> <span class="nv">$x_percent_begin</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$pic_width</span><span class="p">;</span>
+    <span class="nv">$height</span> <span class="o">=</span> <span class="nx">abs</span><span class="p">(</span><span class="nv">$y_percent_end</span> <span class="o">-</span> <span class="nv">$y_percent_begin</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$pic_height</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;br /&gt;裁剪宽高:&#39;</span><span class="p">;</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$width</span><span class="p">);</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$height</span><span class="p">);</span>
+    <span class="c1">//最终保存成图片的宽和高，和原图像要等比例，否则会变形
+</span><span class="c1"></span>    <span class="nv">$final_width</span> <span class="o">=</span> <span class="nx">round</span><span class="p">(</span><span class="nv">$width</span><span class="p">);</span>
+    <span class="nv">$final_height</span> <span class="o">=</span> <span class="nx">round</span><span class="p">(</span><span class="nv">$height</span><span class="p">);</span>
+    <span class="c1">// $final_height = round($final_width * $height / $width);
+</span><span class="c1"></span>    <span class="k">echo</span> <span class="s1">&#39;&lt;br /&gt;最终宽高:&#39;</span><span class="p">;</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$final_width</span><span class="p">);</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$final_height</span><span class="p">);</span>
+    <span class="c1">//创建源图像的实例
+</span><span class="c1"></span>    <span class="nv">$src_img</span><span class="o">=</span><span class="nx">imagecreatefromstring</span><span class="p">(</span><span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$src_path</span><span class="p">));</span>
+    <span class="c1">//创建空白图像的实例(使用真彩色)
+</span><span class="c1"></span>    <span class="nv">$new_img</span><span class="o">=</span><span class="nx">imagecreatetruecolor</span><span class="p">(</span><span class="nv">$width</span><span class="p">,</span><span class="nv">$height</span><span class="p">);</span>
+    <span class="c1">//将裁剪区域复制到新图片上
+</span><span class="c1"></span>    <span class="nx">imagecopyresampled</span><span class="p">(</span><span class="nv">$new_img</span><span class="p">,</span> <span class="nv">$src_img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$x</span><span class="p">,</span> <span class="nv">$y</span><span class="p">,</span> <span class="nv">$final_width</span><span class="p">,</span> <span class="nv">$final_height</span><span class="p">,</span> <span class="nv">$width</span><span class="p">,</span> <span class="nv">$height</span><span class="p">);</span>
+    <span class="c1">// //输出图片
+</span><span class="c1"></span>    <span class="c1">// header(&#39;Content-Type: image/jpeg&#39;);//设置输出内容类型格式
+</span><span class="c1"></span>    <span class="nx">imagejpeg</span><span class="p">(</span><span class="nv">$new_img</span><span class="p">,</span><span class="nv">$save_path</span><span class="p">);</span><span class="c1">//将新图片保存为图像文件
+</span><span class="c1"></span>    <span class="c1">//清空图像资源
+</span><span class="c1"></span>    <span class="nx">imagedestroy</span><span class="p">(</span><span class="nv">$src_img</span><span class="p">);</span>
+    <span class="nx">imagedestroy</span><span class="p">(</span><span class="nv">$new_img</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="k">function</span> <span class="nf">testDengjizhengLeft</span><span class="p">(</span><span class="nv">$filename</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">){</span>
+    <span class="nv">$old_filename</span><span class="o">=</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_REQUEST</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$_REQUEST</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span> <span class="o">:</span> <span class="s1">&#39;1&#39;</span><span class="p">;</span>
+    <span class="nv">$new_filename</span><span class="o">=</span><span class="nx">date</span><span class="p">(</span><span class="s1">&#39;YmdHis&#39;</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="nv">$old_filename</span><span class="p">;</span>
+    <span class="nv">$src_path</span><span class="o">=</span><span class="s1">&#39;assets/test.photos/&#39;</span><span class="o">.</span><span class="nv">$old_filename</span><span class="o">.</span><span class="s1">&#39;.jpg&#39;</span><span class="p">;</span><span class="c1">//需要裁剪图像的路径
+</span><span class="c1"></span>    <span class="nv">$save_path</span><span class="o">=</span><span class="s1">&#39;assets/cut.photos/&#39;</span><span class="o">.</span><span class="nv">$new_filename</span><span class="o">.</span><span class="s1">&#39;.jpg&#39;</span><span class="p">;</span><span class="c1">//裁剪后新图象的路径
+</span><span class="c1"></span>    <span class="nv">$x_percent_begin</span> <span class="o">=</span> <span class="mf">0.55</span><span class="p">;</span>
+    <span class="nv">$y_percent_begin</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">;</span>
+    <span class="k">list</span><span class="p">(</span><span class="nv">$x_percent_end</span><span class="p">,</span><span class="nv">$y_percent_end</span><span class="p">)</span> <span class="o">=</span> <span class="nx">getEndPointPercentForDengjizhengLeft</span><span class="p">(</span><span class="nv">$x_percent_begin</span><span class="p">,</span><span class="nv">$y_percent_begin</span><span class="p">);</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;br /&gt;左上角坐标百分比:&#39;</span><span class="p">;</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$x_percent_begin</span><span class="p">);</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$y_percent_begin</span><span class="p">);</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;br /&gt;右下角坐标百分比:&#39;</span><span class="p">;</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$x_percent_end</span><span class="p">);</span>
+    <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$y_percent_end</span><span class="p">);</span>
+    <span class="nx">cutByPercent</span><span class="p">(</span><span class="nv">$src_path</span><span class="p">,</span><span class="nv">$save_path</span><span class="p">,</span><span class="nv">$x_percent_begin</span><span class="p">,</span><span class="nv">$y_percent_begin</span><span class="p">,</span><span class="nv">$x_percent_end</span><span class="p">,</span><span class="nv">$y_percent_end</span><span class="p">);</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;br /&gt;&#39;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;div style=&#34;float:left&#34;&gt;&lt;a href=&#34;/&#39;</span><span class="o">.</span><span class="nv">$save_path</span><span class="o">.</span><span class="s1">&#39;&#34; target=&#34;_blank&#34;&gt;新图片&lt;br /&gt;&lt;img src=&#34;/&#39;</span><span class="o">.</span><span class="nv">$save_path</span><span class="o">.</span><span class="s1">&#39;&#34;&gt;&lt;/a&gt;&lt;/div&gt;&#39;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;div style=&#34;float:left;width:30%&#34;&gt;&lt;a href=&#34;/&#39;</span><span class="o">.</span><span class="nv">$src_path</span><span class="o">.</span><span class="s1">&#39;&#34; target=&#34;_blank&#34;&gt;原图片&lt;br /&gt;&lt;img style=&#34;width:100%&#34; src=&#34;/&#39;</span><span class="o">.</span><span class="nv">$src_path</span><span class="o">.</span><span class="s1">&#39;&#34;&gt;&lt;/a&gt;&lt;/div&gt;&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">testDengjizhengLeft</span><span class="p">();</span>
+<span class="k">die</span><span class="p">();</span>
+</code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA/">等比裁剪</a>
+        
+            <a href="/tags/php/">PHP</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/word-%E8%BD%AC-pdf/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Word 转 PDF</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%AE%80%E6%98%93%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B5%E9%9D%A2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">简易的系统初始化页面</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/%E5%8E%BB%E9%99%A4%E6%9D%82%E5%BF%B5%E7%9A%84%E6%96%B9%E6%B3%95/">
+        
+        
+            <div class="article-image">
+                <img src="/p/%E5%8E%BB%E9%99%A4%E6%9D%82%E5%BF%B5%E7%9A%84%E6%96%B9%E6%B3%95/1.1bd98ec03974b55f49784c6ecc26c85e_hu944e5d37804bfc917447bfd7e0fd26df_31971_250x150_fill_q75_box_smart1.jpeg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 去除杂念的方法"
+                        
+                        data-hash="md5-G9mOwDl0tV9JeExuzCbIXg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">去除杂念的方法</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/nas-%E7%9B%B8%E5%85%B3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">NAS 相关</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/child1/">
+        
+        
+            <div class="article-image">
+                <img src="/p/child1/child.friend.dded522500caebaf65be4cbde1722acf_hu5b36bba415a98670564935ce34fad947_181782_250x150_fill_q75_box_smart1.jpeg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Child1"
+                        
+                        data-hash="md5-3e1SJQDK669lvky94XIqzw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Child1</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

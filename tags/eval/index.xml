@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>eval on 良宏</title>
+    <link>/tags/eval/</link>
+    <description>Recent content in eval on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 04 Jun 2019 15:57:25 +0800</lastBuildDate><atom:link href="/tags/eval/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Eval PHP</title>
+      <link>/p/eval-php/</link>
+      <pubDate>Tue, 04 Jun 2019 15:57:25 +0800</pubDate>
+      
+      <guid>/p/eval-php/</guid>
+      <description>一 php后门木马常用的函数大致上可分为四种类型： 执行系统命令: system, passthru, shell_exec, exec, popen, proc_open 代码执行与加密: eval, assert, call_user_func,base64_decode, gzinflate, gzuncompress, gzdecode, str_rot13 文件包含与生成: require, require_once, include, include_once, file_get_contents, file_put_contents, fputs, fwrite .htaccess: SetHandler,</description>
+    </item>
+    
+  </channel>
+</rss>

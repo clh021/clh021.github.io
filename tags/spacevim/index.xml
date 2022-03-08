@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SpaceVim on 良宏</title>
+    <link>/tags/spacevim/</link>
+    <description>Recent content in SpaceVim on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Dec 2021 15:53:58 +0800</lastBuildDate><atom:link href="/tags/spacevim/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Space Vim</title>
+      <link>/p/space-vim/</link>
+      <pubDate>Fri, 24 Dec 2021 15:53:58 +0800</pubDate>
+      
+      <guid>/p/space-vim/</guid>
+      <description>项目用途 小问题 1, normal 状态时确保为英文状态 1, 如何高效使用 git 快捷管理 1, 如何修改启动界面，显示待办事项 1, 使用模糊搜索打开文件 启用 leaderf 模块，使用 Ctrl + p 模</description>
+    </item>
+    
+  </channel>
+</rss>

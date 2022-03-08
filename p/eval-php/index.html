@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='一 php后门木马常用的函数大致上可分为四种类型： 执行系统命令: system, passthru, shell_exec, exec, popen, proc_open 代码执行与加密: eval, assert, call_user_func,base64_decode, gzinflate, gzuncompress, gzdecode, str_rot13 文件包含与生成: require, require_once, include, include_once, file_get_contents, file_put_contents, fputs, fwrite .htaccess: SetHandler,'><title>Eval PHP</title>
+
+<link rel='canonical' href='/p/eval-php/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='Eval PHP'>
+<meta property='og:description' content='一 php后门木马常用的函数大致上可分为四种类型： 执行系统命令: system, passthru, shell_exec, exec, popen, proc_open 代码执行与加密: eval, assert, call_user_func,base64_decode, gzinflate, gzuncompress, gzdecode, str_rot13 文件包含与生成: require, require_once, include, include_once, file_get_contents, file_put_contents, fputs, fwrite .htaccess: SetHandler,'>
+<meta property='og:url' content='/p/eval-php/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='eval' /><meta property='article:tag' content='PHP' /><meta property='article:published_time' content='2019-06-04T15:57:25&#43;08:00'/><meta property='article:modified_time' content='2019-06-04T15:57:25&#43;08:00'/>
+<meta name="twitter:title" content="Eval PHP">
+<meta name="twitter:description" content="一 php后门木马常用的函数大致上可分为四种类型： 执行系统命令: system, passthru, shell_exec, exec, popen, proc_open 代码执行与加密: eval, assert, call_user_func,base64_decode, gzinflate, gzuncompress, gzdecode, str_rot13 文件包含与生成: require, require_once, include, include_once, file_get_contents, file_put_contents, fputs, fwrite .htaccess: SetHandler,">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/eval-php/">Eval PHP</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 04, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p>一</p>
+<p>php后门木马常用的函数大致上可分为四种类型：</p>
+<ol>
+<li>
+<p>执行系统命令: system, passthru, shell_exec, exec, popen, proc_open</p>
+</li>
+<li>
+<p>代码执行与加密: eval, assert, call_user_func,base64_decode, gzinflate, gzuncompress, gzdecode, str_rot13</p>
+</li>
+<li>
+<p>文件包含与生成: require, require_once, include, include_once, file_get_contents, file_put_contents, fputs, fwrite</p>
+</li>
+<li>
+<p>.htaccess: SetHandler, auto_prepend_file, auto_append_file</p>
+</li>
+</ol>
+<p>二</p>
+<p>想找一个 关键词是“hellow word” 在哪些文件中有，我们用grep命令</p>
+<p>grep &ndash;color -i -r -n &ldquo;hellow word&rdquo;  /data/www/</p>
+<p>这样就能搜索出来 文件中包含关键词的文件</p>
+<p>&ndash;color是关键词标红</p>
+<p>-i是不区分大小写
+-r是包含子目录的搜索
+-d skip忽略子目录</p>
+<p>可以用以上命令查找网站项目里的带有挂马的文件</p>
+<p>三</p>
+<p>.两个查后门的实用linux命令：
+find /data/web/website/ -iname <em>.php -mtime -35 找出/data/web/website/目录下 35分钟前新建的php
+find /data/web/website/ -name “</em>.php” | xargs grep “eval($_POST[” 找出/data/web/website/ 里面源码包含eval($_POST[的php文件  (注意：POST后面可能需要转义符“\”，否则有可能不能执行）</p>
+<p>四.</p>
+<p>例如</p>
+<p>注入漏洞eval(base64_decode</p>
+<p>grep &ndash;color -i -r -n &ldquo;eval&rdquo;  /data/www/   找出来对比以前正常的代码，看是否正常。然后用stat查看这个木马文件的修改时间，最后去寻找WEB日志，找出木马从哪里进来的</p>
+<p>eg: grep &ndash;color -i -r -n &lsquo;eval($_POST&rsquo;  cncar/ </p>
+<p>五：</p>
+<p>实用查找PHP木马命令：</p>
+<p>查找PHP木马</p>
+<h1 id="find---name-php-xargs-egrep-phpspyc99shmilw0rmevalgunerpressevalbase64_decoolcodespider_bc-tmpphptxt">find ./ -name &ldquo;*.php&rdquo; |xargs egrep &ldquo;phpspy|c99sh|milw0rm|eval(gunerpress|eval(base64_decoolcode|spider_bc&rdquo;&gt; /tmp/php.txt</h1>
+<p> </p>
+<h1 id="grep--r---includephp-a-zeval_post---tmpevaltxt">grep -r &ndash;include=*.php  &lsquo;[^a-z]eval($_POST&rsquo; . &gt; /tmp/eval.txt</h1>
+<p> </p>
+<h1 id="grep--r---includephp-file_put_contents_post">grep -r &ndash;include=<em>.php  &lsquo;file_put_contents(.</em>$_POST</h1>
+<p>.∗
+.∗
+);&rsquo; . &gt; /tmp/file_put_contents.txt
+ </p>
+<h1 id="find---name-php--type-f--print0--xargs--0-egrep-phpspyc99shmilw0rmevalgzuncompressbase64_decoolcodeevalbase64_decoolcodespider_bcgzinflate--awk--f-print-1--sort--uniq">find ./ -name &ldquo;*.php&rdquo; -type f -print0 | xargs -0 egrep &ldquo;(phpspy|c99sh|milw0rm|eval(gzuncompress(base64_decoolcode|eval(base64_decoolcode|spider_bc|gzinflate)&rdquo; | awk -F: &lsquo;{print $1}&rsquo; | sort | uniq</h1>
+<p>查找最近一天被修改的PHP文件</p>
+<p>#   find -mtime -1 -type f -name *.php
+修改网站的权限</p>
+<h1 id="find--type-f--name-php--exec-chmod-444--">find -type f -name *.php -exec chmod 444 {} ;</h1>
+<p> </p>
+<h1 id="find---type-d--exec-chmod-555-">find ./ -type d -exec chmod 555{} ;</h1>
+<p>假设最后更新是10天前我们可以查找10天内生成的可以php文件:</p>
+<p>find /var/www/ -name “*.php” -mtime -10</p>
+<p>也可以通过关键字的形式查找 常见的木马常用代码函数 eval,shell_exec,passthru,popen,system</p>
+<p>find /var/www/ -name “<em>.php” |xargs grep “eval” |more
+find /var/www/ -name “</em>.php” |xargs grep “shell_exec” |more
+find /var/www/ -name “*.php” |xargs grep “passthru” |more</p>
+<p>还有查看access.log 当然前提是你网站的所有php文件不是很多的情况下</p>
+<p>一句话查找PHP木马</p>
+<h1 id="find---name-php-xargs-egrep-phpspyc99shmilw0rmevalgunerpressevalbase64_decodespider_bc-tmpphptxt">find ./ -name “*.php” |xargs egrep “phpspy|c99sh|milw0rm|eval(gunerpress|eval(base64_decode|spider_bc”&gt; /tmp/php.txt</h1>
+<h1 id="grep--r-includephp-a-zeval_post---tmpevaltxt">grep -r –include=*.php ’[^a-z]eval($_POST’ . &gt; /tmp/eval.txt</h1>
+<h1 id="grep--r-includephp-file_put_contents_post---tmpfile_put_contentstxt">grep -r –include=<em>.php ’file_put_contents(.</em>$_POST[.*]);’ . &gt; /tmp/file_put_contents.txt</h1>
+<h1 id="find---name-php--type-f--print0--xargs--0-egrep-phpspyc99shmilw0rmevalgzuncompressbase64_decodeevalbase64_decodespider_bcgzinflate--awk--f-print-1--sort--uniq">find ./ -name “*.php” -type f -print0 | xargs -0 egrep “(phpspy|c99sh|milw0rm|eval(gzuncompress(base64_decode|eval(base64_decode|spider_bc|gzinflate)” | awk -F: ‘{print $1}’ | sort | uniq</h1>
+<p>查找最近一天被修改的PHP文件</p>
+<h1 id="find--mtime--1--type-f--name-php">find -mtime -1 -type f -name *.php</h1>
+<p>六</p>
+<p>以下其实是多余的操作了其实，但是还是有值得看的地方</p>
+<p>，检查代码。</p>
+<p>肯定不是一个文件一个文件的检查，Linxu有强悍的命令</p>
+<p>grep ‘eval’ * -R 全盘搜索当前目录所有文件（包含子目录）中带有eval的文件，这条可以快速查找到被挂马的文件。</p>
+<p>关于eval，请自行google一句话php代码。</p>
+<p>2，查看日志。</p>
+<p>不到这个时候不知道日志的可贵啊。</p>
+<p>还是以grep命令为主。</p>
+<p>思路：负责的站点是Linux，只开了2个端口，一个22和80，外部的执行命令是由从80端口进来，Selinux报httpd访问/boot文件，确认被挂马。而所有的命令执行必须POST提交给执行的文件。所以，查找日志中所有的POST记录。</p>
+<p>cat access_log_20120823.log | grep ‘POST’ | grep -v ‘反向查找’ | less，通过grep -v排除正常post，egrep也支持正则，但是太复杂了，看懂不知道怎么运用。</p>
+<p>（这里不建议用cat，用tail可以追加一个文件来看）</p>
+<p>这可以防患于未然，防止不知道哪天又被人黑进来了。每天看一眼日志。</p>
+<p>3，对于网页目录，只给apache用户rx权限，不要给w权限，目录设置要加上rx，不要给w，个别文件除外。所以，配合2使用，Linux下可以快速过滤刷选出来不规则的POST请求。</p>
+<h2 id="综合12其实就可以快速查找被黑的页面被修改的文件替换干净的代码">综合1，2其实就可以快速查找被黑的页面，被修改的文件替换干净的代码。</h2>
+<p>作者：MiltonZhong
+来源：CSDN
+原文：https://blog.csdn.net/MiltonZhong/article/details/9717179
+版权声明：本文为博主原创文章，转载请附上博文链接！</p>
+<pre tabindex="0"><code>@\$\_\(\$\_
+\$\_=&quot;&quot;
+\${'\_'
+@preg\_replace\((&quot;)*\/(\S)*\/e(&quot;)*,\$_POST\[\S*\]
+base64\_decode\(\$\_
+'e'\.'v'\.'a'\.'l'
+&quot;e&quot;\.&quot;v&quot;\.&quot;a&quot;\.&quot;l&quot;
+&quot;e&quot;\.&quot;v&quot;\.&quot;a&quot;\.&quot;l&quot;
+\$(\w)+\(&quot;\/(\S)+\/e
+\(array\)\$_(POST|GET|REQUEST|COOKIE)
+\$(\w)+\(\${
+@\$\_=
+\$\_=\$\_
+chr\((\d)+\)\.chr\((\d)+\)
+phpjm\.net
+cha88\.cn
+c99shell
+phpspy
+Scanners
+cmd\.php
+str_rot13
+webshell
+EgY_SpIdEr
+tools88\.com
+SECFORCE
+eval\(('|&quot;)\?&gt;
+&quot;&gt;
+preg_replace\(&quot;\/\.\*\/e&quot;
+assert\(('|&quot;|\s*)\$
+eval\(gzinflate\(
+gzinflate\(base64_decode\(
+eval\(base64_decode\(
+eval\(gzuncompress\(
+ies&quot;,gzuncompress\(\$
+eval\(gzdecode\(
+eval\(str_rot13\(
+gzuncompress\(base64_decode\(
+base64_decode\(gzuncompress\(
+eval\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)
+assert\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)
+require\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)
+require_once\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)
+include\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)
+include_once\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)
+call_user_func\((&quot;|')assert(&quot;|')
+call_user_func\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)
+\$_(POST|GET|REQUEST|COOKIE)\[([^\]]+)\]\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)\[
+echo\(file_get_contents\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)
+file_put_contents\(('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)\[([^\]]+)\],('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)
+fputs\(fopen\((.+),('|&quot;)w('|&quot;)\),('|&quot;|\s*)\$_(POST|GET|REQUEST|COOKIE)\[
+SetHandlerapplication\/x-httpd-php
+php_valueauto_prepend_file
+</code></pre><pre tabindex="0"><code>find ./ -name &quot;*.php&quot; |xargs egrep &quot;phpspy|c99sh|milw0rm|eval\(gunerpress|eval\(base64_decoolcode|spider_bc&quot;&gt; /tmp/php.txt
+grep -r --include=*.php  '[^a-z]eval($_POST' . &gt; /tmp/eval.txt
+grep -r --include=*.php  'file_put_contents(.*$_POST\[.*\]);' . &gt; /tmp/file_put_contents.txt
+find ./ -name &quot;*.php&quot; -type f -print0 | xargs -0 egrep &quot;(phpspy|c99sh|milw0rm|eval\(gzuncompress\(base64_decoolcode|eval\(base64_decoolcode|spider_bc|gzinflate)&quot; | awk -F: '{print $1}' | sort | uniq
+</code></pre>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/eval/">eval</a>
+        
+            <a href="/tags/php/">PHP</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/sha1-from-java-to-php/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">sha1 from Java to Php</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/wordpress%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WordPress开发笔记</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/wordpress%E7%8E%AF%E5%A2%83%E5%8F%8A%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WordPress环境及资料整理</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%BB%99discuz%E5%8A%A0%E4%B8%8A%E5%9B%BD%E9%99%85%E5%8C%96%E5%8A%9F%E8%83%BD/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">给Discuz加上国际化功能</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/api-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">API DOC</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#find---name-php-xargs-egrep-phpspyc99shmilw0rmevalgunerpressevalbase64_decoolcodespider_bc-tmpphptxt">find ./ -name &ldquo;*.php&rdquo; |xargs egrep &ldquo;phpspy|c99sh|milw0rm|eval(gunerpress|eval(base64_decoolcode|spider_bc&rdquo;&gt; /tmp/php.txt</a></li>
+    <li><a href="#grep--r---includephp-a-zeval_post---tmpevaltxt">grep -r &ndash;include=*.php  &lsquo;[^a-z]eval($_POST&rsquo; . &gt; /tmp/eval.txt</a></li>
+    <li><a href="#grep--r---includephp-file_put_contents_post">grep -r &ndash;include=<em>.php  &lsquo;file_put_contents(.</em>$_POST</a></li>
+    <li><a href="#find---name-php--type-f--print0--xargs--0-egrep-phpspyc99shmilw0rmevalgzuncompressbase64_decoolcodeevalbase64_decoolcodespider_bcgzinflate--awk--f-print-1--sort--uniq">find ./ -name &ldquo;*.php&rdquo; -type f -print0 | xargs -0 egrep &ldquo;(phpspy|c99sh|milw0rm|eval(gzuncompress(base64_decoolcode|eval(base64_decoolcode|spider_bc|gzinflate)&rdquo; | awk -F: &lsquo;{print $1}&rsquo; | sort | uniq</a></li>
+    <li><a href="#find--type-f--name-php--exec-chmod-444--">find -type f -name *.php -exec chmod 444 {} ;</a></li>
+    <li><a href="#find---type-d--exec-chmod-555-">find ./ -type d -exec chmod 555{} ;</a></li>
+    <li><a href="#find---name-php-xargs-egrep-phpspyc99shmilw0rmevalgunerpressevalbase64_decodespider_bc-tmpphptxt">find ./ -name “*.php” |xargs egrep “phpspy|c99sh|milw0rm|eval(gunerpress|eval(base64_decode|spider_bc”&gt; /tmp/php.txt</a></li>
+    <li><a href="#grep--r-includephp-a-zeval_post---tmpevaltxt">grep -r –include=*.php ’[^a-z]eval($_POST’ . &gt; /tmp/eval.txt</a></li>
+    <li><a href="#grep--r-includephp-file_put_contents_post---tmpfile_put_contentstxt">grep -r –include=<em>.php ’file_put_contents(.</em>$_POST[.*]);’ . &gt; /tmp/file_put_contents.txt</a></li>
+    <li><a href="#find---name-php--type-f--print0--xargs--0-egrep-phpspyc99shmilw0rmevalgzuncompressbase64_decodeevalbase64_decodespider_bcgzinflate--awk--f-print-1--sort--uniq">find ./ -name “*.php” -type f -print0 | xargs -0 egrep “(phpspy|c99sh|milw0rm|eval(gzuncompress(base64_decode|eval(base64_decode|spider_bc|gzinflate)” | awk -F: ‘{print $1}’ | sort | uniq</a></li>
+    <li><a href="#find--mtime--1--type-f--name-php">find -mtime -1 -type f -name *.php</a>
+      <ol>
+        <li><a href="#综合12其实就可以快速查找被黑的页面被修改的文件替换干净的代码">综合1，2其实就可以快速查找被黑的页面，被修改的文件替换干净的代码。</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

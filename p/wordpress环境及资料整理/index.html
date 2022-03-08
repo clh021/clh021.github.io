@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='WordPress集合 从头开始做wordpress 部署、更新、脏检查 git clone --depth=1 https://github.com/WordPress/WordPress.git wordpress PHP环境 # deepin php7 sudo apt install php7.0 sudo apt install php7.0-fileinfo php7.0-curl php7.0-gd php7.0-imap php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-odbc php7.0-pgsql php7.0-sqlite3 php7.0-xml php7.0-xmlrpc ph'><title>WordPress环境及资料整理</title>
+
+<link rel='canonical' href='/p/wordpress%E7%8E%AF%E5%A2%83%E5%8F%8A%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='WordPress环境及资料整理'>
+<meta property='og:description' content='WordPress集合 从头开始做wordpress 部署、更新、脏检查 git clone --depth=1 https://github.com/WordPress/WordPress.git wordpress PHP环境 # deepin php7 sudo apt install php7.0 sudo apt install php7.0-fileinfo php7.0-curl php7.0-gd php7.0-imap php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-odbc php7.0-pgsql php7.0-sqlite3 php7.0-xml php7.0-xmlrpc ph'>
+<meta property='og:url' content='/p/wordpress%E7%8E%AF%E5%A2%83%E5%8F%8A%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='PHP' /><meta property='article:tag' content='WordPress' /><meta property='article:published_time' content='2017-02-24T21:57:25&#43;00:00'/><meta property='article:modified_time' content='2017-02-24T21:57:25&#43;00:00'/>
+<meta name="twitter:title" content="WordPress环境及资料整理">
+<meta name="twitter:description" content="WordPress集合 从头开始做wordpress 部署、更新、脏检查 git clone --depth=1 https://github.com/WordPress/WordPress.git wordpress PHP环境 # deepin php7 sudo apt install php7.0 sudo apt install php7.0-fileinfo php7.0-curl php7.0-gd php7.0-imap php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-odbc php7.0-pgsql php7.0-sqlite3 php7.0-xml php7.0-xmlrpc ph">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/wordpress%E7%8E%AF%E5%A2%83%E5%8F%8A%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/">WordPress环境及资料整理</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 24, 2017</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="wordpress集合">WordPress集合</h1>
+<h2 id="从头开始做wordpress">从头开始做wordpress</h2>
+<p>部署、更新、脏检查</p>
+<pre tabindex="0"><code>git clone --depth=1 https://github.com/WordPress/WordPress.git wordpress
+</code></pre><p>PHP环境</p>
+<pre tabindex="0"><code># deepin php7
+sudo apt install php7.0
+sudo apt install php7.0-fileinfo php7.0-curl php7.0-gd php7.0-imap php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-odbc php7.0-pgsql php7.0-sqlite3 php7.0-xml php7.0-xmlrpc php7.0-zip#PHP扩展
+
+# debian php5
+apt install php5
+apt install php-file php5-curl php5-gd php5-imap php5-imagick php5-intl php5-json php5-mcrypt php5-mysql php5-pgsql php5-sqlite php5-ssh2 php5-xmlrpc
+</code></pre><p>服务器配置(非必须)</p>
+<pre tabindex="0"><code>&lt;VirtualHost *:80&gt;
+	#ServerName www.example.com #域名，ip访问可不配置
+	ServerAdmin webmaster@localhost #你的邮箱，错误页面可联系到你
+	DocumentRoot /var/www/html
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	&lt;Directory &quot;/var/www/html&quot;&gt; #添加用户认证
+        AuthType Basic
+        AuthName &quot;Restricted Content&quot;
+        AuthUserFile /etc/apache2/.htpasswd
+        #sudo htpasswd -c /etc/apache2/.htpasswd username #设置验证文件，或增加用户，[你也可以改变文件目录]
+        Require valid-user
+    &lt;/Directory&gt;
+    &lt;Directory /var/www/&gt; #允许启用.htaccess #注意开启 mod_rewrite #sudo a2enmod rewrite
+	    Options Indexes FollowSymLinks
+	    AllowOverride All
+	    Require all granted
+	&lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+</code></pre><p>验证好数据库配置，并按照提示手动创建wp-config.php文件，于最终安装好wordpress。
+安装好后，手动修改wordpress的wp-config.php配置文件</p>
+<pre tabindex="0"><code>//设置域名
+$home = 'http://'.$_SERVER['HTTP_HOST'];
+$siteurl = 'http://'.$_SERVER['HTTP_HOST'];
+define('WP_HOME', $home);
+define('WP_SITEURL', $siteurl);
+//设置本地语言为中文
+define('WPLANG', 'zh_CN');
+//设置本地文件读写模式，不使用ftp方式安装插件和主题 
+//你也可以在安装好各种插件和主题以后删除下面的配置来保证安全，当然同时也无法方便的自动升级了。
+define(&quot;FS_METHOD&quot;,&quot;direct&quot;);
+define(&quot;FS_CHMOD_DIR&quot;, 0777);
+define(&quot;FS_CHMOD_FILE&quot;, 0777);
+//同时配置本地写命令 `sudo chmod 777 -R wp-content`，撤销命令为`sudo chmod 755 -R wp-content`
+</code></pre><p>登录到后台，在更新按钮中点击 <code>Update Translations</code> 按钮，获取本地化。
+获取本地化完成后，可更新各个主题插件的翻译。</p>
+<h2 id="技巧--精品插件--人见人爱">技巧 × 精品插件 × 人见人爱</h2>
+<h3 id="开发技巧">开发技巧</h3>
+<ul>
+<li>开发调试显示错误</li>
+</ul>
+<pre tabindex="0"><code>if ( current_user_can( 'manage_options' ) ) {
+    define('WP_DEBUG_DISPLAY', true);
+    @ini_set('display_errors', 1);
+}
+</code></pre><h3 id="开发扩展">开发扩展</h3>
+<ul>
+<li><code>Developer</code>官方出品的开发者开发插件，开发调试几乎别无所求，这是一个插件组</li>
+<li><code>cformsII - contact form</code>灵活强大可定制ajax表单</li>
+<li><code>Advanced Custom Fields</code>让站长繁简适宜、方便快捷的自定义字段</li>
+<li><code>Developer's Custom Fields</code>让开发者轻松灵活的定义字段</li>
+<li><code>Page Builder</code>简单快速拖拽创建页面</li>
+<li><code>Baidu Maps Plugin</code>百度地图</li>
+<li><code>Google Map</code>谷歌地图 由SRMILON创建</li>
+<li><code>Theme Test Drive</code>安全的指定用户在线测试开发主题</li>
+<li><code>Plugin Test Drive</code>在不启用插件的情况下测试开发插件</li>
+<li><code>Debug Bar</code>一个调试面板可进行多种调试功能</li>
+<li><code>Log Deprecated Notices</code>不需要WP_DEBUG的情况下看日志</li>
+<li><code>Monster Widget</code>十三个核心部件的集合，方便快速的开发主题</li>
+<li><code>Regenerate Thumbnails</code>生成不同尺寸的图片缩略图，在切换或开发主题时非常方便</li>
+<li><code>Simply Show IDs</code>无处不在的ID也许能给你带来方便</li>
+<li><code>Query Monitor</code>记录所有请求并统计详情供分析</li>
+<li><code>WordPress REST API (Version 2)</code>易于使用和理解的REST API，还包括基于Backbone模型的JavaScript API，允许插件和主题开发者使用</li>
+<li><code>Hide My Wordpress</code>隐藏wordpress常规特征，可用于伪装，更可用于保护站点安全</li>
+</ul>
+<h3 id="后台界面">后台界面</h3>
+<ul>
+<li><code>ag-custom-admin</code>管理后台界面个性化定制</li>
+<li><code>Admin Menu Editor</code>管理后台界面可见性工具，有可视化视图</li>
+<li><code>TinyMCE Advanced</code>编辑器更强大好看，支持ajax保存</li>
+</ul>
+<h3 id="功能扩展">功能扩展</h3>
+<ul>
+<li><code>bbPress</code>论坛功能</li>
+<li><code>WooCommcerce</code>在线商店，稳定，可靠，功能强大</li>
+<li><code>Code Snippets</code>可以添加代码片段以避免修改function.php,有良好的编码配色界面</li>
+<li><code>Contact Form 7</code>你可以自定义读者联系你的表单，表单直接发送邮件给你</li>
+<li><code>Wordfence Security</code>安全防护</li>
+<li><code>WordPress Database Backup</code>保存包含插件表的数据库</li>
+<li><code>W3 Total Cache</code>浏览器缓存、页面缓存、对象缓存、数据库缓存、页面压缩</li>
+<li><code>WP Super Cache</code>浏览器缓存、生成 HTML 副本</li>
+<li><code>iThemes Security</code>保护网站安全</li>
+<li><code>Clef Two-Factor Authentication</code>双重认证,通过手机同步来提供更快、更受保护的登录方式</li>
+<li><code>Akismet</code>反垃圾评论</li>
+<li><code>WP Statistics</code>全面且实用的访问统计</li>
+<li><code>NextGEN Gallery</code>功能强大的相册幻灯片类</li>
+<li><code>Jetpack</code>需要链接wordpress的系列强大功能服务</li>
+</ul>
+<h3 id="服务器技巧">服务器技巧</h3>
+<pre tabindex="0"><code>#快速禁用某网站
+sudo a2dissite &lt;my-site&gt;
+#服务命令
+sudo service apache2 reload
+sudo service apache2 restart
+#测试配置
+apache2ctl configtest
+#快速查看和修改.htaccess
+sudo nano /var/www/html/.htaccess
+#调试.htaccess
+RewriteLog logs/drupal001.com-rewrite.log #此处可以写绝对地址
+RewriteLogLevel 3
+#非正规调试.htaccess 可方便查看各种变量并轻松检查RewriteCond是否正确
+RewriteCond %{QUERY_STRING} vardump #http://url/?vardump
+RewriteRule (.*) http://www.baidu.com/?host=%{HTTP_HOST},rurl=%{REQUEST_URI} [R=301,L,QSA]
+#apache默认变量列表
+#HTTP_USER_AGENT HTTP_REFERER HTTP_COOKIE HTTP_FORWARDED HTTP_HOST HTTP_PROXY_CONNECTION HTTP_ACCEPT   REMOTE_ADDR REMOTE_HOST REMOTE_PORT REMOTE_USER REMOTE_IDENT REQUEST_METHOD SCRIPT_FILENAME PATH_INFO QUERY_STRING AUTH_TYPE   DOCUMENT_ROOT SERVER_ADMIN SERVER_NAME SERVER_ADDR SERVER_PORT SERVER_PROTOCOL SERVER_SOFTWARE   TIME_YEAR TIME_MON TIME_DAY TIME_HOUR TIME_MIN TIME_SEC TIME_WDAY TIME   API_VERSION THE_REQUEST REQUEST_URI REQUEST_FILENAME IS_SUBREQ HTTPS
+</code></pre><h3 id="开发者资料">开发者资料</h3>
+<ul>
+<li><a class="link" href="http://themehybrid.com/themes/hybrid-child"  target="_blank" rel="noopener"
+    >themehybrid</a> 全息开发框架，二次开发主题，主题继承，貌似也支持插件开发</li>
+<li><a class="link" href="http://www.plaintxt.org/"  target="_blank" rel="noopener"
+    >plaintxt</a> 各种排版的空白主题，可快速定制自己想要的<a class="link" href="https://wordpress.org/themes/sandbox/"  target="_blank" rel="noopener"
+    >主题</a></li>
+<li><a class="link" href="https://developer.wordpress.org/themes/basics/template-hierarchy/"  target="_blank" rel="noopener"
+    >官方主题手册之模板层次</a> 详细讲解页面继承关系和提供的钩子</li>
+<li><a class="link" href="https://developer.wordpress.org/plugins/"  target="_blank" rel="noopener"
+    >官方插件手册</a></li>
+<li><a class="link" href="https://codex.wordpress.org/"  target="_blank" rel="noopener"
+    >官方代码函数库</a></li>
+<li><a class="link" href="https://wordpress.org/plugins/options-framework/"  target="_blank" rel="noopener"
+    >主题选项框架</a></li>
+<li><a class="link" href="https://generatewp.com"  target="_blank" rel="noopener"
+    >generatewp</a> 代码生成工具</li>
+<li><a class="link" href="http://underscores.me/"  target="_blank" rel="noopener"
+    >underscores</a> 功能全面，理解简单的主题，非常适合二次开发</li>
+<li><a class="link" href="http://foundation.zurb.com/"  target="_blank" rel="noopener"
+    >foundation</a> 响应式网页设计,除了bootstrap还可以考虑它</li>
+<li><a class="link" href="https://wordpress.org/plugins/theme-check/"  target="_blank" rel="noopener"
+    >theme-check</a> 开发主题时常检查是个好习惯</li>
+<li><a class="link" href="https://codex.wordpress.org/Theme_Unit_Test"  target="_blank" rel="noopener"
+    >官方Theme_Unit_Test</a> 测试数据，让主题更完美</li>
+<li><a class="link" href="http://html5blank.com/"  target="_blank" rel="noopener"
+    >html5blank</a> 最值得二次开发的空白主题</li>
+<li><a class="link" href="https://www.jiustore.com/"  target="_blank" rel="noopener"
+    >jiustore</a> 6.5小时主题视频教程变成主题制作高手同时会子主题开发 <a class="link" href="https://www.jiufree.com/"  target="_blank" rel="noopener"
+    >jiufree</a> <a class="link" href="http://www.jiuwp.com/"  target="_blank" rel="noopener"
+    >jiuwp</a></li>
+<li><a class="link" href="http://www.shejiwo.net/"  target="_blank" rel="noopener"
+    >设计窝</a> 主题定制服务</li>
+</ul>
+<blockquote>
+<p>使用人数众多的大都是值得一试的好东西，它可以大量节省你的时间精力；但是更好更适合你的东西却不一定使用人数众多，因为有痛点才会有更好的产品，新出来的产品正在等待验证。人应该无时无刻注意到节省自己的时间精力，提高效率，提高产出。借势而为，借力使力，站在巨人的肩膀上向前走，人类才一步步实现了今天科技的进步。
+如果能够有人指点你，有人帮助你，有人和你朝着同一个方向使力，一定可以比你自己一个人投入时间，精力，慢慢摸索来的好。你可以有更多的时间精力去做更加有生产力，更加有意义的事情当中。</p>
+</blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/php/">PHP</a>
+        
+            <a href="/tags/wordpress/">WordPress</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/wordpress%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WordPress开发笔记</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/sha1-from-java-to-php/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">sha1 from Java to Php</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/eval-php/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Eval PHP</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%BB%99discuz%E5%8A%A0%E4%B8%8A%E5%9B%BD%E9%99%85%E5%8C%96%E5%8A%9F%E8%83%BD/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">给Discuz加上国际化功能</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/api-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">API DOC</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#wordpress集合">WordPress集合</a>
+      <ol>
+        <li><a href="#从头开始做wordpress">从头开始做wordpress</a></li>
+        <li><a href="#技巧--精品插件--人见人爱">技巧 × 精品插件 × 人见人爱</a>
+          <ol>
+            <li><a href="#开发技巧">开发技巧</a></li>
+            <li><a href="#开发扩展">开发扩展</a></li>
+            <li><a href="#后台界面">后台界面</a></li>
+            <li><a href="#功能扩展">功能扩展</a></li>
+            <li><a href="#服务器技巧">服务器技巧</a></li>
+            <li><a href="#开发者资料">开发者资料</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='将一个sha1加密算法从Java改写到PHP // 身份证简项认证 public static void idenAuth() { String appId = APP_ID; String serviceCode = &amp;#34;idc0001&amp;#34;; String name = &amp;#34;南建坤&amp;#34;; String idCard= &amp;#34;130521198709140030&amp;#34;; String selfUrl= null; String selfImg= null; String'><title>sha1 from Java to Php</title>
+
+<link rel='canonical' href='/p/sha1-from-java-to-php/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='sha1 from Java to Php'>
+<meta property='og:description' content='将一个sha1加密算法从Java改写到PHP // 身份证简项认证 public static void idenAuth() { String appId = APP_ID; String serviceCode = &amp;#34;idc0001&amp;#34;; String name = &amp;#34;南建坤&amp;#34;; String idCard= &amp;#34;130521198709140030&amp;#34;; String selfUrl= null; String selfImg= null; String'>
+<meta property='og:url' content='/p/sha1-from-java-to-php/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='sha1' /><meta property='article:tag' content='Java' /><meta property='article:tag' content='PHP' /><meta property='article:published_time' content='2019-06-24T15:57:25&#43;08:00'/><meta property='article:modified_time' content='2019-06-24T15:57:25&#43;08:00'/>
+<meta name="twitter:title" content="sha1 from Java to Php">
+<meta name="twitter:description" content="将一个sha1加密算法从Java改写到PHP // 身份证简项认证 public static void idenAuth() { String appId = APP_ID; String serviceCode = &amp;#34;idc0001&amp;#34;; String name = &amp;#34;南建坤&amp;#34;; String idCard= &amp;#34;130521198709140030&amp;#34;; String selfUrl= null; String selfImg= null; String">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/sha1-from-java-to-php/">sha1 from Java to Php</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 24, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="将一个sha1加密算法从java改写到php">将一个sha1加密算法从Java改写到PHP</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java">	<span class="c1">// 身份证简项认证
+</span><span class="c1"></span>	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">idenAuth</span><span class="o">()</span> <span class="o">{</span>
+		
+		<span class="n">String</span> <span class="n">appId</span> <span class="o">=</span> <span class="n">APP_ID</span><span class="o">;</span>
+		<span class="n">String</span> <span class="n">serviceCode</span> <span class="o">=</span> <span class="s">&#34;idc0001&#34;</span><span class="o">;</span>
+		<span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;南建坤&#34;</span><span class="o">;</span>
+		<span class="n">String</span> <span class="n">idCard</span><span class="o">=</span> <span class="s">&#34;130521198709140030&#34;</span><span class="o">;</span>
+		<span class="n">String</span> <span class="n">selfUrl</span><span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+		<span class="n">String</span> <span class="n">selfImg</span><span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+		<span class="n">String</span> <span class="n">bankcard</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+		<span class="n">String</span> <span class="n">mobile</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+		
+		<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">param</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;();</span>
+		<span class="n">param</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;appId&#34;</span><span class="o">,</span>  <span class="n">appId</span><span class="o">);</span>
+		<span class="n">param</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;serviceCode&#34;</span><span class="o">,</span> <span class="n">serviceCode</span><span class="o">);</span>
+		<span class="n">param</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;name&#34;</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+		<span class="n">param</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;idCard&#34;</span><span class="o">,</span> <span class="n">idCard</span><span class="o">);</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">headers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;();</span>
+			<span class="n">headers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;Content-Signature&#34;</span><span class="o">,</span> <span class="s">&#34;HMAC-SHA1 &#34;</span> <span class="o">+</span> <span class="k">new</span> <span class="n">Base64</span><span class="o">().</span><span class="na">encodeToString</span><span class="o">(</span><span class="n">HMACSHA1</span><span class="o">.</span><span class="na">getHmacSHA1</span><span class="o">(</span><span class="n">appId</span><span class="o">+</span><span class="n">serviceCode</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="n">idCard</span><span class="o">+</span>
+					<span class="n">selfUrl</span><span class="o">+</span><span class="n">selfImg</span><span class="o">+</span><span class="n">bankcard</span><span class="o">+</span><span class="n">mobile</span><span class="o">,</span> <span class="n">SECRET_KEY</span><span class="o">)));</span>
+			
+			<span class="n">String</span> <span class="n">resStr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpClientService</span><span class="o">().</span><span class="na">postForm</span><span class="o">(</span><span class="n">URL</span><span class="o">,</span> <span class="n">headers</span><span class="o">,</span> <span class="n">param</span><span class="o">);</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">resStr</span><span class="o">);</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+		<span class="o">}</span>
+		
+	<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-PHP" data-lang="PHP"><span class="k">function</span> <span class="nf">tianweiApiIdcard</span><span class="p">(</span><span class="nv">$path</span><span class="p">,</span><span class="nv">$body_arr</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nv">$url</span> <span class="o">=</span> <span class="s2">&#34;http://demo-open.itruscloud.com/apigate/authapi&#34;</span><span class="p">;</span>
+	<span class="nv">$APP_ID</span> <span class="o">=</span> <span class="s2">&#34;app_id&#34;</span><span class="p">;</span>
+	<span class="nv">$SECRET_KEY</span> <span class="o">=</span> <span class="s2">&#34;key&#34;</span><span class="p">;</span>
+    <span class="nv">$bodys</span><span class="o">=</span><span class="nx">http_build_query</span><span class="p">(</span><span class="nx">array_merge</span><span class="p">([</span><span class="s1">&#39;appId&#39;</span><span class="o">=&gt;</span><span class="nv">$APP_ID</span><span class="p">],</span><span class="nv">$body_arr</span><span class="p">));</span>
+	<span class="nv">$signature_data</span> <span class="o">=</span> <span class="nv">$APP_ID</span><span class="o">.</span><span class="nv">$body_arr</span><span class="p">[</span><span class="s1">&#39;serviceCode&#39;</span><span class="p">]</span><span class="o">.</span><span class="nv">$body_arr</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="nv">$body_arr</span><span class="p">[</span><span class="s1">&#39;idCard&#39;</span><span class="p">]</span><span class="o">.</span><span class="nv">$body_arr</span><span class="p">[</span><span class="s1">&#39;selfUrl&#39;</span><span class="p">]</span><span class="o">.</span><span class="nv">$body_arr</span><span class="p">[</span><span class="s1">&#39;selfImg&#39;</span><span class="p">]</span><span class="o">.</span><span class="nv">$body_arr</span><span class="p">[</span><span class="s1">&#39;bankcard&#39;</span><span class="p">]</span><span class="o">.</span><span class="nv">$body_arr</span><span class="p">[</span><span class="s1">&#39;mobile&#39;</span><span class="p">];</span>
+    <span class="nv">$headers</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+    <span class="nx">array_push</span><span class="p">(</span><span class="nv">$headers</span><span class="p">,</span> <span class="s2">&#34;Content-Type&#34;</span><span class="o">.</span><span class="s2">&#34;:&#34;</span><span class="o">.</span><span class="s2">&#34;application/x-www-form-urlencoded&#34;</span><span class="p">);</span>
+    <span class="nx">array_push</span><span class="p">(</span><span class="nv">$headers</span><span class="p">,</span> <span class="s2">&#34;Content-Signature&#34;</span><span class="o">.</span><span class="s2">&#34;:&#34;</span><span class="o">.</span><span class="s2">&#34;HMAC-SHA1 &#34;</span><span class="o">.</span><span class="nx">base64_encode</span><span class="p">(</span><span class="nx">hash_hmac</span><span class="p">(</span><span class="s1">&#39;sha1&#39;</span><span class="p">,</span><span class="nv">$signature_data</span><span class="p">,</span> <span class="nv">$SECRET_KEY</span><span class="p">,</span><span class="k">true</span><span class="p">)));</span>
+    <span class="nv">$curl</span> <span class="o">=</span> <span class="nx">curl_init</span><span class="p">();</span>
+    <span class="nx">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">);</span>
+    <span class="nx">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_URL</span><span class="p">,</span> <span class="nv">$url</span><span class="o">.</span><span class="nv">$path</span><span class="p">);</span>
+    <span class="nx">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="nv">$headers</span><span class="p">);</span>
+    <span class="nx">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_FAILONERROR</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+    <span class="nx">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+    <span class="nx">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_HEADER</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$bodys</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nv">$bodys</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nv">$response</span> <span class="o">=</span> <span class="nx">curl_exec</span><span class="p">(</span><span class="nv">$curl</span><span class="p">);</span>
+    <span class="nx">curl_close</span><span class="p">(</span><span class="nv">$curl</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nv">$response</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nx">tianweiApiIdcard</span><span class="p">(</span><span class="s1">&#39;/person/authIden&#39;</span><span class="p">,[</span>
+    <span class="s1">&#39;serviceCode&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;idc0001&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;name&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;韩国&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;idCard&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;429006197109275750&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;selfUrl&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;null&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;selfImg&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;null&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;bankcard&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;null&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mobile&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;null&#39;</span><span class="p">,</span>
+<span class="p">]);</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nx">json_decode</span><span class="p">(</span><span class="nx">json_decode</span><span class="p">(</span><span class="nv">$response</span><span class="p">),</span><span class="k">true</span><span class="p">);</span>
+<span class="c1">// if(isset($result[&#39;status&#39;]) &amp;&amp; &#34;1&#34; ==$result[&#39;status&#39;]) {
+</span><span class="c1">//     echo &#39;成功！&#39;;
+</span><span class="c1">// }
+</span><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+</code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/sha1/">sha1</a>
+        
+            <a href="/tags/java/">Java</a>
+        
+            <a href="/tags/php/">PHP</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/eval-php/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Eval PHP</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/wordpress%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WordPress开发笔记</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/wordpress%E7%8E%AF%E5%A2%83%E5%8F%8A%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WordPress环境及资料整理</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%BB%99discuz%E5%8A%A0%E4%B8%8A%E5%9B%BD%E9%99%85%E5%8C%96%E5%8A%9F%E8%83%BD/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">给Discuz加上国际化功能</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/api-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">API DOC</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#将一个sha1加密算法从java改写到php">将一个sha1加密算法从Java改写到PHP</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

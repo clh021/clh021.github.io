@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>awk on 良宏</title>
+    <link>/tags/awk/</link>
+    <description>Recent content in awk on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Dec 2021 15:54:47 +0800</lastBuildDate><atom:link href="/tags/awk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Awk</title>
+      <link>/p/awk/</link>
+      <pubDate>Fri, 24 Dec 2021 15:54:47 +0800</pubDate>
+      
+      <guid>/p/awk/</guid>
+      <description>awk输出指定列 awk &amp;lsquo;{print $0}&amp;rsquo; file #打印所有列 awk &amp;lsquo;{print $1}&amp;rsquo; file #打印第一列 awk &amp;lsquo;{print $1, $3}&amp;rsquo; file #打印第一和第三列 cat file | awk &amp;lsquo;{print $3, $1}&amp;rsquo; #打印第三列和第一列，注意先后顺序。 cat file |</description>
+    </item>
+    
+  </channel>
+</rss>

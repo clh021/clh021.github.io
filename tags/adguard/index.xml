@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AdGuard on 良宏</title>
+    <link>/tags/adguard/</link>
+    <description>Recent content in AdGuard on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Aug 2021 12:01:20 +0800</lastBuildDate><atom:link href="/tags/adguard/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>lineageOS</title>
+      <link>/p/lineageos/</link>
+      <pubDate>Sun, 01 Aug 2021 12:01:20 +0800</pubDate>
+      
+      <guid>/p/lineageos/</guid>
+      <description>小米 6 使用 lineageOS 18.1 和 GApps 有一台闲置的小米 6，拿来装了第三方 ROM lineageOS，配合 Google 套件使用，整体感觉不错。写文记录一下。 需要下载的文件 lineageOS Builds for sagit</description>
+    </item>
+    
+    <item>
+      <title>AdGuard搭建</title>
+      <link>/p/adguard%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Tue, 01 Jun 2021 12:01:20 +0800</pubDate>
+      
+      <guid>/p/adguard%E6%90%AD%E5%BB%BA/</guid>
+      <description>快速使用 # 先在 NAS网络设置内 启用 Open vSwitch sudo docker network create --driver=macvlan --subnet=10.0.0.1/24 --gateway=10.0.0.1 --ip-range=10.0.0.32/28 --opt parent=ovs_eth0 Route # 如果命令无法执行，可以尝试UI添加网络 docker pull adguard/adguardhome docker run --name adguardhome -v /my/own/workdir:/opt/adguardhome/work -v /my/own/confdir:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p</description>
+    </item>
+    
+  </channel>
+</rss>

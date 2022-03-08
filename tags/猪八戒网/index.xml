@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>猪八戒网 on 良宏</title>
+    <link>/tags/%E7%8C%AA%E5%85%AB%E6%88%92%E7%BD%91/</link>
+    <description>Recent content in 猪八戒网 on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 25 Jul 2017 16:45:26 +0800</lastBuildDate><atom:link href="/tags/%E7%8C%AA%E5%85%AB%E6%88%92%E7%BD%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>猪八戒网批量删除服务商消息</title>
+      <link>/p/%E7%8C%AA%E5%85%AB%E6%88%92%E7%BD%91%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4%E6%9C%8D%E5%8A%A1%E5%95%86%E6%B6%88%E6%81%AF/</link>
+      <pubDate>Tue, 25 Jul 2017 16:45:26 +0800</pubDate>
+      
+      <guid>/p/%E7%8C%AA%E5%85%AB%E6%88%92%E7%BD%91%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4%E6%9C%8D%E5%8A%A1%E5%95%86%E6%B6%88%E6%81%AF/</guid>
+      <description>几个月没登，服务消息总共400多条，批量删除，全选也就一次删除10多条，要删到何时 有位大神这样处理 https://www.xizirumeng.com/2016/12/06/batch_delete_service_provider_message/ var sid=&amp;#34;&amp;#34;; for(var si=0;si&amp;lt;2000;si++){ if(si==999){ sid+=si; }else{ sid+=si+&amp;#34;,&amp;#34;; } } $.ajax({ type: &amp;#34;post&amp;#34;, url: &amp;#34;/letter/clear&amp;#34;, dataType: &amp;#34;json&amp;#34;, data: { cid:</description>
+    </item>
+    
+  </channel>
+</rss>

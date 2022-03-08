@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='api.doc $wait=array(&amp;#39;待更新&amp;#39;=&amp;gt; array(&amp;#39;待更新&amp;#39;,&amp;#39;待更新&amp;#39;,&amp;#39;'><title>API DOC</title>
+
+<link rel='canonical' href='/p/api-doc/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='API DOC'>
+<meta property='og:description' content='api.doc $wait=array(&amp;#39;待更新&amp;#39;=&amp;gt; array(&amp;#39;待更新&amp;#39;,&amp;#39;待更新&amp;#39;,&amp;#39;'>
+<meta property='og:url' content='/p/api-doc/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='API' /><meta property='article:tag' content='PHP' /><meta property='article:tag' content='swagger' /><meta property='article:published_time' content='2014-02-20T10:10:05&#43;00:00'/><meta property='article:modified_time' content='2014-02-20T10:10:05&#43;00:00'/>
+<meta name="twitter:title" content="API DOC">
+<meta name="twitter:description" content="api.doc $wait=array(&amp;#39;待更新&amp;#39;=&amp;gt; array(&amp;#39;待更新&amp;#39;,&amp;#39;待更新&amp;#39;,&amp;#39;">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/api-doc/">API DOC</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 20, 2014</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="apidoc">api.doc</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="nv">$wait</span><span class="o">=</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;待更新&#39;</span><span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;待更新&#39;</span><span class="p">,</span><span class="s1">&#39;待更新&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="k">array</span><span class="p">(),),);</span>
+<span class="nv">$apis</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;nonce&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;安全验证&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;des&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;通过控制器和方法名获取令牌，令牌12小时会自动更新，24小时有效&lt;br /&gt;
+</span><span class="s1">            获取格式：/api/?controller=控制器&amp;method=方法名&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;令牌 √3.11&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;获取与验证&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;/api/get_nonce/?controller=&amp;method=login&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;login&#34;,&#34;nonce&#34;:&#34;0bf680a229&#34;}&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;当提示nonce参数时，或提示nonce参数错误时，请重新获取该参数&lt;br /&gt;其它方法的使用/api/控制器/方法名/?cookie=cookie值&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;24小时内&lt;strong&gt;登录&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=login&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;</span><span class="p">,</span>
+                    <span class="k">array</span> <span class="p">(</span>
+                        <span class="s1">&#39;输入参数&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+                          <span class="k">array</span> <span class="p">(</span><span class="s1">&#39;字段名&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;controller&#39;</span><span class="p">,</span><span class="s1">&#39;格式&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;字符串&#39;</span><span class="p">,</span><span class="s1">&#39;意义&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;控制器&#39;</span><span class="p">,</span><span class="s1">&#39;备注&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,),</span>
+                          <span class="k">array</span> <span class="p">(</span><span class="s1">&#39;字段名&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;格式&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;字符串&#39;</span><span class="p">,</span><span class="s1">&#39;意义&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;方法名&#39;</span><span class="p">,</span><span class="s1">&#39;备注&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,),</span>
+                        <span class="p">),</span>
+                        <span class="s1">&#39;输出参数&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+                          <span class="k">array</span> <span class="p">(</span><span class="s1">&#39;字段名&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;status&#39;</span><span class="p">,</span><span class="s1">&#39;格式&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;字符串&#39;</span><span class="p">,</span><span class="s1">&#39;意义&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;访问状态&#39;</span><span class="p">,</span><span class="s1">&#39;备注&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,),</span>
+                          <span class="k">array</span> <span class="p">(</span><span class="s1">&#39;字段名&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;controller&#39;</span><span class="p">,</span><span class="s1">&#39;格式&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;字符串&#39;</span><span class="p">,</span><span class="s1">&#39;意义&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;控制器&#39;</span><span class="p">,</span><span class="s1">&#39;备注&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,),</span>
+                          <span class="k">array</span> <span class="p">(</span><span class="s1">&#39;字段名&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;格式&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;字符串&#39;</span><span class="p">,</span><span class="s1">&#39;意义&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;方法名&#39;</span><span class="p">,</span><span class="s1">&#39;备注&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,),</span>
+                        <span class="p">),</span>
+                   <span class="p">),</span>
+                <span class="p">)</span> <span class="p">,</span>
+            <span class="p">)</span> <span class="p">,</span>
+            <span class="s1">&#39;通用令牌 √3.10&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;获取与验证&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                    <span class="s1">&#39;/api/get_nonce/?controller=&amp;method=fastnonce&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;fastnonce&#34;,&#34;nonce&#34;:&#34;3bbcb111a8&#34;}&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;&lt;b&gt;本方法是考虑到第一版时间紧急，获取令牌后，可使用该令牌直接进行其它任何操作。该方法存在安全隐患，第二版或将取消。&lt;/b&gt;&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;24小时内&lt;strong&gt;所有&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=fastnonce&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;</span><span class="p">,</span>
+                <span class="p">)</span> <span class="p">,</span>
+            <span class="p">)</span> <span class="p">,</span>
+        <span class="p">)</span> <span class="p">,</span>
+    <span class="p">)</span> <span class="p">,</span> 
+<span class="p">);</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="k">function</span> <span class="nf">arr2table</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span><span class="nv">$level</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nv">$opera</span><span class="o">=</span><span class="k">array</span><span class="p">())</span> <span class="p">{</span>
+	<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="mi">0</span><span class="p">])){</span><span class="nv">$data</span><span class="o">=</span><span class="k">array</span><span class="p">(</span><span class="nv">$data</span><span class="p">);}</span>
+    <span class="nv">$str</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">;</span><span class="c1">//$level==1?&#39;这里原先是样式表&#39;:&#39;&#39;;$level++;
+</span><span class="c1"></span>	<span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&lt;table class=&#34;line&#34; border=&#34;0&#34; cellpadding=&#34;0&#34;&gt;&lt;tr&gt;&#39;</span><span class="p">;</span>
+	<span class="nv">$fields</span><span class="o">=</span><span class="nx">array_keys</span><span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+	<span class="k">foreach</span><span class="p">(</span><span class="nv">$fields</span> <span class="k">as</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span><span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&lt;th&gt;&#39;</span><span class="o">.</span><span class="nv">$val</span><span class="o">.</span><span class="s1">&#39;&lt;/th&gt;&#39;</span><span class="p">;}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="mi">2</span><span class="o">==</span><span class="nv">$level</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$opera</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="p">{</span><span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&lt;th&gt;操作&lt;/th&gt;&#39;</span><span class="p">;}</span>
+	<span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&lt;/tr&gt;&#39;</span><span class="p">;</span>
+	<span class="k">foreach</span><span class="p">(</span><span class="nv">$data</span> <span class="k">as</span> <span class="nv">$v</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&lt;tr&gt;&#39;</span><span class="p">;</span>
+		<span class="k">foreach</span><span class="p">(</span><span class="nv">$fields</span> <span class="k">as</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span><span class="p">(</span><span class="nx">is_array</span><span class="p">(</span><span class="nv">$v</span><span class="p">[</span><span class="nv">$val</span><span class="p">]))</span> <span class="p">{</span>
+				<span class="nv">$str</span><span class="o">.=</span> <span class="k">empty</span><span class="p">(</span><span class="nv">$v</span><span class="p">[</span><span class="nv">$val</span><span class="p">])</span><span class="o">?</span><span class="s1">&#39;&lt;td&gt;&lt;/td&gt;&#39;</span><span class="o">:</span><span class="s1">&#39;&lt;td&gt; &#39;</span><span class="o">.</span><span class="nx">arr2table</span><span class="p">(</span><span class="nv">$v</span><span class="p">[</span><span class="nv">$val</span><span class="p">],</span><span class="nv">$level</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39; &lt;/td&gt;&#39;</span><span class="p">;</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nv">$str</span><span class="o">.=</span><span class="k">empty</span><span class="p">(</span><span class="nv">$v</span><span class="p">[</span><span class="nv">$val</span><span class="p">])</span><span class="o">?</span><span class="s1">&#39;&lt;td&gt;&lt;/td&gt;&#39;</span><span class="o">:</span><span class="s1">&#39;&lt;td&gt;&#39;</span><span class="o">.</span><span class="nx">htmlspecialchars</span><span class="p">(</span><span class="nv">$v</span><span class="p">[</span><span class="nv">$val</span><span class="p">])</span><span class="o">.</span><span class="s1">&#39;&lt;/td&gt;&#39;</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="c1">//增加一个操作列
+</span><span class="c1"></span>		<span class="k">if</span> <span class="p">(</span><span class="mi">2</span><span class="o">==</span><span class="nv">$level</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$opera</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="p">{</span>
+			<span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&lt;td&gt;&#39;</span><span class="p">;</span>
+			<span class="k">foreach</span> <span class="p">(</span><span class="nv">$opera</span> <span class="k">as</span> <span class="nv">$opera_link</span> <span class="o">=&gt;</span> <span class="nv">$opera_url</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nv">$pk</span><span class="o">=</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$opera_url</span><span class="p">[</span><span class="s1">&#39;pk&#39;</span><span class="p">])</span><span class="o">?</span><span class="nv">$opera_url</span><span class="p">[</span><span class="s1">&#39;pk&#39;</span><span class="p">]</span><span class="o">:</span><span class="s1">&#39;id&#39;</span><span class="p">;</span>
+				<span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39; &lt;a href=&#34;&#39;</span><span class="o">.</span><span class="nv">$opera_url</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="nv">$v</span><span class="p">[</span><span class="nv">$pk</span><span class="p">]</span><span class="o">.</span><span class="s1">&#39;&#34; &#39;</span><span class="p">;</span>
+				<span class="nx">unset</span><span class="p">(</span><span class="nv">$opera_url</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]);</span>
+				<span class="k">foreach</span> <span class="p">(</span><span class="nv">$opera_url</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nv">$str</span><span class="o">.=</span><span class="nv">$key</span><span class="o">.</span><span class="s1">&#39;=&#34;&#39;</span><span class="o">.</span><span class="nv">$val</span><span class="o">.</span><span class="s1">&#39;&#34;&#39;</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&gt;&#39;</span><span class="o">.</span><span class="nv">$opera_link</span><span class="o">.</span><span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&lt;/td&gt;&#39;</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&lt;/tr&gt;&#39;</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="nv">$str</span><span class="o">.=</span><span class="s1">&#39;&lt;/table&gt;&#39;</span><span class="p">;</span>
+	<span class="k">return</span> <span class="nv">$str</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="err">
+</span><span class="err">&lt;html&gt;
+</span><span class="err">&lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;title&gt;API&lt;/title&gt;&lt;/head&gt;
+</span><span class="err">&lt;body&gt;
+</span><span class="err">&lt;div id=&#34;demo2&#34; class=&#34;demo&#34;&gt;&lt;span&gt;API目录&lt;/span&gt;
+</span><span class="err">    &lt;ol class=&#34;mulu&#34;&gt;
+</span><span class="err">&lt;?php
+</span><span class="err">foreach($apis as $method=&gt;$m){
+</span><span class="err">	echo &#39;&lt;li&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$method.&#39;&#34;&gt; &#39;.$m[&#39;title&#39;].&#39; &lt;/a&gt;&#39;;
+</span><span class="err">    $tmp=&#39;&lt;ol&gt;&#39;;//var_dump($m[&#39;content&#39;]);
+</span><span class="err">    foreach($m[&#39;content&#39;] as $t =&gt; $c){$tmp.=&#39;&lt;li class=&#34;f&#34;&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$t.&#39;&#34;&gt; &#39;.$t.&#39;&lt;/a&gt;&lt;/li&gt;&#39;;}
+</span><span class="err">        $tmp.=&#39;&lt;/ol&gt;&#39;;
+</span><span class="err">        echo $tmp;
+</span><span class="err">    echo &#39;&lt;/li&gt;&#39;;
+</span><span class="err">}
+</span><span class="err">
+</span><span class="err">//  .f{float:left;padding-left:3px;display: inline;}
+</span><span class="err">?&gt;&lt;/ol&gt;
+</span><span class="err">&lt;/div&gt;
+</span><span class="err">&lt;style&gt;
+</span><span class="err">*{font-family:arial,Helvetica,sans-serif;}
+</span><span class="err">    BODY {margin:0;padding:0;border:0;}
+</span><span class="err">    ol {font-size:12px;}
+</span><span class="err">    .mulu {padding:0;margin:0;padding-left:20px;display:block;}
+</span><span class="err">    ol ol { list-style-type: upper-alpha }
+</span><span class="err">    ol ol ol{ list-style-type: lower-alpha }
+</span><span class="err">    red{color:red;}b,h1{color:#003366;}h2{color:blue}
+</span><span class="err">    .demo{width:180px; margin:10px;border:2px solid #003366;color:#fff; background:#003366; padding:10px;}
+</span><span class="err">    #demo2{position:absolute; margin-top:66px;  right:30px;}
+</span><span class="err">    .demo a{text-decoration:underline; cursor:pointer;color:#fff; }
+</span><span class="err">    .demo p{line-height:20px}
+</span><span class="err">    
+</span><span class="err">    .line{width:100%;font-size:12px;} 
+</span><span class="err">    .line td{border-style:solid; border-color:#003366; border-width:1px;text-align:center} 
+</span><span class="err">    .line th{background-color:#003366;color:#fff}
+</span><span class="err">&lt;/style&gt;
+</span><span class="err">&lt;script type=&#34;text/javascript&#34; src=&#34;http://libs.baidu.com/jquery/1.4.2/jquery.min.js&#34;&gt;&lt;/script&gt;
+</span><span class="err">
+</span><span class="err">&lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt;
+</span><span class="err">&lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt;
+</span><span class="err">&lt;script type=&#34;text/javascript&#34;&gt;$(function(){$(&#34;#demo2&#34;).scrollFollow({speed:800,});});&lt;/script&gt;
+</span><span class="err">    &lt;div style=&#34;background-color: #003366;color: #FFFFFF;font-size: 26px;width: 100%;&#34;&gt;
+</span><span class="err">        &lt;div style=&#34;padding:3 40 0 60px;&#34;&gt;官方API接口&lt;font size=&#39;1&#39;&gt;更新：&lt;?php echo date(&#39;Y-m-d H:i:s&#39;,filemtime (__FILE__));?&gt;&lt;/font&gt;&lt;/div&gt;
+</span><span class="err">        &lt;div style=&#34;padding:1 40 5 60px;;&#34;&gt;&lt;font size=&#39;1&#39;&gt;特别说明：本接口全部使用主流json格式进行数据传输，并提供友好错误提示。加上dev=1参数会显示友好格式。——clh021@gmail.com &lt;a href=&#34;/_sql.php&#34; target=&#34;_blank&#34; style=&#34;color:yellow&#34;&gt;数据库结构&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
+</span><span class="err">    &lt;/div&gt;
+</span><span class="err">&lt;div style=&#34;font-size:12px;padding-left: 30px;padding-bottom: 2em;&#34;&gt;
+</span><span class="err">	&lt;span&gt;
+</span><span class="err">		&lt;ol&gt;&lt;?php
+</span><span class="err">foreach($apis as $method=&gt;$m){
+</span><span class="err">    echo &#39;&lt;li&gt;&lt;h1 id=&#34;&#39;.$method.&#39;&#34;&gt;&#39;.$m[&#39;title&#39;].&#39;&lt;/h1&gt;&#39;;
+</span><span class="err">    echo $m[&#39;des&#39;]?&#39;&lt;span&gt;说明：&#39;.$m[&#39;des&#39;].&#39;&lt;/span&gt;&#39;:&#39;&#39;;
+</span><span class="err">    echo &#39;&lt;ol&gt;&#39;;
+</span><span class="err">    //var_dump($m[&#39;content&#39;]);
+</span><span class="err">    foreach($m[&#39;content&#39;] as $tittle=&gt;$func){
+</span><span class="err">        echo &#39;&#39;;
+</span><span class="err">            echo &#39;&lt;li&gt;&lt;h2 id=&#34;&#39;.$tittle.&#39;&#34;&gt;&#39;.$tittle.&#39;&lt;/h2&gt;&lt;ol&gt;&#39;;
+</span><span class="err">        	if(count($func)&gt;1){
+</span><span class="err">            	foreach($func as $k=&gt;$v){
+</span><span class="err">                    echo &#39;&lt;li&gt;&lt;h3&gt;&#39;.$k.&#39;&lt;/h3&gt;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;;
+</span><span class="err">                	echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;;
+</span><span class="err">                    echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;;
+</span><span class="err">                    if(!empty($v[4])){
+</span><span class="err">                        foreach($v[4] as $title=&gt;$table){
+</span><span class="err">                            if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;}
+</span><span class="err">                        }
+</span><span class="err">                    }
+</span><span class="err">                	echo &#39;&lt;/li&gt;&#39;;
+</span><span class="err">                }
+</span><span class="err">            }else{
+</span><span class="err">            	foreach($func as $k=&gt;$v){
+</span><span class="err">                    echo &#39;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;;
+</span><span class="err">                    echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;;
+</span><span class="err">                    echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;;
+</span><span class="err">                    if(!empty($v[4])){
+</span><span class="err">                        foreach($v[4] as $title=&gt;$table){
+</span><span class="err">                            if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;}
+</span><span class="err">                        }
+</span><span class="err">                    }
+</span><span class="err">                }
+</span><span class="err">            }
+</span><span class="err">        echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;;
+</span><span class="err">    }
+</span><span class="err">    echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;;
+</span><span class="err">}
+</span><span class="err">?&gt;&lt;/ol&gt;
+</span><span class="err">    &lt;/span&gt;
+</span><span class="err">&lt;/div&gt;
+</span><span class="err">&lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt;
+</span><span class="err">&lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt;
+</span><span class="err">&lt;/body&gt;
+</span><span class="err">&lt;/html&gt;
+</span><span class="err">&lt;?php
+</span></code></pre></div><h1 id="mysqldoc">mysql.doc</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="k">echo</span> <span class="s1">&#39;&lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;meta name=&#34;author&#34; content=&#34;clh021@gmail.com&#34;&gt;&lt;title&gt;数据库&lt;/title&gt;&lt;/head&gt;&lt;style&gt;*{font-family:arial,Helvetica,sans-serif;}BODY {margin:0;padding:0;border:0;font-size:12px;}div{margin-top:5px;margin:10px;padding:10px;border: 1px solid 666666; }&lt;/style&gt;&#39;</span><span class="p">;</span>
+<span class="nv">$sqlfile</span><span class="o">=</span><span class="nx">dirname</span><span class="p">(</span><span class="no">__FILE__</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39;/wp-sql.php&#39;</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="nv">$_REQUEST</span><span class="p">[</span><span class="s1">&#39;dev&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+    <span class="k">echo</span> <span class="nx">highlight_string</span><span class="p">(</span><span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$sqlfile</span><span class="p">));</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;h1 style=&#34;text-align:center;&#34;&gt;数据库&lt;font size=1&gt;更新：&#39;</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s1">&#39;m-d H:i:s&#39;</span><span class="p">,</span><span class="nx">filemtime</span> <span class="p">(</span><span class="nv">$sqlfile</span><span class="p">))</span><span class="o">.</span><span class="s1">&#39;&lt;/font&gt;&lt;/h1&gt;&#39;</span><span class="p">;</span>
+    <span class="nv">$data</span><span class="o">=</span><span class="k">include</span><span class="p">(</span><span class="nv">$sqlfile</span><span class="p">);</span><span class="c1">//array();//
+</span><span class="c1"></span>    <span class="k">foreach</span><span class="p">(</span><span class="nv">$data</span> <span class="k">as</span> <span class="nv">$k</span><span class="o">=&gt;</span><span class="nv">$v</span><span class="p">){</span>
+        <span class="c1">//if(rand(0,1)){
+</span><span class="c1"></span>        <span class="k">if</span><span class="p">(</span><span class="o">!</span> <span class="nx">stristr</span><span class="p">(</span><span class="nv">$k</span><span class="p">,</span><span class="s1">&#39;modify_&#39;</span><span class="p">)){</span>
+            <span class="k">echo</span> <span class="s1">&#39;&lt;div&gt;&lt;font color=&#34;blue&#34;&gt;&lt;b&gt;&#39;</span><span class="o">.</span><span class="nv">$k</span><span class="o">.</span><span class="s1">&#39;&lt;/b&gt;&lt;/font&gt;&lt;hr /&gt;&lt;pre&gt;&#39;</span><span class="o">.</span><span class="nx">str_replace</span><span class="p">(</span><span class="s1">&#39;__PREFIX__&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="nv">$v</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39;&lt;/pre&gt;&lt;/div&gt;&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/api/">API</a>
+        
+            <a href="/tags/php/">PHP</a>
+        
+            <a href="/tags/swagger/">swagger</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/%E8%87%AA%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">自建一个当前系统的基础镜像</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/update-fork/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Update Fork</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/apt/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">apt</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/portainer/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Portainer</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/vscode/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vscode</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#apidoc">api.doc</a></li>
+    <li><a href="#mysqldoc">mysql.doc</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

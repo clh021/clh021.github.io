@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='无需软件合并多个TS流文件 Windows&amp;amp;Linux文件合并 原文：http://www.yaosansi.com/post/how-'><title>TS流文件合并</title>
+
+<link rel='canonical' href='/p/ts%E6%B5%81%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='TS流文件合并'>
+<meta property='og:description' content='无需软件合并多个TS流文件 Windows&amp;amp;Linux文件合并 原文：http://www.yaosansi.com/post/how-'>
+<meta property='og:url' content='/p/ts%E6%B5%81%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='windows' /><meta property='article:tag' content='ts' /><meta property='article:published_time' content='2020-01-01T12:01:20&#43;08:00'/><meta property='article:modified_time' content='2020-01-01T12:01:20&#43;08:00'/>
+<meta name="twitter:title" content="TS流文件合并">
+<meta name="twitter:description" content="无需软件合并多个TS流文件 Windows&amp;amp;Linux文件合并 原文：http://www.yaosansi.com/post/how-">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/live/" style="background-color: #2a9d8f; color: #fff;">
+                Live
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/ts%E6%B5%81%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6/">TS流文件合并</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 01, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="无需软件合并多个ts流文件">无需软件合并多个TS流文件</h1>
+<p>Windows&amp;Linux文件合并
+原文：http://www.yaosansi.com/post/how-to-combine-files-on-windows-and-linux/</p>
+<p>WINDOWS</p>
+<p>格式：copy /b ＜filename1＞+＜filename2＞+…+＜filenameN＞ ＜filename＞
+使用方法：假设你有两个文件分别是stream1.ts 和 stream2.ts 那么我们在该目录下输入“copy /b stream1.ts+stream2.ts stream.ts”就可以了，其中stream.ts是你合并后生成的新文件名。</p>
+<p>当然，windows也可以使用type命令：</p>
+<p>格式：type file1 file2 &gt; file3
+Linux
+在Linux下同样也能实现文件合并，用“cat”命令就能实现。</p>
+<p>格式：cat stream1.ts stream2.ts ＞ stream.ts
+FFmpeg
+以上方法仅适合TS等文件信息保存中文件各个片段的视频格式。而对于文件信息在文件特定部位（如文件头）等视频，直接使用上述方法只是把文件强制的合并到了一起，甚至不能正常播放。</p>
+<p>使用ffmpeg的concat可以实现简单的流文件合并功能</p>
+<p>ffmpeg -i &ldquo;concat:01.ts|02.ts&rdquo;  -c copy -y  cat.ts
+也可以使用文件列表，将需要拼接的视频文件按以下格式保存在一个列表 list.txt 中：</p>
+<pre tabindex="0"><code># this is a comment
+file '/path/to/file1'
+file '/path/to/file2'
+file '/path/to/file3'
+</code></pre><p>ffmpeg -f concat -i mylist.txt -c copy output
+自动生产文件列表 (将目录中所有.wav文件输出到mylist.txt中)</p>
+<pre tabindex="0"><code># with a bash for loop
+for f in ./*.wav; do echo &quot;file '$f'&quot; &gt;&gt; mylist.txt; done
+# or with printf
+printf &quot;file '%s'\n&quot; ./*.wav &gt; mylist.txt
+</code></pre><p>注意：FFmpeg由于只是重新封装，并不会对文件进行重新的编解码，所以速度非常快并且是无损的，但并不意味着适用所有场景。</p>
+<p>Shell脚本
+合并相同编码文件</p>
+<pre tabindex="0"><code>#!/bin/bash
+#cut/join videos using ffmpeg without quality loss
+
+if [ -z $1 ] || [ -z $2 ]; then
+   echo &quot;Usage:$0 c[ut] seconds &lt;File&gt;&quot;
+   echo &quot;   eg. $0 c 10 80 example.mp4&quot;
+   echo &quot;   eg. $0 c 00:00:10 00:01:20 example.mp4&quot;
+   echo &quot;Usage:$0 j[oin] &lt;FileType&gt;&quot;
+   echo &quot;   eg. $0 j avi&quot;
+   exit
+fi
+
+case &quot;$1&quot; in
+   c)
+      echo &quot;cuttig video...&quot;
+      fileName=$(echo $4 | cut -f 1 -d '.')
+      fileType=$(echo $4 | cut -f 2 -d '.')
+      ffmpeg -i $4 -ss $2 -t $3 -acodec copy -vcodec copy $fileName-$2-$3.$fileType
+      ;;
+   j)
+      echo &quot;joinning videos...&quot;
+      rm temp_list.txt      
+      for f in ./*.$2; do echo &quot;file '$f'&quot; &gt;&gt; temp_list.txt; done
+      printf &quot;file '%s'\n&quot; ./*.$2 &gt; temp_list.txt
+      ffmpeg -f concat -i temp_list.txt -c copy output.$2
+      rm temp_list.txt
+      ;;
+   *)
+      echo &quot;wrong arguments&quot;
+      ;;
+esac
+exit
+</code></pre><p>合并不同编码文件</p>
+<pre tabindex="0"><code>#!/bin/bash
+ 
+################################################################################
+#
+# Script name: MultiMedia Concat Script (mmcat)
+# Author: burek (burek021@gmail.com)
+# License: GNU/GPL, see http://www.gnu.org/copyleft/gpl.html
+# Date: 2012-07-14
+#
+# This script concatenates (joins, merges) several audio/video inputs into one
+# final output (just like as if all the inputs were played in a playlist, one
+# after another).
+#
+# All input files must have at least one audio and at least one video stream.
+# If not, you can easily add audio silence, using FFmpeg. Just search the
+# internet for &quot;ffmpeg add silence&quot;.
+#
+# The script makes use of FFmpeg tool (www.ffmpeg.org) and is free for use under
+# the GPL license. The inspiration for this script came from this FAQ item:
+# http://ffmpeg.org/faq.html#How-can-I-join-video-files_003f
+#
+# If you find any bugs, please send me an e-mail so I can fix it.
+#
+################################################################################
+#
+# General syntax: mmcat &lt;input1&gt; &lt;input2&gt; &lt;input3&gt; ... &lt;output&gt;
+#
+# For example: mmcat file1.flv file2.flv output.flv
+# would create &quot;output.flv&quot; out of &quot;file1.flv&quot; and &quot;file2.flv&quot;.
+#
+################################################################################
+ 
+# change this to what you need !!!
+EXTRA_OPTIONS='-vcodec libx264 -crf 23 -preset medium -acodec aac -strict experimental -ac 2 -ar 44100 -ab 128k'
+ 
+################################################################################
+#
+# NO NEED TO TOUCH ANYTHING AFTER THIS LINE!
+#
+################################################################################
+ 
+# the version of the script
+VERSION=1.3
+ 
+# location of temp folder
+TMP=/tmp
+ 
+################################################################################
+ 
+echo &quot;MultiMedia Concat Script v$VERSION (mmcat) - A script to concatenate multiple multimedia files.&quot;
+echo &quot;Based on FFmpeg - www.ffmpeg.org&quot;
+echo &quot;Don't forget to edit this script and change EXTRA_OPTIONS&quot;
+echo &quot;&quot;
+ 
+################################################################################
+# syntax check (has to have at least 3 params: infile1, infile2, outfile
+################################################################################
+if [ -z $3 ]; then
+    echo &quot;Syntax: $0 &lt;input1&gt; &lt;input2&gt; &lt;input3&gt; ... &lt;output&gt;&quot;
+    exit 1
+fi
+ 
+################################################################################
+# get all the command line parameters, except for the last one, which is output
+################################################################################
+# $first  - first parameter
+# $last   - last parameter (output file)
+# $inputs - all the inputs, except the first input, because 1st input is
+#           handled separately
+################################################################################
+first=${@:1:1}
+last=${@:$#:1}
+len=$(($#-2))
+inputs=${@:2:$len}
+ 
+# remove all previous tmp fifos (if exist)
+rm -f $TMP/mcs_*
+ 
+################################################################################
+# decode first input differently, because the video header does not have to be
+# kept for each video input, only the header from the first video is needed
+################################################################################
+mkfifo $TMP/mcs_a1 $TMP/mcs_v1
+ 
+ffmpeg -y -i $first -vn -f u16le -acodec pcm_s16le -ac 2 -ar 44100 $TMP/mcs_a1 2&gt;/dev/null &lt;/dev/null &amp;
+ffmpeg -y -i $first -an -f yuv4mpegpipe -vcodec rawvideo $TMP/mcs_v1 2&gt;/dev/null &lt;/dev/null &amp;
+ 
+# if you need to log the output of decoding processes (usually not necessary)
+# then replace the &quot;2&gt;/dev/null&quot; in 2 lines above with your log file names, like this:
+#ffmpeg -y -i $first -vn -f u16le -acodec pcm_s16le -ac 2 -ar 44100 $TMP/mcs_a1 2&gt;$TMP/log.a.1 &lt;/dev/null &amp;
+#ffmpeg -y -i $first -an -f yuv4mpegpipe -vcodec rawvideo $TMP/mcs_v1 2&gt;$TMP/log.v.1 &lt;/dev/null &amp;
+ 
+################################################################################
+# decode all the other inputs, remove first line of video (header) with tail
+# $all_a and $all_v are lists of all a/v fifos, to be used by &quot;cat&quot; later on
+################################################################################
+all_a=$TMP/mcs_a1
+all_v=$TMP/mcs_v1
+i=2
+for f in $inputs
+do
+    mkfifo $TMP/mcs_a$i $TMP/mcs_v$i
+ 
+    ffmpeg -y -i $f -vn -f u16le -acodec pcm_s16le -ac 2 -ar 44100 $TMP/mcs_a$i 2&gt;/dev/null &lt;/dev/null &amp;
+    { ffmpeg -y -i $f -an -f yuv4mpegpipe -vcodec rawvideo - 2&gt;/dev/null &lt;/dev/null | tail -n +2 &gt; $TMP/mcs_v$i ; } &amp;
+ 
+    # if you need to log the output of decoding processes (usually not necessary)
+    # then replace the &quot;2&gt;/dev/null&quot; in 2 lines above with your log file names, like this:
+    #ffmpeg -y -i $f -vn -f u16le -acodec pcm_s16le -ac 2 -ar 44100 $TMP/mcs_a$i 2&gt;$TMP/log.a.$i &lt;/dev/null &amp;
+    #{ ffmpeg -y -i $f -an -f yuv4mpegpipe -vcodec rawvideo - 2&gt;$TMP/log.v.$i &lt;/dev/null | tail -n +2 &gt; $TMP/mcs_v$i ; } &amp;
+ 
+    all_a=&quot;$all_a $TMP/mcs_a$i&quot;
+    all_v=&quot;$all_v $TMP/mcs_v$i&quot;
+    let i++
+done
+ 
+################################################################################
+# concatenate all raw audio/video inputs into one audio/video
+################################################################################
+mkfifo $TMP/mcs_a_all
+mkfifo $TMP/mcs_v_all
+cat $all_a &gt; $TMP/mcs_a_all &amp;
+cat $all_v &gt; $TMP/mcs_v_all &amp;
+ 
+################################################################################
+# finally, encode the raw concatenated audio/video into something useful
+################################################################################
+ffmpeg -f u16le -acodec pcm_s16le -ac 2 -ar 44100 -i $TMP/mcs_a_all \
+       -f yuv4mpegpipe -vcodec rawvideo -i $TMP/mcs_v_all \
+    $EXTRA_OPTIONS \
+    $last
+ 
+################################################################################
+# remove all fifos
+################################################################################
+rm -f $TMP/mcs_*
+</code></pre><p>参考：</p>
+<p><a class="link" href="http://trac.ffmpeg.org/wiki/Concatenate"  target="_blank" rel="noopener"
+    >http://trac.ffmpeg.org/wiki/Concatenate</a>
+<a class="link" href="https://ffmpeg.org/ffmpeg.html#Stream-copy"  target="_blank" rel="noopener"
+    >https://ffmpeg.org/ffmpeg.html#Stream-copy</a>
+<a class="link" href="http://segmentfault.com/a/1190000000414341"  target="_blank" rel="noopener"
+    >http://segmentfault.com/a/1190000000414341</a>
+<a class="link" href="https://gist.github.com/imcaspar/8771268"  target="_blank" rel="noopener"
+    >https://gist.github.com/imcaspar/8771268</a>
+<a class="link" href="https://gist.github.com/imcaspar/8778002"  target="_blank" rel="noopener"
+    >https://gist.github.com/imcaspar/8778002</a></p>
+<p>可以使用以下DOS命令达到目的（即“开始”菜单，“运行”，输入 cmd 再按回车）：
+（此处假设你要合并的高清文件位于 E:\temps 这个位置）</p>
+<pre tabindex="0"><code>copy/b  E:\temps\*.ts  E:\temps\new.ts
+</code></pre><p>如上，执行该命令后，E:\temps目录下的全部TS文件就被合并成一个new.ts文件了（你原来的那堆文件仍然存在）。</p>
+<p>命令解释：
+这里使用copy命令的文件合并功能进行ts文件的合并，copy后面的 /b  参数表示把文件按二进制格式来合并，如果不加这个参数，则会把目标当成文本文件来合并，并在文件内添加不必要的标记，这会导致播放出错，所以必须加 /b 参数。
+该命令的合并排序是按照你系统下的字母序来的，比如你的文件名是disk1.ts, disk2.ts, disk3.ts，那该命令就会按照disk1.ts+disk2.ts+disk3.ts的顺序来合并这三个文件，事实上，绝大多数网上下载的高清文件，都已经按字母序排列好了，所以你直接执行该命令即可。
+上面的例子如果换成diskA.ts, diskB.ts, diskC.ts，该命令仍能正常进行，它会按diskA.ts+diskB.ts+diskC.ts（请统一排序关键字的大小写，即全部用大写A、B、C 或全部用小写a、b、c）。
+最好只有一个排序关键字（数字或字母），也就是说各文件名相互间只有一个字符不同，见上面提示。
+如果你想万无一失，可以手工把文件名改为1.ts, 2.ts, 3.ts, …..再执行合并。
+最后补充两点：<br>
+如果你用软件来合并，请注意看软件的说明，有些软件会在合并过程中进行重编码，这可能导致高清文件质量下降。</p>
+<p>如果你的高清文件所在硬盘路径太长，请直接将路径复制下来，在Dos命令窗口，待插入的位置上点鼠标右键，选“粘贴”即可，在Dos窗口下不能用 Ctrl+v 来进行粘贴！</p>
+<p>可以使用以下DOS命令达到目的（即“开始”菜单，“运行”，输入 cmd 再按回车）：
+（此处假设你要合并的高清文件位于 E:\temps 这个位置）</p>
+<pre tabindex="0"><code>copy/b  E:\temps\*.ts  E:\temps\new.ts
+</code></pre><p>如上，执行该命令后，E:\temps目录下的全部TS文件就被合并成一个new.ts文件了（你原来的那堆文件仍然存在）。</p>
+<p>命令解释：
+这里使用copy命令的文件合并功能进行ts文件的合并，copy后面的 /b  参数表示把文件按二进制格式来合并，如果不加这个参数，则会把目标当成文本文件来合并，并在文件内添加不必要的标记，这会导致播放出错，所以必须加 /b 参数。
+该命令的合并排序是按照你系统下的字母序来的，比如你的文件名是disk1.ts, disk2.ts, disk3.ts，那该命令就会按照disk1.ts+disk2.ts+disk3.ts的顺序来合并这三个文件，事实上，绝大多数网上下载的高清文件，都已经按字母序排列好了，所以你直接执行该命令即可。
+上面的例子如果换成diskA.ts, diskB.ts, diskC.ts，该命令仍能正常进行，它会按diskA.ts+diskB.ts+diskC.ts（请统一排序关键字的大小写，即全部用大写A、B、C 或全部用小写a、b、c）。
+最好只有一个排序关键字（数字或字母），也就是说各文件名相互间只有一个字符不同，见上面提示。
+如果你想万无一失，可以手工把文件名改为1.ts, 2.ts, 3.ts, …..再执行合并。
+最后补充两点：</p>
+<p>如果你用软件来合并，请注意看软件的说明，有些软件会在合并过程中进行重编码，这可能导致高清文件质量下降。</p>
+<p>如果你的高清文件所在硬盘路径太长，请直接将路径复制下来，在Dos命令窗口，待插入的位置上点鼠标右键，选“粘贴”即可，在Dos窗口下不能用 Ctrl+v 来进行粘贴！</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/windows/">windows</a>
+        
+            <a href="/tags/ts/">ts</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">windows系统工作环境</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/windows%E7%B3%BB%E7%BB%9F%E6%BF%80%E6%B4%BB/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">windows系统激活</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/%E5%8E%BB%E9%99%A4%E6%9D%82%E5%BF%B5%E7%9A%84%E6%96%B9%E6%B3%95/">
+        
+        
+            <div class="article-image">
+                <img src="/p/%E5%8E%BB%E9%99%A4%E6%9D%82%E5%BF%B5%E7%9A%84%E6%96%B9%E6%B3%95/1.1bd98ec03974b55f49784c6ecc26c85e_hu944e5d37804bfc917447bfd7e0fd26df_31971_250x150_fill_q75_box_smart1.jpeg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 去除杂念的方法"
+                        
+                        data-hash="md5-G9mOwDl0tV9JeExuzCbIXg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">去除杂念的方法</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/nas-%E7%9B%B8%E5%85%B3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">NAS 相关</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/child1/">
+        
+        
+            <div class="article-image">
+                <img src="/p/child1/child.friend.dded522500caebaf65be4cbde1722acf_hu5b36bba415a98670564935ce34fad947_181782_250x150_fill_q75_box_smart1.jpeg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Child1"
+                        
+                        data-hash="md5-3e1SJQDK669lvky94XIqzw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Child1</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#无需软件合并多个ts流文件">无需软件合并多个TS流文件</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

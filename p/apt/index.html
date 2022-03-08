@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='apt-file apt-file 是一个软件包，它索引可用存储库中软件包的内容，并允许您在所有可用软件包中搜索特定文件。 例如，假设您下载一个软件尝试运行它时，收到一条消息'><title>apt</title>
+
+<link rel='canonical' href='/p/apt/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='apt'>
+<meta property='og:description' content='apt-file apt-file 是一个软件包，它索引可用存储库中软件包的内容，并允许您在所有可用软件包中搜索特定文件。 例如，假设您下载一个软件尝试运行它时，收到一条消息'>
+<meta property='og:url' content='/p/apt/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='apt' /><meta property='article:published_time' content='2022-02-18T09:01:47&#43;08:00'/><meta property='article:modified_time' content='2022-02-18T09:01:47&#43;08:00'/>
+<meta name="twitter:title" content="apt">
+<meta name="twitter:description" content="apt-file apt-file 是一个软件包，它索引可用存储库中软件包的内容，并允许您在所有可用软件包中搜索特定文件。 例如，假设您下载一个软件尝试运行它时，收到一条消息">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/apt/">apt</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 18, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h2 id="apt-file">apt-file</h2>
+<p>apt-file 是一个软件包，它索引可用存储库中软件包的内容，并允许您在所有可用软件包中搜索特定文件。
+例如，假设您下载一个软件尝试运行它时，收到一条消息，告诉您无法找到特定的库文件。您就可以使用 apt-file 快速找出包含特定库的软件包可以解决问题，满足该依赖关系。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">apt-get install apt-file <span class="c1"># 安装</span>
+apt-file update <span class="c1"># 更新数据库</span>
+apt-file search &lt;filename&gt; <span class="c1"># 可以查找包含指定文件的软件包</span>
+<span class="c1"># example:</span>
+<span class="c1"># apt-file search libmp3lame.so.0</span>
+<span class="c1"># libmp3lame0: /usr/lib/x86_64-linux-gnu/libmp3lame.so.0</span>
+<span class="c1"># 这告诉我们要满足文件libmp3lame.so.0的依赖关系，我们需要安装包libmp3lame0。您还会注意到，在结果中包名称的右侧，它告诉我们如果您安装该特定包，文件将被安装到哪里。在上面的示例中，通过安装软件包 libmp3lame0 ，我们搜索的文件“libmp3lame.so.0”的副本将安装到文件夹“/usr/lib/x86_64-linux-gnu/”中。</span>
+</code></pre></div><blockquote>
+<p>另一个方法</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">dpkg -S libmp3lame.so.0
+libmp3lame0:amd64: /usr/lib/x86_64-linux-gnu/libmp3lame.so.0
+<span class="c1"># 展示了相同的基本信息。注意：apt-file适用于所有可用的软件包，无论是否安装。而dpkg -S仅查看已安装的软件包。</span>
+</code></pre></div><h2 id="apt-source-pkg">apt source {pkg}</h2>
+<pre tabindex="0"><code>apt source {pkg} # 可以用来下载指定包源码
+# example
+# apt source bash # 下载 bash 包源码(到当前目录)
+</code></pre><h2 id="以上如何帮助我们解决一个问题">以上如何帮助我们解决一个问题？</h2>
+<blockquote>
+<p>我们希望查找获取窗口状态的函数，通过手册我们找到了一个函数(<code>gdk_window_get_state</code>)但是使用上有问题，并非我们所熟知的最大化，最小化，全屏等状态，而是还重叠了聚焦，平铺等状态。
+而我们记得 <code>xwininfo</code> 工具函数是有打印过 窗口状态的。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">xwininfo -all
+
+xwininfo: Please <span class="k">select</span> the window about which you
+          would like information by clicking the
+          mouse in that window.
+
+xwininfo: Window id: 0x3400007 <span class="s2">&#34;html : xwininfo — Konsole&#34;</span>
+
+  Root window id: 0x752 <span class="o">(</span>the root window<span class="o">)</span> <span class="o">(</span>has no name<span class="o">)</span>
+  Parent window id: 0x18003b5 <span class="o">(</span>has no name<span class="o">)</span>
+     <span class="m">0</span> children.
+
+  Absolute upper-left X:  <span class="m">0</span>
+  Absolute upper-left Y:  <span class="m">29</span>
+  Relative upper-left X:  <span class="m">0</span>
+  Relative upper-left Y:  <span class="m">0</span>
+  Width: <span class="m">1920</span>
+  Height: <span class="m">1005</span>
+  Depth: <span class="m">32</span>
+  Visual: 0x73b
+  Visual Class: TrueColor
+  Border width: <span class="m">0</span>
+  Class: InputOutput
+  Colormap: 0x3400006 <span class="o">(</span>not installed<span class="o">)</span>
+  Bit Gravity State: NorthWestGravity
+  Window Gravity State: NorthWestGravity
+  Backing Store State: NotUseful
+  Save Under State: no
+  Map State: IsViewable
+  Override Redirect State: no
+  Corners:  +0+29  -0+29  -0-46  +0-46
+  -geometry 1920x1005+0+29
+
+  Bit gravity: NorthWestGravity
+  Window gravity: NorthWestGravity
+  Backing-store hint: NotUseful
+  Backing-planes to be preserved: 0xffffffff
+  Backing pixel: <span class="m">0</span>
+  Save-unders: No
+
+  Someone wants these events:
+      KeyPress
+      KeyRelease
+      ButtonPress
+      ButtonRelease
+      EnterWindow
+      LeaveWindow
+      PointerMotion
+      ButtonMotion
+      Exposure
+      StructureNotify
+      FocusChange
+      PropertyChange
+      ColormapChange
+  Do not propagate these events:
+  Override redirection?: No
+
+  Window manager hints:
+      Client accepts input or input focus: Yes
+      Initial state is Normal State
+      Displayed on desktop <span class="m">0</span>
+      Window type:
+          Normal
+      Window state:
+          Maximized Vert
+          Maximized Horz
+          Focused
+      Process id: <span class="m">160622</span> on host dev-computer
+      Frame extents: 0, 0, 29, <span class="m">0</span>
+
+  Normal window size hints:
+      User supplied size: <span class="m">1920</span> by <span class="m">1005</span>
+      Program supplied minimum size: <span class="m">65</span> by <span class="m">65</span>
+      Program supplied window gravity: StaticGravity
+  No zoom window size hints defined
+
+  No window shape defined
+  No border shape defined
+
+</code></pre></div><blockquote>
+<p>那么我们能否直接找到 <code>xwininfo</code> 源码，参考他们的思路呢？</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">~: apt search xwininfo <span class="c1"># 通过平时用的命令查找到包名</span>
+Sorting... Done
+Full Text Search... Done
+x11-utils/stable,now 7.7+5 amd64 <span class="o">[</span>installed,automatic<span class="o">]</span>
+  X11 utilities
+
+~: apt <span class="nb">source</span> x11-utils <span class="c1"># 通过包名下载包源码(到当前目录)</span>
+Reading package lists... Done
+NOTICE: <span class="s1">&#39;x11-utils&#39;</span> packaging is maintained in the <span class="s1">&#39;Git&#39;</span> version control system at:
+https://salsa.debian.org/xorg-team/app/x11-utils.git
+Please use:
+git clone https://salsa.debian.org/xorg-team/app/x11-utils.git
+to retrieve the latest <span class="o">(</span>possibly unreleased<span class="o">)</span> updates to the package.
+Need to get 3,059 kB of <span class="nb">source</span> archives.
+Get:1 https://mirrors.ustc.edu.cn/debian bullseye/main x11-utils 7.7+5 <span class="o">(</span>dsc<span class="o">)</span> <span class="o">[</span>2,136 B<span class="o">]</span>
+Get:2 https://mirrors.ustc.edu.cn/debian bullseye/main x11-utils 7.7+5 <span class="o">(</span>tar<span class="o">)</span> <span class="o">[</span>3,057 kB<span class="o">]</span>
+Fetched 3,059 kB in 0s <span class="o">(</span>7,412 kB/s<span class="o">)</span>
+dpkg-source: info: extracting x11-utils in x11-utils-7.7+5
+dpkg-source: info: unpacking x11-utils_7.7+5.tar.gz
+
+~: ls -lah
+x11-utils-7.7+5/
+x11-utils_7.7+5.dsc
+x11-utils_7.7+5.tar.gz
+
+~: grep -rni <span class="s2">&#34;Window state&#34;</span> x11-utils-7.7+5 <span class="c1"># 根据关键字搜索下载好的源码</span>
+x11-utils-7.7+5/xwininfo/xwininfo.c:1736:               <span class="nb">printf</span> <span class="o">(</span><span class="s2">&#34;      Window state:\n&#34;</span><span class="o">)</span><span class="p">;</span>
+x11-utils-7.7+5/xprop/xprop.c:376:<span class="s2">&#34;\t\twindow state: ?</span><span class="nv">$0</span><span class="s2">=0(Withdrawn)?</span><span class="nv">$0</span><span class="s2">=1(Normal)?</span><span class="nv">$0</span><span class="s2">=3(Iconic)\n&#34;</span><span class="se">\
+</span><span class="se"></span>
+
+</code></pre></div><p><code>~: vim x11-utils-7.7+5/xwininfo/xwininfo.cs</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c">   <span class="mi">7</span>     <span class="nf">if</span> <span class="p">(</span><span class="n">atom_net_wm_state</span><span class="p">)</span> <span class="p">{</span>
+   <span class="mi">6</span>     <span class="n">prop</span> <span class="o">=</span> <span class="n">xcb_get_property_reply</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">w</span><span class="o">-&gt;</span><span class="n">wm_state_cookie</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+   <span class="mi">5</span>     <span class="k">if</span> <span class="p">(</span><span class="n">prop</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">prop</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">!=</span> <span class="n">XCB_NONE</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">prop</span><span class="o">-&gt;</span><span class="n">value_len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+   <span class="mi">4</span>         <span class="n">xcb_atom_t</span> <span class="o">*</span><span class="n">atoms</span> <span class="o">=</span> <span class="n">xcb_get_property_value</span> <span class="p">(</span><span class="n">prop</span><span class="p">);</span>
+   <span class="mi">3</span>         <span class="kt">int</span> <span class="n">atom_count</span> <span class="o">=</span> <span class="n">prop</span><span class="o">-&gt;</span><span class="n">value_len</span><span class="p">;</span>
+   <span class="mi">2</span>
+   <span class="mi">1</span>         <span class="k">if</span> <span class="p">(</span><span class="n">atom_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+<span class="mi">1736</span>         <span class="n">printf</span> <span class="p">(</span><span class="s">&#34;      Window state:</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+   <span class="mi">1</span>         <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">atom_count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+   <span class="mi">2</span>             <span class="n">Display_Atom_Name</span> <span class="p">(</span><span class="n">atoms</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s">&#34;_NET_WM_STATE_&#34;</span><span class="p">);</span>
+   <span class="mi">3</span>         <span class="p">}</span>
+   <span class="mi">4</span>     <span class="p">}</span>
+   <span class="mi">5</span>     <span class="n">free</span> <span class="p">(</span><span class="n">prop</span><span class="p">);</span>
+   <span class="mi">6</span>     <span class="p">}</span>
+</code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/apt/">apt</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/netstat/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Netstat</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/grep/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Grep</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/find/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Find</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/binwalk/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Binwalk</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/awk/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Awk</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#apt-file">apt-file</a></li>
+        <li><a href="#apt-source-pkg">apt source {pkg}</a></li>
+        <li><a href="#以上如何帮助我们解决一个问题">以上如何帮助我们解决一个问题？</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

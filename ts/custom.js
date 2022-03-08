@@ -1,0 +1,1 @@
+(()=>{window.addEventListener("load",()=>{let t=document.querySelector(".widget-icon svg"),e=document.querySelector(".widget--toc");t.addEventListener("click",n=>{e.offsetParent==null?e.style.display="block":e.style.display="none"})});})();

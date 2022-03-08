@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on 良宏</title>
+    <link>/categories/docker/</link>
+    <description>Recent content in Docker on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 03 Mar 2022 07:54:47 +0800</lastBuildDate><atom:link href="/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>自建一个当前系统的基础镜像</title>
+      <link>/p/%E8%87%AA%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/</link>
+      <pubDate>Thu, 03 Mar 2022 07:54:47 +0800</pubDate>
+      
+      <guid>/p/%E8%87%AA%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/</guid>
+      <description>大部分时候(使用的是 x86 架构)，已经有很多官方的 基础docker镜像 供我们使用了。 某些时候(非 x86 架构，或者使用的特殊linux发行版)，我们会</description>
+    </item>
+    
+    <item>
+      <title>Portainer</title>
+      <link>/p/portainer/</link>
+      <pubDate>Wed, 09 Feb 2022 13:55:05 +0800</pubDate>
+      
+      <guid>/p/portainer/</guid>
+      <description>介绍 Portainer 是一个非常方便实用的 基于 Web 的 容器管理工具。 使用 # 删除可能已运行的容器 # docker rm -f portainer || true # 启动 portainer 容器管理服务 docker run -d --restart always --name portainer -p 47200:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce # 数据持</description>
+    </item>
+    
+  </channel>
+</rss>

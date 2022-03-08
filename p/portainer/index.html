@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='介绍 Portainer 是一个非常方便实用的 基于 Web 的 容器管理工具。 使用 # 删除可能已运行的容器 # docker rm -f portainer || true # 启动 portainer 容器管理服务 docker run -d --restart always --name portainer -p 47200:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce # 数据持'><title>Portainer</title>
+
+<link rel='canonical' href='/p/portainer/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='Portainer'>
+<meta property='og:description' content='介绍 Portainer 是一个非常方便实用的 基于 Web 的 容器管理工具。 使用 # 删除可能已运行的容器 # docker rm -f portainer || true # 启动 portainer 容器管理服务 docker run -d --restart always --name portainer -p 47200:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce # 数据持'>
+<meta property='og:url' content='/p/portainer/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='portainer' /><meta property='article:published_time' content='2022-02-09T13:55:05&#43;08:00'/><meta property='article:modified_time' content='2022-02-09T13:55:05&#43;08:00'/>
+<meta name="twitter:title" content="Portainer">
+<meta name="twitter:description" content="介绍 Portainer 是一个非常方便实用的 基于 Web 的 容器管理工具。 使用 # 删除可能已运行的容器 # docker rm -f portainer || true # 启动 portainer 容器管理服务 docker run -d --restart always --name portainer -p 47200:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce # 数据持">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+            <a href="/categories/docker/" style="background-color: #8ea885; color: #fff;">
+                Docker
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/portainer/">Portainer</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 09, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="介绍">介绍</h1>
+<p>Portainer 是一个非常方便实用的 基于 Web 的 容器管理工具。</p>
+<h1 id="使用">使用</h1>
+<pre tabindex="0"><code># 删除可能已运行的容器
+# docker rm -f portainer || true
+
+# 启动 portainer 容器管理服务
+docker run -d --restart always --name portainer -p 47200:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce
+
+# 数据持久化 启动 portainer 容器管理服务
+docker run -d --restart always --name portainer -p 47200:9000 -v `pwd`/portainer-data:/data -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce
+
+</code></pre><h1 id="快捷模板">快捷模板</h1>
+<blockquote>
+<p>链接为对应模板json可直接粘贴使用</p>
+</blockquote>
+<ul>
+<li><a class="link" href="https://github.com/portainer/templates/raw/master/templates-2.0.json"  target="_blank" rel="noopener"
+    >Portainer官方模板</a></li>
+<li><a class="link" href="templates-2.0.json" >我的自定义模板</a></li>
+<li><a class="link" href="https://github.com/Qballjos/portainer_templates/raw/master/Template/template.json"  target="_blank" rel="noopener"
+    >Homelabs https://github.com/Qballjos/portainer_templates</a></li>
+<li><a class="link" href="https://github.com/technorabilia/portainer-templates/raw/main/lsio/templates/templates-2.0.json"  target="_blank" rel="noopener"
+    >https://github.com/technorabilia/portainer-templates</a></li>
+<li><a class="link" href="https://github.com/gtrummell/gnas-portainer-templates/raw/master/templates.json"  target="_blank" rel="noopener"
+    >https://github.com/gtrummell/gnas-portainer-templates</a></li>
+<li><a class="link" href="https://raw.githubusercontent.com/ykxVK8yL5L/dockertemplates/main/templates-2.0.json"  target="_blank" rel="noopener"
+    >https://github.com/ykxVK8yL5L/dockertemplates</a></li>
+<li><a class="link" href="https://github.com/search?o=desc&amp;q=Portainer&#43;templates&amp;s=stars&amp;type=Repositories"  target="_blank" rel="noopener"
+    >查找更多</a></li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/portainer/">portainer</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/%E8%87%AA%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">自建一个当前系统的基础镜像</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/update-fork/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Update Fork</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/apt/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">apt</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/vscode/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vscode</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/tmux/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tmux</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#介绍">介绍</a></li>
+    <li><a href="#使用">使用</a></li>
+    <li><a href="#快捷模板">快捷模板</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

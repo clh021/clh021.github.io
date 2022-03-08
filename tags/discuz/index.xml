@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Discuz on 良宏</title>
+    <link>/tags/discuz/</link>
+    <description>Recent content in Discuz on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 17 Nov 2014 18:54:47 +0800</lastBuildDate><atom:link href="/tags/discuz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>给Discuz加上国际化功能</title>
+      <link>/p/%E7%BB%99discuz%E5%8A%A0%E4%B8%8A%E5%9B%BD%E9%99%85%E5%8C%96%E5%8A%9F%E8%83%BD/</link>
+      <pubDate>Mon, 17 Nov 2014 18:54:47 +0800</pubDate>
+      
+      <guid>/p/%E7%BB%99discuz%E5%8A%A0%E4%B8%8A%E5%9B%BD%E9%99%85%E5%8C%96%E5%8A%9F%E8%83%BD/</guid>
+      <description>给Discuz加上国际化功能 Discuz是国内一个比较成熟的开源论坛系统，可惜的是不支持国际化语言支持 下载安装包 到官方下载最新的安装包，强烈</description>
+    </item>
+    
+  </channel>
+</rss>

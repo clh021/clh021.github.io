@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on 良宏</title>
+    <link>/categories/</link>
+    <description>Recent content in Categories on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 03 Mar 2022 09:21:20 +0800</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tech</title>
+      <link>/categories/tech/</link>
+      <pubDate>Thu, 03 Mar 2022 09:21:20 +0800</pubDate>
+      
+      <guid>/categories/tech/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>/categories/docker/</link>
+      <pubDate>Thu, 03 Mar 2022 07:54:47 +0800</pubDate>
+      
+      <guid>/categories/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tool</title>
+      <link>/categories/tool/</link>
+      <pubDate>Thu, 03 Mar 2022 07:54:47 +0800</pubDate>
+      
+      <guid>/categories/tool/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Live</title>
+      <link>/categories/live/</link>
+      <pubDate>Tue, 01 Mar 2022 22:01:20 +0800</pubDate>
+      
+      <guid>/categories/live/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Command</title>
+      <link>/categories/command/</link>
+      <pubDate>Fri, 18 Feb 2022 09:01:47 +0800</pubDate>
+      
+      <guid>/categories/command/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Javascript</title>
+      <link>/categories/javascript/</link>
+      <pubDate>Tue, 28 Dec 2021 08:58:50 +0800</pubDate>
+      
+      <guid>/categories/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Editor</title>
+      <link>/categories/editor/</link>
+      <pubDate>Fri, 24 Dec 2021 15:57:25 +0800</pubDate>
+      
+      <guid>/categories/editor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Keymap</title>
+      <link>/categories/keymap/</link>
+      <pubDate>Fri, 24 Dec 2021 15:57:25 +0800</pubDate>
+      
+      <guid>/categories/keymap/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Software</title>
+      <link>/categories/software/</link>
+      <pubDate>Fri, 24 Dec 2021 15:56:49 +0800</pubDate>
+      
+      <guid>/categories/software/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>grep on 良宏</title>
+    <link>/tags/grep/</link>
+    <description>Recent content in grep on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Dec 2021 15:56:15 +0800</lastBuildDate><atom:link href="/tags/grep/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Grep</title>
+      <link>/p/grep/</link>
+      <pubDate>Fri, 24 Dec 2021 15:56:15 +0800</pubDate>
+      
+      <guid>/p/grep/</guid>
+      <description>#- Search for a pattern within a file: grep &amp;#34;search_pattern&amp;#34; path/to/file #- Search for an exact string (disables regular expressions): grep --fixed-strings &amp;#34;exact_string&amp;#34; path/to/file #- Search for a pattern in all files recursively in a directory, showing line numbers of matches, ignoring binary files: grep --recursive --line-number --binary-files=without-match &amp;#34;search_pattern&amp;#34; path/to/directory #- Use extended regular expressions (supports `?`, `+`, `{}`, `()` and `|`), in case-insensitive mode: grep --extended-regexp --ignore-case &amp;#34;search_pattern&amp;#34; path/to/file #- Print 3 lines of context around, before, or after each match: grep --context|before-context|after-context=3 &amp;#34;search_pattern&amp;#34; path/to/file #- Print file name and line number for each match: grep --with-filename --line-number &amp;#34;search_pattern&amp;#34; path/to/file #- Search for lines matching a pattern, printing only the matched text: grep --only-matching &amp;#34;search_pattern&amp;#34; path/to/file #- Search stdin for lines that do not match a pattern: cat path/to/file | grep --invert-match &amp;#34;search_pattern&amp;#34; </description>
+    </item>
+    
+  </channel>
+</rss>

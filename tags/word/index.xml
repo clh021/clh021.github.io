@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Word on 良宏</title>
+    <link>/tags/word/</link>
+    <description>Recent content in Word on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Feb 2019 12:45:26 +0800</lastBuildDate><atom:link href="/tags/word/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Word 转 PDF</title>
+      <link>/p/word-%E8%BD%AC-pdf/</link>
+      <pubDate>Fri, 22 Feb 2019 12:45:26 +0800</pubDate>
+      
+      <guid>/p/word-%E8%BD%AC-pdf/</guid>
+      <description>&amp;lt;?php function dieString(){die(&amp;#34;&amp;lt;h1&amp;gt;Forbidden&amp;lt;/h1&amp;gt;&amp;#34;.date(&amp;#34;Y-m-d H:i:s&amp;#34;));} date_default_timezone_set(&amp;#39;Asia/Shanghai&amp;#39;);//&amp;#39;Asia/Shanghai&amp;#39; 亚洲/上海 if(empty($_REQUEST[&amp;#39;word_base64&amp;#39;])){dieString();} $file_content=base64_decode($_REQUEST[&amp;#39;word_base64&amp;#39;]); $starttime = explode(&amp;#39; &amp;#39;,microtime()); $_microtime = round(($starttime[0]+$starttime[1]),6); $tmpFileName = date(&amp;#39;YmdHis.&amp;#39;).$_microtime.&amp;#39;.&amp;#39;.uniqid().&amp;#39;.docx&amp;#39;; $oldFile = __DIR__.DIRECTORY_SEPARATOR.&amp;#39;tmp&amp;#39;.DIRECTORY_SEPARATOR.$tmpFileName; $newFile = $oldFile.&amp;#39;.pdf&amp;#39;; file_put_contents($oldFile,$file_content); include(&amp;#39;./includes/DocConverter.php&amp;#39;); $doc = new DocConverter(); $doc-&amp;gt;DoctPdf($oldFile,$newFile); $result = base64_encode(file_get_contents($newFile)); @unlink($oldFile); @unlink($newFile); die($result); DocConverter.php &amp;lt;?php /** * 转换文件类 * Class DocConverter * $srcfilename 源文件名（绝对路径） * $destfilename 目标文</description>
+    </item>
+    
+  </channel>
+</rss>

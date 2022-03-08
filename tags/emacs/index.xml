@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>emacs on 良宏</title>
+    <link>/tags/emacs/</link>
+    <description>Recent content in emacs on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Dec 2021 15:55:51 +0800</lastBuildDate><atom:link href="/tags/emacs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Emacs</title>
+      <link>/p/emacs/</link>
+      <pubDate>Fri, 24 Dec 2021 15:55:51 +0800</pubDate>
+      
+      <guid>/p/emacs/</guid>
+      <description>常用指令 Emacs 快捷鍵是可以修改的，所以不一定要全部記住，只需要熟悉基本功能和知道有其他方便的擴充功能即可 Emacs 基本 C → Ctrl M → Alt 或 esc S → Shift [Ret] → return(enter) 範例 C-c</description>
+    </item>
+    
+  </channel>
+</rss>

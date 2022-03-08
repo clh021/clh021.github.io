@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Editor on 良宏</title>
+    <link>/categories/editor/</link>
+    <description>Recent content in Editor on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Dec 2021 15:57:25 +0800</lastBuildDate><atom:link href="/categories/editor/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vscode</title>
+      <link>/p/vscode/</link>
+      <pubDate>Fri, 24 Dec 2021 15:57:25 +0800</pubDate>
+      
+      <guid>/p/vscode/</guid>
+      <description>https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf https://blog.poychang.net/vscode-shortcuts/ https://segmentfault.com/a/1190000007688656 https://github.com/skywind3000/awesome-cheatsheets/blob/cd8d0cebfe32c9263db8291a270bd33a162dc924/editors/keyboard-shortcuts-windows.pdf https://github.com/crper/Visual-Studio-Code-CNKEYMAP 前言 VSCode的快捷键继承了一些IDE风格，有VS的身影，也有Emacs的身影。 快捷键组合方式 Ctrl + Shift + ? : 常规按键组合 Ctrl + V Ctrl +V</description>
+    </item>
+    
+    <item>
+      <title>Tmux</title>
+      <link>/p/tmux/</link>
+      <pubDate>Fri, 24 Dec 2021 15:57:05 +0800</pubDate>
+      
+      <guid>/p/tmux/</guid>
+      <description>tmux的快捷键以ctrl+B起始，也就是以下所有快捷键之前先用ctrl+B进入tmux快捷键模式 快捷键 s 列出会话，可进行切换 $ 重命名会话 d</description>
+    </item>
+    
+    <item>
+      <title>Emacs</title>
+      <link>/p/emacs/</link>
+      <pubDate>Fri, 24 Dec 2021 15:55:51 +0800</pubDate>
+      
+      <guid>/p/emacs/</guid>
+      <description>常用指令 Emacs 快捷鍵是可以修改的，所以不一定要全部記住，只需要熟悉基本功能和知道有其他方便的擴充功能即可 Emacs 基本 C → Ctrl M → Alt 或 esc S → Shift [Ret] → return(enter) 範例 C-c</description>
+    </item>
+    
+    <item>
+      <title>Space Vim</title>
+      <link>/p/space-vim/</link>
+      <pubDate>Fri, 24 Dec 2021 15:53:58 +0800</pubDate>
+      
+      <guid>/p/space-vim/</guid>
+      <description>项目用途 小问题 1, normal 状态时确保为英文状态 1, 如何高效使用 git 快捷管理 1, 如何修改启动界面，显示待办事项 1, 使用模糊搜索打开文件 启用 leaderf 模块，使用 Ctrl + p 模</description>
+    </item>
+    
+    <item>
+      <title>Vim</title>
+      <link>/p/vim/</link>
+      <pubDate>Fri, 24 Dec 2021 15:53:48 +0800</pubDate>
+      
+      <guid>/p/vim/</guid>
+      <description>1. Vim的几种模式 正常模式：可以使用快捷键命令，或按:输入命令行。 插入模式：可以输入文本，在正常模式下，按i、a、o等都可以进入插入模式。 可</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>apt on 良宏</title>
+    <link>/tags/apt/</link>
+    <description>Recent content in apt on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Feb 2022 09:01:47 +0800</lastBuildDate><atom:link href="/tags/apt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>apt</title>
+      <link>/p/apt/</link>
+      <pubDate>Fri, 18 Feb 2022 09:01:47 +0800</pubDate>
+      
+      <guid>/p/apt/</guid>
+      <description>apt-file apt-file 是一个软件包，它索引可用存储库中软件包的内容，并允许您在所有可用软件包中搜索特定文件。 例如，假设您下载一个软件尝试运行它时，收到一条消息</description>
+    </item>
+    
+  </channel>
+</rss>

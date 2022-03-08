@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>terminal on 良宏</title>
+    <link>/tags/terminal/</link>
+    <description>Recent content in terminal on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Dec 2021 15:56:34 +0800</lastBuildDate><atom:link href="/tags/terminal/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Terminal</title>
+      <link>/p/terminal/</link>
+      <pubDate>Fri, 24 Dec 2021 15:56:34 +0800</pubDate>
+      
+      <guid>/p/terminal/</guid>
+      <description>Linux终端Terminal常用快捷键 CTRL+ALT+T 打开终端 Ctrl+a 光标移动到开始位置 Ctrl+e 光标移动到最末尾 Ctrl+k 删除此处至末尾的所有内容 Ctrl+u 删除此处至开始的所有内容</description>
+    </item>
+    
+  </channel>
+</rss>

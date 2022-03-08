@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on 良宏</title>
+    <link>/tags/docker/</link>
+    <description>Recent content in Docker on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 03 Mar 2022 07:54:47 +0800</lastBuildDate><atom:link href="/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>自建一个当前系统的基础镜像</title>
+      <link>/p/%E8%87%AA%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/</link>
+      <pubDate>Thu, 03 Mar 2022 07:54:47 +0800</pubDate>
+      
+      <guid>/p/%E8%87%AA%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/</guid>
+      <description>大部分时候(使用的是 x86 架构)，已经有很多官方的 基础docker镜像 供我们使用了。 某些时候(非 x86 架构，或者使用的特殊linux发行版)，我们会</description>
+    </item>
+    
+    <item>
+      <title>NAS 相关</title>
+      <link>/p/nas-%E7%9B%B8%E5%85%B3/</link>
+      <pubDate>Thu, 10 Feb 2022 10:45:26 +0800</pubDate>
+      
+      <guid>/p/nas-%E7%9B%B8%E5%85%B3/</guid>
+      <description>记录各个方案的利弊 群晖 功率: 优势: qnap 功率: 30 瓦(五块硬盘 4 块机械盘) 优势:盘位多 劣势:系统操作不友好，反应慢，开关机时间长 小机箱 功率: 10 瓦 优</description>
+    </item>
+    
+    <item>
+      <title>windows系统工作环境</title>
+      <link>/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Thu, 11 Apr 2019 12:01:20 +0800</pubDate>
+      
+      <guid>/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/</guid>
+      <description>安装 windows 包管理工具 打开 windows powershell 管理员模式 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&amp;#39;https://chocolatey.org/install.ps1&amp;#39;)) 升级 windows 包管理工具 choco upgrade chocolatey 换源操作 sudo sed -i &amp;#39;s/http:/https:/g&amp;#39; /etc/apt/sources.list #ubuntu sed -i &amp;#39;s/archive.ubuntu.com/mirrors.aliyun.com/g&amp;#39; /etc/apt/sources.list; \ sed -i &amp;#34;s/security.ubuntu.com/mirrors.aliyun.com/g&amp;#34; /etc/apt/sources.list sudo sed -i &amp;#39;s/archive.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list; \ sudo sed -i &amp;#39;s/security.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list #alpine sed -i &amp;#39;s/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g&amp;#39;</description>
+    </item>
+    
+  </channel>
+</rss>

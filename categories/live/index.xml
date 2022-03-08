@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Live on 良宏</title>
+    <link>/categories/live/</link>
+    <description>Recent content in Live on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 01 Mar 2022 22:01:20 +0800</lastBuildDate><atom:link href="/categories/live/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>去除杂念的方法</title>
+      <link>/p/%E5%8E%BB%E9%99%A4%E6%9D%82%E5%BF%B5%E7%9A%84%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Tue, 01 Mar 2022 22:01:20 +0800</pubDate>
+      
+      <guid>/p/%E5%8E%BB%E9%99%A4%E6%9D%82%E5%BF%B5%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
+      <description>入静的关键，在于止念。平时不觉自己脑海之中存有杂念，及至静坐之时，什么念头都来了。——转自微信公众号&amp;quot;修行圈&amp;quot; 平时如何止</description>
+    </item>
+    
+    <item>
+      <title>NAS 相关</title>
+      <link>/p/nas-%E7%9B%B8%E5%85%B3/</link>
+      <pubDate>Thu, 10 Feb 2022 10:45:26 +0800</pubDate>
+      
+      <guid>/p/nas-%E7%9B%B8%E5%85%B3/</guid>
+      <description>记录各个方案的利弊 群晖 功率: 优势: qnap 功率: 30 瓦(五块硬盘 4 块机械盘) 优势:盘位多 劣势:系统操作不友好，反应慢，开关机时间长 小机箱 功率: 10 瓦 优</description>
+    </item>
+    
+    <item>
+      <title>Child1</title>
+      <link>/p/child1/</link>
+      <pubDate>Thu, 30 Dec 2021 12:43:20 +0800</pubDate>
+      
+      <guid>/p/child1/</guid>
+      <description>最好的家庭教育：父亲是榜样，母亲有温度 摘自: https://m.thepaper.cn/newsDetail_forward_7484327 经常有人说，孩子什么样，父母就是什么样。其实反过来也依然成立，父母是孩子的镜子，而孩子则是父母</description>
+    </item>
+    
+    <item>
+      <title>lineageOS</title>
+      <link>/p/lineageos/</link>
+      <pubDate>Sun, 01 Aug 2021 12:01:20 +0800</pubDate>
+      
+      <guid>/p/lineageos/</guid>
+      <description>小米 6 使用 lineageOS 18.1 和 GApps 有一台闲置的小米 6，拿来装了第三方 ROM lineageOS，配合 Google 套件使用，整体感觉不错。写文记录一下。 需要下载的文件 lineageOS Builds for sagit</description>
+    </item>
+    
+    <item>
+      <title>AdGuard搭建</title>
+      <link>/p/adguard%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Tue, 01 Jun 2021 12:01:20 +0800</pubDate>
+      
+      <guid>/p/adguard%E6%90%AD%E5%BB%BA/</guid>
+      <description>快速使用 # 先在 NAS网络设置内 启用 Open vSwitch sudo docker network create --driver=macvlan --subnet=10.0.0.1/24 --gateway=10.0.0.1 --ip-range=10.0.0.32/28 --opt parent=ovs_eth0 Route # 如果命令无法执行，可以尝试UI添加网络 docker pull adguard/adguardhome docker run --name adguardhome -v /my/own/workdir:/opt/adguardhome/work -v /my/own/confdir:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p</description>
+    </item>
+    
+    <item>
+      <title>借</title>
+      <link>/p/%E5%80%9F/</link>
+      <pubDate>Wed, 26 Feb 2020 04:04:03 +0000</pubDate>
+      
+      <guid>/p/%E5%80%9F/</guid>
+      <description>《借》 作曲 : 毛不易 作词 : 毛不易 借一盏午夜街头 昏黄灯光 `午夜 孤独画面，` 照亮那坎坷路上人影一双 `黑夜，一对老人行走` 借一寸三九天里 冽冽暖阳 `` 融</description>
+    </item>
+    
+    <item>
+      <title>TS流文件合并</title>
+      <link>/p/ts%E6%B5%81%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6/</link>
+      <pubDate>Wed, 01 Jan 2020 12:01:20 +0800</pubDate>
+      
+      <guid>/p/ts%E6%B5%81%E6%96%87%E4%BB%B6%E5%90%88%E5%B9%B6/</guid>
+      <description>无需软件合并多个TS流文件 Windows&amp;amp;Linux文件合并 原文：http://www.yaosansi.com/post/how-</description>
+    </item>
+    
+    <item>
+      <title>喜马拉雅FM下载</title>
+      <link>/p/%E5%96%9C%E9%A9%AC%E6%8B%89%E9%9B%85fm%E4%B8%8B%E8%BD%BD/</link>
+      <pubDate>Fri, 31 May 2019 12:01:20 +0800</pubDate>
+      
+      <guid>/p/%E5%96%9C%E9%A9%AC%E6%8B%89%E9%9B%85fm%E4%B8%8B%E8%BD%BD/</guid>
+      <description>2017-09 方案 $(&amp;#34;.sound-list ul li a&amp;#34;).each(function(i){ var sound_id = $(this).attr(&amp;#34;sound_id&amp;#34;); var json_url = &amp;#34;http://www.ximalaya.com/tracks/&amp;#34; + sound_id + &amp;#34;.json&amp;#34;; $.get(json_url,function(json){ var save_name = $(this).html; var down_cmd = &amp;#34;wget -c -T 3 -t 100 &amp;#39;&amp;#34; + json.play_path_64 + &amp;#34;&amp;#39; -O &amp;#39;&amp;#34; + save_name + &amp;#34;&amp;#39;&amp;#34;; console.log(down_cmd); }) }) 2019-05-31 方案 // 第一次执行 var jquery = document.createElement(&amp;#39;script&amp;#39;); jquery.src = &amp;#39;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&amp;#39;; document.getElementsByTagName(&amp;#39;head&amp;#39;)[0].appendChild(jquery); javascript:var jq=document.createElement(&amp;#39;script&amp;#39;);jq.src=&amp;#39;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&amp;#39;,jq.onload=function(){jQuery.noConflict()},document.getElementsByTagName(&amp;#39;head&amp;#39;)[0].appendChild(jq); // 第二次</description>
+    </item>
+    
+    <item>
+      <title>windows系统工作环境</title>
+      <link>/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Thu, 11 Apr 2019 12:01:20 +0800</pubDate>
+      
+      <guid>/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/</guid>
+      <description>安装 windows 包管理工具 打开 windows powershell 管理员模式 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&amp;#39;https://chocolatey.org/install.ps1&amp;#39;)) 升级 windows 包管理工具 choco upgrade chocolatey 换源操作 sudo sed -i &amp;#39;s/http:/https:/g&amp;#39; /etc/apt/sources.list #ubuntu sed -i &amp;#39;s/archive.ubuntu.com/mirrors.aliyun.com/g&amp;#39; /etc/apt/sources.list; \ sed -i &amp;#34;s/security.ubuntu.com/mirrors.aliyun.com/g&amp;#34; /etc/apt/sources.list sudo sed -i &amp;#39;s/archive.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list; \ sudo sed -i &amp;#39;s/security.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list #alpine sed -i &amp;#39;s/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g&amp;#39;</description>
+    </item>
+    
+    <item>
+      <title>windows系统激活</title>
+      <link>/p/windows%E7%B3%BB%E7%BB%9F%E6%BF%80%E6%B4%BB/</link>
+      <pubDate>Thu, 11 Apr 2019 12:01:20 +0800</pubDate>
+      
+      <guid>/p/windows%E7%B3%BB%E7%BB%9F%E6%BF%80%E6%B4%BB/</guid>
+      <description>@echo off mode con cols=100 lines=30 &amp;amp; color fc rem 获取管理员权限 :: BatchGotAdmin :------------------------------------- rem --&amp;gt; Check for permissions &amp;gt;nul 2&amp;gt;&amp;amp;1 &amp;#34;%SYSTEMROOT%\system32\cacls.exe&amp;#34; &amp;#34;%SYSTEMROOT%\system32\config\system&amp;#34; rem --&amp;gt; If error flag set, we do not have admin. if &amp;#39;%errorlevel%&amp;#39; NEQ &amp;#39;0&amp;#39; ( echo 获取管理员权限中,如果UAC弹窗,请选择允许..</description>
+    </item>
+    
+    <item>
+      <title>Word 转 PDF</title>
+      <link>/p/word-%E8%BD%AC-pdf/</link>
+      <pubDate>Fri, 22 Feb 2019 12:45:26 +0800</pubDate>
+      
+      <guid>/p/word-%E8%BD%AC-pdf/</guid>
+      <description>&amp;lt;?php function dieString(){die(&amp;#34;&amp;lt;h1&amp;gt;Forbidden&amp;lt;/h1&amp;gt;&amp;#34;.date(&amp;#34;Y-m-d H:i:s&amp;#34;));} date_default_timezone_set(&amp;#39;Asia/Shanghai&amp;#39;);//&amp;#39;Asia/Shanghai&amp;#39; 亚洲/上海 if(empty($_REQUEST[&amp;#39;word_base64&amp;#39;])){dieString();} $file_content=base64_decode($_REQUEST[&amp;#39;word_base64&amp;#39;]); $starttime = explode(&amp;#39; &amp;#39;,microtime()); $_microtime = round(($starttime[0]+$starttime[1]),6); $tmpFileName = date(&amp;#39;YmdHis.&amp;#39;).$_microtime.&amp;#39;.&amp;#39;.uniqid().&amp;#39;.docx&amp;#39;; $oldFile = __DIR__.DIRECTORY_SEPARATOR.&amp;#39;tmp&amp;#39;.DIRECTORY_SEPARATOR.$tmpFileName; $newFile = $oldFile.&amp;#39;.pdf&amp;#39;; file_put_contents($oldFile,$file_content); include(&amp;#39;./includes/DocConverter.php&amp;#39;); $doc = new DocConverter(); $doc-&amp;gt;DoctPdf($oldFile,$newFile); $result = base64_encode(file_get_contents($newFile)); @unlink($oldFile); @unlink($newFile); die($result); DocConverter.php &amp;lt;?php /** * 转换文件类 * Class DocConverter * $srcfilename 源文件名（绝对路径） * $destfilename 目标文</description>
+    </item>
+    
+    <item>
+      <title>简易的系统初始化页面</title>
+      <link>/p/%E7%AE%80%E6%98%93%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B5%E9%9D%A2/</link>
+      <pubDate>Wed, 20 Feb 2019 12:45:26 +0800</pubDate>
+      
+      <guid>/p/%E7%AE%80%E6%98%93%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B5%E9%9D%A2/</guid>
+      <description>由于要做负载均衡的系统部署，然后，希望用docker的方式将整个程序打包，系统本身是建立在wordpress和部分插件之上的，所以，这导致了</description>
+    </item>
+    
+    <item>
+      <title>PHP等比裁剪图像</title>
+      <link>/p/php%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA%E5%9B%BE%E5%83%8F/</link>
+      <pubDate>Thu, 13 Dec 2018 12:45:26 +0800</pubDate>
+      
+      <guid>/p/php%E7%AD%89%E6%AF%94%E8%A3%81%E5%89%AA%E5%9B%BE%E5%83%8F/</guid>
+      <description>在PHP中裁剪的某个部分以进行文字识别，试图提高证件的识别的效果。 因为整张证件的识别，噪音数据太多。很多证件不止打印不规则不工整会压到线，有</description>
+    </item>
+    
+    <item>
+      <title>微信机器人测试</title>
+      <link>/p/%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B5%8B%E8%AF%95/</link>
+      <pubDate>Fri, 16 Nov 2018 12:45:26 +0800</pubDate>
+      
+      <guid>/p/%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B5%8B%E8%AF%95/</guid>
+      <description>chatroomsList = [&amp;#39;微信机器人测试&amp;#39;,&amp;#39;北京华城维护群&amp;#39;,&amp;#39;武汉仲裁答疑内网群&amp;#39;,&amp;#39;久诚维信仲裁</description>
+    </item>
+    
+    <item>
+      <title>猪八戒网批量删除服务商消息</title>
+      <link>/p/%E7%8C%AA%E5%85%AB%E6%88%92%E7%BD%91%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4%E6%9C%8D%E5%8A%A1%E5%95%86%E6%B6%88%E6%81%AF/</link>
+      <pubDate>Tue, 25 Jul 2017 16:45:26 +0800</pubDate>
+      
+      <guid>/p/%E7%8C%AA%E5%85%AB%E6%88%92%E7%BD%91%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4%E6%9C%8D%E5%8A%A1%E5%95%86%E6%B6%88%E6%81%AF/</guid>
+      <description>几个月没登，服务消息总共400多条，批量删除，全选也就一次删除10多条，要删到何时 有位大神这样处理 https://www.xizirumeng.com/2016/12/06/batch_delete_service_provider_message/ var sid=&amp;#34;&amp;#34;; for(var si=0;si&amp;lt;2000;si++){ if(si==999){ sid+=si; }else{ sid+=si+&amp;#34;,&amp;#34;; } } $.ajax({ type: &amp;#34;post&amp;#34;, url: &amp;#34;/letter/clear&amp;#34;, dataType: &amp;#34;json&amp;#34;, data: { cid:</description>
+    </item>
+    
+    <item>
+      <title>有趣的PPT替代方案</title>
+      <link>/p/%E6%9C%89%E8%B6%A3%E7%9A%84ppt%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88/</link>
+      <pubDate>Fri, 16 Dec 2016 22:01:20 +0800</pubDate>
+      
+      <guid>/p/%E6%9C%89%E8%B6%A3%E7%9A%84ppt%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88/</guid>
+      <description>有趣的PPT 直接上干货 LeaVerou/csss impress reveal 参考工具 slides 为什么不用PPT或者keynote 方便贴代码 模板的使用、制作和分享非常方便 不想安装500M+的软件 不想</description>
+    </item>
+    
+  </channel>
+</rss>

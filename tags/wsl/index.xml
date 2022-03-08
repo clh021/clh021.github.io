@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>wsl on 良宏</title>
+    <link>/tags/wsl/</link>
+    <description>Recent content in wsl on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 11 Apr 2019 12:01:20 +0800</lastBuildDate><atom:link href="/tags/wsl/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>windows系统工作环境</title>
+      <link>/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Thu, 11 Apr 2019 12:01:20 +0800</pubDate>
+      
+      <guid>/p/windows%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E7%8E%AF%E5%A2%83/</guid>
+      <description>安装 windows 包管理工具 打开 windows powershell 管理员模式 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&amp;#39;https://chocolatey.org/install.ps1&amp;#39;)) 升级 windows 包管理工具 choco upgrade chocolatey 换源操作 sudo sed -i &amp;#39;s/http:/https:/g&amp;#39; /etc/apt/sources.list #ubuntu sed -i &amp;#39;s/archive.ubuntu.com/mirrors.aliyun.com/g&amp;#39; /etc/apt/sources.list; \ sed -i &amp;#34;s/security.ubuntu.com/mirrors.aliyun.com/g&amp;#34; /etc/apt/sources.list sudo sed -i &amp;#39;s/archive.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list; \ sudo sed -i &amp;#39;s/security.ubuntu.com/mirrors.ustc.edu.cn/g&amp;#39; /etc/apt/sources.list #alpine sed -i &amp;#39;s/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g&amp;#39;</description>
+    </item>
+    
+  </channel>
+</rss>

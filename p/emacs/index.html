@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='常用指令 Emacs 快捷鍵是可以修改的，所以不一定要全部記住，只需要熟悉基本功能和知道有其他方便的擴充功能即可 Emacs 基本 C → Ctrl M → Alt 或 esc S → Shift [Ret] → return(enter) 範例 C-c'><title>Emacs</title>
+
+<link rel='canonical' href='/p/emacs/'>
+
+<link rel="stylesheet" href="/scss/style.min.c0d2b25aea1c2f5559210f479efa77f5661b180178eae82bb7f89ae55f106d91.css"><meta property='og:title' content='Emacs'>
+<meta property='og:description' content='常用指令 Emacs 快捷鍵是可以修改的，所以不一定要全部記住，只需要熟悉基本功能和知道有其他方便的擴充功能即可 Emacs 基本 C → Ctrl M → Alt 或 esc S → Shift [Ret] → return(enter) 範例 C-c'>
+<meta property='og:url' content='/p/emacs/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='emacs' /><meta property='article:published_time' content='2021-12-24T15:55:51&#43;08:00'/><meta property='article:modified_time' content='2021-12-24T15:55:51&#43;08:00'/>
+<meta name="twitter:title" content="Emacs">
+<meta name="twitter:description" content="常用指令 Emacs 快捷鍵是可以修改的，所以不一定要全部記住，只需要熟悉基本功能和知道有其他方便的擴充功能即可 Emacs 基本 C → Ctrl M → Alt 或 esc S → Shift [Ret] → return(enter) 範例 C-c">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            <a href="/categories/editor/" style="background-color: #df7988; color: #fff;">
+                Editor
+            </a>
+        
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/emacs/">Emacs</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 24, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 8 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="常用指令">常用指令</h1>
+<blockquote>
+<p>Emacs 快捷鍵是可以修改的，所以不一定要全部記住，只需要熟悉基本功能和知道有其他方便的擴充功能即可</p>
+</blockquote>
+<h2 id="httpgitqwerty777githubioemacs-tipsemacs基本-emacs基本emacs-基本"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%9f%ba%e6%9c%ac"  title="Emacs基本"
+     target="_blank" rel="noopener"
+    ></a>Emacs 基本</h2>
+<ul>
+<li>C → Ctrl</li>
+<li>M → Alt 或 esc</li>
+<li>S → Shift</li>
+<li>[Ret] → return(enter)</li>
+<li>範例
+<ul>
+<li>C-c → Ctrl + c</li>
+<li>C-c C-f → Ctrl + c, 放開 c, 按下 f，也可以分開來按，但較慢</li>
+</ul>
+</li>
+<li>「hello.c」的自動儲存檔案的檔名就是「#hello.c#」。儲存檔案後，自動儲存檔就會被刪除</li>
+<li>Ctrl 通常是對一個字操作， Alt 通常是對一個詞，或一個句子操作</li>
+<li>每一個 Emacs 的指令都有名稱，可以用 <code>M-x [command]</code> 來下指令</li>
+</ul>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs移動-emacs移動emacs-移動"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e7%a7%bb%e5%8b%95"  title="Emacs移動"
+     target="_blank" rel="noopener"
+    ></a>Emacs 移動</h3>
+<p><a class="link" href="http://gitqwerty777.github.io/img/Other/emacs-move.png"  target="_blank" rel="noopener"
+    ><figure 
+	>
+	<a href="http://gitqwerty777.github.io/img/Other/emacs-move.png" >
+		<img src="http://gitqwerty777.github.io/img/Other/emacs-move.png"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></a></p>
+<p>指令</p>
+<p>介紹</p>
+<p>M-v, C-v</p>
+<p>上翻 / 下翻一頁</p>
+<p>M-b, M-f</p>
+<p>往前 / 往後 移動一個詞</p>
+<p>M-a, M-e</p>
+<p>移動到一句的開始 / 結尾 (程式碼的一個段落)</p>
+<p>C-l</p>
+<p>移動視窗 (遊標分別在中間、最上方、最下方)</p>
+<p>M-g M-g</p>
+<p>跳至指定行 (= M-g g)</p>
+<p>M-m</p>
+<p>將游標移到該行第一個字元 (比 C-a 好用)</p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs編輯-emacs編輯emacs-編輯"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e7%b7%a8%e8%bc%af"  title="Emacs編輯"
+     target="_blank" rel="noopener"
+    ></a>Emacs 編輯</h3>
+<p>指令</p>
+<p>介紹</p>
+<p>C-j</p>
+<p>換行並自動縮排 (newline-and-indent)</p>
+<p>C-SPACE</p>
+<p>開始選取文字 (再按一次結束選取)</p>
+<p>C-x C-x</p>
+<p>改變選取的方向</p>
+<p>C-x h</p>
+<p>全選</p>
+<p>M-h</p>
+<p>選擇遊標所在的段落</p>
+<p>C-w/M-w</p>
+<p>剪下 / 複製 選取文字</p>
+<p>C-y</p>
+<p>貼上選取文字</p>
+<p>M-y</p>
+<p>改變貼上的文字 (從之前剪下 / 複製過的文字中，由新到舊出現)</p>
+<p>C-d</p>
+<p>同 <code>delete</code> 鍵 (刪除後一個字)</p>
+<p>M-d</p>
+<p>刪除後一個詞</p>
+<p>M-del</p>
+<p>刪除前一個詞</p>
+<p>C-g</p>
+<p>取消尚未完成的指令</p>
+<p><code>C-k</code> : 刪除從游標到「行尾」間的字元<br>
+單獨的 C-k 會把一行的內容殺掉<br>
+而第二個 C-k 則會殺掉那一行本身 (‘\n’)。使所有其他的行向上移動</p>
+<p><code>C-x u</code> : 還原<br>
+(1) 沒有改變文字的指令不算（移動游標和視窗等）<br>
+(2) 自行鍵入的字元 一次最多還原 20 個</p>
+<h3 id="httpgitqwerty777githubioemacs-tips重複-重複重複"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e9%87%8d%e8%a4%87"  title="重複"
+     target="_blank" rel="noopener"
+    ></a>重複</h3>
+<p>指令</p>
+<p>介紹</p>
+<p>示範</p>
+<p>C-u [數字] [指令 or 字元]</p>
+<p>重複執行</p>
+<p>C-u 8 a → aaaaaaaa</p>
+<p>M-[數字] [指令 or 字元]</p>
+<p>重複執行</p>
+<p>M-8 a → aaaaaaaa</p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs搜尋-emacs搜尋emacs-搜尋"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%90%9c%e5%b0%8b"  title="Emacs搜尋"
+     target="_blank" rel="noopener"
+    ></a>Emacs 搜尋</h3>
+<p>指令</p>
+<p>介紹</p>
+<p>C-s</p>
+<p>往後搜尋 (再按一次：找下一個)</p>
+<p>C-r</p>
+<p>往前搜尋</p>
+<p>M-C-s</p>
+<p>正規表示式搜尋</p>
+<p>M-%</p>
+<p>取代</p>
+<ul>
+<li><code>y</code> 或 space：置換目前游標所在的字串，並且移到下一個可被置換的字串</li>
+<li><code>n</code>：跳過目前游標所在的字串。移到下一個可被置換的字串</li>
+<li><code>ESC</code>：結束置換模式</li>
+<li><code>.</code>：置換目前的字串，並離開置換模式</li>
+<li><code>!</code>：將整個檔案一次置換完畢，不進行任何詢問</li>
+<li><code>^</code>：回到前一個符合置換的地方</li>
+<li><code>C-r</code>: 進入 recursive-edit 模式
+<ul>
+<li><code>M-C-c</code>: 結束 recursive-edit 模式</li>
+</ul>
+</li>
+</ul>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs分割-window-emacs分割windowemacs-分割-window"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%88%86%e5%89%b2-window"  title="Emacs分割(window)"
+     target="_blank" rel="noopener"
+    ></a>Emacs 分割 (window)</h3>
+<p>在螢幕上顯示多個編輯區，我稱為分割</p>
+<p>指令</p>
+<p>介紹</p>
+<p>C-x 0</p>
+<p>關閉目前分割</p>
+<p>C-x 1</p>
+<p>關閉其他分割 (只留下目前的分割)</p>
+<p>C-x 2</p>
+<p>新增水平分割</p>
+<p>C-x 3</p>
+<p>新增垂直分割</p>
+<p>C-x o</p>
+<p>跳到別的分割 (在現有的分割循環)</p>
+<p>M-C-v</p>
+<p>捲動另一個分割</p>
+<p>C-x 5 2</p>
+<p>開新視窗 (frame)</p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs檔案-emacs檔案emacs-檔案"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%aa%94%e6%a1%88"  title="Emacs檔案"
+     target="_blank" rel="noopener"
+    ></a>Emacs 檔案</h3>
+<h4 id="httpgitqwerty777githubioemacs-tipsemacs檔案切換-emacs檔案切換emacs-檔案切換"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%aa%94%e6%a1%88%e5%88%87%e6%8f%9b"  title="Emacs檔案切換"
+     target="_blank" rel="noopener"
+    ></a>Emacs 檔案切換</h4>
+<p>指令</p>
+<p>介紹</p>
+<p>C-x C-b</p>
+<p>列出檔案清單 (<em>Buffer List</em>)</p>
+<p>C-x b</p>
+<p>切換至其他開啟的檔案</p>
+<p>C-x k</p>
+<p>關閉目前編輯的檔案 (不存檔)</p>
+<h4 id="httpgitqwerty777githubioemacs-tipsemacs檔案指令-emacs檔案指令emacs-檔案指令"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%aa%94%e6%a1%88%e6%8c%87%e4%bb%a4"  title="Emacs檔案指令"
+     target="_blank" rel="noopener"
+    ></a>Emacs 檔案指令</h4>
+<p>指令</p>
+<p>介紹</p>
+<p>C-x C-f</p>
+<p>開新檔案，開啟舊檔</p>
+<p>C-x 4 f</p>
+<p>在新分割開啟檔案</p>
+<p>C-x C-s</p>
+<p>儲存檔案</p>
+<p>C-x s</p>
+<p>全部檔案儲存</p>
+<p>C-x C-w</p>
+<p>另存新檔</p>
+<p>C-x d</p>
+<p>開啟資料夾 (Dired)</p>
+<p>C-x C-v</p>
+<p>取代目前檔案 (find-alternate-file, 開錯檔案的時候用)</p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs系統-emacs系統emacs-系統"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e7%b3%bb%e7%b5%b1"  title="Emacs系統"
+     target="_blank" rel="noopener"
+    ></a>Emacs 系統</h3>
+<p>指令</p>
+<p>介紹</p>
+<p>C-x C-c</p>
+<p>結束 Emacs</p>
+<p>C-z</p>
+<p>暫時離開 Emacs (Suspend)</p>
+<p>用 <code>fg</code> 或 <code>%emacs</code> 恢復 Emacs</p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs函式-emacs函式emacs-函式"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%87%bd%e5%bc%8f"  title="Emacs函式"
+     target="_blank" rel="noopener"
+    ></a>Emacs 函式</h3>
+<p>指令</p>
+<p>介紹</p>
+<p>M-x [function]</p>
+<p>執行名為 [function] 的指令</p>
+<p>M-x compile</p>
+<p>編譯 (會開啟 <em>compilation</em> 分割)</p>
+<p>M-x recompile</p>
+<p>重覆執行上次執行過的 compile 指令</p>
+<p>C-x `</p>
+<p>跳到下一個有編譯錯誤的地方</p>
+<p>M-x gdb</p>
+<p>用 gdb 除錯</p>
+<p>M-x shell</p>
+<p>開啟 shell 分割</p>
+<p>需要在 Shell 下的慣用命令前加上 C-c<br>
+如 <code>C-c C-c</code> 為中止程式；<code>C-c C-z</code> 為暫停程式等</p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs幫助-emacs幫助emacs-幫助"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%b9%ab%e5%8a%a9"  title="Emacs幫助"
+     target="_blank" rel="noopener"
+    ></a>Emacs 幫助</h3>
+<p>指令</p>
+<p>介紹</p>
+<p>C-h ?</p>
+<p>開啟 <em>Help</em> 分割</p>
+<p>C-h c [指令]</p>
+<p>在命令列顯示簡短解釋</p>
+<p>C-h k [指令]</p>
+<p>在新分割顯示詳細解釋</p>
+<p>C-h f [函數]</p>
+<p>在新分割顯示說明文件</p>
+<p>C-h w [函數]</p>
+<p>查詢此函數的快捷鍵</p>
+<p>C-h m</p>
+<p>瀏覽現在模式的文件 (C, C++, text…)</p>
+<p>C-h a</p>
+<p>列出所有「含有此關鍵字」的全部函式（Command Apropos）</p>
+<p>C-h i</p>
+<p>開啟 <em>info</em> 分割</p>
+<h3 id="httpgitqwerty777githubioemacs-tips其他-其他其他"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e5%85%b6%e4%bb%96"  title="其他"
+     target="_blank" rel="noopener"
+    ></a>其他</h3>
+<p>指令</p>
+<p>介紹</p>
+<p>M-C-\</p>
+<p>選擇區塊自動縮排 (indent-region)</p>
+<p>M-;</p>
+<p>在句尾加入註解</p>
+<p>M-^</p>
+<p>將此行併入上一行</p>
+<p>C-t</p>
+<p>對調兩字元</p>
+<p>M-t</p>
+<p>對調兩單字</p>
+<p>C-x C-t</p>
+<p>對調兩行</p>
+<p>M-c</p>
+<p>將字的第一個字母改為大寫 (Capitalize)</p>
+<p>M-u</p>
+<p>將單字改為大寫 (Upper)</p>
+<p>M-l</p>
+<p>將單字改為小寫 (Lower)</p>
+<p>C-x i</p>
+<p>插入其他檔案的內容 (insert-file)</p>
+<h2 id="httpgitqwerty777githubioemacs-tipsemacs技巧-emacs技巧emacs-技巧"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%8a%80%e5%b7%a7"  title="Emacs技巧"
+     target="_blank" rel="noopener"
+    ></a>Emacs 技巧</h2>
+<h3 id="httpgitqwerty777githubioemacs-tips自動完成-自動完成自動完成"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e8%87%aa%e5%8b%95%e5%ae%8c%e6%88%90"  title="自動完成"
+     target="_blank" rel="noopener"
+    ></a>自動完成</h3>
+<p><code>M-/</code><br>
+可重複輸入以改變</p>
+<h3 id="httpgitqwerty777githubioemacs-tips移動至定義-goto-declaration-移動至定義goto-declaration移動至定義-goto-declaration"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e7%a7%bb%e5%8b%95%e8%87%b3%e5%ae%9a%e7%be%a9-goto-declaration"  title="移動至定義(goto declaration)"
+     target="_blank" rel="noopener"
+    ></a>移動至定義 (goto declaration)</h3>
+<ol>
+<li>
+<p>建立 tag 檔</p>
+<p>1<br>
+2<br>
+3<br>
+4</p>
+<p># for c, c++ file<br>
+find . | grep &ldquo;.*\.\(c\|h\|cpp\)&rdquo; | xargs etags -f tags # output filename &ldquo;tags&rdquo;<br>
+# for python file<br>
+find . -type f -name &lsquo;*.py&rsquo; | xargs etags -f tags</p>
+</li>
+<li>
+<p>在 Emacs 中用 <code>M-.</code> 進行搜尋</p>
+</li>
+<li>
+<p><code>C-x 4 .</code>: 在另一個分割開啟定義</p>
+</li>
+</ol>
+<p><code>M-*</code> 回到前一個定義的位置</p>
+<h3 id="httpgitqwerty777githubioemacs-tips回到之前的遊標位置-回到之前的遊標位置回到之前的遊標位置"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e5%9b%9e%e5%88%b0%e4%b9%8b%e5%89%8d%e7%9a%84%e9%81%8a%e6%a8%99%e4%bd%8d%e7%bd%ae"  title="回到之前的遊標位置"
+     target="_blank" rel="noopener"
+    ></a>回到之前的遊標位置</h3>
+<p>在搜尋或尋找定義之後很好用<br>
+<code>C-u C-space</code></p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs作為ide使用-emacs作為ide使用emacs-作為-ide-使用"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e4%bd%9c%e7%82%baIDE%e4%bd%bf%e7%94%a8"  title="Emacs作為IDE使用"
+     target="_blank" rel="noopener"
+    ></a>Emacs 作為 IDE 使用</h3>
+<p>function <code>compile</code> 執行編譯命令 (make, g++ …)<br>
+function <code>recompile</code> 重復之前的編譯命令<br>
+可將其設為快捷鍵</p>
+<p><a class="link" href="http://stackoverflow.com/questions/11043004/emacs-compile-buffer-auto-close"  target="_blank" rel="noopener"
+    >編譯成功後自動關閉 <em>compilnation</em> 分割</a><br>
+<a class="link" href="http://lifegoo.pluskid.org/wiki/EmacsSmartCompile.html"  target="_blank" rel="noopener"
+    >智慧編譯：自動偵測檔名或 makefile 並編譯</a></p>
+<h3 id="httpgitqwerty777githubioemacs-tipssublime-text-emacs快速鍵-sublime-text--emacs快速鍵sublime-text--emacs-快速鍵"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Sublime-Text-Emacs%e5%bf%ab%e9%80%9f%e9%8d%b5"  title="Sublime Text &#43; Emacs快速鍵"
+     target="_blank" rel="noopener"
+    ></a>Sublime Text + Emacs 快速鍵</h3>
+<p><a class="link" href="https://github.com/grundprinzip/sublemacspro"  target="_blank" rel="noopener"
+    >https://github.com/grundprinzip/sublemacspro</a></p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs巨集-macro-emacs巨集macroemacs-巨集-macro"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%b7%a8%e9%9b%86-Macro"  title="Emacs巨集(Macro)"
+     target="_blank" rel="noopener"
+    ></a>Emacs 巨集 (Macro)</h3>
+<p>指令</p>
+<p>介紹</p>
+<p>C-x (</p>
+<p>開始定義巨集</p>
+<p>C-x )</p>
+<p>結束巨集定義</p>
+<p>C-x e</p>
+<p>執行上一個定義的巨集</p>
+<p>M-[Num] C-x e</p>
+<p>將上一個定義的巨集執行 Num 次</p>
+<p>C-u C-x (</p>
+<p>執行上一個定義的巨集，然後可以加上按鍵以重新定義巨集</p>
+<p>C-x q</p>
+<p>將巨集定義中插入查詢</p>
+<p>C-u C-x q</p>
+<p>將巨集定義中插入遞迴編輯</p>
+<p>M-C-c</p>
+<p>跳出遞迴編輯</p>
+<p><code>name-last-kbd-macro</code>: 將上一個定義的巨集存檔之前予以命名<br>
+<code>load-file</code>: 載入儲存的 lisp 程式碼巨集<br>
+<code>macroname</code>: 執行儲存過的”macroname” 巨集<br>
+<code>insert-kbd-macro</code>: 將命名過的巨集以 lisp 程式碼印出</p>
+<p>應用：在 <code>EmacsMacro.el</code> 中儲存巨集程式碼，並在<code>.emacs</code> 中寫入</p>
+<p>1<br>
+2</p>
+<p>;;load my macro file<br>
+(load &ldquo;~/EmacsMacro&rdquo;)</p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs-latex-emacs--latexemacs--latex"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs-Latex"  title="Emacs &#43; Latex"
+     target="_blank" rel="noopener"
+    ></a>Emacs + Latex</h3>
+<p><a class="link" href="http://bbs3.nsysu.edu.tw/txtVersion/treasure/IUT/M.1006868352.A/M.1006952678.G.html"  target="_blank" rel="noopener"
+    >參考資料</a></p>
+<p>安裝: sudo apt-get install texlive-full</p>
+<p>“：插入 ```’ 或 <code>''' 或</code> “‘ 符號<br>
+M-x validate-tex-region：檢查每一段文稿是否有不平衡的大括號<br>
+或錢字號。<br>
+C-c {：插入 <code>{}' 並將游標移至左右大括號之間 C-c }：將游標移至下一個右大括號的右端 C-c C-o：插入 LaTeX 區段標記</code> \begin’ 及 \end’ 並將游標移至<br>
+二者間的空行<br>
+C-c C-e：為前一個不平衡的 `\begin’ 加上 \end’</p>
+<p>編譯</p>
+<ul>
+<li>
+<p>C-c C-f：對目前所在的檔案執行 TeX/LaTeX 的編譯</p>
+</li>
+<li>
+<p>C-c C-r：對一段區域 (region) 執行 TeX/LaTeX 的編譯</p>
+<ul>
+<li>不論是 TeX 或 LaTeX 都包含了一段有關全文的訊息在整篇文稿的開端，若是僅僅編譯所指定的區域而忽略了這段訊息的話，將會產生錯誤的結果。為了解決這個問題，必需在文稿中標明 header 的位置，然後在 用 C-c C-r 命令時 emacs 會自動將 header 中的訊息讀入處理。在 TeX 中標明 header 的方法是在 header 段落前後插入 <code>%start of header' 和</code> %end of header}’</li>
+</ul>
+</li>
+<li>
+<p>C-c C-b：對整個目前所在的緩衝區 (buffer) 執行 TeX/LaTeX 的編譯</p>
+</li>
+<li>
+<p>C-c C-r 和 C-c C-b 並不會產生如 *.aux 等的附屬檔，因此無法執行 cross-reference 等工作。如果需要產生附屬檔則必需使用 C-c C-f</p>
+</li>
+<li>
+<p>C-c TAB：對目前所在的檔案執行 BibTeX 的編譯</p>
+</li>
+<li>
+<p>C-c C-v：預覽 C-c C-r, C-c C-b 或 C-c C-f 編譯的結果</p>
+</li>
+<li>
+<p>C-c C-k：終結 (kill) 目前進行中的 TeX/LaTeX 程序 (process)</p>
+</li>
+<li>
+<p>C-c C-p：列印 C-c C-r、C-c C-b 或 C-cC-f 編譯的結果</p>
+</li>
+<li>
+<p>C-c C-q：顯示目前的 printer queue</p>
+</li>
+</ul>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs-git-emacs--gitemacs--git"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs-Git"  title="Emacs &#43; Git"
+     target="_blank" rel="noopener"
+    ></a>Emacs + Git</h3>
+<p><a class="link" href="http://www.cnblogs.com/holbrook/archive/2012/04/26/2470923.html"  target="_blank" rel="noopener"
+    >使用 git-emacs</a></p>
+<h3 id="httpgitqwerty777githubioemacs-tips畫簡單的ascii圖-畫簡單的ascii圖畫簡單的-ascii-圖"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e7%95%ab%e7%b0%a1%e5%96%ae%e7%9a%84ASCII%e5%9c%96"  title="畫簡單的ASCII圖"
+     target="_blank" rel="noopener"
+    ></a>畫簡單的 ASCII 圖</h3>
+<p><a class="link" href="http://emacser.com/artist-mode.htm"  target="_blank" rel="noopener"
+    >Artist Mode</a><br>
+<a class="link" href="http://emacser.com/emacs-ditaa.html"  target="_blank" rel="noopener"
+    >輸出成圖片檔</a></p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs-markdown-mode-emacs--markdown-modeemacs--markdown-mode"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs-Markdown-Mode"  title="Emacs &#43; Markdown Mode"
+     target="_blank" rel="noopener"
+    ></a>Emacs + Markdown Mode</h3>
+<p><a class="link" href="https://linuxtoy.org/archives/emacs-markdown-mode.html"  target="_blank" rel="noopener"
+    >Emacs Markdown 模式</a></p>
+<p>有些指令直接輸入比較快…</p>
+<p>指令</p>
+<p>介紹</p>
+<p>C-c C-t [N]</p>
+<p>插入第 N 級的標題</p>
+<p>C-c C-a l</p>
+<p>插入鏈接，格式為 <code>[text](url)</code></p>
+<p>C-c C-i i</p>
+<p>插入圖像，格式為 <code>![text](url)</code></p>
+<p>C-c -</p>
+<p>插入水平線</p>
+<p>S-Tab</p>
+<p>在大綱視圖、目錄視圖、及正常視圖間切換</p>
+<p>C-c C-c m</p>
+<p>預覽 HTML</p>
+<p>C-c C-c p</p>
+<p>在瀏覽器中預覽</p>
+<h3 id="httpgitqwerty777githubioemacs-tipsemacs-screen-emacs--screenemacs--screen"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs-Screen"  title="Emacs &#43; Screen"
+     target="_blank" rel="noopener"
+    ></a>Emacs + Screen</h3>
+<p><a class="link" href="http://lagunawang.pixnet.net/blog/post/2836825-linux-screen%E6%8C%87%E4%BB%A4"  target="_blank" rel="noopener"
+    >Screen 指令表</a></p>
+<p>因為 Emacs 的快捷鍵和 Screen 重複，要自己在<code>.screenrc</code> 設定檔修改</p>
+<ul>
+<li>在 <code>.screenrc</code> 中新增 <code>escape ^vv</code><br>
+即可將 所有 C-a 改為 C-v</li>
+<li>在 <code>.screenrc</code> 中新增 <code>escape ^l^l</code><br>
+即可將 所有 <code>C-a</code> 改為 <code>C-l</code>，且在輸入 <code>C-l C-l</code> 時可以跳脫 screen 指令 (等同在 terminal 輸入 <code>C-l</code>)</li>
+<li><a class="link" href="http://lifegoo.pluskid.org/wiki/Screen.html"  target="_blank" rel="noopener"
+    >修改教學</a></li>
+</ul>
+<p>在使用 Emacs 時，適合 bind 到 screen 的 key:<br>
+C-v(scroll-up-command), C-space(set-mark-command), C-t(transpose-chars), C-d(delete char), C-l(recenter-top-bottom)<br>
+其他都太常用或是不能 bind (C-z, C-q, C-m, C-i)，不然就要用 C-S 系列</p>
+<p>終端機指令<br>
+screen -list 可以列出你目前的所有 screen 會話 (同時可有多個 screen)<br>
+screen -r [detached screen] 回復 detach 的 screen<br>
+screen -wipe 砍掉不要的 screen</p>
+<p>screen 內指令共同前綴 C-a<br>
+C-a c - 開新分頁<br>
+C-a n - 切換到下一個分頁<br>
+C-a p - 切換到前一個分頁<br>
+C-a C-a - 切換到最近用過的分頁<br>
+C-a [N] - 跳到編號 N 的分頁<br>
+C-a w - 列出開啟的分頁 (簡短)<br>
+C-a “ - 列出所有的分頁提供切換<br>
+C-a k - 關閉目前分頁</p>
+<p>C-a S - 將螢幕水平分割<br>
+C-a - 在分割的區域之間切換焦點</p>
+<p>C-a C - 清除目前的分頁內容<br>
+C-a H - 儲存目前分頁記錄（檔名為 screenlog.n, n 為視窗號碼）<br>
+C-a x - 鎖定 screen，需要輸入使用者密碼<br>
+C-a d - Detach screen，暫時脫離 screen，程式會持續進行，你可以在重開終端機或重新登入後再連接到剛才的那個 screen (當然，重開機會不見)</p>
+<p>C-a [- 編輯模式 (操作和 vi 相似…)</p>
+<ul>
+<li>h, j, k, l 分別為向左，向下，向上，向右移動一格（或是一行）</li>
+<li>^ 與 $ 分別移到該行最左邊及最右邊的非空白字元</li>
+<li>w 以字為單位往前移動並移到字首</li>
+<li>b 以字為單位往後移動並移到字首</li>
+<li>e 以字為單位往前移動並移到字尾</li>
+<li>C-b 向上捲一頁</li>
+<li>C-f 向下捲一頁</li>
+<li>/ 與？向下或向上尋找字串</li>
+<li>space 第一次按下到第二次按下的區域會被複製
+<ul>
+<li>C-a ] 貼上</li>
+</ul>
+</li>
+<li>非指令的輸入會離開編輯模式</li>
+</ul>
+<h3 id="httpgitqwerty777githubioemacs-tips套件安裝-套件安裝套件安裝"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e5%a5%97%e4%bb%b6%e5%ae%89%e8%a3%9d"  title="套件安裝"
+     target="_blank" rel="noopener"
+    ></a>套件安裝</h3>
+<h3 id="httpgitqwerty777githubioemacs-tips其他功能-其他功能其他功能"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e5%85%b6%e4%bb%96%e5%8a%9f%e8%83%bd"  title="其他功能"
+     target="_blank" rel="noopener"
+    ></a>其他功能</h3>
+<p><a class="link" href="https://www.gnu.org/software/emacs/manual/html_node/efaq/Replacing-text-across-multiple-files.html"  target="_blank" rel="noopener"
+    >Replacing-text-across-multiple-files</a></p>
+<h3 id="httpgitqwerty777githubioemacs-tips不重要的功能-不重要的功能不重要的功能"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e4%b8%8d%e9%87%8d%e8%a6%81%e7%9a%84%e5%8a%9f%e8%83%bd"  title="不重要的功能"
+     target="_blank" rel="noopener"
+    ></a>不重要的功能</h3>
+<ul>
+<li>放大字體: C-x C-+ 或 C-x C-=</li>
+<li>縮小字體: C-x C-–</li>
+<li>重置字體: C-x C-0</li>
+</ul>
+<h2 id="httpgitqwerty777githubioemacs-tipsemacs小知識-emacs小知識emacs-小知識"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%b0%8f%e7%9f%a5%e8%ad%98"  title="Emacs小知識"
+     target="_blank" rel="noopener"
+    ></a>Emacs 小知識</h2>
+<p>名稱: Emacs 是 「編輯巨集」[Editing MACroS] 的簡稱</p>
+<p><a class="link" href="http://lifegoo.pluskid.org/wiki/Emacs.html"  target="_blank" rel="noopener"
+    >參考資料</a></p>
+<p>前綴</p>
+<ul>
+<li>一些不是特別常用的函數綁定到前綴 C-x 上。例如 C-x C-c 退出 Emacs， C-x 2 水平分割當前 window</li>
+<li>與某個 mode 相關的的函數被綁定到前綴 C-c 上</li>
+<li>最不常用的函數根本沒有鍵綁定，而是使用 M-x 然後輸入函數名來調用他們</li>
+<li>前綴 C-x 4 被保留作操作另外一個 window 用的函數，例如 C-x 4 C-f 在另 外一個 window 裡面打開文件</li>
+<li>前綴 C-x 5 被綁定到操縱其他 frame 的 函數上面</li>
+</ul>
+<p>殺掉</p>
+<ul>
+<li>被殺掉的可以拉回，而被刪除的則不能
+<ul>
+<li><code>delete</code>, <code>backspace</code> 都是刪除</li>
+<li><code>C-k</code>, <code>C-w</code>, <code>M-w</code> 等指令都是殺掉
+<ul>
+<li>如果連續地做了數次 C-k，所有被殺掉的文字都會被儲存在一起，因此做一次 C-y 就會把所有這些行都拉回來</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>將被殺掉的文字回復的動作稱為「拉回（ yanking ）」
+<ul>
+<li><code>C-y</code> 會把最近殺掉的拉回來，前幾次殺掉的文字可以用 <code>M-y</code> 來回複</li>
+<li>可以給 <code>M-y</code> 正的或是負的參數來回到之前殺掉的東西</li>
+</ul>
+</li>
+</ul>
+<p>搜尋</p>
+<ul>
+<li>Emacs 搜尋指令是「漸進的（ incremental ）」，搜尋發生在遊標後
+<ul>
+<li>如果鍵入『u』，游標會移動到「cu」的第一次出現位置。將「u」從 s 搜尋字串中消除，游標會移回到「c」的第一次出現位置</li>
+</ul>
+</li>
+</ul>
+<p>設定檔：家目錄的<code>.emacs</code>，可修改 Emacs 設定</p>
+<p>BASH 上預設的控制模式是 Emacs，也就是說可以使用 C-a, C-f, C-b 等移動鍵，C-r 搜尋歷史指令，C-n, C-p 切換歷史指令，C-k 殺掉文字， C-j 執行指令等等。<br>
+和 Emacs 不一樣的地方有 <code>C-h</code> 往前刪除一字元，<code>C-w</code> 清除游標以前的一個單字，<code>C-u</code> 清除游標以前所有的字元。</p>
+<h2 id="httpgitqwerty777githubioemacs-tips快速設定-快速設定快速設定"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#%e5%bf%ab%e9%80%9f%e8%a8%ad%e5%ae%9a"  title="快速設定"
+     target="_blank" rel="noopener"
+    ></a>快速設定</h2>
+<p>使用現成的設定檔</p>
+<ul>
+<li>
+<p>優點</p>
+<ul>
+<li>不用搞 lisp</li>
+<li>經過優化</li>
+<li>較完整</li>
+</ul>
+</li>
+<li>
+<p>缺點</p>
+<ul>
+<li>不夠客製化</li>
+<li>功能太多，搞不清</li>
+<li>難以修改</li>
+</ul>
+</li>
+<li>
+<p><a class="link" href="https://github.com/bbatsov/prelude"  target="_blank" rel="noopener"
+    >prelude</a></p>
+</li>
+<li>
+<p><a class="link" href="https://github.com/purcell/emacs.d"  target="_blank" rel="noopener"
+    >purcell</a></p>
+</li>
+</ul>
+<h2 id="httpgitqwerty777githubioemacs-tipsreference-referencereference"><a class="link" href="http://gitqwerty777.github.io/Emacs-tips//#Reference"  title="Reference"
+     target="_blank" rel="noopener"
+    ></a>Reference</h2>
+<p><a class="link" href="http://clipthat.blogspot.tw/2010/01/emacs.html"  target="_blank" rel="noopener"
+    >指令大全</a><br>
+<a class="link" href="http://www.emacs.uniyar.ac.ru/doc/em24h/"  target="_blank" rel="noopener"
+    >Sams Teach Yourself Emacs in 24 Hours</a><br>
+<a class="link" href="http://blog.csdn.net/redguardtoo/article/details/7222501"  target="_blank" rel="noopener"
+    >一年成為 Emacs 高手 (有常用套件推薦)</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/emacs/">emacs</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/vscode/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vscode</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/tmux/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tmux</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/space-vim/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Space Vim</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/vim/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vim</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E8%87%AA%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">自建一个当前系统的基础镜像</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#常用指令">常用指令</a>
+      <ol>
+        <li><a href="#httpgitqwerty777githubioemacs-tipsemacs基本-emacs基本emacs-基本"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E5%9F%BA%E6%9C%AC" title="Emacs基本"></a>Emacs 基本</a>
+          <ol>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs移動-emacs移動emacs-移動"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E7%A7%BB%E5%8B%95" title="Emacs移動"></a>Emacs 移動</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs編輯-emacs編輯emacs-編輯"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E7%B7%A8%E8%BC%AF" title="Emacs編輯"></a>Emacs 編輯</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tips重複-重複重複"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E9%87%8D%E8%A4%87" title="重複"></a>重複</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs搜尋-emacs搜尋emacs-搜尋"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E6%90%9C%E5%B0%8B" title="Emacs搜尋"></a>Emacs 搜尋</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs分割-window-emacs分割windowemacs-分割-window"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E5%88%86%E5%89%B2-window" title="Emacs分割(window)"></a>Emacs 分割 (window)</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs檔案-emacs檔案emacs-檔案"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E6%AA%94%E6%A1%88" title="Emacs檔案"></a>Emacs 檔案</a>
+              <ol>
+                <li><a href="#httpgitqwerty777githubioemacs-tipsemacs檔案切換-emacs檔案切換emacs-檔案切換"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E6%AA%94%E6%A1%88%E5%88%87%E6%8F%9B" title="Emacs檔案切換"></a>Emacs 檔案切換</a></li>
+                <li><a href="#httpgitqwerty777githubioemacs-tipsemacs檔案指令-emacs檔案指令emacs-檔案指令"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E6%AA%94%E6%A1%88%E6%8C%87%E4%BB%A4" title="Emacs檔案指令"></a>Emacs 檔案指令</a></li>
+              </ol>
+            </li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs系統-emacs系統emacs-系統"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E7%B3%BB%E7%B5%B1" title="Emacs系統"></a>Emacs 系統</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs函式-emacs函式emacs-函式"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E5%87%BD%E5%BC%8F" title="Emacs函式"></a>Emacs 函式</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs幫助-emacs幫助emacs-幫助"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E5%B9%AB%E5%8A%A9" title="Emacs幫助"></a>Emacs 幫助</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tips其他-其他其他"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E5%85%B6%E4%BB%96" title="其他"></a>其他</a></li>
+          </ol>
+        </li>
+        <li><a href="#httpgitqwerty777githubioemacs-tipsemacs技巧-emacs技巧emacs-技巧"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E6%8A%80%E5%B7%A7" title="Emacs技巧"></a>Emacs 技巧</a>
+          <ol>
+            <li><a href="#httpgitqwerty777githubioemacs-tips自動完成-自動完成自動完成"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E8%87%AA%E5%8B%95%E5%AE%8C%E6%88%90" title="自動完成"></a>自動完成</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tips移動至定義-goto-declaration-移動至定義goto-declaration移動至定義-goto-declaration"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E7%A7%BB%E5%8B%95%E8%87%B3%E5%AE%9A%E7%BE%A9-goto-declaration" title="移動至定義(goto declaration)"></a>移動至定義 (goto declaration)</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tips回到之前的遊標位置-回到之前的遊標位置回到之前的遊標位置"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E5%9B%9E%E5%88%B0%E4%B9%8B%E5%89%8D%E7%9A%84%E9%81%8A%E6%A8%99%E4%BD%8D%E7%BD%AE" title="回到之前的遊標位置"></a>回到之前的遊標位置</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs作為ide使用-emacs作為ide使用emacs-作為-ide-使用"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E4%BD%9C%E7%82%BAIDE%E4%BD%BF%E7%94%A8" title="Emacs作為IDE使用"></a>Emacs 作為 IDE 使用</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipssublime-text-emacs快速鍵-sublime-text--emacs快速鍵sublime-text--emacs-快速鍵"><a href="http://gitqwerty777.github.io/Emacs-tips//#Sublime-Text-Emacs%E5%BF%AB%E9%80%9F%E9%8D%B5" title="Sublime Text + Emacs快速鍵"></a>Sublime Text + Emacs 快速鍵</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs巨集-macro-emacs巨集macroemacs-巨集-macro"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E5%B7%A8%E9%9B%86-Macro" title="Emacs巨集(Macro)"></a>Emacs 巨集 (Macro)</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs-latex-emacs--latexemacs--latex"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs-Latex" title="Emacs + Latex"></a>Emacs + Latex</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs-git-emacs--gitemacs--git"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs-Git" title="Emacs + Git"></a>Emacs + Git</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tips畫簡單的ascii圖-畫簡單的ascii圖畫簡單的-ascii-圖"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E7%95%AB%E7%B0%A1%E5%96%AE%E7%9A%84ASCII%E5%9C%96" title="畫簡單的ASCII圖"></a>畫簡單的 ASCII 圖</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs-markdown-mode-emacs--markdown-modeemacs--markdown-mode"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs-Markdown-Mode" title="Emacs + Markdown Mode"></a>Emacs + Markdown Mode</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tipsemacs-screen-emacs--screenemacs--screen"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs-Screen" title="Emacs + Screen"></a>Emacs + Screen</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tips套件安裝-套件安裝套件安裝"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E5%A5%97%E4%BB%B6%E5%AE%89%E8%A3%9D" title="套件安裝"></a>套件安裝</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tips其他功能-其他功能其他功能"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E5%85%B6%E4%BB%96%E5%8A%9F%E8%83%BD" title="其他功能"></a>其他功能</a></li>
+            <li><a href="#httpgitqwerty777githubioemacs-tips不重要的功能-不重要的功能不重要的功能"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E4%B8%8D%E9%87%8D%E8%A6%81%E7%9A%84%E5%8A%9F%E8%83%BD" title="不重要的功能"></a>不重要的功能</a></li>
+          </ol>
+        </li>
+        <li><a href="#httpgitqwerty777githubioemacs-tipsemacs小知識-emacs小知識emacs-小知識"><a href="http://gitqwerty777.github.io/Emacs-tips//#Emacs%E5%B0%8F%E7%9F%A5%E8%AD%98" title="Emacs小知識"></a>Emacs 小知識</a></li>
+        <li><a href="#httpgitqwerty777githubioemacs-tips快速設定-快速設定快速設定"><a href="http://gitqwerty777.github.io/Emacs-tips//#%E5%BF%AB%E9%80%9F%E8%A8%AD%E5%AE%9A" title="快速設定"></a>快速設定</a></li>
+        <li><a href="#httpgitqwerty777githubioemacs-tipsreference-referencereference"><a href="http://gitqwerty777.github.io/Emacs-tips//#Reference" title="Reference"></a>Reference</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

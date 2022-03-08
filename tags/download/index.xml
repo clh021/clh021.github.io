@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>download on 良宏</title>
+    <link>/tags/download/</link>
+    <description>Recent content in download on 良宏</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 31 May 2019 12:01:20 +0800</lastBuildDate><atom:link href="/tags/download/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>喜马拉雅FM下载</title>
+      <link>/p/%E5%96%9C%E9%A9%AC%E6%8B%89%E9%9B%85fm%E4%B8%8B%E8%BD%BD/</link>
+      <pubDate>Fri, 31 May 2019 12:01:20 +0800</pubDate>
+      
+      <guid>/p/%E5%96%9C%E9%A9%AC%E6%8B%89%E9%9B%85fm%E4%B8%8B%E8%BD%BD/</guid>
+      <description>2017-09 方案 $(&amp;#34;.sound-list ul li a&amp;#34;).each(function(i){ var sound_id = $(this).attr(&amp;#34;sound_id&amp;#34;); var json_url = &amp;#34;http://www.ximalaya.com/tracks/&amp;#34; + sound_id + &amp;#34;.json&amp;#34;; $.get(json_url,function(json){ var save_name = $(this).html; var down_cmd = &amp;#34;wget -c -T 3 -t 100 &amp;#39;&amp;#34; + json.play_path_64 + &amp;#34;&amp;#39; -O &amp;#39;&amp;#34; + save_name + &amp;#34;&amp;#39;&amp;#34;; console.log(down_cmd); }) }) 2019-05-31 方案 // 第一次执行 var jquery = document.createElement(&amp;#39;script&amp;#39;); jquery.src = &amp;#39;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&amp;#39;; document.getElementsByTagName(&amp;#39;head&amp;#39;)[0].appendChild(jquery); javascript:var jq=document.createElement(&amp;#39;script&amp;#39;);jq.src=&amp;#39;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&amp;#39;,jq.onload=function(){jQuery.noConflict()},document.getElementsByTagName(&amp;#39;head&amp;#39;)[0].appendChild(jq); // 第二次</description>
+    </item>
+    
+  </channel>
+</rss>
