@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>magisk on 良宏</title>
+        <link>/tags/magisk/</link>
+        <description>Recent content in magisk on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-CN</language>
+        <lastBuildDate>Fri, 27 Jan 2023 12:01:20 +0800</lastBuildDate><atom:link href="/tags/magisk/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Magisk</title>
+        <link>/p/magisk/</link>
+        <pubDate>Fri, 27 Jan 2023 12:01:20 +0800</pubDate>
+        
+        <guid>/p/magisk/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/topjohnwu/Magisk/releases/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方下载&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/LSPosed/LSPosed.github.io/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/LSPosed/LSPosed.github.io/releases&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/LSPosed/LSPosed/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/LSPosed/LSPosed/releases&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;备用命令&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;adb devices
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;adb reboot recovery
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 确保手机连接上了&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;fastboot devices
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 刷入 Recovery&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;fastboot flash recovery recovery.img
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 进入 Recovery 环境刷入系统，进入 ADB Sideload 模式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;adb sideload lineageos.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 刷入 GApps&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;adb sideload GApps.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 刷入 Magisk&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;adb sideload Magisk.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 刷入打过补丁的 boot_patch # 如果有的话，没有就是安装app启动app打补丁后得到补丁镜像再来操作&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 也有的是使用 recovery 子命令刷入 recovery ，主要看官网操作最后打补丁是哪个镜像&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;fastboot flash boot boot_patch.img
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;启动系统 USB 有线连接电脑拷贝以下包，并依次安装&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;F-Droid.apk&lt;/li&gt;
+&lt;li&gt;Magisk.apk&lt;/li&gt;
+&lt;li&gt;应用宝.apk&lt;/li&gt;
+&lt;li&gt;LSPosed-v1.9.1-6990-zygisk-release.zip&lt;/li&gt;
+&lt;li&gt;Shamiko-v0.7.3-174-release.zip&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Xposed-Modules-Repo&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;所有模块仓库&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://modules.lsposed.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;所有模块列表&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

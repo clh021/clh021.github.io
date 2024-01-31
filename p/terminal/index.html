@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Linux终端Terminal常用快捷键 CTRL&#43;ALT&#43;T 打开终端 Ctrl&#43;a 光标移动到开始位置 Ctrl&#43;e 光标移动到最末尾 Ctrl&#43;k 删除此处至末尾的所有内容 Ctrl&#43;u 删除此处至开始的所有内容'>
+<title>Terminal</title>
+
+<link rel='canonical' href='/p/terminal/'>
+
+<link rel="stylesheet" href="/scss/style.min.56b4b4efdee21dd7cd9a6ec6cdb1882f71985765df9c7591a90716c58b48f4c5.css"><meta property='og:title' content='Terminal'>
+<meta property='og:description' content='Linux终端Terminal常用快捷键 CTRL&#43;ALT&#43;T 打开终端 Ctrl&#43;a 光标移动到开始位置 Ctrl&#43;e 光标移动到最末尾 Ctrl&#43;k 删除此处至末尾的所有内容 Ctrl&#43;u 删除此处至开始的所有内容'>
+<meta property='og:url' content='/p/terminal/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='terminal' /><meta property='article:published_time' content='2021-12-24T15:56:34&#43;08:00'/><meta property='article:modified_time' content='2021-12-24T15:56:34&#43;08:00'/>
+<meta name="twitter:title" content="Terminal">
+<meta name="twitter:description" content="Linux终端Terminal常用快捷键 CTRL&#43;ALT&#43;T 打开终端 Ctrl&#43;a 光标移动到开始位置 Ctrl&#43;e 光标移动到最末尾 Ctrl&#43;k 删除此处至末尾的所有内容 Ctrl&#43;u 删除此处至开始的所有内容">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hub08581134c092243b209205c3073808c_6075_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            <a href="/categories/software/" style="background-color: #6b69d6; color: #fff;">
+                Software
+            </a>
+        
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+            <a href="/categories/keymap/" style="background-color: darkgreen; color: #fff;">
+                Keymap
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/terminal/">Terminal</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 24, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="linux终端terminal常用快捷键">Linux终端Terminal常用快捷键</h1>
+<pre tabindex="0"><code>CTRL+ALT+T 打开终端
+Ctrl+a 光标移动到开始位置
+Ctrl+e 光标移动到最末尾
+Ctrl+k 删除此处至末尾的所有内容
+Ctrl+u 删除此处至开始的所有内容
+Ctrl+d 删除当前字符
+Ctrl+h 删除当前字符前一个字符
+Ctrl+w 删除此处到左边的单词
+Ctrl+y 粘贴由Ctrl+u， Ctrl+d， Ctrl+w删除的单词
+Ctrl+l 相当于clear，即清屏
+Ctrl+r 查找历史命令
+Ctrl+b 向回移动光标
+Ctrl+f 向前移动光标
+Ctrl+t 将光标位置的字符和前一个字符进行位置交换
+Ctrl+&amp; 恢复 ctrl+h 或者 ctrl+d 或者 ctrl+w 删除的内容
+Ctrl+S 暂停屏幕输出
+Ctrl+Q 继续屏幕输出
+Ctrl+Left-Arrow 光标移动到上一个单词的词首
+Ctrl+Right-Arrow 光标移动到下一个单词的词尾
+Ctrl+p 向上显示缓存命令
+Ctrl+n 向下显示缓存命令
+Ctrl+d 关闭终端
+Ctrl+xx 在EOL和当前光标位置移动
+Ctrl+x@ 显示可能hostname补全
+Ctrl+c 终止进程/命令
+Shift+上或下 终端上下滚动
+Shift+PgUp/PgDn 终端上下翻页滚动
+Ctrl+Shift+n 新终端
+alt+F2 输入gnome-terminal打开终端
+Shift+Ctrl+T 打开新的标签页
+Shift+Ctrl+W 关闭标签页
+Shift+Ctrl+C 复制
+Shift+Ctrl+V 粘贴
+Alt+数字 切换至对应的标签页
+Shift+Ctrl+N 打开新的终端窗口
+Shift+Ctrl+Q 管壁终端窗口
+Shift+Ctrl+PgUp/PgDn 左移右移标签页
+Ctrl+PgUp/PgDn 切换标签页
+F1 打开帮助指南
+F10 激活菜单栏
+F11 全屏切换
+
+Alt+F 打开 “文件” 菜单（file）
+Alt+E 打开 “编辑” 菜单（edit）
+Alt+V 打开 “查看” 菜单（view）
+Alt+S 打开 “搜索” 菜单（search）
+Alt+T 打开 “终端” 菜单（terminal）
+Alt+H 打开 “帮助” 菜单（help）
+</code></pre>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/terminal/">terminal</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/autox.js/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">autox.js</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/appium/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Appium</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%9C%A8-chrome-%E4%B8%AD%E6%A8%A1%E6%8B%9F%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">在 Chrome 中模拟微信内置浏览器</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/keepalived/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Keepalived</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/keepalived/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Keepalived</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2024 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

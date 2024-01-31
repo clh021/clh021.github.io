@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='gf发行版 在线文档 离线文档 代码生成 框架的目的是让开发者将精力聚焦于业务逻辑实现本身。controller,dao/entity/do,ser'>
+<title>goframe2</title>
+
+<link rel='canonical' href='/p/goframe2/'>
+
+<link rel="stylesheet" href="/scss/style.min.56b4b4efdee21dd7cd9a6ec6cdb1882f71985765df9c7591a90716c58b48f4c5.css"><meta property='og:title' content='goframe2'>
+<meta property='og:description' content='gf发行版 在线文档 离线文档 代码生成 框架的目的是让开发者将精力聚焦于业务逻辑实现本身。controller,dao/entity/do,ser'>
+<meta property='og:url' content='/p/goframe2/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='goframe' /><meta property='article:tag' content='golang' /><meta property='article:published_time' content='2024-01-31T20:14:47&#43;08:00'/><meta property='article:modified_time' content='2024-01-31T20:14:47&#43;08:00'/>
+<meta name="twitter:title" content="goframe2">
+<meta name="twitter:description" content="gf发行版 在线文档 离线文档 代码生成 框架的目的是让开发者将精力聚焦于业务逻辑实现本身。controller,dao/entity/do,ser">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hub08581134c092243b209205c3073808c_6075_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+            <a href="/categories/frame/" >
+                Frame
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/goframe2/">goframe2</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 31, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p><a class="link" href="https://github.com/gogf/gf/releases"  target="_blank" rel="noopener"
+    >gf发行版</a>
+<a class="link" href="https://goframe.org"  target="_blank" rel="noopener"
+    >在线文档</a>
+<a class="link" href="https://github.com/gogf/goframe.org-pdf/releases"  target="_blank" rel="noopener"
+    >离线文档</a></p>
+<h1 id="代码生成">代码生成</h1>
+<p>框架的目的是让开发者将精力聚焦于业务逻辑实现本身。<code>controller</code>,<code>dao/entity/do</code>,<code>service</code> 都可以通过<a class="link" href="https://goframe.org/pages/viewpage.action?pageId=1115790"  target="_blank" rel="noopener"
+    >开发工具生成</a>
+需要注意的是，<code>manifest/config.yaml</code> 是部署用的配置，而开发时使用的配置在 <code>hack/config.yml</code></p>
+<p>请确认，您已在一个 <code>goframe2</code> 的项目中，或者通过 <code>gf init serve -u</code> 生成一个项目。</p>
+<h2 id="开发数据库配置">开发数据库配置</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">gfcli</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gen</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">dao</span><span class="p">:</span><span class="w"> </span><span class="c"># 注意层级关系</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c">#link: &#34;mysql:root:root@tcp(127.0.0.1:3306)/goframe?loc=Local&amp;parseTime=true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">link</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;sqlite::@file(./db.sqlite3)&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;book,user&#34;</span><span class="w"> </span><span class="c"># 对应要生成的表</span><span class="w">
+</span></span></span></code></pre></div><p>更多配置选项请参考<a class="link" href="https://goframe.org/pages/viewpage.action?pageId=3673173"  target="_blank" rel="noopener"
+    >这里</a></p>
+<h2 id="生成dao">生成<code>dao</code></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sqlite3 db.sqlite3
+</span></span></code></pre></div><blockquote>
+<p>进入 sqlite命令行界面</p>
+</blockquote>
+<pre tabindex="0"><code class="language-sqlite" data-lang="sqlite">CREATE TABLE book (
+  id INTEGER PRIMARY KEY,
+  title TEXT,
+  author TEXT,
+  publication_year INTEGER,
+  price REAL
+);
+CREATE TABLE user (
+  id INTEGER PRIMARY KEY,
+  name TEXT,
+  email TEXT,
+  address TEXT
+);
+.tables -- 查看所有表
+.schema book -- 查看book表结构
+.schema user -- 查看user表结构
+.exit -- 退出sqlite命令行界面
+</code></pre><p>sqlite 备份还原操作</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sqlite3 db.sqlite3 <span class="s2">&#34;.output sqlite3.data.sql&#34;</span> <span class="s2">&#34;.dump&#34;</span>
+</span></span><span class="line"><span class="cl">sqlite3 db.sqlite3 <span class="s2">&#34;.read sqlite3.data.sql&#34;</span>
+</span></span></code></pre></div><p>确定数据库表都正确时，可以直接在项目根目录下执行 <code>make dao</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ make dao
+</span></span><span class="line"><span class="cl">generated: internal/dao/book.go
+</span></span><span class="line"><span class="cl">generated: internal/dao/internal/book.go
+</span></span><span class="line"><span class="cl">generated: internal/dao/user.go
+</span></span><span class="line"><span class="cl">generated: internal/dao/internal/user.go
+</span></span><span class="line"><span class="cl">generated: internal/model/do/book.go
+</span></span><span class="line"><span class="cl">generated: internal/model/do/user.go
+</span></span><span class="line"><span class="cl">generated: internal/model/entity/book.go
+</span></span><span class="line"><span class="cl">generated: internal/model/entity/user.go
+</span></span><span class="line"><span class="cl"><span class="k">done</span>!
+</span></span></code></pre></div><h2 id="生成ctrl">生成<code>ctrl</code></h2>
+<p><code>make ctrl</code>命令会分析给定的api接口定义目录下的代码，自动生成对应的控制器/SDK Go代码文件</p>
+<blockquote>
+<p>以下是<code>api</code>编写的标签示例代码</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="c1">// 默认值的struct tag名称为d(也可以使用default)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">GetListReq</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">Meta</span> <span class="s">`path:&#34;/&#34; method:&#34;get&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Type</span>   <span class="kt">string</span> <span class="s">`v:&#34;required#请选择内容模型&#34; dc:&#34;内容模型&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Page</span>   <span class="kt">int</span>    <span class="s">`v:&#34;min:0#分页号码错误&#34;      dc:&#34;分页号码&#34; d:&#34;1&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Size</span>   <span class="kt">int</span>    <span class="s">`v:&#34;max:50#分页数量最大50条&#34; dc:&#34;分页数量，最大50&#34; d:&#34;10&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Sort</span>   <span class="kt">int</span>    <span class="s">`v:&#34;in:0,1,2#排序类型不合法&#34; dc:&#34;排序类型(0:最新, 默认。1:活跃, 2:热度)&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">GetListRes</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Items</span> <span class="p">[]</span><span class="nx">Item</span> <span class="s">`dc:&#34;内容列表&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Item</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>    <span class="kt">int64</span>  <span class="s">`dc:&#34;内容ID&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Title</span> <span class="kt">string</span> <span class="s">`dc:&#34;内容标题&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// RegisterReq 注册请求数据结构
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">RegisterReq</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Name</span>  <span class="kt">string</span> <span class="s">`p:&#34;username&#34;  v:&#34;required|length:4,30#请输入账号|账号长度为:{min}到:{max}位&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Pass</span>  <span class="kt">string</span> <span class="s">`p:&#34;password1&#34; v:&#34;required|length:6,30#请输入密码|密码长度不够&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Pass2</span> <span class="kt">string</span> <span class="s">`p:&#34;password2&#34; v:&#34;required|length:6,30|same:password1#请确认密码|密码长度不够|两次密码不一致&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// RegisterRes 注册返回数据结构
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">RegisterRes</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Code</span>  <span class="kt">int</span>         <span class="s">`json:&#34;code&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Error</span> <span class="kt">string</span>      <span class="s">`json:&#34;error&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Data</span>  <span class="kd">interface</span><span class="p">{}</span> <span class="s">`json:&#34;data&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>参考以上代码示例新建自己的 api 接口文件。还可以参考<a class="link" href="https://github.com/gogf/focus-single/blob/master/api/v1/content.go"  target="_blank" rel="noopener"
+    >这里</a> 和 <a class="link" href="https://goframe.org/pages/viewpage.action?pageId=7296348"  target="_blank" rel="noopener"
+    >这里</a></p>
+<blockquote>
+<p><code>GoFrame</code>的<code>struct tag</code>(标签) 有哪些？</p>
+</blockquote>
+<p>参数请求、数据校验、<code>OpenAPIv3</code>、命令管理、数据库ORM。</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Tag(简写)</th>
+<th>全称</th>
+<th>描述</th>
+<th>相关文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>v</code></td>
+<td><code>valid</code></td>
+<td>数据校验标签。</td>
+<td><a class="link" href="https://goframe.org/pages/viewpage.action?pageId=7302150"  target="_blank" rel="noopener"
+    >Struct校验-基本使用</a></td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td><code>param</code></td>
+<td>自定义请求参数匹配。</td>
+<td><a class="link" href="https://goframe.org/pages/viewpage.action?pageId=1114185"  target="_blank" rel="noopener"
+    >请求输入-对象处理</a></td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td><code>default</code></td>
+<td>请求参数默认值绑定。</td>
+<td><a class="link" href="https://goframe.org/pages/viewpage.action?pageId=3671922"  target="_blank" rel="noopener"
+    >请求输入-默认值绑定</a></td>
+</tr>
+<tr>
+<td><code>orm</code></td>
+<td><code>orm</code></td>
+<td>ORM标签，用于指定表名、关联关系。</td>
+<td><a class="link" href="https://goframe.org/pages/viewpage.action?pageId=3673173"  target="_blank" rel="noopener"
+    >数据规范-gen dao</a> <a class="link" href="https://goframe.org/pages/viewpage.action?pageId=7297190"  target="_blank" rel="noopener"
+    >模型关联-静态关联-With特性</a></td>
+</tr>
+<tr>
+<td><code>dc</code></td>
+<td><code>description</code></td>
+<td>通用结构体属性描述，ORM和接口都用到。属于框架默认的属性描述标签。</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>我这里使用以下内容成功进行了<code>control</code>代码生成。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="line"><span class="cl"><span class="c1">// /api/compat/v1/environment.go
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kn">package</span> <span class="nx">v1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;github.com/gogf/gf/v2/frame/g&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">EnvGetListReq</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">Meta</span> <span class="s">`path:&#34;/env&#34; method:&#34;get&#34; summary:&#34;展示查询目标迁移环境列表页面&#34; tags:&#34;目标迁移环境&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>     <span class="kt">uint</span> <span class="s">`json:&#34;id&#34; in:&#34;path&#34; dc:&#34;ID&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">EnvGetListRes</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">Meta</span> <span class="s">`mime:&#34;text/html&#34; type:&#34;string&#34; example:&#34;&lt;html/&gt;&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">EnvGetOneReq</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">Meta</span> <span class="s">`path:&#34;/env/{Id}&#34; method:&#34;get&#34; summary:&#34;展示查询目标迁移环境列表页面&#34; tags:&#34;目标迁移环境&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>     <span class="kt">uint</span> <span class="s">`json:&#34;id&#34; in:&#34;path&#34; dc:&#34;ID&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">EnvGetOneRes</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">Meta</span> <span class="s">`mime:&#34;text/html&#34; type:&#34;string&#34; example:&#34;&lt;html/&gt;&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>               <span class="kt">int</span>    <span class="s">`json:&#34;id&#34;               `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Name</span>             <span class="kt">string</span> <span class="s">`json:&#34;name&#34;             `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Os</span>               <span class="kt">string</span> <span class="s">`json:&#34;os&#34;               `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">OsVer</span>            <span class="kt">string</span> <span class="s">`json:&#34;osVer&#34;            `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Arch</span>             <span class="kt">string</span> <span class="s">`json:&#34;arch&#34;             `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">KernelVer</span>        <span class="kt">string</span> <span class="s">`json:&#34;kernelVer&#34;        `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">BasicInfo</span>        <span class="kt">string</span> <span class="s">`json:&#34;basicInfo&#34;        `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">CompilerInfo</span>     <span class="kt">string</span> <span class="s">`json:&#34;compilerInfo&#34;     `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">BrowserInfo</span>      <span class="kt">string</span> <span class="s">`json:&#34;browserInfo&#34;      `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">SoftwareRepoInfo</span> <span class="kt">string</span> <span class="s">`json:&#34;softwareRepoInfo&#34; `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Detail</span>           <span class="kt">string</span> <span class="s">`json:&#34;detail&#34;           `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">CollectDataFile</span>  <span class="kt">string</span> <span class="s">`json:&#34;collectDataFile&#34;  `</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">EnvCreateReq</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">Meta</span> <span class="s">`path:&#34;/env/create&#34; method:&#34;post&#34; tags:&#34;目标迁移环境&#34; summary:&#34;创建目标迁移环境接口&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// Id               int    `json:&#34;id&#34;               ` //
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Name</span>             <span class="kt">string</span> <span class="s">`json:&#34;name&#34;             v:&#34;required#环境名称不能为空&#34; dc:&#34;环境名称&#34;`</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">CollectDataFile</span>  <span class="kt">string</span> <span class="s">`json:&#34;collectDataFile&#34;  v:&#34;required#采集数据包是必须的&#34; dc:&#34;采集数据包&#34;`</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">EnvCreateRes</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">EnvDeleteReq</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">g</span><span class="p">.</span><span class="nx">Meta</span> <span class="s">`path:&#34;/env/delete&#34; method:&#34;post&#34; tags:&#34;目标迁移环境&#34; summary:&#34;创建目标迁移环境接口&#34;`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Id</span>               <span class="kt">int</span>    <span class="s">`json:&#34;id&#34;               v:&#34;required#迁移环境ID不能为空&#34; dc:&#34;迁移环境ID&#34;`</span> <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">EnvDeleteRes</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>编写好自己的 api 接口文件后，就可以通过 <code>make ctrl</code> 来生成控制器</p>
+<h2 id="生成service">生成<code>service</code></h2>
+<p><code>make service</code>该命令通过分析给定的<code>logic</code>业务逻辑模块目录下的代码，自动生成<code>service</code>目录接口代码。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/goframe/">goframe</a>
+        
+            <a href="/tags/golang/">golang</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/hotgo/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">hotgo</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/goframe/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">goframe</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/go-to-javascript/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Go to javascript</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/dlv/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">dlv</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/autox.js/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">autox.js</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2024 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>

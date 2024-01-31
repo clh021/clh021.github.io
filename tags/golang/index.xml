@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>golang on 良宏</title>
+        <link>/tags/golang/</link>
+        <description>Recent content in golang on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-CN</language>
+        <lastBuildDate>Wed, 31 Jan 2024 20:14:47 +0800</lastBuildDate><atom:link href="/tags/golang/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>goframe2</title>
+        <link>/p/goframe2/</link>
+        <pubDate>Wed, 31 Jan 2024 20:14:47 +0800</pubDate>
+        
+        <guid>/p/goframe2/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/gogf/gf/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;gf发行版&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://goframe.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;在线文档&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/gogf/goframe.org-pdf/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;离线文档&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;代码生成&#34;&gt;代码生成&lt;/h1&gt;
+&lt;p&gt;框架的目的是让开发者将精力聚焦于业务逻辑实现本身。&lt;code&gt;controller&lt;/code&gt;,&lt;code&gt;dao/entity/do&lt;/code&gt;,&lt;code&gt;service&lt;/code&gt; 都可以通过&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1115790&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;开发工具生成&lt;/a&gt;
+需要注意的是，&lt;code&gt;manifest/config.yaml&lt;/code&gt; 是部署用的配置，而开发时使用的配置在 &lt;code&gt;hack/config.yml&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;请确认，您已在一个 &lt;code&gt;goframe2&lt;/code&gt; 的项目中，或者通过 &lt;code&gt;gf init serve -u&lt;/code&gt; 生成一个项目。&lt;/p&gt;
+&lt;h2 id=&#34;开发数据库配置&#34;&gt;开发数据库配置&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;gfcli&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;gen&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;dao&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 注意层级关系&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#link: &amp;#34;mysql:root:root@tcp(127.0.0.1:3306)/goframe?loc=Local&amp;amp;parseTime=true&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;link&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;sqlite::@file(./db.sqlite3)&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;      &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;table&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;book,user&amp;#34;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# 对应要生成的表&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;更多配置选项请参考&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=3673173&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;这里&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;生成dao&#34;&gt;生成&lt;code&gt;dao&lt;/code&gt;&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sqlite3 db.sqlite3
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;进入 sqlite命令行界面&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-sqlite&#34; data-lang=&#34;sqlite&#34;&gt;CREATE TABLE book (
+  id INTEGER PRIMARY KEY,
+  title TEXT,
+  author TEXT,
+  publication_year INTEGER,
+  price REAL
+);
+CREATE TABLE user (
+  id INTEGER PRIMARY KEY,
+  name TEXT,
+  email TEXT,
+  address TEXT
+);
+.tables -- 查看所有表
+.schema book -- 查看book表结构
+.schema user -- 查看user表结构
+.exit -- 退出sqlite命令行界面
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;sqlite 备份还原操作&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sqlite3 db.sqlite3 &lt;span class=&#34;s2&#34;&gt;&amp;#34;.output sqlite3.data.sql&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;.dump&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sqlite3 db.sqlite3 &lt;span class=&#34;s2&#34;&gt;&amp;#34;.read sqlite3.data.sql&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;确定数据库表都正确时，可以直接在项目根目录下执行 &lt;code&gt;make dao&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ make dao
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;generated: internal/dao/book.go
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;generated: internal/dao/internal/book.go
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;generated: internal/dao/user.go
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;generated: internal/dao/internal/user.go
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;generated: internal/model/do/book.go
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;generated: internal/model/do/user.go
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;generated: internal/model/entity/book.go
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;generated: internal/model/entity/user.go
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;!
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;生成ctrl&#34;&gt;生成&lt;code&gt;ctrl&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;make ctrl&lt;/code&gt;命令会分析给定的api接口定义目录下的代码，自动生成对应的控制器/SDK Go代码文件&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;以下是&lt;code&gt;api&lt;/code&gt;编写的标签示例代码&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 默认值的struct tag名称为d(也可以使用default)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;GetListReq&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Meta&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`path:&amp;#34;/&amp;#34; method:&amp;#34;get&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Type&lt;/span&gt;   &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`v:&amp;#34;required#请选择内容模型&amp;#34; dc:&amp;#34;内容模型&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Page&lt;/span&gt;   &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;    &lt;span class=&#34;s&#34;&gt;`v:&amp;#34;min:0#分页号码错误&amp;#34;      dc:&amp;#34;分页号码&amp;#34; d:&amp;#34;1&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Size&lt;/span&gt;   &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;    &lt;span class=&#34;s&#34;&gt;`v:&amp;#34;max:50#分页数量最大50条&amp;#34; dc:&amp;#34;分页数量，最大50&amp;#34; d:&amp;#34;10&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Sort&lt;/span&gt;   &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;    &lt;span class=&#34;s&#34;&gt;`v:&amp;#34;in:0,1,2#排序类型不合法&amp;#34; dc:&amp;#34;排序类型(0:最新, 默认。1:活跃, 2:热度)&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;GetListRes&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Items&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Item&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`dc:&amp;#34;内容列表&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Item&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Id&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;int64&lt;/span&gt;  &lt;span class=&#34;s&#34;&gt;`dc:&amp;#34;内容ID&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Title&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`dc:&amp;#34;内容标题&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// RegisterReq 注册请求数据结构
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;RegisterReq&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Name&lt;/span&gt;  &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`p:&amp;#34;username&amp;#34;  v:&amp;#34;required|length:4,30#请输入账号|账号长度为:{min}到:{max}位&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Pass&lt;/span&gt;  &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`p:&amp;#34;password1&amp;#34; v:&amp;#34;required|length:6,30#请输入密码|密码长度不够&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Pass2&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`p:&amp;#34;password2&amp;#34; v:&amp;#34;required|length:6,30|same:password1#请确认密码|密码长度不够|两次密码不一致&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// RegisterRes 注册返回数据结构
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;RegisterRes&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Code&lt;/span&gt;  &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;         &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;code&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Error&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;      &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;error&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Data&lt;/span&gt;  &lt;span class=&#34;kd&#34;&gt;interface&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;data&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;参考以上代码示例新建自己的 api 接口文件。还可以参考&lt;a class=&#34;link&#34; href=&#34;https://github.com/gogf/focus-single/blob/master/api/v1/content.go&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;这里&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=7296348&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;这里&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;GoFrame&lt;/code&gt;的&lt;code&gt;struct tag&lt;/code&gt;(标签) 有哪些？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;参数请求、数据校验、&lt;code&gt;OpenAPIv3&lt;/code&gt;、命令管理、数据库ORM。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Tag(简写)&lt;/th&gt;
+&lt;th&gt;全称&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;th&gt;相关文档&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;v&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;valid&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;数据校验标签。&lt;/td&gt;
+&lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=7302150&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Struct校验-基本使用&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;p&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;param&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;自定义请求参数匹配。&lt;/td&gt;
+&lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1114185&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;请求输入-对象处理&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;d&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;default&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;请求参数默认值绑定。&lt;/td&gt;
+&lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=3671922&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;请求输入-默认值绑定&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;orm&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;orm&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;ORM标签，用于指定表名、关联关系。&lt;/td&gt;
+&lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=3673173&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;数据规范-gen dao&lt;/a&gt; &lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=7297190&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;模型关联-静态关联-With特性&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;dc&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;description&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;通用结构体属性描述，ORM和接口都用到。属于框架默认的属性描述标签。&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;我这里使用以下内容成功进行了&lt;code&gt;control&lt;/code&gt;代码生成。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// /api/compat/v1/environment.go
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;v1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;github.com/gogf/gf/v2/frame/g&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;EnvGetListReq&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Meta&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`path:&amp;#34;/env&amp;#34; method:&amp;#34;get&amp;#34; summary:&amp;#34;展示查询目标迁移环境列表页面&amp;#34; tags:&amp;#34;目标迁移环境&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Id&lt;/span&gt;     &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;id&amp;#34; in:&amp;#34;path&amp;#34; dc:&amp;#34;ID&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;EnvGetListRes&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Meta&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`mime:&amp;#34;text/html&amp;#34; type:&amp;#34;string&amp;#34; example:&amp;#34;&amp;lt;html/&amp;gt;&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;EnvGetOneReq&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Meta&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`path:&amp;#34;/env/{Id}&amp;#34; method:&amp;#34;get&amp;#34; summary:&amp;#34;展示查询目标迁移环境列表页面&amp;#34; tags:&amp;#34;目标迁移环境&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Id&lt;/span&gt;     &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;id&amp;#34; in:&amp;#34;path&amp;#34; dc:&amp;#34;ID&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;EnvGetOneRes&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Meta&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`mime:&amp;#34;text/html&amp;#34; type:&amp;#34;string&amp;#34; example:&amp;#34;&amp;lt;html/&amp;gt;&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Id&lt;/span&gt;               &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;    &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;id&amp;#34;               `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;Name&lt;/span&gt;             &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;name&amp;#34;             `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;Os&lt;/span&gt;               &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;os&amp;#34;               `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;OsVer&lt;/span&gt;            &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;osVer&amp;#34;            `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;Arch&lt;/span&gt;             &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;arch&amp;#34;             `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;KernelVer&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;kernelVer&amp;#34;        `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;BasicInfo&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;basicInfo&amp;#34;        `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;CompilerInfo&lt;/span&gt;     &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;compilerInfo&amp;#34;     `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;BrowserInfo&lt;/span&gt;      &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;browserInfo&amp;#34;      `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;SoftwareRepoInfo&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;softwareRepoInfo&amp;#34; `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;Detail&lt;/span&gt;           &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;detail&amp;#34;           `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;CollectDataFile&lt;/span&gt;  &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;collectDataFile&amp;#34;  `&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;EnvCreateReq&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Meta&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`path:&amp;#34;/env/create&amp;#34; method:&amp;#34;post&amp;#34; tags:&amp;#34;目标迁移环境&amp;#34; summary:&amp;#34;创建目标迁移环境接口&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// Id               int    `json:&amp;#34;id&amp;#34;               ` //
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;Name&lt;/span&gt;             &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;name&amp;#34;             v:&amp;#34;required#环境名称不能为空&amp;#34; dc:&amp;#34;环境名称&amp;#34;`&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;nx&#34;&gt;CollectDataFile&lt;/span&gt;  &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;collectDataFile&amp;#34;  v:&amp;#34;required#采集数据包是必须的&amp;#34; dc:&amp;#34;采集数据包&amp;#34;`&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;EnvCreateRes&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;EnvDeleteReq&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Meta&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;`path:&amp;#34;/env/delete&amp;#34; method:&amp;#34;post&amp;#34; tags:&amp;#34;目标迁移环境&amp;#34; summary:&amp;#34;创建目标迁移环境接口&amp;#34;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Id&lt;/span&gt;               &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;    &lt;span class=&#34;s&#34;&gt;`json:&amp;#34;id&amp;#34;               v:&amp;#34;required#迁移环境ID不能为空&amp;#34; dc:&amp;#34;迁移环境ID&amp;#34;`&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;EnvDeleteRes&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;编写好自己的 api 接口文件后，就可以通过 &lt;code&gt;make ctrl&lt;/code&gt; 来生成控制器&lt;/p&gt;
+&lt;h2 id=&#34;生成service&#34;&gt;生成&lt;code&gt;service&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;make service&lt;/code&gt;该命令通过分析给定的&lt;code&gt;logic&lt;/code&gt;业务逻辑模块目录下的代码，自动生成&lt;code&gt;service&lt;/code&gt;目录接口代码。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>hotgo</title>
+        <link>/p/hotgo/</link>
+        <pubDate>Fri, 26 Jan 2024 23:54:47 +0800</pubDate>
+        
+        <guid>/p/hotgo/</guid>
+        <description>&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/bufanyun/hotgo&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;仓库&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;hotgo.facms.cn/admin&#34; &gt;演示&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/bufanyun/hotgo/blob/v2.0/docs/guide-zh-CN/start-installation.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;文档&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;本地环境搭建&#34;&gt;本地环境搭建&lt;/h1&gt;
+&lt;h2 id=&#34;本地运行好-mariadb--redis-服务&#34;&gt;本地运行好 mariadb + redis 服务。&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/clh021/hotgo/blob/addons-test/docker-compose.yml&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;使用 docker-compose&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;导入数据库&#34;&gt;导入数据库&lt;/h2&gt;
+&lt;p&gt;字符问题&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;直接使用&lt;a class=&#34;link&#34; href=&#34;https://github.com/clh021/hotgo/tree/fix-sqlchatset&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;hotgo 的 fix-sqlchatset 分支&lt;/a&gt;中已经替换好的 &lt;code&gt;hotgo.sql&lt;/code&gt; 即可解决问题&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;本地准备运行 &lt;code&gt;hotgo&lt;/code&gt; 框架，在导入初始化数据库脚本时，发现在 adminer 面板下，mariadb 数据库中，导入错误。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;CREATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;TABLE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;IF&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NOT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;EXISTS&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hg_admin_credits_log&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;bigint&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NOT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;变动ID&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;member_id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;bigint&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;管理员ID&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;app_id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;varchar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;64&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;CHARACTER&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COLLATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4_0900_ai_ci&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;应用id&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addons_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;varchar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;CHARACTER&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COLLATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4_0900_ai_ci&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NOT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;插件名称&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;credit_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;varchar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;CHARACTER&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COLLATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4_0900_ai_ci&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NOT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;变动类型&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;credit_group&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;varchar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;CHARACTER&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COLLATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4_0900_ai_ci&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;变动组别&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;before_num&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;decimal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;0.00&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;变动前&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;num&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;decimal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;0.00&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;变动数据&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;after_num&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;decimal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;0.00&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;变动后&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;remark&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;varchar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;255&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;CHARACTER&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COLLATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4_0900_ai_ci&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;备注&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;varchar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;CHARACTER&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;SET&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COLLATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4_0900&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;…&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;-- 查询出错 (1273): Unknown collation: &amp;#39;utf8mb4_0900_ai_ci&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;通过以下命令即可修复，使导入成功。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; hotgo/server/storage/data/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;find . -name &lt;span class=&#34;s2&#34;&gt;&amp;#34;*.sql&amp;#34;&lt;/span&gt; -type f -exec sed -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/utf8mb3/utf8mb4/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt; +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;find . -type f -name &lt;span class=&#34;s2&#34;&gt;&amp;#34;*.sql&amp;#34;&lt;/span&gt; -exec sed -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/utf8mb4_0900_ai_ci/utf8mb4_general_ci/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt; +
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;find . -type f -name &lt;span class=&#34;s2&#34;&gt;&amp;#34;*.sql&amp;#34;&lt;/span&gt; -exec sed -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/utf8_general_ci/utf8mb4_general_ci/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt; +
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;运行-hotgo&#34;&gt;运行 hotgo&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 前端服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; hotgo/web
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;yarn
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;yarn dev
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 后端服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; hotgo/server
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;go run main.go
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;插件使用&#34;&gt;插件使用&lt;/h1&gt;
+&lt;h2 id=&#34;创建插件&#34;&gt;创建插件&lt;/h2&gt;
+&lt;p&gt;登陆后台，点击左侧菜单【开发工具】-&amp;gt;【插件管理】-&amp;gt;【创建新插件】，填写插件信息，点击【确认创建】即可。&lt;/p&gt;
+&lt;p&gt;我这里的功能分组选择了主要业务。
+插件标签和插件报名都填写的是 compat_scan。
+标签只是标识，可以填写中文。&lt;/p&gt;
+&lt;p&gt;插件创建成功后会在服务端对应的项目目录中生成插件模块文件，并自动注册到当前项目中。&lt;/p&gt;
+&lt;p&gt;会发现前后端都生成了对应的文件。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;server/addons/compat_scan/
+server/addons/modules/compat_scan.go
+web/src/api/addons/compat_scan/
+web/src/views/addons/compat_scan/
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;详细文件列表如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;new file:   server/addons/compat_scan/README.MD
+new file:   server/addons/compat_scan/api/admin/config/config.go
+new file:   server/addons/compat_scan/api/admin/index/index.go
+new file:   server/addons/compat_scan/api/api/index/index.go
+new file:   server/addons/compat_scan/api/home/index/index.go
+new file:   server/addons/compat_scan/api/websocket/index/index.go
+new file:   server/addons/compat_scan/controller/admin/sys/config.go
+new file:   server/addons/compat_scan/controller/admin/sys/index.go
+new file:   server/addons/compat_scan/controller/api/index.go
+new file:   server/addons/compat_scan/controller/home/index.go
+new file:   server/addons/compat_scan/controller/websocket/index.go
+new file:   server/addons/compat_scan/crons/crons.go
+new file:   server/addons/compat_scan/global/global.go
+new file:   server/addons/compat_scan/global/init.go
+new file:   server/addons/compat_scan/logic/.gitkeep
+new file:   server/addons/compat_scan/logic/logic.go
+new file:   server/addons/compat_scan/logic/sys/config.go
+new file:   server/addons/compat_scan/logic/sys/index.go
+new file:   server/addons/compat_scan/main.go
+new file:   server/addons/compat_scan/model/config.go
+new file:   server/addons/compat_scan/model/input/sysin/config.go
+new file:   server/addons/compat_scan/model/input/sysin/index.go
+new file:   server/addons/compat_scan/queues/queues.go
+new file:   server/addons/compat_scan/resource/public/.gitkeep
+new file:   server/addons/compat_scan/resource/public/default
+new file:   server/addons/compat_scan/resource/template/home/index.html
+new file:   server/addons/compat_scan/router/admin.go
+new file:   server/addons/compat_scan/router/api.go
+new file:   server/addons/compat_scan/router/genrouter/init.go
+new file:   server/addons/compat_scan/router/home.go
+new file:   server/addons/compat_scan/router/websocket.go
+new file:   server/addons/compat_scan/service/.gitkeep
+new file:   server/addons/compat_scan/service/sys.go
+new file:   server/addons/modules/compat_scan.go
+new file:   web/src/api/addons/compat_scan/config/index.ts
+new file:   web/src/views/addons/compat_scan/config/BasicSetting.vue
+new file:   web/src/views/addons/compat_scan/config/system.vue
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;插件安装&#34;&gt;插件安装&lt;/h2&gt;
+&lt;p&gt;如果项目没有热更新，需要手动重启服务端。&lt;/p&gt;
+&lt;p&gt;服务重启后，会在插件管理列表中显示出刚刚创建的插件，点击【安装模块】即可。&lt;/p&gt;
+&lt;p&gt;前台可以访问的页面:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;http://localhost:8000/home/compat_scan/index/test
+接口可以访问的地址:&lt;/li&gt;
+&lt;li&gt;http://localhost:8000/api/compat_scan/index/test&lt;/li&gt;
+&lt;li&gt;http://localhost:8000/admin/compat_scan/index/test&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当前我们是超级管理员，所以我们有所有权限。下面我们只需要创建插件对应的菜单。&lt;/p&gt;
+&lt;h3 id=&#34;添加一级菜单&#34;&gt;添加一级菜单&lt;/h3&gt;
+&lt;p&gt;【权限管理】-&amp;gt;【菜单权限】-&amp;gt;【添加菜单】。&lt;/p&gt;
+&lt;p&gt;菜单类型: &lt;code&gt;目录&lt;/code&gt;
+上机目录: 根目录
+路由地址，组建路径: &lt;code&gt;/compat_scan&lt;/code&gt;
+路由别名: &lt;code&gt;compat_scan&lt;/code&gt;
+组件路径: &lt;code&gt;LAYOUT&lt;/code&gt; 不填写此项时，将不会显示页面框架，而只单纯展示页面内容&lt;/p&gt;
+&lt;h3 id=&#34;添加子菜单&#34;&gt;添加子菜单&lt;/h3&gt;
+&lt;p&gt;由于我们在刚刚生成的代码中发现了 &lt;code&gt;addons/compat_scan/config&lt;/code&gt; 目录相关&lt;code&gt;system&lt;/code&gt;页面&lt;/p&gt;
+&lt;p&gt;所以我们可以现在就直接添加插件&amp;quot;配置&amp;quot;的子菜单&lt;/p&gt;
+&lt;p&gt;【权限管理】-&amp;gt;【菜单权限】。&lt;/p&gt;
+&lt;p&gt;选中刚刚添加的一级菜单&lt;code&gt;compat_scan&lt;/code&gt;，点击【添加子菜单】
+刚刚选中了创建的一级菜单，所以上级目录已经创建好。
+二级菜单图标似乎不用。
+路由地址和别名: &lt;code&gt;compat_scan_config&lt;/code&gt;
+组件路径填写 &lt;code&gt;system&lt;/code&gt; 页面路径: &lt;code&gt;/addons/compat_scan/config/system&lt;/code&gt;
+其它填写项: 默认&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;至此刷新页面，即可在后台管理中看到菜单，并点击菜单，看见页面内容&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;使用菜单&#34;&gt;使用菜单&lt;/h3&gt;
+&lt;p&gt;点击菜单中刚刚创建的&lt;code&gt;配置&lt;/code&gt;菜单，发现有一个错误提示，这是因为后端数据库没有对应的记录导致的。
+只需要 找到数据库中的 &lt;code&gt;hg_sys_addons_config&lt;/code&gt; 表，将 &lt;code&gt;hgexample&lt;/code&gt; 记录复制后，将插件名&lt;code&gt;addon_name&lt;/code&gt; 改为 &lt;code&gt;compat_scan&lt;/code&gt; 即可。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>goframe</title>
+        <link>/p/goframe/</link>
+        <pubDate>Fri, 26 Jan 2024 15:54:47 +0800</pubDate>
+        
+        <guid>/p/goframe/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/gogf/gf/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;gf发行版&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://goframe.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;在线文档&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/gogf/goframe.org-pdf/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;离线文档&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget -O gf &lt;span class=&#34;s2&#34;&gt;&amp;#34;https://github.com/gogf/gf/releases/latest/download/gf_&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;go env GOOS&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;go env GOARCH&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chmod +x gf &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; ./gf install -y &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm ./gf
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;验证安装成功&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;zsh&lt;/code&gt;终端，可能会存在&lt;code&gt;gf&lt;/code&gt;别名冲突（&lt;code&gt;git fetch&lt;/code&gt;快捷指令），那么安装后（至少执行一次）请重启终端软件来继续使用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ gf -v
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;v2.6.2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Welcome to GoFrame!
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Env Detail:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  Go Version: go1.21.4 linux/amd64
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  GF Version&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;go.mod&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: cannot find go.mod
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;CLI Detail:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  Installed At: /home/lee/.bin/gf
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  Built Go Version: go1.20.7
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  Built GF Version: v2.6.2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  Git Commit: 2024-01-22 22:10:21 bde3219da1a3714ad85d89863aca1c345e1826bd
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  Built Time: 2024-01-23 10:31:37
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Others Detail:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  Docs: https://goframe.org
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  Now : 2024-01-26T16:29:44+08:00
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;quick-run&#34;&gt;Quick Run&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 初始化项目名为 demo 。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;gf init demo -u
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 运行项目&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; demo
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;gf run main.go
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 访问 api&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# http://127.0.0.1:8000/hello&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 访问 swagger&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# http://127.0.0.1:8000/swagger&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 升级框架版本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;gf up -a
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;理解&#34;&gt;理解&lt;/h2&gt;
+&lt;p&gt;各个目录的作用，可以看&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=30740166&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;工程目录设计&lt;/a&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt; | 目录/文件名称  | 说明     | 描述                                                                                 |
+ | ---            | ---      | ---                                                                                  |
+ | `api`          | 对外接口 | 对外提供服务的输入/输出数据结构定义。考虑到版本管理需要，往往以`api/xxx/v1...`存在。 |
+ | `hack`         | 工具脚本 | 存放项目开发工具、脚本等内容。例如，`CLI`工具的配置，各种`shell/bat`脚本等文件。     |
+ | `internal`     | 内部逻辑 | 业务逻辑存放目录。通过`Golang internal`特性对外部隐藏可见性。                        |
+ | `- cmd`        | 入口指令 | 命令行管理目录。可以管理维护多个命令行。                                             |
+ | `- consts`     | 常量定义 | 项目所有常量定义。                                                                   |
+ | `- controller` | 接口处理 | 接收/解析用户输入参数的入口/接口层。                                                 |
+ | `- dao`        | 数据访问 | 数据访问对象，这是一层抽象对象，用于和底层数据库交互，仅包含最基础的 `CURD` 方法     |
+ | `- logic`      | 业务封装 | 业务逻辑封装管理，特定的业务逻辑实现和封装。往往是项目中最复杂的部分。               |
+ | `- model`      | 结构模型 | 数据结构管理模块，管理数据实体对象，以及输入与输出数据结构定义。                     |
+ | `- do`         | 领域对象 | 用于`dao`数据操作中业务模型与实例模型转换，由工具维护，用户不能修改。                |
+ | `- entity`     | 数据模型 | 数据模型是模型与数据集合的一对一关系，由工具维护，用户不能修改。                     |
+ | `- service`    | 业务接口 | 用于业务模块解耦的接口定义层。具体的接口实现在`logic`中进行注入。                    |
+ | `manifest`     | 交付清单 | 包含程序编译、部署、运行、配置的文件。常见内容如下：                                 |
+ | `- config`     | 配置管理 | 配置文件存放目录。                                                                   |
+ | `- docker`     | 镜像文件 | `Docker`镜像相关依赖文件，脚本文件等等。                                             |
+ | `- deploy`     | 部署文件 | 部署相关的文件。默认提供了`Kubernetes`集群化部署的`Yaml`模板，通过`kustomize`管理。  |
+ | `- protobuf`   | 协议文件 | `GRPC`协议时使用的`protobuf`协议定义文件，协议文件编译后生成`go`文件到`api`目录。    |
+ | `resource`     | 静态资源 | 静态资源文件。这些文件往往可以通过 资源打包/镜像编译 的形式注入到发布文件中。        |
+ | `go.mod`       | 依赖管理 | 使用`Go Module`包管理的依赖描述文件。                                                |
+ | `main.go`      | 入口文件 | 程序入口文件。                                                                       |
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;对外接口包含两部分：接口定义（api）+接口实现（controller）。&lt;/p&gt;
+&lt;p&gt;业务实现包含两部分：业务接口（service）+业务封装（logic）。&lt;/p&gt;
+&lt;p&gt;结构模型：model包的职责类似于三层架构中的Model模型定义层。模型定义代码层中仅包含全局公开的数据结构定义，往往不包含方法定义。
+这里需要注意的是，这里的model不仅负责维护数据实体对象（entity）结构定义，也包括所有的输入/输出数据结构定义，被api/dao/service共同引用。这样做的好处除了可以统一管理公开的数据结构定义，也可以充分对同一业务领域的数据结构进行复用，减少代码冗余。&lt;/p&gt;
+&lt;p&gt;数据访问：dao包的职责类似于三层架构中的DAL数据访问层，数据访问层负责所有的数据访问收口。&lt;/p&gt;
+&lt;h3 id=&#34;项目启动&#34;&gt;项目启动&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;main.go&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;入口&lt;code&gt;main.go&lt;/code&gt;，实例项目中，默认会执行&lt;code&gt;internal/cmd&lt;/code&gt;包的&lt;code&gt;Main&lt;/code&gt;对象&lt;code&gt;Run&lt;/code&gt;命令引导程序启动。
+框架的核心组件均需要传递&lt;code&gt;context&lt;/code&gt;上下文参数，这里使用&lt;code&gt;gctx.New&lt;/code&gt;表示创建一个带链路跟踪特性的&lt;code&gt;context&lt;/code&gt;上下文对象给下游链路。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;引导启动&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;internal/cmd/cmd.go&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;框架的命令行管理默认采用了结构化的对象管理方式，&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=35357518&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;命令管理&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Main&lt;/code&gt;对象的&lt;code&gt;Run&lt;/code&gt;命令的主要作用是做引导启动，将一些动态初始化的逻辑放到&lt;code&gt;Main&lt;/code&gt;的&lt;code&gt;Run&lt;/code&gt;方法中。在项目模板中，默认创建一个&lt;code&gt;HTTP Server&lt;/code&gt;，然后通过分组路由的方式注册路由，并启动&lt;code&gt;HTTP Server&lt;/code&gt;。随后&lt;code&gt;HTTP Server&lt;/code&gt;将会阻塞运行，它同时也会异步监听系统信号，直至收到退出信号后，它会优雅关闭连接随后退出进程。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;路由注册&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;internal/cmd/cmd.go&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;细的HTTP Server路由介绍&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1114477&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;路由管理&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;模板中使用了Group方法创建了分组路由，框架的HTTP Server支持多种路由注册方式&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;路由对象&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;internal/controller/hello/hello_v1_hello.go&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;模板中的路由对象Hello只有一个路由Hello，仅用于模板示例作用。
+多数场景下我们简单地带了一个小写的前缀c表示controller的缩写。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;api/hello/v1/hello.go&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Hello方法对应的路由信息是定义到HelloReq输入参数对象中的&lt;/p&gt;
+&lt;p&gt;统一的中间件返回统一的数据结构，统一路由对象的方法管理路由的方式&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=30736904&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;路由注册-规范路由&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;阻塞运行&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;internal/cmd/cmd.go&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;通过&lt;code&gt;HTTP Server&lt;/code&gt;的&lt;code&gt;Run&lt;/code&gt;方法启动&lt;code&gt;HTTP Server&lt;/code&gt;，随后&lt;code&gt;HTTP Server&lt;/code&gt;将会阻塞运行接收客户端请求，并监听进程信号，用于&lt;code&gt;HTTP Server&lt;/code&gt;重启/关闭。&lt;/p&gt;
+&lt;p&gt;GoFrame框架的HTTP Server带有非常多的特性，&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1114405&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;WEB服务开发&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;项目配置&#34;&gt;项目配置&lt;/h3&gt;
+&lt;p&gt;目录结构，各个目录的作用，可以看&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=30740166&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;工程目录设计&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;工程配置
+hack目录下是GoFrame框架提供的开发工具的配置，与业务配置独立。通常以config.yaml命名。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;业务项目运行所需的配置，用于业务项目部署运行，存放于manifest/config目录下。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;配置对象
+业务配置可以通过框架独立的配置组件来访问，g.Cfg()单例对象将会自动读取manifest/config目录下的配置文件，配置组件的功能&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1114668&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;非常强大&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;单例对象
+虽然框架的组件是模块化、低耦化设计的，但为了给与业务项目使用的方便，框架同时提供了一些常用的单例对象获取，例如：g.Cfg()/g.DB()/g.Log()&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1114188&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;等等&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;单例对象的便捷之处在于，它会自动通过g.Cfg()配置对象自动获取既定配置项下的配置，并自动初始化单例对象。不同的单例对象，自动读取的配置项不同。&lt;/p&gt;
+&lt;h3 id=&#34;要点介绍&#34;&gt;要点介绍&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;接口定义&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;api/hello/v1/hello.go&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;接口注册文件位于api目录下，在API结构体的属性中包含一些标签。其中结构体属性的v标签表示校验规则，请求参数进入HTTP Server后将会被自动执行校验（框架有非常强大的&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1114678&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;数据校验组件&lt;/a&gt;）&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;路由注册&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;internal/cmd/cmd.go&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;路由注册往往在cmd包中，在本项目中，仍旧采用灵活的分组路由注册方式。在部分路由中带有鉴权中间件，这部分路由需要鉴权后才能访问，可看，&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1114315&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;路由管理-中间件/拦截器&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;常量管理&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;项目的全局访问常量位于 &lt;code&gt;internal/consts&lt;/code&gt;包下，供项目所有的包全局可访问，全局常量通过不同的文件以及名称命名前缀来区分不同的业务模块。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：非公开的常量建议放到对应的包下面闭环维护。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;控制器定义&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;internal/controller/hello/hello_v1_hello.go&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;不带有任何的业务逻辑，负责API接口数据结构的输入与输出，调用一个或多个service实现具体的业务逻辑。&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;数据库访问&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;首先要引入对应的&lt;a class=&#34;link&#34; href=&#34;https://github.com/gogf/gf/tree/master/contrib/drivers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;驱动文件&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;然后要配置使用database&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1114245&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;配置项&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;最后，生成dao代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;推荐使用dao/do/entity的方式操作数据库，这些文件都是通过开发工具自动生成的，由开发工具统一维护。
+代码生成方式通过 make dao命令，或者gf gen dao命令。查看&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=17203240&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Dao封装设计&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=3673173&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;数据规范-gen dao&lt;/a&gt;&lt;/p&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;业务模型
+内部模块间交互的数据结构由model包维护，供全局访问。&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=7295964&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;数据模型与业务模型&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;服务接口
+为了降低业务项目内部模块间的耦合，框架将模块间的依赖抽象为了接口，由internal/service包维护。
+internal/service可以由开发者自定义维护接口，也可以通过internal/logic业务封装的代码按照一定规则自动生成接口代码文件。&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=49770772&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;模块规范-gen service&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;业务实现
+业务的具体实现由internal/logic包维护，通过依赖注入的方式注册具体的实现对象到internal/service包下。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;依赖注入
+业务实现的依赖注入使用的是匿名包初始化方法init，在匿名包初始化方法内部使用service.RegisterXxx的方式注入具体的接口实现对象。&lt;/li&gt;
+&lt;li&gt;增加引入（仅一次）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;代码生成&#34;&gt;代码生成&lt;/h3&gt;
+&lt;p&gt;框架的目的是让开发者将精力聚焦于业务逻辑实现本身。&lt;code&gt;controller&lt;/code&gt;,&lt;code&gt;dao/entity/do&lt;/code&gt;,&lt;code&gt;service&lt;/code&gt; 都可以通过&lt;a class=&#34;link&#34; href=&#34;https://goframe.org/pages/viewpage.action?pageId=1115790&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;开发工具生成&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>call func by string in golang</title>
+        <link>/p/call-func-by-string-in-golang/</link>
+        <pubDate>Tue, 05 Jul 2022 23:50:47 +0800</pubDate>
+        
+        <guid>/p/call-func-by-string-in-golang/</guid>
+        <description>&lt;p&gt;案例一&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;s&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;s&#34;&gt;&amp;#34;reflect&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;My&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;m&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;My&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;MyFunc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Println&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;MyFunc called&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Println&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;m&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;My&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;meth&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;m&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;MethodByName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;MyFunc&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;meth&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Call&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;aa&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;案例二&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;s&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;s&#34;&gt;&amp;#34;reflect&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;My&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;m&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;My&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;MyFunc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Println&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;MyFunc called&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;registry&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;interface&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;s&#34;&gt;&amp;#34;My&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;interface&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;My&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;v&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;registry&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;My&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;meth&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;MethodByName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;MyFunc&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;meth&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Call&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;nil&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;案例三&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;package&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;s&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;s&#34;&gt;&amp;#34;reflect&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;T&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Foo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Println&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;MyStruct&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;id&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Person&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Name&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;Age&lt;/span&gt;  &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ms&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;MyStruct&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Person&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Age&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;T&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;MethodByName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Foo&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Call&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([]&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{})&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ans&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int64&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;ans&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;MethodByName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Bar&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Call&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([]&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;MyStruct&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}),&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;reflect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;ValueOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Person&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Dexter&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;})})[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nx&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;Println&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;ans&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Go to javascript</title>
+        <link>/p/go-to-javascript/</link>
+        <pubDate>Mon, 04 Jul 2022 15:54:47 +0800</pubDate>
+        
+        <guid>/p/go-to-javascript/</guid>
+        <description>&lt;h1 id=&#34;gopherjsgopherjs&#34;&gt;gopherjs/gopherjs&lt;/h1&gt;
+&lt;p&gt;11.2K&lt;/p&gt;
+&lt;h2 id=&#34;优点&#34;&gt;优点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;一次编译在所有平台架构都可以运行&lt;/li&gt;
+&lt;li&gt;可以直接把 golang 代码编译为 javascript&lt;/li&gt;
+&lt;li&gt;可以作为 nodejs 和 chromejs 运行&lt;/li&gt;
+&lt;li&gt;支持几乎所有东西，包括 Goroutines&lt;a class=&#34;link&#34; href=&#34;https://github.com/gopherjs/gopherjs/blob/master/doc/compatibility.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;兼容性文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;大多数情况下性能相当不错，参阅&lt;a class=&#34;link&#34; href=&#34;https://ajhager.github.io/engi/demos/botmark.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;HTML5 游戏引擎基准&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;缺点&#34;&gt;缺点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;不能使用 sys|net 等核心组件，但是最新版本似乎通过 websocket 解决了这个问题&lt;/li&gt;
+&lt;li&gt;不支持 Cgo&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#没有CGO调用的情况下，交叉编译&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;CGO_ENABLED&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;GOOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;linux &lt;span class=&#34;nv&#34;&gt;GOARCH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;amd64 go build
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# -s -w 去掉调试信息，可以减小构建后文件体积&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# --extldflags &amp;#34;-static -fpic&amp;#34; 完全静态编译[2]，这样编译生成的文件就可以任意放到指定平台下运行，而不需要运行环境配置。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;CGO_ENABLED&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;GOOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;linux &lt;span class=&#34;nv&#34;&gt;GOARCH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;amd64 go build -ldflags &lt;span class=&#34;s1&#34;&gt;&amp;#39;-s -w --extldflags &amp;#34;-static -fpic&amp;#34;&amp;#39;&lt;/span&gt; main.go
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;vuguvugu&#34;&gt;vugu/vugu&lt;/h1&gt;
+&lt;p&gt;4.4K
+&lt;a class=&#34;link&#34; href=&#34;http://www.vugu.org/doc/start&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;快速开始&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;优点-1&#34;&gt;优点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;直接使用 golang 编写 webUI 以 WebAssembly 为目标&lt;/li&gt;
+&lt;li&gt;没有 node,npm,node_modules&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;缺点-1&#34;&gt;缺点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;最后一次版本更新是在 2020-11-08&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;hexopsvecty&#34;&gt;hexops/vecty&lt;/h1&gt;
+&lt;p&gt;2.4K&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

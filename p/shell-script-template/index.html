@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='#!/usr/bin/env bash # leehom Chen clh021@gmail.com # 本脚本旨在提供一个用于快速编写 shell 脚本模板 set -e # 路径准备 OldPath=$(pwd) # SCRIPT_PATH=$(realpath &amp;#34;${BASH_SOURCE[0]}&amp;#34;) SCRIPT_PATH=$(realpath &amp;#34;$0&amp;#34;) ProjectPath=&amp;#34;$(dirname &amp;#34;$(dirname &amp;#34;$SCRIPT_PATH&amp;#34;)&amp;#34;)&amp;#34; pushd $ProjectPath &amp;gt; /dev/null if [ -f &amp;#34;$ProjectPath/.env&amp;#34; ]; then source &amp;#34;$ProjectPath/.env&amp;#34; fi # arch=`dpkg --print-architecture` # amd64 arch=$(uname -m) # x86_64 echo &amp;#34'>
+<title>Shell Script Template</title>
+
+<link rel='canonical' href='/p/shell-script-template/'>
+
+<link rel="stylesheet" href="/scss/style.min.56b4b4efdee21dd7cd9a6ec6cdb1882f71985765df9c7591a90716c58b48f4c5.css"><meta property='og:title' content='Shell Script Template'>
+<meta property='og:description' content='#!/usr/bin/env bash # leehom Chen clh021@gmail.com # 本脚本旨在提供一个用于快速编写 shell 脚本模板 set -e # 路径准备 OldPath=$(pwd) # SCRIPT_PATH=$(realpath &amp;#34;${BASH_SOURCE[0]}&amp;#34;) SCRIPT_PATH=$(realpath &amp;#34;$0&amp;#34;) ProjectPath=&amp;#34;$(dirname &amp;#34;$(dirname &amp;#34;$SCRIPT_PATH&amp;#34;)&amp;#34;)&amp;#34; pushd $ProjectPath &amp;gt; /dev/null if [ -f &amp;#34;$ProjectPath/.env&amp;#34; ]; then source &amp;#34;$ProjectPath/.env&amp;#34; fi # arch=`dpkg --print-architecture` # amd64 arch=$(uname -m) # x86_64 echo &amp;#34'>
+<meta property='og:url' content='/p/shell-script-template/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='shell' /><meta property='article:published_time' content='2022-03-29T00:22:18&#43;08:00'/><meta property='article:modified_time' content='2022-03-29T00:22:18&#43;08:00'/>
+<meta name="twitter:title" content="Shell Script Template">
+<meta name="twitter:description" content="#!/usr/bin/env bash # leehom Chen clh021@gmail.com # 本脚本旨在提供一个用于快速编写 shell 脚本模板 set -e # 路径准备 OldPath=$(pwd) # SCRIPT_PATH=$(realpath &amp;#34;${BASH_SOURCE[0]}&amp;#34;) SCRIPT_PATH=$(realpath &amp;#34;$0&amp;#34;) ProjectPath=&amp;#34;$(dirname &amp;#34;$(dirname &amp;#34;$SCRIPT_PATH&amp;#34;)&amp;#34;)&amp;#34; pushd $ProjectPath &amp;gt; /dev/null if [ -f &amp;#34;$ProjectPath/.env&amp;#34; ]; then source &amp;#34;$ProjectPath/.env&amp;#34; fi # arch=`dpkg --print-architecture` # amd64 arch=$(uname -m) # x86_64 echo &amp;#34">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hub08581134c092243b209205c3073808c_6075_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/shell-script-template/">Shell Script Template</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 29, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/env bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># leehom Chen clh021@gmail.com</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 本脚本旨在提供一个用于快速编写 shell 脚本模板</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> -e
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 路径准备</span>
+</span></span><span class="line"><span class="cl"><span class="nv">OldPath</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># SCRIPT_PATH=$(realpath &#34;${BASH_SOURCE[0]}&#34;)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">SCRIPT_PATH</span><span class="o">=</span><span class="k">$(</span>realpath <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2">&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ProjectPath</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>dirname <span class="s2">&#34;</span><span class="k">$(</span>dirname <span class="s2">&#34;</span><span class="nv">$SCRIPT_PATH</span><span class="s2">&#34;</span><span class="k">)</span><span class="s2">&#34;</span><span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">pushd</span> <span class="nv">$ProjectPath</span> &gt; /dev/null
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/.env&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">source</span> <span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/.env&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># arch=`dpkg --print-architecture` # amd64</span>
+</span></span><span class="line"><span class="cl"><span class="nv">arch</span><span class="o">=</span><span class="k">$(</span>uname -m<span class="k">)</span> <span class="c1"># x86_64</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;当前系统架构为: </span><span class="nv">$arch</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">nowTime</span><span class="o">=</span><span class="k">$(</span>date +%Y%m%d_%H%M%S<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">pkgTime</span><span class="o">=</span><span class="k">$(</span>git log -1 --format<span class="o">=</span>%at <span class="p">|</span> xargs -I<span class="o">{}</span> date -d @<span class="o">{}</span> +%Y%m%d_%H%M%S<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LITHIUM_BIN</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 为适应不同打包环境(仅拷贝脚本等文件而非整个项目即可打包)，本脚本会自动寻找浏览器程序进行容器打包</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找 lithium 程序</span>
+</span></span><span class="line"><span class="cl">findLithiumBin<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="nb">test</span> -f <span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/lithium/lithium&#34;</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      <span class="nv">LITHIUM_BIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/lithium/lithium&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="nb">test</span> -f <span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/../lithium/lithium&#34;</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      <span class="nv">LITHIUM_BIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/../lithium/lithium&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="nb">test</span> -f <span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/build/dist/lithium/lithium&#34;</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      <span class="nv">LITHIUM_BIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/build/dist/lithium/lithium&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="nb">test</span> -f <span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/../../lithium/lithium&#34;</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      <span class="nv">LITHIUM_BIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$ProjectPath</span><span class="s2">/../../lithium/lithium&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">generateSha512sumFile<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> &gt; SHA512SUMS
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> f in <span class="nv">$1</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> -r <span class="nv">$f</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      <span class="nb">echo</span> <span class="s2">&#34;</span><span class="k">$(</span>date +%Y-%m-%d_%H:%M:%S<span class="k">)</span><span class="s2"> </span><span class="nv">$f</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">      sha512sum <span class="s2">&#34;</span><span class="nv">$f</span><span class="s2">&#34;</span> &gt;&gt; SHA512SUMS
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">      <span class="nb">echo</span> <span class="s2">&#34;Not find </span><span class="nv">$1</span><span class="s2"> files.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">done</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">display_usage<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> -e <span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">example:
+</span></span></span><span class="line"><span class="cl"><span class="s2">    </span><span class="nv">$0</span><span class="s2"> -b -u https://baidu.com
+</span></span></span><span class="line"><span class="cl"><span class="s2">Usage:
+</span></span></span><span class="line"><span class="cl"><span class="s2">    b build before test (default:false)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    a appid (default:12as.ji_a.com)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    u URL to open
+</span></span></span><span class="line"><span class="cl"><span class="s2">    g Whether use gecko engine
+</span></span></span><span class="line"><span class="cl"><span class="s2">    c Whether clear cache&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># \t\n</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 解析传递的参数</span>
+</span></span><span class="line"><span class="cl"><span class="nv">_URL</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">_CLEAR</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">_BUILD</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">_USE_GECKO</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">_APPID</span><span class="o">=</span>12as.ji_a.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">parseArg<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># check whether user had supplied -h or --help . If yes display usage</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[[</span> <span class="o">(</span> <span class="nv">$*</span> <span class="o">==</span> <span class="s2">&#34;--help&#34;</span><span class="o">)</span> <span class="o">||</span>  <span class="nv">$*</span> <span class="o">==</span> <span class="s2">&#34;-h&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      display_usage
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="nb">getopts</span> <span class="s2">&#34;ba:u:cg&#34;</span> arg<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nv">$arg</span> in
+</span></span><span class="line"><span class="cl">      b<span class="o">)</span> <span class="nv">_BUILD</span><span class="o">=</span><span class="nb">true</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">      a<span class="o">)</span> <span class="nv">_APPID</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">      u<span class="o">)</span> <span class="nv">_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">      c<span class="o">)</span> <span class="nv">_CLEAR</span><span class="o">=</span><span class="nb">true</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">      g<span class="o">)</span> <span class="nv">_USE_GECKO</span><span class="o">=</span><span class="nb">true</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">      ?<span class="o">)</span> display_usage <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">esac</span>
+</span></span><span class="line"><span class="cl">  <span class="k">done</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">parseArg <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">showOptions<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;_URL: </span><span class="nv">$_URL</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;_CLEAR: </span><span class="nv">$_CLEAR</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;_BUILD: </span><span class="nv">$_BUILD</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;_USE_GECKO: </span><span class="nv">$_USE_GECKO</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;_APPID: </span><span class="nv">$_APPID</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">main<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  findLithiumBin
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="nb">test</span> -n <span class="s2">&#34;</span><span class="nv">$LITHIUM_BIN</span><span class="s2">&#34;</span><span class="p">;</span><span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s1">&#39;找到了要打包的浏览器。&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[[</span> -n <span class="s2">&#34;</span><span class="nv">$_CLEAR</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      <span class="nb">echo</span> <span class="s1">&#39;正在清理缓存&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$_URL</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      <span class="nv">_URL</span><span class="o">=</span><span class="s2">&#34;http://localhost:8000&#34;</span> <span class="c1"># /gecko.html&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s1">&#39;正在打开测试页面&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">DEBUG_GECKO</span><span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">PROJ_DIR</span><span class="si">}</span><span class="s2">/build/dist/lithium/lithium </span><span class="si">${</span><span class="nv">_OPTIONS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">_URL</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$COMMAND</span><span class="s2">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#strace -f -o &#34;${PROJ_DIR}/tools/run-lithium-in-strace.log&#34; \</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># $COMMAND | grep --color -E &#39;^|JavaScript|error|x11ID|lastSet&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">cd</span> -
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s1">&#39;没有找到要打包的浏览器。&#39;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">showOptions
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">./child.python <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PID_P1</span><span class="o">=</span><span class="nv">$!</span>
+</span></span><span class="line"><span class="cl">./detect <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PID_P2</span><span class="o">=</span><span class="nv">$!</span>
+</span></span><span class="line"><span class="cl">./main <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PID_P3</span><span class="o">=</span><span class="nv">$!</span>
+</span></span><span class="line"><span class="cl">./kit <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PID_P4</span><span class="o">=</span><span class="nv">$!</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">on_exit<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;clean on_exit, kill </span><span class="nv">$PID_P1</span><span class="s2"> </span><span class="nv">$PID_P2</span><span class="s2"> </span><span class="nv">$PID_P3</span><span class="s2"> </span><span class="nv">$PID_P4</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">kill</span> -9 <span class="si">${</span><span class="nv">PID_P4</span><span class="si">}</span> <span class="o">||</span> :
+</span></span><span class="line"><span class="cl">	<span class="nb">kill</span> -9 <span class="si">${</span><span class="nv">PID_P3</span><span class="si">}</span> <span class="o">||</span> :
+</span></span><span class="line"><span class="cl">	<span class="nb">kill</span> -9 <span class="si">${</span><span class="nv">PID_P2</span><span class="si">}</span> <span class="o">||</span> :
+</span></span><span class="line"><span class="cl">	<span class="nb">kill</span> -9 <span class="si">${</span><span class="nv">PID_P1</span><span class="si">}</span> <span class="o">||</span> :
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">trap</span> on_exit EXIT SIGTERM SIGINT
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">main
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">popd</span> &gt; /dev/null
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> <span class="s2">&#34;</span><span class="nv">$OldPath</span><span class="s2">&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Makefile" data-lang="Makefile"><span class="line"><span class="cl"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">init</span>
+</span></span><span class="line"><span class="cl"><span class="nf">init</span><span class="o">:</span> .<span class="n">git</span>/<span class="n">hooks</span>/<span class="n">pre</span>-<span class="n">push</span> .<span class="n">air</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">.git/hooks/pre-push</span><span class="o">:</span><span class="n">makefile</span>
+</span></span><span class="line"><span class="cl">	@echo <span class="s2">&#34;#!/usr/bin/env bash&#34;</span> &gt; <span class="nv">$@</span>
+</span></span><span class="line"><span class="cl">	@echo <span class="s2">&#34;set -e&#34;</span> &gt;&gt; <span class="nv">$@</span>
+</span></span><span class="line"><span class="cl">	@echo <span class="s2">&#34;make test&#34;</span> &gt;&gt; <span class="nv">$@</span>
+</span></span><span class="line"><span class="cl">	@echo <span class="s2">&#34;cd web &amp;&amp; npm run lint&#34;</span> &gt;&gt; <span class="nv">$@</span>
+</span></span><span class="line"><span class="cl">	@chmod a+x <span class="nv">$@</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
+</span></span><span class="line"><span class="cl"><span class="nf">clean</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	rm -rf dist/webdist
+</span></span><span class="line"><span class="cl">	rm -rf web/dist
+</span></span><span class="line"><span class="cl">	rm -rf web/node_modules
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">test</span>
+</span></span><span class="line"><span class="cl"><span class="nf">test</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	sh -c <span class="s2">&#34;ulimit -n 20000; go test ./...&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">#TODO: move to k8s or jenkins
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nf">upload-cos</span><span class="o">:</span> 
+</span></span><span class="line"><span class="cl">	<span class="nb">cd</span> web <span class="o">&amp;&amp;</span> npm run build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> dist <span class="o">&amp;&amp;</span> coscmd upload -rs . /
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">.PHONY</span><span class="o">:</span> .<span class="n">air</span>
+</span></span><span class="line"><span class="cl"><span class="nf">.air</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	go get -u github.com/cosmtrek/air
+</span></span><span class="line"><span class="cl">	touch .air
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">dev</span>
+</span></span><span class="line"><span class="cl"><span class="nf">dev</span><span class="o">:</span> <span class="n">p</span>1=&#34;<span class="n">air</span>&#34;
+</span></span><span class="line"><span class="cl"><span class="nf">dev</span><span class="o">:</span> <span class="n">p</span>2=[&#34;<span class="n">sh</span>&#34;<span class="p">,</span> &#34;-<span class="n">c</span>&#34;<span class="p">,</span> &#34;<span class="n">cd</span> <span class="n">web</span> &amp;&amp; <span class="n">exec</span> <span class="n">npm</span> <span class="n">run</span> <span class="n">serve</span>&#34;]
+</span></span><span class="line"><span class="cl"><span class="nf">dev</span><span class="o">:</span> .<span class="n">air</span> <span class="n">test_data</span>
+</span></span><span class="line"><span class="cl">	@echo <span class="s1">&#39;import subprocess; [p.wait() for p in subprocess.Popen(${p1}),subprocess.Popen(${p2})]&#39;</span> <span class="p">|</span> python2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">test_data</span>
+</span></span><span class="line"><span class="cl"><span class="nf">test_data</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	mkdir test_data
+</span></span></code></pre></div><p>为什么 echo 出来的命令在terminal中直接执行没问题，而在脚本中执行有问题呢？
+因为 terminal 中直接执行可以读取到当前用户所有环境变量，而脚本中执行却不可以。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 将输出的命令和脚本结果对比即可得到差异，(由公司产品无法切换中文输入法问题发现)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 可以通过 sudo -E 的方式保持所有环境变量(如果没有保持的权限会报错)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">SCRIPT_PATH</span><span class="o">=</span><span class="k">$(</span>realpath <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2">&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">UID</span><span class="si">}</span> -gt <span class="m">0</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    sudo <span class="s2">&#34;</span><span class="si">${</span><span class="nv">SCRIPT_PATH</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> sudo -u <span class="s2">&#34;</span><span class="si">${</span><span class="nv">SUDO_USER</span><span class="si">}</span><span class="s2">&#34;</span> env
+</span></span><span class="line"><span class="cl">sudo -u <span class="s2">&#34;</span><span class="si">${</span><span class="nv">SUDO_USER</span><span class="si">}</span><span class="s2">&#34;</span> env
+</span></span></code></pre></div><p>例子，是否可以切换中文输入法输入中文</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># sudo apt install gedit</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 命令行中执行</span>
+</span></span><span class="line"><span class="cl">sudo gedit <span class="c1"># 不能</span>
+</span></span><span class="line"><span class="cl">sudo -u chenlianghong gedit <span class="c1"># 可以</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 脚本中执行</span>
+</span></span><span class="line"><span class="cl">sudo -u <span class="s2">&#34;</span><span class="si">${</span><span class="nv">SUDO_USER</span><span class="si">}</span><span class="s2">&#34;</span> gedit <span class="c1"># 不可以</span>
+</span></span><span class="line"><span class="cl">sudo -E -u <span class="s2">&#34;</span><span class="si">${</span><span class="nv">SUDO_USER</span><span class="si">}</span><span class="s2">&#34;</span> gedit <span class="c1"># 不可以,输入法相关的环境变量没有带过来</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 有关输入法的问题，经过几轮研究(不同软件和不同发行版测试)，发现最好是直接模拟普通用户再来执行脚本，以完整获取环境变量</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">目前发现，不同发行版<span class="o">(</span>可能还包含同样发行版的不同版本<span class="o">)</span>对于环境变量的传递处理方式都不一样，所以目前只能当作是对产品运行环境的提前测试。
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/shell/">shell</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/dlv/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">dlv</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/vultr/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">vultr</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/readline/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">readline</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/direnv/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">direnv</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/fdleak/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">fdleak</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2024 良宏
+    </section>
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>,
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script><script type="text/javascript" src="/ts/custom.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.font.im/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        
+    }());
+</script>
+
+
+    </body>
+</html>
