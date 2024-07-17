@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API 测试</title>
+</head>
+<body>
+
+<fieldset class="test1_pass">
+    <legend>JSAPI测试</legend>
+    目标页面
+    <select id="newUrl">
+        <option value="./">当前首页</option>
+        <option value="./apps/child.html">普通子页</option>
+        <option value="./apps/child.html?a=a">路径带参数</option>
+        <option value="lnks://inner/innerTestPage.html">内部定制资源页</option>
+        <option value="./index.topbar.html">子应用</option>
+        <option value="./apps/getTopFocus.html">聚焦检测</option>
+        <option value="./apps/clock.html">时钟</option>
+        <option value="https://lianghong.top/lnks.html">lnks.html</option>
+        <option value="http://lithium-demo.linakesi.com">demo</option>
+        <option value="https://lithium1.lianghong.top">desktop1</option>
+        <option value="https://lithium2.lianghong.top">desktop2</option>
+        <option value="https://element.eleme.cn/2.0/#/zh-CN/component/dropdown">Element</option>
+        <option value="./iframe.work.html">IFrame</option>
+        <option value="about:config">配置界面</option>
+        <option value="https://baidu.com">百度</option>
+        <option value="https://qq.com">QQ</option>
+        <option value="https://training.linakesi.com">sllErrUrl</option>
+    </select>
+    &nbsp;标题
+    <select id="newTitle">
+        <option value="测试页online">测试页online</option>
+        <option value="">-空-</option>
+        <option value="测试标题online5">测试标题online5</option>
+    </select>
+    &nbsp;图标
+    <!-- TODO: 图标显示了，只是部分图标大小不正常 -->
+    <select id="newIcon">
+        <option value="./icon/tree.ico">tree</option>
+        <option value="./icon/nazha.ico">nazha</option>
+        <option value="./icon/lnks.ico">lnks</option>
+        <option value="./icon/weibo.ico">weibo</option>
+    </select>
+    &nbsp;宽高
+    <!--当窗口大小和位置超出桌面时，桌面窗口管理器会重置超出的那部分位置。比如只是高度超出，就重置高度位置。-->
+    <select id="size">
+        <option value="900*600">900*600</option>
+        <option value="800*600">800*600</option>
+        <option value="1500*1030">1500*1030</option>
+        <option value="1200*800">1200*800</option>
+    </select>
+    &nbsp;位置
+    <!--当位置是 0 时，有的桌面窗口管理器会认为是默认值而自行处理相同来源窗口的位置。比如打开多个资源管理器，每次都会不一样。-->
+    <select id="position">
+        <option value="0,0">0,0</option>
+        <option value="10,20">10,20</option>
+        <option value="20,30">20,30</option>
+    </select>
+    &nbsp;窗口状态
+    <select id="winMode">
+        <option value="normal">normal</option>
+        <option value="maximize">maximize</option>
+        <option value="minimize">minimize</option>
+        <option value="fullscreen">fullscreen</option>
+    </select>
+    &nbsp;背景
+    <!-- TODO: 双引擎中，背景色和透明将拆分为两个设置选项 -->
+    <!--Windows 只要有设置背景色的透明 rgba 的第四个值，就会隐藏系统边框, 与 moz-appearance 无关-->
+    <select id="style">
+        <option value="background:rgba(0,0,0,0); -moz-appearance: none;">完全透明</option>
+        <option value="background:rgba(100,250,0,0.5); -moz-appearance: none;">浅绿色透明0.5</option>
+        <option value="background:rgba(100,250,0,0); -moz-appearance: none;">浅绿色透明0</option>
+        <option value="background:rgba(100,250,0,1); -moz-appearance: none;">浅绿色透明1</option>
+        <option value="-moz-appearance: none;">moz-appearance</option>
+        <option value="background:blue;">bg</option>
+        <option value="">不透明</option>
+    </select>
+    <input type="checkbox" id="skipBar"><label for="skipBar">跳过任务栏</label>
+    <input type="checkbox" id="hideChrome"><label for="hideChrome">隐藏系统边框</label>
+    <input type="checkbox" id="hidden"><label for="hidden">隐藏窗口</label>
+    &nbsp;页面参数
+    <select id="user_args">
+        <option value="{}">{}</option>
+        <option value='{"a":45,"c":"cc"}'>{"a":45,"c":"cc"}</option>
+    </select>
+    &nbsp;打开方式
+    <select id="openType">
+        <option value="default">default</option>
+        <option value="topBar">topBar</option>
+        <option value="window.open">JS:window.open</option>
+    </select>
+    选择引擎
+    <!--    default(选择Chromium引擎打开，open-in-gecko.txt列表)->openWindow2(JSAPI:useGecko)||(CMDAPI:&#45;&#45;use-gecko)-->
+    <select id="useGecko">
+        <option value="chromium">chromium</option>
+        <option value="gecko">gecko</option>
+    </select>
+    <button onclick="jsOpenHandle()">打开</button>
+    <script type="text/javascript" charset="utf-8">
+        function jsOpenHandle() {
+            let win_args = {
+                // preload: $("#newUrl").val(),//invalid
+                url: $("#newUrl").val(),
+                title: $("#newTitle").val(),
+                icon: $("#newIcon").val(),
+                mode: $("#openType").val(), // string: (default|topBar)
+                // args: $("#newUrl").val(),
+                width: parseInt($("#size").val().split("*")[0]),
+                height: parseInt($("#size").val().split("*")[1]),
+                positionX: parseInt($("#position").val().split(",")[0]),
+                positionY: parseInt($("#position").val().split(",")[1]),
+                winMode: $("#winMode").val(),
+                style: $("#style").val(),
+                skipBar: $("#skipBar")[0].checked,
+                hideChrome: $("#hideChrome")[0].checked,
+                hidden: $("#hidden")[0].checked,
+                useGecko: $("#useGecko").val() === "gecko",
+            };
+            // let user_args={
+            // "HomeWindow": this.win,
+            // "TrayIcon": this.trayIcon,
+            // };
+            let user_args = JSON.parse($("#user_args").val());
+            console.log("win_args:", win_args);
+            if ("window.open" == $("#openType").val()) {
+                let w = win_args;
+                window.open(w.url, 'child', `width=${w.width},height=${w.height},left=${w.positionX},top=${w.positionY}`)
+            } else if ("Terminal" == $("#openType").val()) {
+                alert("即将支持命令行打开选项，以测试命令行参数")
+            } else {
+                lnks.openWindow2(win_args, user_args);
+                console.log(`lnks.openWindow2(${JSON.stringify(win_args)},${JSON.stringify(user_args)})`);
+            }
+        }
+    </script>
+    <br>
+    <!--<button onclick="openWindowWith(document.getElementById('newUrl').value,document.getElementById('newTitle').value,document.getElementById('newIcon').value)">Default打开</button>-->
+    <!--<button onclick="openTopBarWindowWith(document.getElementById('newUrl').value,document.getElementById('newTitle').value,document.getElementById('newIcon').value)">Topbar打开</button>-->
+    <!--<br>-->
+    <!--<button onclick="setNewUrl('./openAndArguments.html')">openAndArguments</button>-->
+    <!--<br>-->
+    <input type="text" id="envKey" value="HOME" placeholder="要获取的全局变量"/>
+    <!-- MOZ_PLUGIN_PATH 定义了此变量就可以改变插件的读取路径(默认/usr/lib/firefox-addons/plugins)，待验证:linux,windows -->
+    <button onclick="getEnv()">获取全局变量</button>
+    <input type="text" id="command" value="" placeholder="要测试的命令"/>
+    <button onclick="getCommandResult()">获取命令结果</button>
+    <br>
+    <textarea style="width:45%" rows="3" id="commandResultInfo" placeholder="此处显示 命令执行的  正常输出"></textarea>
+    <textarea style="width:45%" rows="3" id="commandResultError" placeholder="此处显示 命令执行的  错误输出"></textarea><br>
+</fieldset>
+<fieldset class="test1_pass">
+    <legend>CMD API测试</legend>
+    目标页面
+    <select id="newUrl_cmd">
+        <option value="./apps/child.html">普通子页</option>
+        <option value="./apps/child.html?a=a">路径带参数</option>
+        <option value="lnks://inner/innerTestPage.html">内部定制资源页</option>
+        <option value="./index.topbar.html">子应用</option>
+        <option value="./apps/getTopFocus.html">聚焦检测</option>
+        <option value="https://lianghong.top/lnks.html">lnks.html</option>
+        <option value="http://lithium-demo.linakesi.com">demo</option>
+        <option value="https://lithium1.lianghong.top">desktop1</option>
+        <option value="https://lithium2.lianghong.top">desktop2</option>
+        <option value="https://element.eleme.cn/2.0/#/zh-CN/component/dropdown">Element</option>
+        <option value="./iframe.work.html">IFrame</option>
+        <option value="about:config">配置界面</option>
+        <option value="https://baidu.com">百度</option>
+        <option value="https://qq.com">QQ</option>
+        <option value="https://training.linakesi.com">sllErrUrl</option>
+    </select>
+    &nbsp;标题
+    <select id="newTitle_cmd">
+        <option value="测试页online">测试页online</option>
+        <option value="">-空-</option>
+        <option value="测试标题online5">测试标题online5</option>
+    </select>
+    <!-- TODO: 图标显示了，只是部分图标大小不正常 -->
+    <!-- 当目标应用无图标，又不希望使用默认图标时使用 -->
+    <input type="checkbox" id="icon_cmd"><label class="test1_error" for="icon_cmd">&nbsp;图标(CMD)</label>
+    &nbsp;宽高
+    <!--当窗口大小和位置超出桌面时，桌面窗口管理器会重置超出的那部分位置。比如只是高度超出，就重置高度位置。-->
+    <select id="size_cmd">
+        <option value="900*600">900*600</option>
+        <option value="800*600">800*600</option>
+        <option value="1500*1030">1500*1030</option>
+        <option value="1200*800">1200*800</option>
+    </select>
+    &nbsp;位置
+    <!--当位置是 0 时，有的桌面窗口管理器会认为是默认值而自行处理相同来源窗口的位置。比如打开多个资源管理器，每次都会不一样。-->
+    <select id="position_cmd">
+        <option value="0,0">0,0</option>
+        <option value="10,20">10,20</option>
+        <option value="20,30">20,30</option>
+    </select>
+    &nbsp;窗口状态
+    <select id="winMode_cmd">
+        <option value="maximize">maximize</option>
+        <option value="normal">normal</option>
+        <option value="minimize">minimize</option>
+        <option value="fullscreen">fullscreen</option>
+    </select>
+    &nbsp;背景
+    <!-- TODO: 双引擎中，背景色和透明将拆分为两个设置选项 -->
+    <!--Windows 只要有设置背景色的透明 rgba 的第四个值，就会隐藏系统边框, 与 moz-appearance 无关-->
+    <select id="style_cmd">
+        <option value="background:rgba(0,0,0,0); -moz-appearance: none;">完全透明</option>
+        <option value="background:rgba(100,250,0,0.5); -moz-appearance: none;">浅绿色透明0.5</option>
+        <option value="background:rgba(100,250,0,0); -moz-appearance: none;">浅绿色透明0</option>
+        <option value="background:rgba(100,250,0,1); -moz-appearance: none;">浅绿色透明1</option>
+        <option value="-moz-appearance: none;">moz-appearance</option>
+        <option value="background:blue;">bg</option>
+        <option value="">不透明</option>
+    </select>
+    &nbsp;appId
+    <select id="appId_cmd">
+        <option value=""></option>
+        <option value="12as1.ji_a.com">12as1.ji_a.com</option>
+        <option value="12as2.ji_a.com">12as2.ji_a.com</option>
+    </select>
+    <!-- checkbox error 应该标记样式在 label 上，否则不显示 -->
+    <input type="checkbox" id="preload_cmd"><label class="test1_error" for="preload_cmd">加载动画</label>
+    <input type="checkbox" id="skipBar_cmd"><label for="skipBar_cmd">跳过任务栏</label>
+    <input type="checkbox" id="hideChrome_cmd"><label for="hideChrome_cmd">隐藏系统边框</label>
+    <input type="checkbox" id="hidden_cmd"><label for="hidden_cmd">隐藏窗口</label>
+    &nbsp;页面参数
+    <select id="user_args_cmd">
+        <option value="{}">{}</option>
+        <option value='{"a":45,"c":"cc"}'>{"a":45,"c":"cc"}</option>
+    </select>
+    &nbsp;打开方式
+    <select id="openType_cmd">
+        <option value="default">default</option>
+        <option value="topBar">topBar</option>
+    </select>
+    <button onclick="cmdOpenHandle()">打开</button>
+    <script type="text/javascript" charset="utf-8">
+        function cmdOpenHandle() {
+            // 表单选项的参数设定
+            let win_args = {
+                url: (new URL($("#newUrl_cmd").val(), location)).href,
+                preload: $("#preload_cmd")[0].checked,
+                title: $("#newTitle_cmd").val(),
+                icon: (new URL($("#icon_cmd").val(), location)).href,
+                mode: $("#openType_cmd").val(), // string: (default|topBar)
+                appId: $("#appId_cmd").val(),
+                // args: $("#newUrl").val(),
+                width: $("#size_cmd").val().split("*")[0],
+                height: $("#size_cmd").val().split("*")[1],
+                positionX: $("#position_cmd").val().split(",")[0],
+                positionY: $("#position_cmd").val().split(",")[1],
+                winMode: $("#winMode_cmd").val(),
+                style: $("#style_cmd").val(),
+                skipBar: $("#skipBar_cmd")[0].checked,
+                hideChrome: $("#hideChrome_cmd")[0].checked,
+                hidden: $("#hidden_cmd")[0].checked
+            };
+            let user_args = JSON.parse($("#user_args_cmd").val());
+            openLnksWinByCmd(win_args, user_args)
+        }
+    </script>
+</fieldset>
+<fieldset class="test1_pass">
+    <legend>Polyfill & GlobalFuncs</legend>
+    <!-- WARNING: AMD64 KDE can`t get trayIcon.geometry-->
+    <button onclick="testGetTrayGeometry()">getTrayGeometry</button>
+    <!-- NOTICE: chromium lnksWin.onclose=()=>{} will come soon.-->
+    <button onclick="testBindOnCloseEvent()">bindOnCloseEvent</button>
+    <br>
+    url:<input type="text" id="api_polyfill_url">
+    appId:<input type="text" id="api_polyfill_appId">
+    title:<input type="text" id="api_polyfill_title">
+    <button onclick="testGetLnksWin()">getLnksWin</button>
+    <script>
+        function testGetTrayGeometry() {
+            window.trayIcon = new lnks.TrayIcon(window);
+            getTrayGeometryPromise(window.trayIcon).then((g) => {
+                console.log("getTrayGeometry.then:", g);
+                $('.notice')
+                    .removeClass("notice_error")
+                    .addClass("notice_success")
+                    .text(JSON.stringify(g))
+                    .show();
+                // let width = 100;
+                // let height = 200;
+                // console.log("g:", g)
+                // console.log('p:', g.x - (100 / 2), g.y - height);
+                // lnks.openWindow2({
+                //     "url": "./apps/popup.html",
+                //     "skipBar": true,
+                //     "width": width,
+                //     "height": height,
+                //     "positionX": g.x - (width / 2),
+                //     "positionY": g.y - height,
+                //     "hideChrome": true,
+                //     "hidden": true
+                // });
+            });
+        }
+        function testGetLnksWin() {
+            let filterObj = {};
+            if ($("#api_polyfill_url").val()) {
+                filterObj.url = $("#api_polyfill_url").val();
+            } else if ($("#api_polyfill_appId").val()) {
+                filterObj.appId = $("#api_polyfill_appId").val();
+            } else if ($("#api_polyfill_title").val()) {
+                filterObj.title = $("#api_polyfill_title").val();
+            }
+            window.findCurrentLnksWin = getLnksWin(filterObj, true);
+            if (window.findCurrentLnksWin === null) {
+                $('.notice')
+                    .removeClass("notice_success")
+                    .addClass("notice_error")
+                    .text(`没有找到符合条件'${JSON.stringify(filterObj)}'的 lnksWin`)
+                    .show();
+            } else {
+                $('.notice')
+                    .removeClass("notice_error")
+                    .addClass("notice_success")
+                    .text(`找到了符合条件'${JSON.stringify(filterObj)}'的 lnksWin, 访问该窗口:window.findCurrentLnksWin`)
+                    .show();
+            }
+        }
+        window.bindOnCloseEvent = () => {
+            let lnksWin = new window.lnks.MainWindow(window);
+            // this bind work on firefox(Gecko) engine, chromium will come soon.
+            lnksWin.onclose = (e) => {
+                return confirm("确定要关闭吗?");
+            }
+            // this bind work on chromium engine in used window.
+            window.addEventListener('beforeunload', (event) => {
+                const quit = confirm('确定要关闭吗?');
+                if (!quit) {
+                    event.preventDefault();
+                    event.returnValue = '';
+                }
+                // See https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
+                // lnks.exit();
+            });
+        }
+        function testBindOnCloseEvent() {
+            bindOnCloseEvent();
+            $('.notice')
+                .removeClass("notice_error")
+                .addClass("notice_success")
+                .text(`当前已经绑定关闭事件，您可以通过窗口管理器关闭按钮或任务栏右键关闭选项测试绑定事件。`)
+                .show();
+        }
+    </script>
+</fieldset>
+</body>
+</html>
