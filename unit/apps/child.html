@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>子页面</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .notice {
+        border-left: 3px solid red;
+        padding: 5px;
+        margin: 5px 0;
+        background-color: brown;
+        color: whitesmoke;
+    }
+
+    span {
+        color: brown;
+    }
+
+    #box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 100px;
+    }
+</style>
+
+<body>
+    <div class="notice" style="display: none;">浏览器不支持本Demo</div>
+    <div style="width:100%;height:25px;background-color:blueviolet;color:white" onmousedown="begin_move(event)">按住移动区</div>
+    <div style="-webkit-app-region: drag;width:100%;height:25px;cursor:move;background-color:lightcoral;color:white">样式设置法.按住移动区</div><br>
+    <!--win 的声明js必须在 body 之后(或外面?)-->
+    <button onclick="win.minimize()">最小化</button>
+    <button onclick="win.normal()">普通</button>
+    <button onclick="win.maximize()">最大化</button>
+    <!--<button onclick="location.reload()">刷新页面</button>-->
+    <button onclick="lnks.DevTools.toggle(window)">调试窗口</button>
+    <!--<button onclick="exit()">关闭</button>-->
+    <div style="background-color: aquamarine;">
+        这里是子窗口
+        <button onclick="window.open('./apps/child.html', 'child', 'width=400,height=300,left=200,top=200')">子窗口应该要有外边框</button>
+        <button onclick="window.close()">关闭子窗口</button>
+        <br /><br />下面是一个空的 iframe 标签
+        <!--<br /><iframe width="200" height="200">-->
+    </div>
+</body>
+    <script>
+        function begin_move(e) {
+            //避免titlebar上的按钮点击事件被吃掉
+            if (e.currentTarget != e.target) return false;
+            this.win.begin_move(e, this);
+        }
+
+        // 全局变量准备
+        window.onload = function () {
+            if (window.lnks) {
+                this.win = new window.lnks.MainWindow(window);
+            } else {
+                document.getElementsByClassName("notice")[0].style.display = "block";
+            }
+        }
+    </script>
+</body>
+
+</html>
