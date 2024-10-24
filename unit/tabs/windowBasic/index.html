@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>窗口</title>
+    <script src="./tabs/windowBasic/windowBasic.js"></script>
+    <script src="./tabs/windowBasic/windowBasicTest.js"></script>
+</head>
+<body>
+
+<fieldset class="test1_pass">
+    <legend>窗口</legend>
+    <div class="system-box">
+        <div class="system-title" id="system-title" onmousedown="begin_move(event)">Gecko拖动
+            <a ondblclick="dblclickInDragAreaTest(1)"> 双击测试1 </a>
+        </div>
+        <div class="system-drag-area-share" style="background-color: aquamarine;" onmousedown="begin_move(event)">
+            双引擎拖动
+            <a ondblclick="dblclickInDragAreaTest(2)"> 双击测试2 </a>
+        </div>
+        <div class="system-drag-area">Chrome拖动
+            <a ondblclick="dblclickInDragAreaTest(3)"> 双击测试3 </a>
+        </div>
+    </div>
+    <script>
+        function dblclickInDragAreaTest(Index) {
+            friendlyNotice(`双击${Index}触发成功啦！${(new Date()).toLocaleString('zh-CN')}`)
+        }
+    </script>
+    <br>
+    <div style="display:none">
+        <button onclick="showHelp()" style="display:none"> 帮助</button>
+        <button class="test1_error" onclick="openClock()">时钟右键菜单</button>
+    </div>
+    <button onclick="lnks.exit()">lnks.exit()</button>
+    <button onclick="win.close()">win.close()</button>
+    <button onclick="window.close()">window.close()</button>
+    <button onclick="win.minimize()">最小化</button>
+    <button onclick="win.normal()">普通</button>
+    <button onclick="win.maximize()">最大化</button>
+    <button onclick="win.fullscreen()">全屏</button>
+    <button onclick="win.fullscreen(false)">取消全屏</button>
+    <button onclick="win.keepAbove()">保持置顶</button>
+    <button onclick="win.keepAbove(false)">取消置顶</button>
+    <button onclick="openNoTitlePage()">默认标题</button>
+    <br/>
+    <button onclick="win.setSize(800, 600)">size: 800*600</button>
+    <button onclick="win.setSize(360, screen.availHeight)">size: 360*screen.availHeight</button>
+    <button onclick="friendlyNotice(win.size)">getSize</button>
+    <br/>
+    <button onclick="win.setPosition(screen.availWidth-360,0)">position: screen.availHeight-360, 0</button>
+    <button onclick="win.setPosition(50,40)">position: 50, 40</button>
+    <button onclick="friendlyNotice(win.position)">getPosition</button>
+    <button onclick="friendlyNotice(win.windowState)">windowState</button>
+    <button onclick="friendlyNotice(win.title)">getTitle</button>
+    <br/>
+    <!-- <button onclick="testReparentFunc()">单窗口切换</button> -->
+    <br/>
+    <button onclick="window.open('./apps/child.html', 'child', 'width=400,height=300,left=200,top=200')">
+        window.open宽高位置
+    </button>
+    <!-- browserbench.org/{JetStream(Chromium).MotionMark(Chromium),Speedometer(All)} -->
+    <!-- https://tower.im/teams/750316/todos/11330 -->
+    <button onclick="window.open('https://browserbench.org')">bench</button>
+    <button onclick="window.open('./apps/child.html', 'child2')">window.open默认宽高及特权</button>
+    <button class="hand-test" onclick="window.open('./apps/getTopFocus.html')">getTopFocus</button>
+    <button class="hand-test" onclick="window.open('./tabs/autoTest/autoFocus.html')">autoFocus</button>
+    <button onclick="openChildrenByOpenWindow2('被控制的子窗口')">打开并二次控制窗口状态</button>
+    <input type="text" placeholder="请在此输入验证中文输入法">
+    <script>
+        function testReparentFunc() {
+            if ("function" != typeof this.win.isGecko) {
+              this.win.isGecko = function () {
+                  return false;
+              }
+            }
+            if (this.win.isGecko() === false) {
+                lnks.openWindow2({
+                    "url": "./apps/child.html",
+                    "reparent": true
+                });
+            } else {
+                friendlyNotice('引擎切换(reparent)，仅支持从 chromium 过度到 gecko。');
+            }
+        }
+        function testOpenWindow2CallbackFunc() {
+            lnks.openWindow2({url:location.href}).onSuccess((win) => {
+                window.openWindow2SuccessResult = win; // debug and check continue;
+                console.log("openWindow2 success:", win);
+            }).onFailure((e) => {
+                window.openWindow2FailureResult = e; // debug and check continue;
+                console.log("openWindow2 failure:", e);
+            })
+            lnks.openWindow2({url:location.href, useGecko: true}).onSuccess((win) => {
+                window.openWindow2SuccessGeckoResult = win; // debug and check continue;
+                console.log("openWindow2 gecko success:", win);
+            }).onFailure((e) => {
+                window.openWindow2FailureGeckoResult = e; // debug and check continue;
+                console.log("openWindow2 gecko failure:", e);
+            })
+        }
+        function openChildrenByOpenWindow2(childTitle) {
+            let childWin = window.getLnksWin({title:childTitle},true);
+            if (childWin === null) {
+                lnks.openWindow2({
+                    url: "./apps/child.html",
+                    title: childTitle,
+                }, {
+                    "arg1": '参数一',
+                    "arg2": {
+                        'arg2.2': '参数二',
+                    },
+                // }).then((r) => {
+                //     console.info("r", r)
+                //     childWin = new window.lnks.MainWindow(r);
+                });
+            } else{
+                console.log("childWin.windowState:", childWin.windowState)
+                if (childWin.windowState == "maximized") {
+                    childWin.normal();
+                } else {
+                    childWin.maximize();
+                }
+            }
+        }
+
+    </script>
+</fieldset>
+<fieldset class="test1_pass">
+    <legend>弹出框翻译</legend>
+    <button onclick="alert('你好')">Alert</button>
+    <button
+            onclick="window.location.href='https://dlied6.qq.com/invc/xfspeed/qqpcmgr/download/QQPCDownload1671.exe'">
+        Download
+    </button>
+    <button onclick="promptTest()">prompt弹窗</button>
+    <button onclick="confirm('确认吗？')">confirm弹窗</button>
+<!--    <button onclick="openMsgBox()" class="test1_error">消息气泡</button>-->
+    <!--测试页面首次打开时的弹窗问题，一般是页面加载时就自动弹窗才能保证测试结果-->
+    <button onclick="location.reload(true)">刷新页面1</button>
+    <button onclick="win.reload()">刷新页面2</button>
+    <button onclick="win.reloadIgnoreCache()">刷新页面3</button>
+</fieldset>
+<fieldset class="test1_pass">
+    <legend>任务栏 & 托盘</legend>
+    <button onclick="win.skipBar()">跳过任务栏</button>
+    <button onclick="win.skipBar(false)">显示任务栏</button>
+    <button onclick="setTitle()">设置标题</button>
+    <button onclick="setIcon()">设置图标</button>
+    <button onclick="setIcon2()">设置图标2</button>
+    <button class="hand-test" onclick="addTray()">创建托盘</button>
+    <button class="hand-test" onclick="getTrayGeometry()">获取托盘位置</button>
+    <button class="hand-test" onclick="delTray()">销毁托盘</button>
+</fieldset>
+<br /> 页面中按钮 <span class="hand-test-label"> * </span> 为手动测试的部分
+</body>
+</html>

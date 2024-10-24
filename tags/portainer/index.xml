@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Portainer on 良宏</title>
+        <link>/tags/portainer/</link>
+        <description>Recent content in Portainer on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 09 Feb 2022 13:55:05 +0800</lastBuildDate><atom:link href="/tags/portainer/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Portainer</title>
+        <link>/post/tech/portainer/</link>
+        <pubDate>Wed, 09 Feb 2022 13:55:05 +0800</pubDate>
+        
+        <guid>/post/tech/portainer/</guid>
+        <description>&lt;h1 id=&#34;介绍&#34;&gt;介绍
+&lt;/h1&gt;&lt;p&gt;Portainer 是一个非常方便实用的 基于 Web 的 容器管理工具。&lt;/p&gt;
+&lt;h1 id=&#34;使用&#34;&gt;使用
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 删除可能已运行的容器
+# docker rm -f portainer || true
+
+# 启动 portainer 容器管理服务
+docker run -d --restart always --name portainer -p 47200:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce
+
+# 数据持久化 启动 portainer 容器管理服务
+docker run -d --restart always --name portainer -p 47200:9000 -v `pwd`/portainer-data:/data -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;快捷模板&#34;&gt;快捷模板
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;链接为对应模板json可直接粘贴使用&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/portainer/templates/raw/master/templates-2.0.json&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Portainer官方模板&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;templates-2.0.json&#34; &gt;我的自定义模板&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Qballjos/portainer_templates/raw/master/Template/template.json&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Homelabs https://github.com/Qballjos/portainer_templates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/technorabilia/portainer-templates/raw/main/lsio/templates/templates-2.0.json&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/technorabilia/portainer-templates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/gtrummell/gnas-portainer-templates/raw/master/templates.json&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/gtrummell/gnas-portainer-templates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://raw.githubusercontent.com/ykxVK8yL5L/dockertemplates/main/templates-2.0.json&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/ykxVK8yL5L/dockertemplates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/search?o=desc&amp;amp;q=Portainer&amp;#43;templates&amp;amp;s=stars&amp;amp;type=Repositories&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;查找更多&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
