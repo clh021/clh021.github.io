@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="basepath" content="/doc">
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/Netiler.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/JTemplate.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/NetilerUI_002.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/NetilerUI.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/custom-kmsUI_DEBUG.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/custom-predator_DEBUG.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/custom-nExtend_DEBUG.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/custom-theme_DEBUG.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/custom-offline_DEBUG.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/custom-animate_DEBUG.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/custom-nbCompatible_DEBUG.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/com.js"></script>
+</head>
+<body basepath="/doc" style="">
+<style>
+	embed{
+		width:1px;
+		height:1px;
+	}
+</style>
+<button onclick="testPrintQR()">执行条码打印</button>
+<embed id="qrObj" type="application/top-barcode-printer-plugin" hidden="true">	
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/com.leadal.top.dispatch.service.DispatchService.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/com.leadal.top.dispatch.service.DispatchQRCodeService.js"></script>
+<script type="text/javascript" src="./QRPrint.zhonghong/QRPrint.nsp_files/qrPrinter.js"></script>
+<script type="text/javascript">
+	function testPrintQR(){
+        qrList=[{
+            copyNum:1,
+            qrCode:"GB0626-2005^机关代字.20200708.发.00001-001^^null^〔2020〕 号^null^防止疫情期间交叉感染工作时间调整的请示^null^加急^20200310^^^20200708^null|^",
+            qrCodeId: "机关代字.20200708.发.00001-001"
+        }]
+        QRPrinter.print(qrList);
+	}
+</script>
+</body>
+</html>
