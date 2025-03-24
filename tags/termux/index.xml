@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Termux on 良宏</title>
+        <link>/tags/termux/</link>
+        <description>Recent content in Termux on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Tue, 10 May 2022 12:14:17 +0800</lastBuildDate><atom:link href="/tags/termux/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>ssh into termux</title>
+        <link>/post/tech/ssh2termux/</link>
+        <pubDate>Tue, 10 May 2022 12:14:17 +0800</pubDate>
+        
+        <guid>/post/tech/ssh2termux/</guid>
+        <description>&lt;h1 id=&#34;安装-termux&#34;&gt;安装 termux
+&lt;/h1&gt;&lt;p&gt;从&lt;a class=&#34;link&#34; href=&#34;https://github.com/termux/termux-app/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;这里&lt;/a&gt;下载 termux&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb install ~/Downloads/termux-app_v0.118.0+github-debug_arm64-v8a.apk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;安装-ssh-服务&#34;&gt;安装 ssh 服务
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;请求权限时，总是选择默认选项，不让修改任何设置&lt;/p&gt;&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install root-repo
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg upgrade
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install openssh
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;passwd &lt;span style=&#34;color:#75715e&#34;&gt;# 设置好密码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sshd &lt;span style=&#34;color:#75715e&#34;&gt;# 启动服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;链接-ssh-服务&#34;&gt;链接 ssh 服务
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ssh &amp;lt;ip of android device&amp;gt; -p &lt;span style=&#34;color:#ae81ff&#34;&gt;8022&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 使用刚刚设置的密码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# scp 本地文件路径 远程主机用户名@远程主机名或IP:远程文件保存的位置路径&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# scp local_file remote_username@remote_ip:remote_folder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# scp -P 8022 .ssh.tar.gz 192.168.1.132:~/&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# scp -r 本地文件夹路径 远程主机用户名@远程主机名或IP:远程文件夹保存的位置路径&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# scp -r local_folder remote_username@remote_ip:remote_folder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;扩展&#34;&gt;扩展
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.sqlsec.com/2018/05/termux.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Termux高级玩法&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 批量安装需要的包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg add git wget curl
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 更换国内源&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# https://mirrors.tuna.tsinghua.edu.cn/help/termux/  # 换源工具termux-change-repo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sed -i &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/termux-packages-24 stable main@&amp;#39;&lt;/span&gt; $PREFIX/etc/apt/sources.list
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sed -i &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s@^\(deb.*games stable\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/game-packages-24 games stable@&amp;#39;&lt;/span&gt; $PREFIX/etc/apt/sources.list.d/game.list
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sed -i &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s@^\(deb.*science stable\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/science-packages-24 science stable@&amp;#39;&lt;/span&gt; $PREFIX/etc/apt/sources.list.d/science.list
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 发起手机存储的请求权限&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;termux-setup-storage
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# proot可以为手机没有root的设备模拟root环境，不是真正的 root&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install proot
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;termux-chroot
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# tsu 是su的 Termux 版本，是一个真正的 root 权限，root设备才能用，操作有风险&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install tsu
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tsu &lt;span style=&#34;color:#75715e&#34;&gt;# 切换 root用户&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 备份&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;termux-setup-storage
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd /data/data/com.termux/files
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tar -zcf /sdcard/termux-backup.tar.gz home usr
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 不要将备份文件存储在 Termux 私有目录中，因为从设置中清除 Termux 数据后，这些目录也将被删除&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 恢复&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;termux-setup-storage
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd /data/data/com.termux/files
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tar -zxf /sdcard/termux-backup.tar.gz --recursive-unlink --preserve-permissions
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 操作完成重启 Termux 即可恢复数据。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;开发环境&#34;&gt;开发环境
+&lt;/h1&gt;&lt;p&gt;Termux 可以完美的运行 C、Python、Java、PHP、Ruby等开发环境&lt;/p&gt;
+&lt;h2 id=&#34;编辑器&#34;&gt;编辑器
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 汉字乱码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim .vimrc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# set enc=utf8&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# set fencs=utf8,gbk,gb2312,gb18030&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;source .vimrc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;php&#34;&gt;PHP
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# apache
+pkg install apache2
+apachectl start
+# http://127.0.0.1:8080
+# $PREFIX/share/apache2/default-site/htdocs/index.html
+apachectl restart
+apachectl stop
+
+# 配置 PHP解析
+# pkg install php-apache
+# $PREFIX/etc/apache2/httpd.conf
+# 文件末尾添加以下行
+# LoadModule php7_module /data/data/com.termux/files/usr/libexec/apache2/libphp7.so
+# &amp;lt;FilesMatch \.php$&amp;gt;
+#   SetHandler application/x-httpd-php
+# &amp;lt;/FilesMatch&amp;gt;
+# 查找修改配置默认首页
+# &amp;lt;IfModule dir_module&amp;gt;
+#   DirectoryIndex index.php index.html
+# &amp;lt;/IfModule&amp;gt;
+# apachectl restart
+
+# Apache is running a threaded MPM, but your PHP Module is not compiled to be threadsafe.  You need to recompile PHP.
+# AH00013: Pre-configuration failed
+# 注释行 LoadModule mpm_worker_module libexec/apache2/mod_mpm_worker.so
+# 启用行 LoadModule mpm_worker_module libexec/apache2/mod_mpm_prefork.so
+
+# echo &amp;#39;&amp;lt;?php phpinfo(); ?&amp;gt;&amp;#39; &amp;gt; $PREFIX/share/apache2/default-site/htdocs/index.php
+# http://127.0.0.1:8080
+
+# 数据库
+pkg install mariadb
+cd /data/data/com.termux/files/usr/etc/
+mkdir my.cnf.d
+mysql_install_db # 初始化 mysql.user 表
+nohup mysqld &amp;amp;
+ps aux|grep mysql
+mysql -u $(whoami) # 登录 Termux 用户
+use mysql;
+set password for &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; = password(&amp;#39;你设置的密码&amp;#39;);# 修改 root 密码的 SQL语句
+grant all on *.* to root@&amp;#39;%&amp;#39; identified by &amp;#39;P@ssw0rd&amp;#39; with grant option; # 允许root远程访问
+flush privileges;
+quit;
+# mysql_secure_installation # 以后可以使用这个命令设置密码
+
+# nginx
+pkg install nginx
+nginx -t # 测试文件是否正常
+nginx # 启动 nginx 服务 http://127.0.0.1:8080
+pgrep nginx # 查看 nginx 进程PID号
+nginx -s reload # 重启服务
+nginx -s stop # 停止服务
+
+# 解析PHP
+pkg install php-fpm
+vim $PREFIX/etc/php-fpm.d/www.conf
+# 搜索 listen = /data/data/com.termux/files/usr/var/run/php-fpm.sock
+# 改为 listen = 127.0.0.1:9000
+vim $PREFIX/etc/nginx/nginx.conf
+# worker_processes  1;
+# events {
+#     worker_connections  1024;
+# }
+# http {
+#     include       mime.types;
+#     default_type  application/octet-stream;
+#     sendfile        on;
+#     keepalive_timeout  65;
+#     server {
+#         listen       8080;
+#         server_name  localhost;
+#         location / {
+#             root   /data/data/com.termux/files/usr/share/nginx/html;
+#             index  index.html index.htm index.php;
+#         }
+#         error_page   500 502 503 504  /50x.html;
+#         location = /50x.html {
+#             root   /data/data/com.termux/files/usr/share/nginx/html;
+#         }
+#         location ~ \.php$ {
+#             root           html;
+#             fastcgi_pass   127.0.0.1:9000;
+#             fastcgi_index  index.php;
+#             fastcgi_param  SCRIPT_FILENAME  /data/data/com.termux/files/usr/share/nginx/html$fastcgi_script_name;
+#             include        fastcgi_params;
+#         }
+#     }
+# }
+echo &amp;#39;&amp;lt;?php phpinfo(); ?&amp;gt;&amp;#39; &amp;gt; $PREFIX/share/nginx/html/info.php
+php-fpm # 启动 php-fpm 服务
+nginx # 启动 nginx 服务
+
+# pkg install php
+# php -S 0.0.0.0:8888 -t www/
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;nodejs&#34;&gt;nodejs
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install nodejs-lts
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g http-server
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;http-server &lt;span style=&#34;color:#75715e&#34;&gt;# 启动 http-server 服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Cannot read property &amp;#39;length&amp;#39; of undefined&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim $PREFIX/lib/node_modules/npm/node_modules/worker-farm/lib/farm.js
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 查找    , maxConcurrentWorkers : require(&amp;#39;os&amp;#39;).cpus().length&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 改为    , maxConcurrentWorkers : (require(&amp;#39;os&amp;#39;).cpus() || { length: 1}).length&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;python3&#34;&gt;python3
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install python -y
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;python -m pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple some-package
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;其它linux发行版&#34;&gt;其它linux发行版
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;https://github.com/sqlsec/termux-install-linux
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;termux-api&#34;&gt;termux-api
+&lt;/h1&gt;&lt;p&gt;从&lt;a class=&#34;link&#34; href=&#34;https://github.com/termux/termux-api/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;这里&lt;/a&gt;下载并安装termux-api最新匹配版本的 app。安装后给出需要的所有权限。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install termux-api
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.sqlsec.com/2018/05/termuxapi.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;更多细节玩法&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
