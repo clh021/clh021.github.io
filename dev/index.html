@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>仓库对比</title>
+  <style>
+    table {
+      width: 100%;
+      margin: 25px 0;
+      border-collapse: collapse;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid #ccc;
+    }
+
+    table th,
+    table td {
+      padding: 0px;
+      text-align: left;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      let data = [
+        { http: "https://", domain: "github", user: "xo", name: "xo" },
+        { http: "https://", domain: "github", user: "go-gorm", name: "gorm" },
+        { http: "https://", domain: "github", user: "gogf", name: "gf", name2: "gf/v2" },
+        { http: "https://", domain: "github", user: "go-admin-team", name: "go-admin" },
+        { http: "https://", domain: "github", user: "zhufuyi", name: "sponge" },
+        { http: "https://", domain: "github", user: "formilyjs", name: "antdv" },
+        { http: "https://", domain: "github", user: "x-extends", name: "vxe-table" },
+        { http: "https://", domain: "github", user: "Happy-Coding-Clans", name: "vue-easytable" },
+        { http: "https://", domain: "github", user: "axetroy", name: "gin-uploader" },
+        { http: "https://", domain: "github", user: "MQEnergy", name: "gin-framework" },
+        { http: "https://", domain: "github", user: "songcser", name: "gingo" },
+        { http: "https://", domain: "github", user: "coder-eric", name: "golang-gin-restfulAPI-example-app" },
+        { http: "https://", domain: "github", user: "piupuer", name: "gin-web" },
+        { http: "https://", domain: "github", user: "moell-peng", name: "gin-starter" },
+        { http: "https://", domain: "github", user: "dcu", name: "gin-scaffold" },
+        { http: "https://", domain: "github", user: "ElegantSoft", name: "go-restful-generator" },
+        { http: "https://", domain: "github", user: "mukezhz", name: "geng" },
+        { http: "https://", domain: "github", user: "xinliangnote", name: "go-gin-api" },
+        { http: "https://", domain: "github", user: "CrazyRocks", name: "goadmin" },
+        { http: "https://", domain: "github", user: "bufanyun", name: "hotgo" },
+        { http: "https://", domain: "github", user: "cool-team-official", name: "cool-admin-go" },
+        { http: "https://", domain: "github", user: "jasonLaw1015", name: "GfEasy" },
+        { http: "https://", domain: "github", user: "perpower", name: "goframe" },
+      ];
+      let dhtml = "";
+      data.forEach(e => {
+        let _name = e.name2 == undefined ? e.name : e.name2;
+        let _domain = e.domain == "github" ? "github.com" : e.domain;
+        let title = `${e.user}/${_name}`;
+        let report = `https://goreportcard.com/badge/${_domain}/${e.user}/${_name}`
+        let license = `https://img.shields.io/${e.domain}/license/${e.user}/${e.name}.svg?style=flat`
+        let release = `https://img.shields.io/${e.domain}/v/release/${e.user}/${e.name}?style=flat`
+        let pr = `https://img.shields.io/${e.domain}/issues-pr/${e.user}/${e.name}?style=flat`
+        let cpr = `https://img.shields.io/${e.domain}/issues-pr-closed/${e.user}/${e.name}?style=flat`
+        let issue = `https://img.shields.io/${e.domain}/issues/${e.user}/${e.name}?style=flat`
+        let cissue = `https://img.shields.io/${e.domain}/issues-closed/${e.user}/${e.name}?style=flat`
+        let star = `https://img.shields.io/${e.domain}/stars/${e.user}/${e.name}?style=flat`
+        let fork = `https://img.shields.io/${e.domain}/forks/${e.user}/${e.name}?style=flat`
+        dhtml += `<tr>`;
+        dhtml += `<td><a href="${e.http}${_domain}/${e.user}/${e.name}" target="_blank">${title}</td>`;
+        dhtml += `<td><img src="` + report + `"/></td>`;
+        dhtml += `<td><img src="` + license + `"/></td>`;
+        dhtml += `<td><img src="` + release + `"/></td>`;
+        dhtml += `<td><img src="` + pr + `"/></td>`;
+        dhtml += `<td><img src="` + cpr + `"/></td>`;
+        dhtml += `<td><img src="` + issue + `"/></td>`;
+        dhtml += `<td><img src="` + cissue + `"/></td>`;
+        dhtml += `<td><img src="` + star + `"/></td>`;
+        dhtml += `<td><img src="` + fork + `"/></td>`;
+        dhtml += `</tr>`;
+      });
+      $("table tbody").append(dhtml);
+    });
+  </script>
+</head>
+
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Report</th>
+        <th>License</th>
+        <th>Release</th>
+        <th>Pr</th>
+        <th>C Pr</th>
+        <th>Issue</th>
+        <th>C Issue</th>
+        <th>Stars</th>
+        <th>Forks</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</body>
+
+</html>
