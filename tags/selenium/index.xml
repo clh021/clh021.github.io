@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Selenium on 良宏</title>
+        <link>/tags/selenium/</link>
+        <description>Recent content in Selenium on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 11 Oct 2023 13:56:15 +0800</lastBuildDate><atom:link href="/tags/selenium/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>autox.js</title>
+        <link>/post/tech/autox.js/</link>
+        <pubDate>Wed, 11 Oct 2023 13:56:15 +0800</pubDate>
+        
+        <guid>/post/tech/autox.js/</guid>
+        <description>&lt;p&gt;近期负责部分客户端程序的测试任务。包括桌面客户端和手机客户端。遂想到如何通过自动化测试，先整体扫一遍。&lt;/p&gt;
+&lt;p&gt;经过一些方案的摸索，最终采用 autox.js 方案。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Appium</title>
+        <link>/post/tech/appium/</link>
+        <pubDate>Tue, 10 Oct 2023 13:56:15 +0800</pubDate>
+        
+        <guid>/post/tech/appium/</guid>
+        <description>&lt;p&gt;近期负责部分客户端程序的测试任务。包括桌面客户端和手机客户端。遂想到如何通过自动化测试，先整体扫一遍。&lt;/p&gt;
+&lt;h2 id=&#34;自动化测试方案及优缺点&#34;&gt;自动化测试方案及优缺点
+&lt;/h2&gt;&lt;h3 id=&#34;ui自动化测试&#34;&gt;UI自动化测试
+&lt;/h3&gt;&lt;h4 id=&#34;优点&#34;&gt;优点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;可以模拟用户与应用程序的交互，验证应用程序的外观和行为是否正确。&lt;/li&gt;
+&lt;li&gt;可以覆盖整个应用程序的功能，并检查用户界面的正确性。&lt;/li&gt;
+&lt;li&gt;可以在不同的平台和设备上运行，如Web、移动应用程序等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缺点&#34;&gt;缺点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;对于图形界面变化较频繁的应用程序，维护测试脚本可能会变得复杂和脆弱。&lt;/li&gt;
+&lt;li&gt;在不同的设备和分辨率上运行测试需要额外的配置和工作。&lt;/li&gt;
+&lt;li&gt;可能需要较长的执行时间，特别是对于大型应用程序或复杂的测试用例。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;api接口自动化测试&#34;&gt;API/接口自动化测试
+&lt;/h3&gt;&lt;h4 id=&#34;优点-1&#34;&gt;优点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;可以独立于应用程序的界面进行测试，并验证应用程序的功能和数据交换是否正确。&lt;/li&gt;
+&lt;li&gt;执行速度较快，因为不需要加载和操作用户界面。&lt;/li&gt;
+&lt;li&gt;可以集成到持续集成/持续交付（CI/CD）流程中，以便在每次构建或部署时自动运行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缺点-1&#34;&gt;缺点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;需要对应用程序的API或接口进行深入了解，以编写正确的测试脚本。&lt;/li&gt;
+&lt;li&gt;对于某些应用程序，可能需要模拟或设置测试环境以及测试数据。&lt;/li&gt;
+&lt;li&gt;无法验证应用程序的外观和用户界面。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;单元测试&#34;&gt;单元测试
+&lt;/h3&gt;&lt;h4 id=&#34;优点-2&#34;&gt;优点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;可以快速执行，并且测试用例通常比较容易编写。&lt;/li&gt;
+&lt;li&gt;可以在开发过程中频繁运行，以及检测和修复代码中的问题。&lt;/li&gt;
+&lt;li&gt;可以帮助开发人员实现更好的代码组织和可测试性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缺点-2&#34;&gt;缺点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;只能验证单个单元的功能，无法测试整个应用程序的集成。&lt;/li&gt;
+&lt;li&gt;对于依赖于外部资源或复杂交互的代码，编写和维护单元测试可能会更加困难。&lt;/li&gt;
+&lt;li&gt;单元测试无法检测到系统级或用户界面级的问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;性能测试&#34;&gt;性能测试
+&lt;/h3&gt;&lt;h4 id=&#34;优点-3&#34;&gt;优点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;可以评估应用程序在不同负载条件下的性能和稳定性。&lt;/li&gt;
+&lt;li&gt;可以帮助发现和解决性能瓶颈，优化应用程序的性能。&lt;/li&gt;
+&lt;li&gt;可以模拟真实用户的行为模式和使用情况。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缺点-3&#34;&gt;缺点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;需要特定的工具和技术来模拟并生成负载。&lt;/li&gt;
+&lt;li&gt;对于复杂的应用程序，设置和配置性能测试环境可能需要大量的工作。&lt;/li&gt;
+&lt;li&gt;需要专业知识和经验来解释和分析性能测试结果。&lt;/li&gt;
+&lt;li&gt;每个自动化测试方案都有其适用的场景和限制。根据项目需求和资源限制，可以选择合适的方案或结合多种方案来实现全面的自动化测试覆盖。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;appium自动化方案&#34;&gt;Appium自动化方案
+&lt;/h2&gt;&lt;p&gt;符合我目前任务场景的是 UI 自动化测试
+那么多自动化app的工具为什么选则appium？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开源免费&lt;/li&gt;
+&lt;li&gt;支持多个平台（android、IOS）&lt;/li&gt;
+&lt;li&gt;支持多种类型自动化：支持苹果安卓原生界面的自动化，支持应用内嵌WebView的自动化支持手机浏览器中的web网站自动化支持flutter应用的自动化&lt;/li&gt;
+&lt;li&gt;支持多种编程语言&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Appium是最近比较热门的框架，社区也很活跃。&lt;/p&gt;
+&lt;p&gt;这个框架应该是是功能最强大的，它的优点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开源；&lt;/li&gt;
+&lt;li&gt;支持Native App、Hybird App、Web App；&lt;/li&gt;
+&lt;li&gt;支持Android、iOS、Firefox OS；Server也是跨平台的，你可以使用Mac OS X、Windows或者Linux；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它的哲理是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用Appium自动化测试不需要重新编译App；&lt;/li&gt;
+&lt;li&gt;支持很多语言来编写测试脚本，Java、Javascript、PHP、Python、C#、Ruby等主流语言；&lt;/li&gt;
+&lt;li&gt;不需要为了自动化测试来重造轮子，因为扩展了WebDriver。（WebDriver是测试WebApps的一种简单、快速的自动化测试框架，所以有Web自动化测试经验的测试人员可以直接上手）；&lt;/li&gt;
+&lt;li&gt;移动端自动化测试应该是开源的；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;appium-的使用&#34;&gt;Appium 的使用
+&lt;/h2&gt;&lt;h3 id=&#34;环境准备&#34;&gt;环境准备
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://velog.io/@reverse/appium-doctor-android-en&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考博客&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://sites.google.com/chromium.org/driver/home&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;安装ChromeDriver&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://googlechromelabs.github.io/chrome-for-testing/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;当ChromeDriver太新时从这里看说明&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/117.0.5938.149/linux64/chromedriver-linux64.zip&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;最新ChromeDriver下载地址&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;安装&#34;&gt;安装
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/appium/appium-desktop/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;appium-desktop&lt;/a&gt; 建议appImage&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/appium/appium-inspector/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;appium-inspector&lt;/a&gt; 建议appImage&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/brf-test/p/16406092.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;极简使用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/tools?hl=zh-cn&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;android-sdk&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SDK 直接通过 Android Studio 安装比较省事，默认安装在 ~/Android/SDK&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install android-sdk
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install android-sdk-platform-tools-common
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# [gst-launch-1&amp;amp;gst-inspect-1](https://gstreamer.freedesktop.org/documentation/installing/on-linux.html?gi-language=c)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# opencv&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# https://docs.opencv.org/4.x/d2/de6/tutorial_py_setup_in_ubuntu.html&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install libopencv-dev python3-opencv
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt-get install libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev &lt;span style=&#34;color:#75715e&#34;&gt;# oppencv 的可选依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;验证 opencv 安装好了没&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ python3
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Python 3.11.4 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;main, Jun  &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt; 2023, 07:59:55&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;GCC 12.3.0&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; on linux
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Type &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;help&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;copyright&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;credits&amp;#34;&lt;/span&gt; or &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;license&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; more information.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; import cv2 as cv
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; print&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;cv.__version__&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;4.6.0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; exit&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;unset OPENCV4NODEJS_DISABLE_AUTOBUILD
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install libprotobuf-dev
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install --global opencv-build
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd .npm-global/opencv-build/ &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; node install.js
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir ~/opencv/build -p
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir ~/opencv/sources -p
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ~/opencv/sources
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/opencv/opencv.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/opencv/opencv_contrib.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ~/opencv/build
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cmake -DCMAKE_BUILD_TYPE&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;Release -DCMAKE_INSTALL_PREFIX&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;$HOME/opencv ~/opencv/sources/opencv/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make -j7
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make install &lt;span style=&#34;color:#75715e&#34;&gt;# 安装到了 $HOME/opencv 目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cmake -DCMAKE_BUILD_TYPE&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;Release -DCMAKE_INSTALL_PREFIX&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;$HOME/opencv opencv_contrib
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 安装失败&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;export OPENCV_LIB_DIR&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/usr/local/lib &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; export OPENCV4NODEJS_DISABLE_AUTOBUILD&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; npm install -g opencv4nodejs
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Android Studio 安装选项
+&lt;img src=&#34;/sdk-platform.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;sdk-platform&#34;
+	
+	
+&gt;
+&lt;img src=&#34;/sdk-tool.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;sdk-tool&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;环境变量设置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# java bin PATH&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Java/jdk-11.0.2/bin&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; ; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    export JAVA_HOME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Java/jdk-11.0.2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    PATH&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Java/jdk-11.0.2/bin:&lt;/span&gt;$PATH&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# ANDROID_HOME&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Android/Sdk/&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; ; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    export ANDROID_SDK_ROOT&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Android/Sdk/&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    export ANDROID_HOME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Android/Sdk/&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    PATH&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$PATH&lt;span style=&#34;color:#e6db74&#34;&gt;:&lt;/span&gt;$ANDROID_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/bundle-tool&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# use bundletool.jar from github.com/google/bundletool/releases&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g appium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g appium-doctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g opencv4nodejs
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g mjpeg-consumer
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 从 https://github.com/google/bundletool/releases 下载 bundletool.jar&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装完成后用 appium-doctor 检测一下，应该可以看到如下结果&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium-doctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;WARN AppiumDoctor &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Deprecated&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Please use appium-doctor installed with &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;npm install @appium/doctor --location=global&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor Appium Doctor v.1.16.2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor &lt;span style=&#34;color:#75715e&#34;&gt;### Diagnostic for necessary dependencies starting ###&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ The Node.js binary was found at: /home/lee/.local/bin/node
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ Node version is 16.18.0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ ANDROID_HOME is set to: /home/lee/Android/Sdk/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ JAVA_HOME is set to: /home/lee/Java/jdk-11.0.2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor    Checking adb, android, emulator, apkanalyzer
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;adb&amp;#39;&lt;/span&gt; is in /home/lee/Android/Sdk/platform-tools/adb
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;android&amp;#39;&lt;/span&gt; is in /home/lee/Android/Sdk/tools/android
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;emulator&amp;#39;&lt;/span&gt; is in /home/lee/Android/Sdk/emulator/emulator
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;apkanalyzer&amp;#39;&lt;/span&gt; is in /home/lee/Android/Sdk/cmdline-tools/latest/bin/apkanalyzer
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ adb, android, emulator, apkanalyzer exist: /home/lee/Android/Sdk/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bin&amp;#39;&lt;/span&gt; subfolder exists under &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/home/lee/Java/jdk-11.0.2&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor &lt;span style=&#34;color:#75715e&#34;&gt;### Diagnostic for necessary dependencies completed, no fix needed. ###&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor &lt;span style=&#34;color:#75715e&#34;&gt;### Diagnostic for optional dependencies starting ###&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ opencv4nodejs is installed at: /home/lee/.cache/.npm-global/lib. Installed version is: undefined
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ ffmpeg is installed at: /usr/bin/ffmpeg. ffmpeg version 5.1.2-3ubuntu1 Copyright &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;c&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; 2000-2022 the FFmpeg developers
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ mjpeg-consumer is installed at: /home/lee/.cache/.npm-global/lib. Installed version is: 2.0.0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ bundletool.jar is installed at: /home/lee/Android/Sdk/bundle-tool/bundletool.jar
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ gst-launch-1.0 and gst-inspect-1.0 are installed at: /usr/bin/gst-launch-1.0 and /usr/bin/gst-inspect-1.0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor &lt;span style=&#34;color:#75715e&#34;&gt;### Diagnostic for optional dependencies completed, no fix possible. ###&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor Everything looks good, bye!
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 查看可选驱动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;appium driver list
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 安装我需要的驱动：适用于Android的 Native, Hybrid, Web 应用测试&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;appium driver install uiautomator2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin list
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Listing available plugins
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- images &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;not installed&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- execute-driver &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;not installed&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- relaxed-caps &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;not installed&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- universal-xml &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;not installed&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install images
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;images&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/images-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ℹ Plugin images@2.1.4 successfully installed
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install execute-driver
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;execute-driver&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/execute-driver-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ℹ Plugin execute-driver@3.0.17 successfully installed
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install relaxed-caps
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relaxed-caps&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/relaxed-caps-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ℹ Plugin relaxed-caps@1.0.5 successfully installed
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install universal-xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;universal-xml&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/universal-xml-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ℹ Plugin universal-xml@1.0.12 successfully installed
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install universal-xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;universal-xml&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/universal-xml-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin list
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Listing available plugins
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- images@2.1.4 &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;installed &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;npm&lt;span style=&#34;color:#f92672&#34;&gt;)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- execute-driver@3.0.17 &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;installed &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;npm&lt;span style=&#34;color:#f92672&#34;&gt;)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- relaxed-caps@1.0.5 &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;installed &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;npm&lt;span style=&#34;color:#f92672&#34;&gt;)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- universal-xml@1.0.12 &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;installed &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;npm&lt;span style=&#34;color:#f92672&#34;&gt;)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;环境检测&#34;&gt;环境检测
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 检查 appium 环境及依赖问题工具&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g appium-doctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 开始检查&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;appium-doctor
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;极简使用&#34;&gt;极简使用
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run --privileged -d -p 4723:4723  -v /dev/bus/usb:/dev/bus/usb --name appium-container appium/appium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run -d --privileged -v /dev/bus/usb:dev/bus/usb -v $ANDROID_HOME:/android -p 4723:4723 muicoder/appium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker exec -it appium-container adb devices
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run -d -p 4724:4723 --device /dev/bus/usb/XXX/ZZZ:/dev/bus/usb/XXX/ZZZ -v ~/.android:/root/.android --name device2 appium/appium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run -d -p 4723:4723 -e REMOTE_ADB&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;true -e ANDROID_DEVICES&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;192.168.0.5:5555,192.168.0.6:5555 -e REMOTE_ADB_POLLING_SEC&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run --privileged -d -p 4723:4723 -e CONNECT_TO_GRID&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;true -e APPIUM_HOST&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;127.0.0.1&amp;#34;&lt;/span&gt; -e APPIUM_PORT&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4723&lt;/span&gt; -e SELENIUM_HOST&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;172.17.0.1&amp;#34;&lt;/span&gt; -e SELENIUM_PORT&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4444&lt;/span&gt; -v /dev/bus/usb:/dev/bus/usb --name appium-container appium/appium
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;浏览器访问 &lt;code&gt;http://127.0.0.1:4723&lt;/code&gt; 出现 &lt;code&gt;The URL ‘/’ did not map to a valid resource&lt;/code&gt; 就是 appium 环境配置好了。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker exec -it -u &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; appium-container adb devices &lt;span style=&#34;color:#75715e&#34;&gt;# 检查设备连接，宿主机能识别就能识别&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker exec -it -u &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; appium-container node --version &lt;span style=&#34;color:#75715e&#34;&gt;# 检查测试脚本运行脚本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;编写测试脚本
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/appium/appium/tree/1.x/sample-code&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/appium/appium/tree/1.x/sample-code&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://appium.io/docs/en/2.1/quickstart/test-js/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://appium.io/docs/en/2.1/quickstart/test-js/&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://testerhome.com/topics/16605&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://testerhome.com/topics/16605&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; { &lt;span style=&#34;color:#a6e22e&#34;&gt;remote&lt;/span&gt; } &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;webdriverio&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;opts&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;hostname&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;localhost&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// 连接到哪里，脚本在宿主机上跑
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;port&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;4723&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/wd/hub&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// 不用改
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;capabilities&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;platformName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Android&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;platformVersion&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;your_android_version&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// 平台OS版本号
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;deviceName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;MI10Lite&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// 设备的名称–值可以随便写
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cloud.lazycat.client&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// appActivity: &amp;#39;&amp;#39;, // 确保自动化之后不重置app
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 添加其他所需的配置
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - platformName: 平台名称设置为Android
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - platformVersion:填写当前连接的Android设备的系统版本，必须正确
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - deviceName: 填写Android设备名称，不需要正确
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - app: 路径，从本地选择要测试应用的apk路径
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - appPackage: 测试app的package
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - appActivity: 测试app的StartActivity
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - unicodeKeyboard: 布尔值 true则禁用手机键盘
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - noReset: 布尔值true 则不重新安装apk，false则重新安装apk
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - newCommandTimeout: 6000
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;async&lt;/span&gt; () =&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;remote&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;opts&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 启动应用程序
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;launchApp&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 执行操作，例如点击按钮
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;$&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;xpath=//button&amp;#39;&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;click&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 断言结果
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;$&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;xpath=//div&amp;#39;&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;getText&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;console&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Text:&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;text&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 关闭应用程序
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;closeApp&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})();
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;继续编写脚本，通过 &lt;code&gt;Appium-Inspector-linux-2023.8.4.appimage&lt;/code&gt; 通信，拿到元素
+然后继续编写脚本，但是在实际使用过程中，比如要列举出所有按钮元素，尝试点击元素，都会失败。
+app页面切换导航了，刷新Appium-Inspector-linux-2023视图，却没有反应。&lt;/p&gt;
+&lt;p&gt;所以放弃这个方案了。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

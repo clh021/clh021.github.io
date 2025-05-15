@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Hurl on 良宏</title>
+        <link>/tags/hurl/</link>
+        <description>Recent content in Hurl on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sat, 12 Oct 2024 11:42:47 +0800</lastBuildDate><atom:link href="/tags/hurl/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>hurl</title>
+        <link>/post/tech/hurl/</link>
+        <pubDate>Sat, 12 Oct 2024 11:42:47 +0800</pubDate>
+        
+        <guid>/post/tech/hurl/</guid>
+        <description>&lt;h2 id=&#34;install&#34;&gt;Install
+&lt;/h2&gt;&lt;p&gt;官网： &lt;a class=&#34;link&#34; href=&#34;https://hurl.dev&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://hurl.dev&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo pacman -S hurl
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;use&#34;&gt;Use
+&lt;/h2&gt;&lt;p&gt;movies.hurl&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-hurl&#34; data-lang=&#34;hurl&#34;&gt;# 以下内容测试用例来自于官方教程
+# 测试服务来自于官方提供的 docker 服务
+# docker run --name movies -d --detach --publish 3000:3000 ghcr.io/jcamiel/hurl-express-tutorial:latest
+#
+# 测试方法：
+#     hurl --test movies.hurl                      # 直接测试全部，输出测试结果，不要细节
+#     hurl --verbose movies.hurl                   # 输出包含调试信息，请求细节以及响应头信息
+#     hurl --very-verbose movies.hurl              # 输出包含调试信息，以及非常详细的请求和响应，甚至 libcurl 日志，响应时间等
+#     hurl --error-format long --test movies.hurl  # 可以在有断言错误时输出错误详情，在CI/CD 时尤其有用
+#     hurl --verbose --interactive movies.hurl     # 可以以互动的模式运行
+#     hurl -i movies.hurl                          # 仅出HTTP头
+#
+# 使用变量:
+#     hurl --variable host=http://localhost:3000 --test basic.hurl # 可以在内部使用 `GET {{host}}` 来指代要请求的地址，不必硬编码
+#     hurl --variable host=http://localhost:3000 --test *.hurl     # 测试多个脚本
+#
+# 代理方法:
+# 搭建代理:
+#     mitmweb -p 8888 --web-port 8889 --web-open-browser
+#     Web server listening at http://127.0.0.1:8889/
+#     Proxy server listening at http://*:8888
+# 使用代理:
+#     hurl --proxy localhost:8888 basic.hurl
+
+
+
+
+
+
+# Checking our home page:
+GET http://localhost:3000
+
+HTTP 200
+[Asserts]
+xpath &amp;#34;string(//head/title)&amp;#34; == &amp;#34;Movies Box&amp;#34;
+xpath &amp;#34;//h3&amp;#34; count == 2
+xpath &amp;#34;string((//h3)[1])&amp;#34; contains &amp;#34;Popular&amp;#34;
+xpath &amp;#34;string((//h3)[2])&amp;#34; contains &amp;#34;Featured Today&amp;#34;
+# Testing HTTP response headers:
+header &amp;#34;Content-Type&amp;#34; == &amp;#34;text/html; charset=utf-8&amp;#34;
+header &amp;#34;Set-Cookie&amp;#34; startsWith &amp;#34;x-session-id=&amp;#34;
+cookie &amp;#34;x-session-id&amp;#34; exists
+cookie &amp;#34;x-session-id[HttpOnly]&amp;#34; exists
+
+
+
+# Check that we have a 404 response for broken links:
+GET http://localhost:3000/not-found
+
+HTTP 404
+[Asserts]
+header &amp;#34;Content-Type&amp;#34; == &amp;#34;text/html; charset=utf-8&amp;#34;
+xpath &amp;#34;string(//h2)&amp;#34; == &amp;#34;Error&amp;#34;
+xpath &amp;#34;string(//h3)&amp;#34; == &amp;#34;Not Found&amp;#34;
+
+
+
+# Check our health API:
+GET http://localhost:3000/api/health
+[Options]
+very-verbose: true
+# use - to output on standard output, foo.bin to save on disk 
+output: -
+HTTP 200
+[Asserts]
+header &amp;#34;Content-Type&amp;#34; == &amp;#34;application/json; charset=utf-8&amp;#34;
+jsonpath &amp;#34;$.status&amp;#34; == &amp;#34;RUNNING&amp;#34;
+jsonpath &amp;#34;$.healthy&amp;#34; == true
+jsonpath &amp;#34;$.operationId&amp;#34; exists
+
+
+
+# Check search API:
+GET http://localhost:3000/api/search?q=1982&amp;amp;sort=name
+
+HTTP 200
+[Asserts]
+header &amp;#34;Content-Type&amp;#34; == &amp;#34;application/json; charset=utf-8&amp;#34;
+jsonpath &amp;#34;$&amp;#34; count == 5
+jsonpath &amp;#34;$[0].name&amp;#34; == &amp;#34;Blade Runner&amp;#34;
+jsonpath &amp;#34;$[0].director&amp;#34; == &amp;#34;Ridley Scott&amp;#34;
+jsonpath &amp;#34;$[0].release_date&amp;#34; == &amp;#34;1982-06-25&amp;#34;
+
+
+
+
+# Check search API:
+GET http://localhost:3000/api/search
+[Options]
+verbose: true
+[QueryStringParams]
+q: 1982
+sort: name
+
+HTTP 200
+[Asserts]
+header &amp;#34;Content-Type&amp;#34; == &amp;#34;application/json; charset=utf-8&amp;#34;
+jsonpath &amp;#34;$&amp;#34; count == 5
+jsonpath &amp;#34;$[0].name&amp;#34; == &amp;#34;Blade Runner&amp;#34;
+jsonpath &amp;#34;$[0].director&amp;#34; == &amp;#34;Ridley Scott&amp;#34;
+jsonpath &amp;#34;$[0].release_date&amp;#34; == &amp;#34;1982-06-25&amp;#34;
+
+
+
+
+# Check search API:
+GET http://localhost:3000/api/search
+[QueryStringParams]
+q: 1982
+sort: name
+
+HTTP 200
+[Asserts]
+header &amp;#34;Content-Type&amp;#34; == &amp;#34;application/json; charset=utf-8&amp;#34;
+jsonpath &amp;#34;$&amp;#34; count == 5
+jsonpath &amp;#34;$[0].name&amp;#34; == &amp;#34;Blade Runner&amp;#34;
+jsonpath &amp;#34;$[0].director&amp;#34; == &amp;#34;Ridley Scott&amp;#34;
+jsonpath &amp;#34;$[0].release_date&amp;#34; startsWith &amp;#34;1982&amp;#34;
+
+
+
+
+# Check search API:
+GET http://localhost:3000/api/search
+[QueryStringParams]
+q: 1982
+sort: name
+
+HTTP 200
+[Asserts]
+header &amp;#34;Content-Type&amp;#34; == &amp;#34;application/json; charset=utf-8&amp;#34;
+jsonpath &amp;#34;$&amp;#34; count == 5
+jsonpath &amp;#34;$[0].name&amp;#34; == &amp;#34;Blade Runner&amp;#34;
+jsonpath &amp;#34;$[0].director&amp;#34; == &amp;#34;Ridley Scott&amp;#34;
+jsonpath &amp;#34;$[0].release_date&amp;#34; regex /(\d{4})-\d{2}-\d{2}/ == &amp;#34;1982&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;csrf.hurl&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-hurl&#34; data-lang=&#34;hurl&#34;&gt;# https://hurl.dev/docs/tutorial/captures.html
+
+# First, display the login page to capture
+# the CSRF token (see https://en.wikipedia.org/wiki/Cross-site_request_forgery)
+GET http://localhost:3000/login
+HTTP 200
+[Captures]
+csrf_token: xpath &amp;#34;string(//input[@name=&amp;#39;_csrf&amp;#39;]/@value)&amp;#34;
+
+
+# Log in user, using the captured CSRF token:
+POST http://localhost:3000/login
+[FormParams]
+username: fab
+password: 12345678
+_csrf: {{csrf_token}}
+HTTP 302
+[Asserts]
+header &amp;#34;Location&amp;#34; == &amp;#34;/my-movies&amp;#34;
+
+
+# Follow redirection and open favorites:
+GET http://localhost:3000/my-movies
+HTTP 200
+[Asserts]
+xpath &amp;#34;string(//title)&amp;#34; == &amp;#34;My Movies&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;signup_ok.hurl&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-hurl&#34; data-lang=&#34;hurl&#34;&gt;# https://hurl.dev/docs/tutorial/security.html
+# First we obtain an available username:
+GET http://localhost:3000/api/usernames/available
+HTTP 200
+[Captures]
+username: jsonpath &amp;#34;$.username&amp;#34;
+
+# Create a new valid user: get the CSRF token the signup:
+GET http://localhost:3000/signup
+HTTP 200
+[Captures]
+csrf_token: xpath &amp;#34;string(//input[@name=&amp;#39;_csrf&amp;#39;]/@value)&amp;#34;
+
+
+POST http://localhost:3000/signup
+[Options]
+location: true
+[FormParams]
+_csrf: {{csrf_token}}
+username: {{username}}
+name: Bob
+email: {{username}}@example.net
+password: 12345678
+HTTP 200
+[Asserts]
+url endsWith &amp;#34;/my-movies&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;signup_fail.hurl&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-hurl&#34; data-lang=&#34;hurl&#34;&gt;# https://hurl.dev/docs/tutorial/security.html
+#
+
+# First we obtain an available username:
+GET http://localhost:3000/api/usernames/available
+HTTP 200
+[Captures]
+username: jsonpath &amp;#34;$.username&amp;#34;
+
+
+# Create a new valid user: get the CSRF token the signup:
+GET http://localhost:3000/signup
+HTTP 200
+[Captures]
+csrf_token: xpath &amp;#34;string(//input[@name=&amp;#39;_csrf&amp;#39;]/@value)&amp;#34;
+[Asserts]
+xpath &amp;#34;//comment&amp;#34; count == 0     # Check that we don&amp;#39;t leak comments
+
+
+POST http://localhost:3000/signup
+[Options]
+location: true
+[FormParams]
+_csrf: {{csrf_token}}
+username: {{username}}
+name: Bob
+email: {{username}}@example.net
+password: 12345678
+HTTP 200
+[Asserts]
+url endsWith &amp;#34;/my-movies&amp;#34;
+
+
+# Play some checks on signup form: username too short
+# email already taken, invalid pattern for username
+GET http://localhost:3000/signup
+HTTP 200
+[Captures]
+csrf_token: xpath &amp;#34;string(//input[@name=&amp;#39;_csrf&amp;#39;]/@value)&amp;#34;
+
+
+# Create a new user, username too short
+POST http://localhost:3000/signup
+[Options]
+location: true
+[FormParams]
+_csrf: {{csrf_token}}
+username: bo
+name: Bob
+email: bob78@example.net
+password: 12345678
+HTTP 200
+[Asserts]
+url endsWith &amp;#34;/signup&amp;#34;
+xpath &amp;#34;string(//div[@class=&amp;#39;form-errors&amp;#39;])&amp;#34; contains &amp;#34;Username must be 3 to 32 chars long&amp;#34;
+
+
+# Test CSRF is mandatory:
+POST http://localhost:3000/signup
+[FormParams]
+username: bob
+name: Bob
+email: bob78@example.net
+password: 12345678
+HTTP 403
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;integration.sh&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;set -eu
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wait_for_url&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Testing &lt;/span&gt;$1&lt;span style=&#34;color:#e6db74&#34;&gt;...&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  printf &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;GET %s\nHTTP 200&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$1&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; | hurl --retry &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$2&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &amp;gt;/dev/null
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Starting container&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run --name movies --rm --detach --publish 3000:3000 ghcr.io/jcamiel/hurl-express-tutorial:latest
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Waiting server to be ready&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wait_for_url &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$1&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Running Hurl tests&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hurl --variable host&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$1&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; --test integration/*.hurl
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Stopping container&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker stop movies
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;test.hurl&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-hurl&#34; data-lang=&#34;hurl&#34;&gt;GET http://httpbin.org/get
+HTTP 200                                           # 隐式断言
+Content-Type: application/json                     # 隐式断言
+[Asserts]                                          # 显示断言
+jsonpath &amp;#34;$.url&amp;#34; contains &amp;#34;http://httpbin.org/get&amp;#34;
+# header &amp;#34;User-Agent&amp;#34; contains &amp;#34;hurl&amp;#34;
+
+POST http://httpbin.org/post
+HTTP 200                                           # 隐式断言
+Content-Type: application/json                     # 隐式断言
+[Asserts]                                          # 显示断言
+jsonpath &amp;#34;$.url&amp;#34; contains &amp;#34;http://httpbin.org/post&amp;#34;
+# header &amp;#34;User-Agent&amp;#34; contains &amp;#34;hurl&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
