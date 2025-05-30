@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Loongarch64 on 良宏</title>
+        <link>/tags/loongarch64/</link>
+        <description>Recent content in Loongarch64 on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Mon, 25 Apr 2022 07:54:47 +0800</lastBuildDate><atom:link href="/tags/loongarch64/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Loongarch64 Docker 镜像</title>
+        <link>/post/tech/loongarch64.env/</link>
+        <pubDate>Mon, 25 Apr 2022 07:54:47 +0800</pubDate>
+        
+        <guid>/post/tech/loongarch64.env/</guid>
+        <description>&lt;p&gt;今天处理 loongarch64 架构，需要保存软件的编译环境。准备从当前安装的系统开始构建基础镜像。
+发现当前安装的麒麟系统，从一开始创建 rootfs 时就出现了软件包不存在的问题。&lt;/p&gt;
+&lt;p&gt;当准备尝试安装 loongnix 系统时，找到了一个镜像&lt;code&gt;sugarfillet/uos-loongarch64&lt;/code&gt;。
+安装软件包软件不存在任何问题。所以记录在这里先。&lt;/p&gt;
+&lt;h2 id=&#34;操作&#34;&gt;操作
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt install autoconf2.13 binutils g++ git libdbus-glib-1-dev libgconf2-dev libgconf-2-4 libgtk-3-dev libgtk2.0-dev libpulse-dev libx11-xcb-dev libxt-dev make python unzip vim yasm zip
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
