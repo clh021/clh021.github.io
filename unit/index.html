@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <link rel="stylesheet" href="./apps/index/index.css">
+    <script src="./apps/index/jquery-3.6.0.min.js"></script>
+    <script src="./apps/index/index.js"></script>
+    <script src="./apps/index/global.js"></script>
+    <title>示例</title>
+</head>
+<body>
+<span class="engine-tag"></span>
+<div class="modal in testModal">
+    <div class="modal-dialog testModal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="autoTestPanelClose()">×</button>
+                <h4 class="modal-title">自动测试报告</h4>
+            </div>
+            <div class="modal-body">
+                <p id="testOutput">即将开始进行自动测试</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="autoTestPanelClose()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade in testModal"></div>
+<div class="contain">
+    <div class="notice notice_error" style="display: none;">浏览器不支持本Demo</div>
+
+
+    <ul id="tabs">
+        <li><a id="tab1" data-page="windowBasic">基础特性</a></li>
+        <li><a id="tab2" data-page="api">API测试</a></li>
+        <li><a id="tab3" data-page="browser">浏览器特性</a></li>
+        <li><a id="tab4" data-page="doubleEngine">双引擎测试</a></li>
+        <li><a id="tab5" data-page="autoTest">半自动化测试</a></li>
+    </ul>
+    <div class="container" id="tab1C">1Some content</div>
+    <div class="container" id="tab2C">2Some content</div>
+    <div class="container" id="tab3C">3Some content</div>
+    <div class="container" id="tab4C">4Some content</div>
+    <div class="container" id="tab5C">5Some content</div>
+    <script type="text/javascript" charset="utf-8">
+        window._unitTestPageRoot='./tabs';
+        $(document).ready(function () {
+            let pageRoot = `${window._unitTestPageRoot}/`;
+            $('#tabs li a:not(:first)').addClass('inactive');
+            $('.container').hide();
+            $('.container:first').show();
+            $('.container:first').load(pageRoot + $('#tabs li a:first').data("page") + "/index.html");
+
+            $('#tabs li a').click(function () {
+                var t = $(this).attr('id');
+                if ($(this).hasClass('inactive')) { //this is the start of our condition
+                    $('#tabs li a').addClass('inactive');
+                    $(this).removeClass('inactive');
+                    $('.container').hide();
+                    $('#' + t + 'C').fadeIn('slow');
+                    $('#' + t + 'C').load(pageRoot + $(this).data("page") + "/index.html");
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+<!-- 测试wget&unzip -->
+<!-- <script src="./mpkx.js"></script> -->
+<!-- <script src="./mpkx.win.js"></script> -->
+
+<script type="text/javascript" charset="utf-8">
+    // 全局变量准备
+    window.onload = initPage();
+</script>
+
+</html>
