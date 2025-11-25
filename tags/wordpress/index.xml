@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>WordPress on 良宏</title>
+        <link>/tags/wordpress/</link>
+        <description>Recent content in WordPress on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 20 Feb 2019 12:45:26 +0800</lastBuildDate><atom:link href="/tags/wordpress/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>简易的系统初始化页面</title>
+        <link>/post/live/init-web-system-page/</link>
+        <pubDate>Wed, 20 Feb 2019 12:45:26 +0800</pubDate>
+        
+        <guid>/post/live/init-web-system-page/</guid>
+        <description>&lt;blockquote&gt;
+&lt;p&gt;由于要做负载均衡的系统部署，然后，希望用docker的方式将整个程序打包，系统本身是建立在wordpress和部分插件之上的，所以，这导致了必须要先安装wordpress，然后再初始化数据库，安装插件，做好基本的插件配置，然后再才启用自己些的插件，去做初始化配置，这太繁琐了，所以需要一个极简的安装页面，一键初始化所有操作。于是……&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;/index.php&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;file_exists&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;init.api.lock&amp;#39;&lt;/span&gt;)) {&lt;span style=&#34;color:#a6e22e&#34;&gt;header&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Location: /install.php&amp;#39;&lt;/span&gt;);&lt;span style=&#34;color:#66d9ef&#34;&gt;die&lt;/span&gt;();}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;/install.php&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;php&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// var_dump($_SERVER);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;empty&lt;/span&gt;($_POST) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;file_exists&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;init.api.lock&amp;#39;&lt;/span&gt;)){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;isset&lt;/span&gt;($_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt; $_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $last_status &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $last_message &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; ($_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;]) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;connect&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            $mysqli &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mysqli&lt;/span&gt;($_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;host&amp;#39;&lt;/span&gt;],$_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;user&amp;#39;&lt;/span&gt;],$_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pass&amp;#39;&lt;/span&gt;],$_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;mysqli_connect_errno&lt;/span&gt;()) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                $last_message &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Connect failed: &amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;mysqli_connect_error&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                $last_message &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Connect success&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                $last_status &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;break&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;break&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// $sql = file_get_contents(&amp;#39;mysqldump.sql&amp;#39;);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;var_dump&lt;/span&gt;($_POST);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $mysqli &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mysqli&lt;/span&gt;($_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;host&amp;#39;&lt;/span&gt;],$_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;user&amp;#39;&lt;/span&gt;],$_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pass&amp;#39;&lt;/span&gt;],$_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;mysqli_connect_errno&lt;/span&gt;()) { &lt;span style=&#34;color:#75715e&#34;&gt;/* check connection */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Connect failed: %s&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;mysqli_connect_error&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;exit&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Connect success&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;/* execute multi query */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// if ($mysqli-&amp;gt;multi_query($sql)) {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;//     echo &amp;#34;success&amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// } else {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;//   echo &amp;#34;error&amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// file_put_contents(&amp;#39;&amp;#39;,&amp;#39;init.api.lock&amp;#39;);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;die&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;json_encode&lt;/span&gt;([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;status&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt;$last_status,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;message&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt;$last_message]));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;} &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// $host=&amp;#39;dbhost:3306&amp;#39;;$name=&amp;#39;api_www&amp;#39;;$user=&amp;#39;api_user&amp;#39;;$pass=&amp;#39;api_pass&amp;#39;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    $host&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;;$name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;;$user&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;;$pass&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;?&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;!doctype html&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;html lang=&amp;#34;en&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;  &amp;lt;head&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;!-- Required meta tags --&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;meta charset=&amp;#34;utf-8&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;meta name=&amp;#34;viewport&amp;#34; content=&amp;#34;width=device-width, initial-scale=1, shrink-to-fit=no&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;!-- Bootstrap CSS --&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;link rel=&amp;#34;stylesheet&amp;#34; href=&amp;#34;https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css&amp;#34; integrity=&amp;#34;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&amp;#34; crossorigin=&amp;#34;anonymous&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;style type=&amp;#34;text/css&amp;#34;&amp;gt;body,html{height:100%}body{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-align:center;-ms-flex-pack:center;-webkit-box-align:center;align-items:center;-webkit-box-pack:center;justify-content:center;padding-top:40px;padding-bottom:40px;background-color:#f5f5f5}.form-signin{width:100%;max-width:330px;padding:15px;margin:0 auto}.form-signin .form-control{position:relative;box-sizing:border-box;height:auto;padding:10px;font-size:16px}.form-signin .form-control:focus{z-index:2}.progress{margin: 5px 0;}&amp;lt;/style&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;title&amp;gt;接口管理平台&amp;lt;/title&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;  &amp;lt;/head&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;  &amp;lt;body class=&amp;#34;text-center&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;form class=&amp;#34;form-signin&amp;#34; id=&amp;#34;init&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        &amp;lt;h1 class=&amp;#34;h3 mb-3 font-weight-normal&amp;#34;&amp;gt;接口平台初始化&amp;lt;/h1&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        &amp;lt;input type=&amp;#34;text&amp;#34; id=&amp;#34;dbhost&amp;#34; class=&amp;#34;form-control&amp;#34; placeholder=&amp;#34;数据库主机(192.168.1.1:3306)&amp;#34; required autofocus value=&amp;#34;&amp;lt;?= $host?&amp;gt;&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        &amp;lt;input type=&amp;#34;text&amp;#34; id=&amp;#34;dbname&amp;#34; class=&amp;#34;form-control&amp;#34; placeholder=&amp;#34;数据库的名称&amp;#34; required value=&amp;#34;&amp;lt;?= $name?&amp;gt;&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        &amp;lt;input type=&amp;#34;text&amp;#34; id=&amp;#34;dbuser&amp;#34; class=&amp;#34;form-control&amp;#34; placeholder=&amp;#34;数据库用户名&amp;#34; required value=&amp;#34;&amp;lt;?= $user?&amp;gt;&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        &amp;lt;input type=&amp;#34;password&amp;#34; id=&amp;#34;dbpass&amp;#34; class=&amp;#34;form-control&amp;#34; placeholder=&amp;#34;数据库密码&amp;#34; required value=&amp;#34;&amp;lt;?= $pass?&amp;gt;&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        &amp;lt;div class=&amp;#34;progress&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;          &amp;lt;div class=&amp;#34;progress-bar progress-bar-striped&amp;#34; role=&amp;#34;progressbar&amp;#34; style=&amp;#34;width: 0%&amp;#34; aria-valuenow=&amp;#34;1&amp;#34; aria-valuemin=&amp;#34;0&amp;#34; aria-valuemax=&amp;#34;100&amp;#34;&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        &amp;lt;/div&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        &amp;lt;button class=&amp;#34;btn btn-lg btn-primary btn-block&amp;#34; type=&amp;#34;submit&amp;#34;&amp;gt;开始初始化&amp;lt;/button&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        &amp;lt;p class=&amp;#34;mt-5 mb-3 text-muted&amp;#34;&amp;gt;&amp;amp;copy; &amp;lt;?= date(&amp;#39;Y&amp;#39;)?&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;/form&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;!-- Optional JavaScript --&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;script src=&amp;#34;https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;script&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        $(document).ready(function(){
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;            $(&amp;#34;#init&amp;#34;).submit(function(){
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                let host = $(&amp;#39;#dbhost&amp;#39;).val();
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                let name = $(&amp;#39;#dbname&amp;#39;).val();
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                let user = $(&amp;#39;#dbuser&amp;#39;).val();
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                let pass = $(&amp;#39;#dbpass&amp;#39;).val();
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                if(host &amp;amp;&amp;amp; name &amp;amp;&amp;amp; user &amp;amp;&amp;amp; pass) {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                    console.info(&amp;#39;ls:&amp;#39;,host,name,user,pass);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                    $.post(&amp;#34;/install.php&amp;#34;,{host:host,name:name,user:user,pass:pass},function(result){
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                        console.info(result);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                        console.info(result.status);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                        console.info(JSON.stringify(result));
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                        return false;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                    });
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                    $(&amp;#34;.progress-bar&amp;#34;).attr(&amp;#39;style&amp;#39;,&amp;#39;width: 10%&amp;#39;);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                    return false;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                } else {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                    return false;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;                }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;            });
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;        });
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;    &amp;lt;/script&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;  &amp;lt;/body&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;/html&amp;gt;&amp;lt;?php
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;?&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;其实我还想到了另外一种方案，所有的配置都配置在环境变量中，index负责初始化操作，这样就没有操作的界面了。如果部署的要求更偏技术化，那么就可以连初始化的操作都免了，不需要本页面。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;php&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// define(&amp;#39;SHORTINIT&amp;#39;, true);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// require(&amp;#39;wp-load.php&amp;#39;);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// WP_Filesystem();
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// global $wp_filesystem;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// global $wpdb;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// echo &amp;#39;Current Path is &amp;#39;. __DIR__;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// $file =  __DIR__.&amp;#34;/sql/my_insert_query.sql&amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// if(!is_readable($file)) {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//     echo &amp;#39;File not found or not readable &amp;#39;.$file;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// }     
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// // $table_name = $wpdb-&amp;gt;prefix . &amp;#34;tableName&amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// // $sql_insert = &amp;#34;INSERT INTO $table_name (id, something) &amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// // $sql_insert .= $wp_filesystem-&amp;gt;get_contents( $file );
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// // $rows_affected = $wpdb-&amp;gt;query( $sql_insert );
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// $tables = $wpdb-&amp;gt;get_results(&amp;#34;show tables&amp;#34;, ARRAY_A);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// var_dump($tables);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// file_put_contents(&amp;#39;&amp;#39;,&amp;#39;init.api.lock&amp;#39;);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>WordPress环境及资料整理</title>
+        <link>/post/tech/wordpress.env/</link>
+        <pubDate>Fri, 24 Feb 2017 21:57:25 +0000</pubDate>
+        
+        <guid>/post/tech/wordpress.env/</guid>
+        <description>&lt;h1 id=&#34;wordpress集合&#34;&gt;WordPress集合
+&lt;/h1&gt;&lt;h2 id=&#34;从头开始做wordpress&#34;&gt;从头开始做wordpress
+&lt;/h2&gt;&lt;p&gt;部署、更新、脏检查&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;git clone --depth=1 https://github.com/WordPress/WordPress.git wordpress
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;PHP环境&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# deepin php7
+sudo apt install php7.0
+sudo apt install php7.0-fileinfo php7.0-curl php7.0-gd php7.0-imap php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-odbc php7.0-pgsql php7.0-sqlite3 php7.0-xml php7.0-xmlrpc php7.0-zip#PHP扩展
+
+# debian php5
+apt install php5
+apt install php-file php5-curl php5-gd php5-imap php5-imagick php5-intl php5-json php5-mcrypt php5-mysql php5-pgsql php5-sqlite php5-ssh2 php5-xmlrpc
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;服务器配置(非必须)&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;VirtualHost *:80&amp;gt;
+	#ServerName www.example.com #域名，ip访问可不配置
+	ServerAdmin webmaster@localhost #你的邮箱，错误页面可联系到你
+	DocumentRoot /var/www/html
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	&amp;lt;Directory &amp;#34;/var/www/html&amp;#34;&amp;gt; #添加用户认证
+        AuthType Basic
+        AuthName &amp;#34;Restricted Content&amp;#34;
+        AuthUserFile /etc/apache2/.htpasswd
+        #sudo htpasswd -c /etc/apache2/.htpasswd username #设置验证文件，或增加用户，[你也可以改变文件目录]
+        Require valid-user
+    &amp;lt;/Directory&amp;gt;
+    &amp;lt;Directory /var/www/&amp;gt; #允许启用.htaccess #注意开启 mod_rewrite #sudo a2enmod rewrite
+	    Options Indexes FollowSymLinks
+	    AllowOverride All
+	    Require all granted
+	&amp;lt;/Directory&amp;gt;
+&amp;lt;/VirtualHost&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;验证好数据库配置，并按照提示手动创建wp-config.php文件，于最终安装好wordpress。
+安装好后，手动修改wordpress的wp-config.php配置文件&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;//设置域名
+$home = &amp;#39;http://&amp;#39;.$_SERVER[&amp;#39;HTTP_HOST&amp;#39;];
+$siteurl = &amp;#39;http://&amp;#39;.$_SERVER[&amp;#39;HTTP_HOST&amp;#39;];
+define(&amp;#39;WP_HOME&amp;#39;, $home);
+define(&amp;#39;WP_SITEURL&amp;#39;, $siteurl);
+//设置本地语言为中文
+define(&amp;#39;WPLANG&amp;#39;, &amp;#39;zh_CN&amp;#39;);
+//设置本地文件读写模式，不使用ftp方式安装插件和主题
+//你也可以在安装好各种插件和主题以后删除下面的配置来保证安全，当然同时也无法方便的自动升级了。
+define(&amp;#34;FS_METHOD&amp;#34;,&amp;#34;direct&amp;#34;);
+define(&amp;#34;FS_CHMOD_DIR&amp;#34;, 0777);
+define(&amp;#34;FS_CHMOD_FILE&amp;#34;, 0777);
+//同时配置本地写命令 `sudo chmod 777 -R wp-content`，撤销命令为`sudo chmod 755 -R wp-content`
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;登录到后台，在更新按钮中点击 &lt;code&gt;Update Translations&lt;/code&gt; 按钮，获取本地化。
+获取本地化完成后，可更新各个主题插件的翻译。&lt;/p&gt;
+&lt;h2 id=&#34;技巧--精品插件--人见人爱&#34;&gt;技巧 × 精品插件 × 人见人爱
+&lt;/h2&gt;&lt;h3 id=&#34;开发技巧&#34;&gt;开发技巧
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;开发调试显示错误&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;if ( current_user_can( &amp;#39;manage_options&amp;#39; ) ) {
+    define(&amp;#39;WP_DEBUG_DISPLAY&amp;#39;, true);
+    @ini_set(&amp;#39;display_errors&amp;#39;, 1);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;开发扩展&#34;&gt;开发扩展
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Developer&lt;/code&gt;官方出品的开发者开发插件，开发调试几乎别无所求，这是一个插件组&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cformsII - contact form&lt;/code&gt;灵活强大可定制ajax表单&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Advanced Custom Fields&lt;/code&gt;让站长繁简适宜、方便快捷的自定义字段&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Developer&#39;s Custom Fields&lt;/code&gt;让开发者轻松灵活的定义字段&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Page Builder&lt;/code&gt;简单快速拖拽创建页面&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Baidu Maps Plugin&lt;/code&gt;百度地图&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Google Map&lt;/code&gt;谷歌地图 由SRMILON创建&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Theme Test Drive&lt;/code&gt;安全的指定用户在线测试开发主题&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Plugin Test Drive&lt;/code&gt;在不启用插件的情况下测试开发插件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Debug Bar&lt;/code&gt;一个调试面板可进行多种调试功能&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Log Deprecated Notices&lt;/code&gt;不需要WP_DEBUG的情况下看日志&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Monster Widget&lt;/code&gt;十三个核心部件的集合，方便快速的开发主题&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Regenerate Thumbnails&lt;/code&gt;生成不同尺寸的图片缩略图，在切换或开发主题时非常方便&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Simply Show IDs&lt;/code&gt;无处不在的ID也许能给你带来方便&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Query Monitor&lt;/code&gt;记录所有请求并统计详情供分析&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;WordPress REST API (Version 2)&lt;/code&gt;易于使用和理解的REST API，还包括基于Backbone模型的JavaScript API，允许插件和主题开发者使用&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Hide My Wordpress&lt;/code&gt;隐藏wordpress常规特征，可用于伪装，更可用于保护站点安全&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;后台界面&#34;&gt;后台界面
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ag-custom-admin&lt;/code&gt;管理后台界面个性化定制&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Admin Menu Editor&lt;/code&gt;管理后台界面可见性工具，有可视化视图&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TinyMCE Advanced&lt;/code&gt;编辑器更强大好看，支持ajax保存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;功能扩展&#34;&gt;功能扩展
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;bbPress&lt;/code&gt;论坛功能&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;WooCommcerce&lt;/code&gt;在线商店，稳定，可靠，功能强大&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Code Snippets&lt;/code&gt;可以添加代码片段以避免修改function.php,有良好的编码配色界面&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Contact Form 7&lt;/code&gt;你可以自定义读者联系你的表单，表单直接发送邮件给你&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Wordfence Security&lt;/code&gt;安全防护&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;WordPress Database Backup&lt;/code&gt;保存包含插件表的数据库&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;W3 Total Cache&lt;/code&gt;浏览器缓存、页面缓存、对象缓存、数据库缓存、页面压缩&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;WP Super Cache&lt;/code&gt;浏览器缓存、生成 HTML 副本&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;iThemes Security&lt;/code&gt;保护网站安全&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Clef Two-Factor Authentication&lt;/code&gt;双重认证,通过手机同步来提供更快、更受保护的登录方式&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Akismet&lt;/code&gt;反垃圾评论&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;WP Statistics&lt;/code&gt;全面且实用的访问统计&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;NextGEN Gallery&lt;/code&gt;功能强大的相册幻灯片类&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Jetpack&lt;/code&gt;需要链接wordpress的系列强大功能服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;服务器技巧&#34;&gt;服务器技巧
+&lt;/h3&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;#快速禁用某网站
+sudo a2dissite &amp;lt;my-site&amp;gt;
+#服务命令
+sudo service apache2 reload
+sudo service apache2 restart
+#测试配置
+apache2ctl configtest
+#快速查看和修改.htaccess
+sudo nano /var/www/html/.htaccess
+#调试.htaccess
+RewriteLog logs/drupal001.com-rewrite.log #此处可以写绝对地址
+RewriteLogLevel 3
+#非正规调试.htaccess 可方便查看各种变量并轻松检查RewriteCond是否正确
+RewriteCond %{QUERY_STRING} vardump #http://url/?vardump
+RewriteRule (.*) http://www.baidu.com/?host=%{HTTP_HOST},rurl=%{REQUEST_URI} [R=301,L,QSA]
+#apache默认变量列表
+#HTTP_USER_AGENT HTTP_REFERER HTTP_COOKIE HTTP_FORWARDED HTTP_HOST HTTP_PROXY_CONNECTION HTTP_ACCEPT   REMOTE_ADDR REMOTE_HOST REMOTE_PORT REMOTE_USER REMOTE_IDENT REQUEST_METHOD SCRIPT_FILENAME PATH_INFO QUERY_STRING AUTH_TYPE   DOCUMENT_ROOT SERVER_ADMIN SERVER_NAME SERVER_ADDR SERVER_PORT SERVER_PROTOCOL SERVER_SOFTWARE   TIME_YEAR TIME_MON TIME_DAY TIME_HOUR TIME_MIN TIME_SEC TIME_WDAY TIME   API_VERSION THE_REQUEST REQUEST_URI REQUEST_FILENAME IS_SUBREQ HTTPS
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;开发者资料&#34;&gt;开发者资料
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://themehybrid.com/themes/hybrid-child&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;themehybrid&lt;/a&gt; 全息开发框架，二次开发主题，主题继承，貌似也支持插件开发&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.plaintxt.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;plaintxt&lt;/a&gt; 各种排版的空白主题，可快速定制自己想要的&lt;a class=&#34;link&#34; href=&#34;https://wordpress.org/themes/sandbox/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;主题&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.wordpress.org/themes/basics/template-hierarchy/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方主题手册之模板层次&lt;/a&gt; 详细讲解页面继承关系和提供的钩子&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.wordpress.org/plugins/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方插件手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://codex.wordpress.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方代码函数库&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://wordpress.org/plugins/options-framework/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;主题选项框架&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://generatewp.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;generatewp&lt;/a&gt; 代码生成工具&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://underscores.me/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;underscores&lt;/a&gt; 功能全面，理解简单的主题，非常适合二次开发&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://foundation.zurb.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;foundation&lt;/a&gt; 响应式网页设计,除了bootstrap还可以考虑它&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://wordpress.org/plugins/theme-check/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;theme-check&lt;/a&gt; 开发主题时常检查是个好习惯&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://codex.wordpress.org/Theme_Unit_Test&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方Theme_Unit_Test&lt;/a&gt; 测试数据，让主题更完美&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://html5blank.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;html5blank&lt;/a&gt; 最值得二次开发的空白主题&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.jiustore.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;jiustore&lt;/a&gt; 6.5小时主题视频教程变成主题制作高手同时会子主题开发 &lt;a class=&#34;link&#34; href=&#34;https://www.jiufree.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;jiufree&lt;/a&gt; &lt;a class=&#34;link&#34; href=&#34;http://www.jiuwp.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;jiuwp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.shejiwo.net/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;设计窝&lt;/a&gt; 主题定制服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;使用人数众多的大都是值得一试的好东西，它可以大量节省你的时间精力；但是更好更适合你的东西却不一定使用人数众多，因为有痛点才会有更好的产品，新出来的产品正在等待验证。人应该无时无刻注意到节省自己的时间精力，提高效率，提高产出。借势而为，借力使力，站在巨人的肩膀上向前走，人类才一步步实现了今天科技的进步。
+如果能够有人指点你，有人帮助你，有人和你朝着同一个方向使力，一定可以比你自己一个人投入时间，精力，慢慢摸索来的好。你可以有更多的时间精力去做更加有生产力，更加有意义的事情当中。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
+        <title>WordPress开发笔记</title>
+        <link>/post/tech/wordpress.dev/</link>
+        <pubDate>Fri, 24 Feb 2017 21:57:25 +0000</pubDate>
+        
+        <guid>/post/tech/wordpress.dev/</guid>
+        <description>&lt;h1 id=&#34;wordpress-笔记&#34;&gt;WordPress 笔记
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://codex.wordpress.org/zh-cn:%E5%87%BD%E6%95%B0%E5%8F%82%E8%80%83&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;函数列表&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;http://codex.wordpress.org/Plugin_API/Action_Reference&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;勾子&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://codex.wordpress.org/User:CharlesClarkson/Global_Variables&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;全局变量&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;WordPress用钩子将插件“勾进”WordPress系统中，让插件与WordPress相连接。也就是说，通过钩子，WordPress能够在特定时间内调用插件中的函数，让插件开始运行。下面是钩子的两种形式：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;动作（Actions）：在系统运行的某些特定时间点或发生特定事件时，WordPress核心程序会调用一些钩子。这里WordPress所调用的钩子被称为“动作”。插件用动作API来指定在上述特定时间点内需要执行的PHP函数。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过滤器（Filters）：WordPress将不同类型文本添加到数据库或发送给浏览器窗口前，需要调用一些钩子来修改上述不同类型文本。这里WordPress所调用的钩子被称为“过滤器”。通过使用滤器API，插件可以执行一个或多个PHP函数以修改上述不同类型文本。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;有时我们可以直接通过动作或过滤器实现以上效果。例如，如果我们希望用插件来改变某篇日志内容，可以为publish_post添加一个动作函数（保存到数据库时修改日志），也可以为the_content添加一个过滤器函数（显示到浏览器窗口时修改日志）。&lt;/p&gt;
+&lt;h2 id=&#34;过滤器函数&#34;&gt;过滤器函数
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;has_filters&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;has_filter&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;string&lt;/span&gt; $tag, &lt;span style=&#34;color:#a6e22e&#34;&gt;callback&lt;/span&gt; $function_to_check );&lt;span style=&#34;color:#75715e&#34;&gt;//检查是否已经注册过滤器钩子。https://codex.wordpress.org/Function_Reference/has_filters
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;add_filter&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;add_filter&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;string&lt;/span&gt; $tag, &lt;span style=&#34;color:#a6e22e&#34;&gt;callable&lt;/span&gt; $function_to_add, &lt;span style=&#34;color:#a6e22e&#34;&gt;int&lt;/span&gt; $priority &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;int&lt;/span&gt; $accepted_args &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; );&lt;span style=&#34;color:#75715e&#34;&gt;//将功能或方法挂钩到特定的过滤器操作。https://developer.wordpress.org/reference/functions/add_filter/
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;apply_filters&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;apply_filters&lt;/span&gt;( &lt;span style=&#34;color:#a6e22e&#34;&gt;string&lt;/span&gt; $tag, &lt;span style=&#34;color:#a6e22e&#34;&gt;mixed&lt;/span&gt; $value );&lt;span style=&#34;color:#75715e&#34;&gt;//调用添加到过滤器钩子的功能。https://developer.wordpress.org/reference/functions/apply_filters/
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;current_filter&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;current_filter&lt;/span&gt;();&lt;span style=&#34;color:#75715e&#34;&gt;//检索当前过滤器或操作的名称。https://codex.wordpress.org/Function_Reference/current_filter
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;remove_filter&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;remove_filter&lt;/span&gt;( $tag, $function_to_remove, $priority );&lt;span style=&#34;color:#75715e&#34;&gt;//删除附加到特定过滤器钩子的默认函数。https://codex.wordpress.org/Function_Reference/remove_filter
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;remove_all_filters&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;remove_all_filters&lt;/span&gt;( $tag, $priority );&lt;span style=&#34;color:#75715e&#34;&gt;//从过滤器中取出所有的钩子。https://codex.wordpress.org/Function_Reference/remove_all_filters
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;动作函数&#34;&gt;动作函数
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;has_action&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;has_action&lt;/span&gt;( $tag, $function_to_check );&lt;span style=&#34;color:#75715e&#34;&gt;//检查挂钩是否已经注册了指定动作。https://codex.wordpress.org/Function_Reference/has_action
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;add_action&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;add_action&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;hook_name&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;自定义函数名&amp;#39;&lt;/span&gt;,[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;执行次序数，越小越后&amp;#39;&lt;/span&gt;],[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;接收函数的协议&amp;#39;&lt;/span&gt;] );&lt;span style=&#34;color:#75715e&#34;&gt;//挂钩一个特定动作的功能//将自定义的动作函数勾入WordPress//hook_name动作钩子的名称。https://developer.wordpress.org/reference/functions/add_action/
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;do_action&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;do_action&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;string&lt;/span&gt; $tag，$arg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;);&lt;span style=&#34;color:#75715e&#34;&gt;//执行挂钩在特定钩子上的功能。https://developer.wordpress.org/reference/functions/do_action/
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;do_action_ref_array&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;do_action_ref_array&lt;/span&gt;( $tag, $args );&lt;span style=&#34;color:#75715e&#34;&gt;//此函数与do_action相同，但传递给挂钩到$tag的函数的参数是使用数组提供的。https://codex.wordpress.org/Function_Reference/do_action_ref_array
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;did_action&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;did_action&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;动作挂钩的名称&amp;#39;&lt;/span&gt;);&lt;span style=&#34;color:#75715e&#34;&gt;//检索触发动作的次数。https://codex.wordpress.org/Function_Reference/did_action
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;remove_action&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;remove_action&lt;/span&gt;($tag,$function_to_remove,$priority);&lt;span style=&#34;color:#75715e&#34;&gt;//删除附加到指定动作钩子的函数。https://codex.wordpress.org/Function_Reference/remove_action
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;remove_all_actions&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;remove_all_actions&lt;/span&gt;($tag,$priority);&lt;span style=&#34;color:#75715e&#34;&gt;//从动作中删除所有的钩子。https://codex.wordpress.org/Function_Reference/remove_all_actions
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;wpjam-笔记&#34;&gt;wpjam 笔记
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//菜单
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;wpjam_admin_menu&lt;/span&gt;() &lt;span style=&#34;color:#75715e&#34;&gt;//构建菜单//位于 basic/include/admin/admin-menus.php 中
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;add_action&lt;/span&gt;( &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;admin_menu&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;wpjam_basic_admin_menu&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt; );
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;wpjam_list_table&lt;/span&gt;() &lt;span style=&#34;color:#75715e&#34;&gt;//构建表格
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;wpjam_field_html&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;add_filter&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;wpjam_pages&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;wpjam_debug_admin_pages&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;add_filter&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;wpjam_network_pages&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;wpjam_debug_admin_pages&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;wpjam_debug_admin_pages&lt;/span&gt;($wpjam_pages){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	$capability	&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;is_multisite&lt;/span&gt;())&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;manage_site&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;manage_options&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	$wpjam_pages[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;wpjam-debug&amp;#39;&lt;/span&gt;]	&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;array&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;menu_title&amp;#39;&lt;/span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Debug&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;capability&amp;#39;&lt;/span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; $capability,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;icon&amp;#39;&lt;/span&gt;			&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;dashicons-carrot&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#75715e&#34;&gt;//参考：https://developer.wordpress.org/resource/dashicons/#translation
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;position&amp;#39;&lt;/span&gt;		&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;25.1&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; $wpjam_pages;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 在插件页面添加快速设置链接
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;add_filter&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;plugin_action_links_&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;plugin_basename&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;WEIXIN_ROBOT_PLUGIN_FILE&lt;/span&gt;), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;weixin_robot_plugin_action_links&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;weixin_robot_plugin_action_links&lt;/span&gt;($links, $file)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $links[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;setting&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;lt;a href=&amp;#34;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;admin_url&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;admin.php?page=weixin-robot&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#34;&amp;gt;设置&amp;lt;/a&amp;gt;&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;strpos&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;WEIXIN_ROBOT_PLUGIN_FILE&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;weixin-robot-test&amp;#39;&lt;/span&gt;)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        $links[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;info&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;lt;span style=&amp;#34;color:red; font-weight:bold;&amp;#34;&amp;gt;测试版&amp;lt;/span&amp;gt;&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        $links[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;info&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;lt;span style=&amp;#34;color:green; font-weight:bold;&amp;#34;&amp;gt;正式版&amp;lt;/span&amp;gt;&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;array_reverse&lt;/span&gt;($links);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;研究项&#34;&gt;研究项
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;weixin_robot_include_extends()  //通过get_option(&amp;#39;weixin-robot-extends&amp;#39;)加载了plugins/weixin-robot-advanced/extends/或其下admin/各项文件(每次只加载一个目录下的文件)
+register_activation_hook
+wp_parse_args  似乎替代了  array_merge
+shortcode_atts
+extract 使用数组键名作为变量名，使用数组键值作为变量值，数组中的每个元素，将在当前符号表中创建对应的一个变量
+add_filter(&amp;#39;manage_users_columns&amp;#39;)
+add_filter(&amp;#39;manage_users_custom_column&amp;#39;)
+add_filter user_search_columns
+opcache_reset
+opcache_get_status
+maybe_serialize
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;插件积累&#34;&gt;插件积累
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;当插件被禁用时，希望会有为用户保护数据以方便下次启用时候继续使用，未清理数据库的消息（提供SQL指令），插件被禁用时，发送消息无效。尝试插件启用时发送消息，也无效。解决这种提示的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;仪表盘中，增加简单的统计数字小工具&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;选项卡下的各项操作&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wpackagist.org/search?q=woocommerce&amp;amp;type=any&amp;amp;search=&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;有关 woo电商的众多插件 一&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wpackagist.org/search?q=woo&amp;amp;type=any&amp;amp;search=&amp;amp;page=2&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;有关 woo电商的众多插件 二&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;github page builder some better &lt;a class=&#34;link&#34; href=&#34;https://github.com/search?o=desc&amp;amp;q=page&amp;#43;builder&amp;amp;s=stars&amp;amp;type=Repositories&amp;amp;utf8=%E2%9C%93&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;eg&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{&lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;usabilitydynamics/lib-ui&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;*&amp;#34;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/advanced-custom-fields&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#高级自定义字段，十分强大的自定义字段&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/acf-to-rest-api&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#高级自定义字段插件的增强插件，管理接口字段&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/rest-api-filter-fields&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#可以通过参数定义只传递什么字段的插件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/shortcodes-ultimate&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#终极简码 非常全面还能附加一些组件扩展功能&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/debug-bar&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#一个方便的调试工具面板&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/blackbox-debug-bar&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#一个方便的调试工具面板&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/piklist&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#一个基于代码的插件主题开发框架&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/wp-helpers&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#基于piklist开发的工具插件能进行有系列定制&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/wp-log-viewer&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#一个方便的自带搜索功能体验友好的Error日志插件工具&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/wpjam-basic&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#我爱水煮鱼基础优化插件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/woocommerce&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#电子商务插件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/contact-form-7&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#非常强大的联系表单插件，目前是发送邮件也许可扩展至保存到数据库&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/my-custom-functions&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#一个可以添加自定义函数的插件，还未试用&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/smtp-mailer&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#发送邮件的插件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/the-events-calendar&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#行事历&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/wp-redis&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#缓存插件，基于redis技术&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;composer require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wpackagist-plugin/wp-super-cache&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#缓存插件，基于文件存储的技术&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;项目经验教训&#34;&gt;项目经验教训
+&lt;/h1&gt;&lt;p&gt;你不知道老板说的要求到底到什么程度，你专注与功能细节时，她考虑的是好不好看。
+后面慢慢完善的是BUG，而不是提出来的功能。&lt;/p&gt;
+&lt;h1 id=&#34;框架搜集和经验总结&#34;&gt;框架搜集和经验总结
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/wpbones/WPBones&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/wpbones/WPBones&lt;/a&gt;
+是一个通过改变自身形成新插件的开发框架
+参考laravel使用，还不错的思路，但是没有彻底完成，多个参考此框架的插件可能会有冲突。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

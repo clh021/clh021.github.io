@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CacheTest</title>
+</head>
+<body>
+    <span id="show" style="font-size: large;"></span>
+    <div>Html时间: <span>2012-12-12 12:12:12</span> </div>
+    <div> JS 时间: <span id="time"></span> </div>
+    <div> CSS时间: <span class="time"></span> </div>
+    <script src="./index.js"></script>
+    <link rel="stylesheet" href="./index.css">
+    <script>
+        window.onload = function () {
+            window.win = null;
+            if (window.lnks) {
+                window.win = new window.lnks.MainWindow(window);
+            } else {
+                document.querySelector("#show").innerHTML="当前不在测试浏览器环境，请检查浏览器";
+            }
+            
+            console.log((new Date).toLocaleTimeString());
+            let reloadHandleFunc = null;
+            let type = (new URL(location)).searchParams.get("rtype");
+            switch (type) {
+                case "1":
+                    reloadHandleFunc = () => { location.reload(true); }
+                    document.querySelector("#show").innerHTML="刷新方法: location.reload(true);";
+                    break;
+                case "2":
+                    if (win) {
+                        reloadHandleFunc = () => { win.reload(); }
+                        document.querySelector("#show").innerHTML="刷新方法: win.reload();";
+                    }
+                    break;
+                case "3":
+                    if (win) {
+                        reloadHandleFunc = () => { win.reloadIgnoreCache(); };
+                        document.querySelector("#show").innerHTML="刷新方法: win.reloadIgnoreCache();";
+                    }
+                    break;
+                default:
+                    reloadHandleFunc = () => { location.reload() };
+                    document.querySelector("#show").innerHTML="刷新方法: location.reload();";
+                    break;
+            }
+            
+            setTimeout(reloadHandleFunc, 3000);
+        }
+    </script>
+</body>
+</html>
