@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>工作汇报 on 良宏</title>
+        <link>/s/</link>
+        <description>Recent content in 工作汇报 on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 08 Aug 2025 02:47:18 +0800</lastBuildDate><atom:link href="/s/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Work</title>
+        <link>/s/work/</link>
+        <pubDate>Fri, 08 Aug 2025 01:57:39 +0800</pubDate>
+        
+        <guid>/s/work/</guid>
+        <description>&lt;h2 id=&#34;项目进展情况&#34;&gt;项目进展情况
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;7月1日制定计划&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;计划-7月&#34;&gt;计划 7月
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 知识库管理&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 全局检索（项目，需求，任务，产品）&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 通知管理（指派触发通知，任务到期待办通知，任务过期通知）&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 产品管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;计划-8月&#34;&gt;计划 8月
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 缺陷管理&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 质量管理&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 进度管理&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 风险管理&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 报表管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;计划-8月后&#34;&gt;计划 8月后
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 需求模板管理&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 缺陷模板管理&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 事务管理&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 流程模板管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;计划协助讨论解决方案&#34;&gt;计划协助讨论解决方案
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 在线文档共享管理 8.8日定下已有方案 待对接&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 在线文档编辑管理 8.8日定下已有方案 待对接&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 在线文档标注管理&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 在线文档评论管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;计划超前原因分析&#34;&gt;计划超前原因分析
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;两人协同 1+1=2&lt;/li&gt;
+&lt;li&gt;只以合同指标为目标，不被干预，不参考，只对合同指标负责&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;反应慢了
+一下子不知道怎么回答
+降低标准，压缩一半的时间
+工作饱和度，他手上一直有在干的活
+一开始有给压力，给压力工作效率和代码质量就会降低
+用AI写
+你只是不了解情况，把事情做出来给你看就行了
+你的表情(上次开会，后来的) 会让我觉得需要和你同步下 也许是
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;当和团队观点冲突但对方明显有情绪了，怎么处理？
+恐惧
+未来项目规划
+沟通的问题，反应慢了
+责任边界不是方便人逃避责任的，而是帮助人承担责任的
+直接和客户沟通
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;以后技术方案的确认，和你参与吗？
+以后项目的进度，需要同步给你吗？
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
