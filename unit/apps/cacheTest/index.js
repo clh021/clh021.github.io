@@ -1,0 +1,1 @@
+document.getElementById("time").textContent="2012-12-12 12:12:12";
