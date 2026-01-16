@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>浏览器功能</title>
+</head>
+<body>
+
+<fieldset>
+    <legend>work特性</legend>
+    <button
+            onclick="lnks.openWindow2({url:'https://www.runoob.com/try/try.php?filename=tryhtml5_webworker',title:'Work应用',icon:'./icon/nazha.ico'})">
+        打开runoob的work应用
+    </button>
+    <button
+            onclick="lnks.openWindow2({url:'/apps/worker/webworkers.html',title:'Work.JS应用',icon:'./icon/nazha.ico'})">打开JS版work
+    </button>
+    <button onclick="lnks.openWindow2({url:'/apps/worker/iframe.work.html',title:'Work.iframe应用',icon:'./icon/nazha.ico'})">
+        打开iframe
+    </button>
+</fieldset>
+
+<fieldset>
+    <legend>不合法情形</legend>
+    <button onclick="lnks.openWindow2({url:'http://127.0.0.1:88888'})">不合法的访问地址 lnks.openWindow2</button>
+    <button onclick="window.open('http://127.0.0.1:88888')">不合法的访问地址 window.open</button>
+    <script>
+        function verifyUri(uri) {
+            try {
+                let url = new URL(uri);
+            } catch (e) {
+                console.log(`Failed to access invalid URL: ${uri}, `);
+                return false;
+            }
+            return true;
+        }
+    </script>
+</fieldset>
+
+<fieldset>
+    <legend>file upload</legend>
+    <input type="file" id="fileSelector">
+    <button onclick="console.log(document.querySelector('#fileSelector').value)">console.log(fileName)</button>
+</fieldset>
+<div class="logs"></div>
+<fieldset>
+    <legend>问题</legend>
+    <!--  -->
+    <pre>
+        问题清单：
+        1、
+        </pre>
+</fieldset>
+<fieldset>
+    <legend>滚动条&媒体查询</legend>
+    <div id="aaa" style="background-color: #ccc;">
+        <div style="width: 500px;height: 80px;overflow-y: scroll;float: left;">
+            常规应用测试： <a href="https://element.eleme.cn/2.0/#/zh-CN/component/dropdown">打开element
+            ui</a>确认滚动条是否正常滚动显示<br/>
+            1. window.open，openwindow2，opentopbar的参数：宽高 位置 有无边框 用户自定义参数 以及传递标题<br/>
+            2.创建窗口并继续控制，已打开的窗口可以再次聚焦而不是重新创建<br/>
+            3.topbar窗口支持有明显效果的窗口化 最大化<br/>
+            4.支持执行脚本命令<br/>
+            5.创建的窗口支持显隐控制 拖拽控制 聚焦控制 显不显示在任务栏上<br/>
+            6.打开窗口不是很快时 可以显示加载动画<br/>
+            7.媒体查询<br/>
+            8.打开的窗口 图标要替换为提供的图标<br/>
+            9.优化侧边栏全屏之间的切换
+        </div>
+        <!--div id="outerBox" style="background-color: #1f7a66;width:100px;height:100px;">
+    <div id="innerBox" style="background-color: #3a8ee6; width:100%"></div>
+    </div-->
+        <pre id="result" class="mediaTest" style="float: left;">媒体查询验证：<br/>背景色=(width>=1201)?'淡蓝色':'淡黄色'<br/>------------------------------<br/></pre>
+        <div style="width: 500px;height: 80px;overflow-y: scroll;float: left;">
+            应用页面制作原则：<br/>
+            1.所有页面在打开页面时，页面自身不要控制的地方：位置，是否跳过任务栏，是否显示，以及大小。都应该在 openWindow 或者命令行参数中控制。<br/>
+            2.托盘右键菜单页，需要确保移动好位置后，才显示，以保证不会有拖影。该页应只有移动位置而后显示而后聚焦三步操作。<br/>
+            3.
+        </div>
+        <div style="width: 500px;height: 80px;overflow-y: scroll;float: left;">
+
+        </div>
+    </div>
+</fieldset>
+<script>
+    function computeScroll(ele) {
+        
+    }
+    const outer = document.createElement('div');
+    outer.className = 'el-scrollbar__wrap';
+    outer.style.visibility = 'hidden';
+    outer.style.width = '100px';
+    outer.style.position = 'absolute';
+    outer.style.top = '-9999px';
+    document.body.appendChild(outer);
+
+    console.info('outer.offsetWidth: ', outer.offsetWidth);
+    const widthNoScroll = outer.offsetWidth;
+    outer.style.overflow = 'scroll';
+
+    const inner = document.createElement('div');
+    inner.style.width = '100%';
+    outer.appendChild(inner);
+
+    output('inner.offsetWidth: ' + inner.offsetWidth, "result");
+    const widthWithScroll = inner.offsetWidth;
+    outer.parentNode.removeChild(outer);
+    output('widthNoScroll: ' + widthNoScroll, "result");
+    output('widthWithScroll: ' + widthWithScroll, "result");
+    scrollBarWidth = widthNoScroll - widthWithScroll;
+    output('------------------------------', "result");
+    output('scrollBarWidth: ' + scrollBarWidth, "result");
+
+</script>
+</body>
+</html>

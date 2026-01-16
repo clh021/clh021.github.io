@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Alpine on 良宏</title>
+        <link>/tags/alpine/</link>
+        <description>Recent content in Alpine on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Thu, 15 Sep 2022 07:59:40 +0800</lastBuildDate><atom:link href="/tags/alpine/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Alpine Install</title>
+        <link>/post/tech/alpine.installed.in.virtualbox/</link>
+        <pubDate>Thu, 15 Sep 2022 07:59:40 +0800</pubDate>
+        
+        <guid>/post/tech/alpine.installed.in.virtualbox/</guid>
+        <description>&lt;h2 id=&#34;启动镜像&#34;&gt;启动镜像
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;下载需要的&lt;a class=&#34;link&#34; href=&#34;https://alpinelinux.org/downloads/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;镜像&lt;/a&gt;并启动&lt;/li&gt;
+&lt;li&gt;文档时使用的镜像是 &lt;code&gt;alpine-standard-3.16.2-x86_64.iso&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;用户名root，无密码登陆&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;setup-alpine&#34;&gt;&lt;code&gt;setup-alpine&lt;/code&gt;
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;启动安装程序&lt;code&gt;setup-alpine&lt;/code&gt;:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;键盘布局:&lt;code&gt;us&lt;/code&gt; 两次&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;后面&lt;code&gt;hostname&lt;/code&gt;、&lt;code&gt;网卡配置&lt;/code&gt;、&lt;code&gt;IP地址配置&lt;/code&gt;、&lt;code&gt;配置dns&lt;/code&gt;都选择默认即可&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;时区&lt;code&gt;timezone&lt;/code&gt;:&lt;code&gt;Asia&lt;/code&gt;,&lt;code&gt;Hong_Kong&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;NTP&lt;/code&gt;: 默认 &lt;code&gt;chrony&lt;/code&gt; 即可&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;root Password&lt;/code&gt;: 自行设置，短密码会警告，但仍可设置成功&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Proxy&lt;/code&gt;:跳过&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;repositories mirror&lt;/code&gt;: &lt;code&gt;f&lt;/code&gt; 可以自动选择最快的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;setup a user&lt;/code&gt;: 根据情况设置，可跳过&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;ssh server&lt;/code&gt;: 默认 &lt;code&gt;openssh&lt;/code&gt; 即可&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;allow root ssh login&lt;/code&gt;: 根据情况选择 &lt;code&gt;yes&lt;/code&gt; 允许密钥和密码，&lt;code&gt;prohibit-password&lt;/code&gt; 只允许密钥登陆&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;How would you like to use disk?&lt;/code&gt;: &lt;code&gt;sda&lt;/code&gt; -&amp;gt; &lt;code&gt;sys&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Erase(擦除) the disk?[y/N]&lt;/code&gt;: &lt;code&gt;y&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Installation is complete&lt;/code&gt;: 安装完成，如果是虚拟机关闭电脑，移除虚拟盘，导出虚拟机(109M)，或者做个快照以后就可以随意折腾了&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;use&#34;&gt;&lt;code&gt;use&lt;/code&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;install-docker&#34;&gt;Install Docker
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apk update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apk add vim &lt;span style=&#34;color:#75715e&#34;&gt;# 安装 vim&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim /etc/apk/repositories &lt;span style=&#34;color:#75715e&#34;&gt;# 去除 community 这一行的注释 打开更多仓库&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apk update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apk add docker &lt;span style=&#34;color:#75715e&#34;&gt;# 安装 docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rc-update add docker boot &lt;span style=&#34;color:#75715e&#34;&gt;# 开机自动启动 docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;service docker start &lt;span style=&#34;color:#75715e&#34;&gt;# 启动 docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rc-service docker start &lt;span style=&#34;color:#75715e&#34;&gt;# 启动 docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;addgroup lee docker &lt;span style=&#34;color:#75715e&#34;&gt;# 将用户加入 docker 组&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;groups lee &lt;span style=&#34;color:#75715e&#34;&gt;# 查看用户所属的组&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;id lee &lt;span style=&#34;color:#75715e&#34;&gt;# 查看用户所属的组&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 让组变更立即生效   不需要重新登录 以 root 执行，给当前用户的会话赋予新组权限&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# sudo apk add --no-cache shadow&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# sudo apk add --no-cache shadow-login&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# sudo apk add --no-cache util-linux&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;newgrp docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apk add docker-cli-compose
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

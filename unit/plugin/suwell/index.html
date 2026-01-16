@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>suwell app</title>
+    	<style>
+    	    #doc > button{width:150px;}
+    	</style>
+    </head>
+    <body>
+		<div>
+			<button onclick="loadPlugin()">插件加载</button>     将读取并显示插件信息                <br />
+			<button onclick="initPlugin()">插件初始化</button>   将确保启用插件，将可在 console 控制台 通过 navigator.plugins 获取到启用的插件 <br />
+			<button onclick="newPlugin()">插件显示</button>      显示插件界面                <br />
+			<!-- <button onclick="openFile()">插件实例创建</button>   将提示您选择要打开的具体文档，以显示实例内容界面        <br /> -->
+			<!-- <button onclick="disablePlugin()">插件销毁</button>  将禁用插件                    <br />
+			<button onclick="delPlugin()">插件删除</button>      将在磁盘级别移除插件(需要注意权限)            <br />
+			<button onclick="InitFrame()">插件删除恢复</button>  将在磁盘恢复移除的插件 -->
+		</div>
+        <div id="message"></div>
+		<div id="pdf">
+	    </div>
+        <script type="text/javascript">
+            let pluginName='Suwell Reader Plugin';
+            let plugin=null;
+            function check() {
+                if (null === plugin) {
+                    document.getElementById("message").innerHTML = '请先确认系统中已安装好插件，并在此处加载了插件';
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            function loadPlugin() {
+                let tags = lnks.plugins().getPluginTags();
+                for (var i = 0; i < tags.length; i++) {
+                    if (tags[i].name == pluginName) {
+                        plugin=tags[i];
+                    }
+                }
+                if (check()) {
+                    console.log("loadPlugin check ok");
+                    document.getElementById("message").innerHTML = ''
+                        + 'Name: ' + plugin.name + '<br />'
+                        + 'Des : ' + plugin.description + '<br />'
+                        + 'FileName: ' + plugin.filename + '<br />'
+                        + 'FullPath: ' + plugin.fullpath;
+                } else {
+                    console.log("loadPlugin check error");
+                }
+            }
+            function initPlugin() {
+                if (check()) {
+                    plugin.enabledState=2;// 插件启用
+                    document.getElementById("message").innerHTML = '启用操作执行完毕';
+                }
+            }
+            function newPlugin() {
+                if (check()) {
+                    document.getElementById("pdf").innerHTML='<embed id="reader" type="application/ofd" width="1200" height="900"/>';
+                    document.getElementById("message").innerHTML = '显示操作执行完毕';
+                }
+            }
+            function openFile() {
+                if (check()) {
+                    document.getElementById("message").innerHTML = '请通过点击界面中 <font color="blue">最左上角的按钮</font> 选择 您要打开的文件';
+                }
+            }
+            function disablePlugin() {
+                if (check()) {
+                    plugin.enabledState=0;// 插件禁用
+                    document.getElementById("pdf").innerHTML='';
+                    document.getElementById("message").innerHTML = '销毁操作执行完毕';
+                }
+            }
+            function delPlugin() {
+                window.lnks.$(`mv /opt/suwell /opt/suwell2`, ()=>{}, ()=>{});
+                document.getElementById("message").innerHTML = '删除操作执行完毕';
+            }
+            function recoverPlugin() {
+                window.lnks.$(`mv /opt/suwell2 /opt/suwell`, ()=>{}, ()=>{});
+                document.getElementById("message").innerHTML = '恢复操作执行完毕';
+            }
+        </script>
+    </body>
+</html>
