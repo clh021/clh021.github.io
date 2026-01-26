@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Blog TODO 摘录老王的博客\nblog/study/go.basic.md blog/study/go.used.md blog/study/_todo.flex.md blog/study/_todo.iptables.md blog/study/_todo.ssh.key.md 把key 密钥搞通搞透, 重视安全\n软件源的镜像工作原理是什么，镜像站真的可靠吗？ 主流发行版的包管理器，例如apt和dnf，会验证软件包(deb和rpm包)的GPG签名，确保它只能是从上游站点镜像产生的，这样无论是哪一个镜像站，都无法让修改过的软件包通过检查。 另外不要用http，21世纪了，tls1.3已经基本没有你能感觉到的延迟影响了，https可以防止你的数据流在运营商的服务器之间裸奔。 如果用 HTTP，ISP 可以知道你在用哪个发行版，以及你安装了哪些软件。 其它镜像(如:pypi)可能有风险。 如何验证自己的GPG是可靠的？ ls -lah /etc/apt/trusted.gpg.d 启用 debsig 验证 /etc/dpkg/dpkg.cfg 去除注释 no-debsig\n">
+<title></title>
+
+<link rel='canonical' href='/todo/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="">
+<meta property='og:description' content="Blog TODO 摘录老王的博客\nblog/study/go.basic.md blog/study/go.used.md blog/study/_todo.flex.md blog/study/_todo.iptables.md blog/study/_todo.ssh.key.md 把key 密钥搞通搞透, 重视安全\n软件源的镜像工作原理是什么，镜像站真的可靠吗？ 主流发行版的包管理器，例如apt和dnf，会验证软件包(deb和rpm包)的GPG签名，确保它只能是从上游站点镜像产生的，这样无论是哪一个镜像站，都无法让修改过的软件包通过检查。 另外不要用http，21世纪了，tls1.3已经基本没有你能感觉到的延迟影响了，https可以防止你的数据流在运营商的服务器之间裸奔。 如果用 HTTP，ISP 可以知道你在用哪个发行版，以及你安装了哪些软件。 其它镜像(如:pypi)可能有风险。 如何验证自己的GPG是可靠的？ ls -lah /etc/apt/trusted.gpg.d 启用 debsig 验证 /etc/dpkg/dpkg.cfg 去除注释 no-debsig\n">
+<meta property='og:url' content='/todo/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='' />
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="Blog TODO 摘录老王的博客\nblog/study/go.basic.md blog/study/go.used.md blog/study/_todo.flex.md blog/study/_todo.iptables.md blog/study/_todo.ssh.key.md 把key 密钥搞通搞透, 重视安全\n软件源的镜像工作原理是什么，镜像站真的可靠吗？ 主流发行版的包管理器，例如apt和dnf，会验证软件包(deb和rpm包)的GPG签名，确保它只能是从上游站点镜像产生的，这样无论是哪一个镜像站，都无法让修改过的软件包通过检查。 另外不要用http，21世纪了，tls1.3已经基本没有你能感觉到的延迟影响了，https可以防止你的数据流在运营商的服务器之间裸奔。 如果用 HTTP，ISP 可以知道你在用哪个发行版，以及你安装了哪些软件。 其它镜像(如:pypi)可能有风险。 如何验证自己的GPG是可靠的？ ls -lah /etc/apt/trusted.gpg.d 启用 debsig 验证 /etc/dpkg/dpkg.cfg 去除注释 no-debsig\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/todo/"></a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="blog-todo">Blog TODO
+</h1><p>摘录老王的博客</p>
+<p>blog/study/go.basic.md
+blog/study/go.used.md
+blog/study/_todo.flex.md
+blog/study/_todo.iptables.md
+blog/study/_todo.ssh.key.md 把key 密钥搞通搞透, 重视安全</p>
+<p>软件源的镜像工作原理是什么，镜像站真的可靠吗？
+主流发行版的包管理器，例如apt和dnf，会验证软件包(deb和rpm包)的GPG签名，确保它只能是从上游站点镜像产生的，这样无论是哪一个镜像站，都无法让修改过的软件包通过检查。
+另外不要用http，21世纪了，tls1.3已经基本没有你能感觉到的延迟影响了，https可以防止你的数据流在运营商的服务器之间裸奔。
+如果用 HTTP，ISP 可以知道你在用哪个发行版，以及你安装了哪些软件。
+其它镜像(如:pypi)可能有风险。
+如何验证自己的GPG是可靠的？
+ls -lah /etc/apt/trusted.gpg.d
+启用 debsig 验证
+/etc/dpkg/dpkg.cfg 去除注释 no-debsig</p>
+<p><a class="link" href="https://geektutu.com/"  target="_blank" rel="noopener"
+    >https://geektutu.com/</a>
+和 go 有关的好文章可以多读一读，收入博客
+<a class="link" href="https://geektutu.com/post/quick-golang.html"  target="_blank" rel="noopener"
+    >https://geektutu.com/post/quick-golang.html</a></p>
+<p>about 不要显示目录栏(允许标记页面不显示目录栏，允许标记目录栏的左侧缩进或者自动识别是否包含上级，不包含就不显示或者空内容标签不显示)</p>
+<p>blog/study/_todo.linux.md 收集了很多TODO
+大文件断点上传，秒传 的功能
+其中前端计算片段的部分，可以考虑 wasm 来体验性能的差距</p>
+<p><a class="link" href="https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2022/02/22/brower-operate.html"  target="_blank" rel="noopener"
+    >用代码操作浏览器的方法</a>
+油猴插件</p>
+<p>体验更好的音频生成器（文字转音频）
+微信文章和一些书籍</p>
+<p>清楚明确的概念：
+清楚明确的联系：
+长时间投入思考：
+熟能生巧：
+提高自身价值：
+注意力投资在维护家庭和提高自身上面：
+维护环境：打造好自己身边的环境，家庭是一个必须维护好的环境
+共同成长：要有共同成长的伙伴，一定要家人一起共同成长，身边人都要成长，不然就会成为拖累
+消除负面：远离家庭不好的人，远离</p>
+<p>Keystone
+vue</p>
+<h1 id="资源积累">资源积累
+</h1><h2 id="todo">Todo
+</h2><ul>
+<li>console.log
+<ul>
+<li>Aquila Admin Theme  1</li>
+<li>Flatty - UI Admin Theme</li>
+<li>Material Admin Theme ????</li>
+<li>Materially Flat Admin Theme</li>
+<li>OT Admin Theme ??</li>
+<li>SHIFT Short WP Admin Theme   1111</li>
+<li>Skizzar Admin Theme Lite    11</li>
+<li>Slate Admin Theme</li>
+<li>Tamed Admin Theme</li>
+<li>My Shop Admin Theme  &mdash;&mdash;</li>
+<li>WP Admin UI Customize   111111</li>
+<li>WP Flat Admin Theme 1</li>
+</ul>
+</li>
+<li>懂生活
+<ul>
+<li>懂生活口号、懂生活，更自在、懂生活，更潇洒、新一代人的新生活、新一代人自己的生活</li>
+</ul>
+</li>
+<li>快捷工具
+<ul>
+<li>wordpress</li>
+<li>laravel</li>
+<li>yii2</li>
+<li>angular2-starter-kit</li>
+<li>3D打印机(各个组件模型下载打印出来迸发无限想象)</li>
+</ul>
+</li>
+<li>店铺经商
+<ul>
+<li>租格子铺(租一个格子摆放那个自己的东西标上价格就可以售卖东西了)</li>
+<li>店面一定要非常干净，舒服</li>
+<li>可以有舒服的音乐地点，可以有安静的地点</li>
+<li>有故事小额免单</li>
+<li>生日小额面单</li>
+<li>会员提供各种服务满足各种需求，手机充电，防寒外套，雨伞</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$_menus<span style="color:#f92672">=</span>[
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;站点介绍|home&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;descript&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;工具集|wrench&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;日历&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;万年历&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;日程安排&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;文档查询&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;PHP&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;GO&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;Node&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;代码格式化&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;PHP格式化&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;html格式化&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;js格式化&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;正则资源&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;练习器&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;成果积累&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;网页代理&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;体验&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;VIP&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;使用说明&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;密文服务&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;加密&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;解密&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;使用说明&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//(可发送加密后的密文邮件给好友，好友填写密钥和加密内容到工具即可解密)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;思绪&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;可与他人聊天&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;可自己倒出思绪&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;可未来提醒自己相关思绪、想法&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;机器学习|graduation-cap&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;算法demo&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;待完善&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;内容提取&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;根据内容代码特征提取&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;根据内容分布特征提取&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;自我学习&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//能根据不断发现的数据来进行趋势判断和维度分析
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#e6db74">&#39;自我迭代&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//自己生成自己，能判断生成后的优良与否，能替换自身
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#e6db74">&#39;游戏研究&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;猜数字&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;讲故事&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;卡牌&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;心境心性|heartbeat&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;音乐&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//音乐(冥想，瑜伽)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#e6db74">&#39;练习&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//练习(冥想、瑜伽、打坐、祷告、催眠、放松的教程)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#e6db74">&#39;太极&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;催眠&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;我的心愿|magic&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;许下心愿&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//许下心愿(可由别人帮忙达成)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#e6db74">&#39;别人的心愿&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//别人的心愿(可帮别人达成，达成后，别人会收到提醒)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;作品集|gift&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;物联网|car&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;车友圈|car&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;http://4g.womenxing.com&#39;</span>,<span style="color:#75715e">//简单模拟实时轨迹 和历史轨迹(任何一天)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;百货商城|shopping-cart&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;点点来&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;http://www.ddlbuy.com&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;聚康360&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;http://www.jk360.com&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;shopnc&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;shopex&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;ecshop&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;yii2shop&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//yincart
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#e6db74">&#39;laravelshop&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#e6db74">&#39;淘宝客&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;内容管理系统|leaf&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;phpcms&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;yii2cms&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;ftpdisk&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;webdisk&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;文库|newspaper-o&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;技术积累&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;http://clh021.github.io&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;生活体会&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;http://clh021.github.io/diary&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;好文收藏&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;关于我|vcard-o&#39;</span><span style="color:#f92672">=&gt;</span>[
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;个人简历&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;作品集&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//各个作品开发过程，使用技术，负责领域及其功能介绍
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#e6db74">&#39;我和爱妻&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//和平妹妹的生活照，结婚照做成精美视频放上去(结婚照，生活照影集、配乐，爱，两只蝴蝶)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#e6db74">&#39;我的家庭&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//(父母亲，老婆，儿子，姑姑，一家人的生活照影集、配乐，因为我们是一家人，明天会更好...再找找)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#e6db74">&#39;团队伙伴&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;#&#39;</span>,<span style="color:#75715e">//(影集、配乐，我们没有什么不同)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    ],
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

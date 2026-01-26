@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Go-Graph on 良宏</title>
+        <link>/tags/go-graph/</link>
+        <description>Recent content in Go-Graph on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Tue, 19 Apr 2022 00:06:03 +0800</lastBuildDate><atom:link href="/tags/go-graph/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>go-callvis</title>
+        <link>/post/tech/graph-go.go-callvis/</link>
+        <pubDate>Tue, 19 Apr 2022 00:06:03 +0800</pubDate>
+        
+        <guid>/post/tech/graph-go.go-callvis/</guid>
+        <description>&lt;h1 id=&#34;go-callvis&#34;&gt;go-callvis
+&lt;/h1&gt;&lt;p&gt;go-callvis是一个开发工具，可帮助使用交互式视图可视化 Go 程序的调用图。
+该工具的目的是为开发人员提供使用调用图数据及其与包和类型的关系的 Go 程序的可视化概览。这在代码复杂性更高的大型项目中或当您只是试图理解其他人的代码时特别有用。&lt;/p&gt;
+&lt;h2 id=&#34;安装&#34;&gt;安装
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go install github.com/ofabry/go-callvis
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;使用&#34;&gt;使用
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go-callvis -nointer -nostd -nodesep 0.1 ./client
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;参数说明&#34;&gt;参数说明
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;   -debug
+         输出详细日志
+   -file string
+         以文件新式输出结果，并将忽略server交互模式
+   -focus string
+         Focus specific package using name or import path. (default &amp;#34;main&amp;#34;)
+   -format string
+         输出文件的格式 [svg | png | jpg | ...] (默认 &amp;#34;svg&amp;#34;)
+   -graphviz
+         使用Graphviz渲染图像
+   -group string
+         分组功能，根据包 与/或 类型分组 [pkg, type] (用逗号分开) (默认 &amp;#34;pkg&amp;#34;)，例如 -group pkg,type
+   -http string
+         HTTP 服务地址 (默认 &amp;#34;:7878&amp;#34;)
+   -ignore string
+        忽略包含给定前缀的包路径(用逗号分开)
+   -include string
+         包含具有给定前缀的包路径 (用逗号分开)
+   -limit string
+         Limit package paths to given prefixes (separated by comma)
+   -minlen uint
+         Minimum edge length (for wider output). (default 2)
+   -nodesep float
+         Minimum space between two adjacent nodes in the same rank (for taller output). (default 0.35)
+   -nointer
+         忽略对未导出函数的调用。
+   -nostd
+         忽略标准库的调用
+   -skipbrowser
+         跳过打开浏览器
+   -tags build tags
+         a list of build tags to consider satisfied during the build. For more information about build tags, see the description of build constraints in the documentation for the go/build package
+   -tests
+         包含测试代码
+   -version
+         显示版本号
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

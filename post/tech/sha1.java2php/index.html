@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="将一个sha1加密算法从Java改写到PHP // 身份证简项认证 public static void idenAuth() { String appId = APP_ID; String serviceCode = &#34;idc0001&#34;; String name = &#34;南建坤&#34;; String idCard= &#34;130521198709140030&#34;; String selfUrl= null; String selfImg= null; String bankcard=null; String mobile=null; Map&lt;String, Object&gt; param = new HashMap&lt;String, Object&gt;(); param.put(&#34;appId&#34;, appId); param.put(&#34;serviceCode&#34;, serviceCode); param.put(&#34;name&#34;, name); param.put(&#34;idCard&#34;, idCard); try { Map&lt;String, String&gt; headers = new HashMap&lt;String, String&gt;(); headers.put(&#34;Content-Signature&#34;, &#34;HMAC-SHA1 &#34; + new Base64().encodeToString(HMACSHA1.getHmacSHA1(appId+serviceCode+name+idCard+ selfUrl+selfImg+bankcard+mobile, SECRET_KEY))); String resStr = new HttpClientService().postForm(URL, headers, param); System.out.println(resStr); } catch (Exception e) { e.printStackTrace(); } } function tianweiApiIdcard($path,$body_arr) { $url = &#34;http://demo-open.itruscloud.com/apigate/authapi&#34;; $APP_ID = &#34;app_id&#34;; $SECRET_KEY = &#34;key&#34;; $bodys=http_build_query(array_merge([&#39;appId&#39;=&gt;$APP_ID],$body_arr)); $signature_data = $APP_ID.$body_arr[&#39;serviceCode&#39;].$body_arr[&#39;name&#39;].$body_arr[&#39;idCard&#39;].$body_arr[&#39;selfUrl&#39;].$body_arr[&#39;selfImg&#39;].$body_arr[&#39;bankcard&#39;].$body_arr[&#39;mobile&#39;]; $headers = array(); array_push($headers, &#34;Content-Type&#34;.&#34;:&#34;.&#34;application/x-www-form-urlencoded&#34;); array_push($headers, &#34;Content-Signature&#34;.&#34;:&#34;.&#34;HMAC-SHA1 &#34;.base64_encode(hash_hmac(&#39;sha1&#39;,$signature_data, $SECRET_KEY,true))); $curl = curl_init(); curl_setopt($curl, CURLOPT_CUSTOMREQUEST, &#39;POST&#39;); curl_setopt($curl, CURLOPT_URL, $url.$path); curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); curl_setopt($curl, CURLOPT_FAILONERROR, false); curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); curl_setopt($curl, CURLOPT_HEADER, false); if (!empty($bodys)) { curl_setopt($curl, CURLOPT_POSTFIELDS, $bodys); } $response = curl_exec($curl); curl_close($curl); return $response; } $response = tianweiApiIdcard(&#39;/person/authIden&#39;,[ &#39;serviceCode&#39;=&gt;&#39;idc0001&#39;, &#39;name&#39;=&gt;&#39;韩国&#39;, &#39;idCard&#39;=&gt;&#39;429006197109275750&#39;, &#39;selfUrl&#39;=&gt;&#39;null&#39;, &#39;selfImg&#39;=&gt;&#39;null&#39;, &#39;bankcard&#39;=&gt;&#39;null&#39;, &#39;mobile&#39;=&gt;&#39;null&#39;, ]); $result = json_decode(json_decode($response),true); // if(isset($result[&#39;status&#39;]) &amp;&amp; &#34;1&#34; ==$result[&#39;status&#39;]) { // echo &#39;成功！&#39;; // } var_dump($result); ">
+<title>sha1 from Java to Php</title>
+
+<link rel='canonical' href='/post/tech/sha1.java2php/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="sha1 from Java to Php">
+<meta property='og:description' content="将一个sha1加密算法从Java改写到PHP // 身份证简项认证 public static void idenAuth() { String appId = APP_ID; String serviceCode = &#34;idc0001&#34;; String name = &#34;南建坤&#34;; String idCard= &#34;130521198709140030&#34;; String selfUrl= null; String selfImg= null; String bankcard=null; String mobile=null; Map&lt;String, Object&gt; param = new HashMap&lt;String, Object&gt;(); param.put(&#34;appId&#34;, appId); param.put(&#34;serviceCode&#34;, serviceCode); param.put(&#34;name&#34;, name); param.put(&#34;idCard&#34;, idCard); try { Map&lt;String, String&gt; headers = new HashMap&lt;String, String&gt;(); headers.put(&#34;Content-Signature&#34;, &#34;HMAC-SHA1 &#34; + new Base64().encodeToString(HMACSHA1.getHmacSHA1(appId+serviceCode+name+idCard+ selfUrl+selfImg+bankcard+mobile, SECRET_KEY))); String resStr = new HttpClientService().postForm(URL, headers, param); System.out.println(resStr); } catch (Exception e) { e.printStackTrace(); } } function tianweiApiIdcard($path,$body_arr) { $url = &#34;http://demo-open.itruscloud.com/apigate/authapi&#34;; $APP_ID = &#34;app_id&#34;; $SECRET_KEY = &#34;key&#34;; $bodys=http_build_query(array_merge([&#39;appId&#39;=&gt;$APP_ID],$body_arr)); $signature_data = $APP_ID.$body_arr[&#39;serviceCode&#39;].$body_arr[&#39;name&#39;].$body_arr[&#39;idCard&#39;].$body_arr[&#39;selfUrl&#39;].$body_arr[&#39;selfImg&#39;].$body_arr[&#39;bankcard&#39;].$body_arr[&#39;mobile&#39;]; $headers = array(); array_push($headers, &#34;Content-Type&#34;.&#34;:&#34;.&#34;application/x-www-form-urlencoded&#34;); array_push($headers, &#34;Content-Signature&#34;.&#34;:&#34;.&#34;HMAC-SHA1 &#34;.base64_encode(hash_hmac(&#39;sha1&#39;,$signature_data, $SECRET_KEY,true))); $curl = curl_init(); curl_setopt($curl, CURLOPT_CUSTOMREQUEST, &#39;POST&#39;); curl_setopt($curl, CURLOPT_URL, $url.$path); curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); curl_setopt($curl, CURLOPT_FAILONERROR, false); curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); curl_setopt($curl, CURLOPT_HEADER, false); if (!empty($bodys)) { curl_setopt($curl, CURLOPT_POSTFIELDS, $bodys); } $response = curl_exec($curl); curl_close($curl); return $response; } $response = tianweiApiIdcard(&#39;/person/authIden&#39;,[ &#39;serviceCode&#39;=&gt;&#39;idc0001&#39;, &#39;name&#39;=&gt;&#39;韩国&#39;, &#39;idCard&#39;=&gt;&#39;429006197109275750&#39;, &#39;selfUrl&#39;=&gt;&#39;null&#39;, &#39;selfImg&#39;=&gt;&#39;null&#39;, &#39;bankcard&#39;=&gt;&#39;null&#39;, &#39;mobile&#39;=&gt;&#39;null&#39;, ]); $result = json_decode(json_decode($response),true); // if(isset($result[&#39;status&#39;]) &amp;&amp; &#34;1&#34; ==$result[&#39;status&#39;]) { // echo &#39;成功！&#39;; // } var_dump($result); ">
+<meta property='og:url' content='/post/tech/sha1.java2php/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='sha1' /><meta property='article:tag' content='Java' /><meta property='article:tag' content='PHP' /><meta property='article:published_time' content='2019-06-24T15:57:25&#43;08:00'/><meta property='article:modified_time' content='2019-06-24T15:57:25&#43;08:00'/>
+<meta name="twitter:title" content="sha1 from Java to Php">
+<meta name="twitter:description" content="将一个sha1加密算法从Java改写到PHP // 身份证简项认证 public static void idenAuth() { String appId = APP_ID; String serviceCode = &#34;idc0001&#34;; String name = &#34;南建坤&#34;; String idCard= &#34;130521198709140030&#34;; String selfUrl= null; String selfImg= null; String bankcard=null; String mobile=null; Map&lt;String, Object&gt; param = new HashMap&lt;String, Object&gt;(); param.put(&#34;appId&#34;, appId); param.put(&#34;serviceCode&#34;, serviceCode); param.put(&#34;name&#34;, name); param.put(&#34;idCard&#34;, idCard); try { Map&lt;String, String&gt; headers = new HashMap&lt;String, String&gt;(); headers.put(&#34;Content-Signature&#34;, &#34;HMAC-SHA1 &#34; + new Base64().encodeToString(HMACSHA1.getHmacSHA1(appId+serviceCode+name+idCard+ selfUrl+selfImg+bankcard+mobile, SECRET_KEY))); String resStr = new HttpClientService().postForm(URL, headers, param); System.out.println(resStr); } catch (Exception e) { e.printStackTrace(); } } function tianweiApiIdcard($path,$body_arr) { $url = &#34;http://demo-open.itruscloud.com/apigate/authapi&#34;; $APP_ID = &#34;app_id&#34;; $SECRET_KEY = &#34;key&#34;; $bodys=http_build_query(array_merge([&#39;appId&#39;=&gt;$APP_ID],$body_arr)); $signature_data = $APP_ID.$body_arr[&#39;serviceCode&#39;].$body_arr[&#39;name&#39;].$body_arr[&#39;idCard&#39;].$body_arr[&#39;selfUrl&#39;].$body_arr[&#39;selfImg&#39;].$body_arr[&#39;bankcard&#39;].$body_arr[&#39;mobile&#39;]; $headers = array(); array_push($headers, &#34;Content-Type&#34;.&#34;:&#34;.&#34;application/x-www-form-urlencoded&#34;); array_push($headers, &#34;Content-Signature&#34;.&#34;:&#34;.&#34;HMAC-SHA1 &#34;.base64_encode(hash_hmac(&#39;sha1&#39;,$signature_data, $SECRET_KEY,true))); $curl = curl_init(); curl_setopt($curl, CURLOPT_CUSTOMREQUEST, &#39;POST&#39;); curl_setopt($curl, CURLOPT_URL, $url.$path); curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); curl_setopt($curl, CURLOPT_FAILONERROR, false); curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); curl_setopt($curl, CURLOPT_HEADER, false); if (!empty($bodys)) { curl_setopt($curl, CURLOPT_POSTFIELDS, $bodys); } $response = curl_exec($curl); curl_close($curl); return $response; } $response = tianweiApiIdcard(&#39;/person/authIden&#39;,[ &#39;serviceCode&#39;=&gt;&#39;idc0001&#39;, &#39;name&#39;=&gt;&#39;韩国&#39;, &#39;idCard&#39;=&gt;&#39;429006197109275750&#39;, &#39;selfUrl&#39;=&gt;&#39;null&#39;, &#39;selfImg&#39;=&gt;&#39;null&#39;, &#39;bankcard&#39;=&gt;&#39;null&#39;, &#39;mobile&#39;=&gt;&#39;null&#39;, ]); $result = json_decode(json_decode($response),true); // if(isset($result[&#39;status&#39;]) &amp;&amp; &#34;1&#34; ==$result[&#39;status&#39;]) { // echo &#39;成功！&#39;; // } var_dump($result); ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/sha1.java2php/">sha1 from Java to Php</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2019-06-24T15:57:25&#43;08:00'>2019-06-24 15:57:25</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="将一个sha1加密算法从java改写到php">将一个sha1加密算法从Java改写到PHP
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Java" data-lang="Java"><span style="display:flex;"><span>	<span style="color:#75715e">// 身份证简项认证</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">idenAuth</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		String appId <span style="color:#f92672">=</span> APP_ID;
+</span></span><span style="display:flex;"><span>		String serviceCode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;idc0001&#34;</span>;
+</span></span><span style="display:flex;"><span>		String name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;南建坤&#34;</span>;
+</span></span><span style="display:flex;"><span>		String idCard<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;130521198709140030&#34;</span>;
+</span></span><span style="display:flex;"><span>		String selfUrl<span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>		String selfImg<span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>		String bankcard<span style="color:#f92672">=</span><span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>		String mobile<span style="color:#f92672">=</span><span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		Map<span style="color:#f92672">&lt;</span>String, Object<span style="color:#f92672">&gt;</span> param <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String, Object<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span>		param.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;appId&#34;</span>,  appId);
+</span></span><span style="display:flex;"><span>		param.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;serviceCode&#34;</span>, serviceCode);
+</span></span><span style="display:flex;"><span>		param.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;name&#34;</span>, name);
+</span></span><span style="display:flex;"><span>		param.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;idCard&#34;</span>, idCard);
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>			Map<span style="color:#f92672">&lt;</span>String, String<span style="color:#f92672">&gt;</span> headers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String, String<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span>			headers.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;Content-Signature&#34;</span>, <span style="color:#e6db74">&#34;HMAC-SHA1 &#34;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">new</span> Base64().<span style="color:#a6e22e">encodeToString</span>(HMACSHA1.<span style="color:#a6e22e">getHmacSHA1</span>(appId<span style="color:#f92672">+</span>serviceCode<span style="color:#f92672">+</span>name<span style="color:#f92672">+</span>idCard<span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>					selfUrl<span style="color:#f92672">+</span>selfImg<span style="color:#f92672">+</span>bankcard<span style="color:#f92672">+</span>mobile, SECRET_KEY)));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			String resStr <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HttpClientService().<span style="color:#a6e22e">postForm</span>(URL, headers, param);
+</span></span><span style="display:flex;"><span>			System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(resStr);
+</span></span><span style="display:flex;"><span>		} <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>			e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-PHP" data-lang="PHP"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">tianweiApiIdcard</span>($path,$body_arr) {
+</span></span><span style="display:flex;"><span>	$url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://demo-open.itruscloud.com/apigate/authapi&#34;</span>;
+</span></span><span style="display:flex;"><span>	$APP_ID <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;app_id&#34;</span>;
+</span></span><span style="display:flex;"><span>	$SECRET_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;key&#34;</span>;
+</span></span><span style="display:flex;"><span>    $bodys<span style="color:#f92672">=</span><span style="color:#a6e22e">http_build_query</span>(<span style="color:#a6e22e">array_merge</span>([<span style="color:#e6db74">&#39;appId&#39;</span><span style="color:#f92672">=&gt;</span>$APP_ID],$body_arr));
+</span></span><span style="display:flex;"><span>	$signature_data <span style="color:#f92672">=</span> $APP_ID<span style="color:#f92672">.</span>$body_arr[<span style="color:#e6db74">&#39;serviceCode&#39;</span>]<span style="color:#f92672">.</span>$body_arr[<span style="color:#e6db74">&#39;name&#39;</span>]<span style="color:#f92672">.</span>$body_arr[<span style="color:#e6db74">&#39;idCard&#39;</span>]<span style="color:#f92672">.</span>$body_arr[<span style="color:#e6db74">&#39;selfUrl&#39;</span>]<span style="color:#f92672">.</span>$body_arr[<span style="color:#e6db74">&#39;selfImg&#39;</span>]<span style="color:#f92672">.</span>$body_arr[<span style="color:#e6db74">&#39;bankcard&#39;</span>]<span style="color:#f92672">.</span>$body_arr[<span style="color:#e6db74">&#39;mobile&#39;</span>];
+</span></span><span style="display:flex;"><span>    $headers <span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">array_push</span>($headers, <span style="color:#e6db74">&#34;Content-Type&#34;</span><span style="color:#f92672">.</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">.</span><span style="color:#e6db74">&#34;application/x-www-form-urlencoded&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">array_push</span>($headers, <span style="color:#e6db74">&#34;Content-Signature&#34;</span><span style="color:#f92672">.</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">.</span><span style="color:#e6db74">&#34;HMAC-SHA1 &#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">base64_encode</span>(<span style="color:#a6e22e">hash_hmac</span>(<span style="color:#e6db74">&#39;sha1&#39;</span>,$signature_data, $SECRET_KEY,<span style="color:#66d9ef">true</span>)));
+</span></span><span style="display:flex;"><span>    $curl <span style="color:#f92672">=</span> <span style="color:#a6e22e">curl_init</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">curl_setopt</span>($curl, <span style="color:#a6e22e">CURLOPT_CUSTOMREQUEST</span>, <span style="color:#e6db74">&#39;POST&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">curl_setopt</span>($curl, <span style="color:#a6e22e">CURLOPT_URL</span>, $url<span style="color:#f92672">.</span>$path);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">curl_setopt</span>($curl, <span style="color:#a6e22e">CURLOPT_HTTPHEADER</span>, $headers);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">curl_setopt</span>($curl, <span style="color:#a6e22e">CURLOPT_FAILONERROR</span>, <span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">curl_setopt</span>($curl, <span style="color:#a6e22e">CURLOPT_RETURNTRANSFER</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">curl_setopt</span>($curl, <span style="color:#a6e22e">CURLOPT_HEADER</span>, <span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($bodys)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">curl_setopt</span>($curl, <span style="color:#a6e22e">CURLOPT_POSTFIELDS</span>, $bodys);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    $response <span style="color:#f92672">=</span> <span style="color:#a6e22e">curl_exec</span>($curl);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">curl_close</span>($curl);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> $response;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>$response <span style="color:#f92672">=</span> <span style="color:#a6e22e">tianweiApiIdcard</span>(<span style="color:#e6db74">&#39;/person/authIden&#39;</span>,[
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;serviceCode&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;idc0001&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;name&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;韩国&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;idCard&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;429006197109275750&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;selfUrl&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;null&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;selfImg&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;null&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;bankcard&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;null&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;mobile&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#39;null&#39;</span>,
+</span></span><span style="display:flex;"><span>]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$result <span style="color:#f92672">=</span> <span style="color:#a6e22e">json_decode</span>(<span style="color:#a6e22e">json_decode</span>($response),<span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// if(isset($result[&#39;status&#39;]) &amp;&amp; &#34;1&#34; ==$result[&#39;status&#39;]) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//     echo &#39;成功！&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">var_dump</span>($result);
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/sha1/">Sha1</a>
+        
+            <a href="/tags/java/">Java</a>
+        
+            <a href="/tags/php/">PHP</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/eval.php/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Eval PHP</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/live/word-to-pdf/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Word 转 PDF</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/live/init-web-system-page/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">简易的系统初始化页面</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/live/cut-image-in-php/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">PHP等比裁剪图像</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/wordpress.dev/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WordPress开发笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

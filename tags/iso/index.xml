@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Iso on 良宏</title>
+        <link>/tags/iso/</link>
+        <description>Recent content in Iso on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sun, 24 Apr 2022 23:50:47 +0800</lastBuildDate><atom:link href="/tags/iso/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>ISO convert to Docker image</title>
+        <link>/post/tech/iso2dockerimage/</link>
+        <pubDate>Sun, 24 Apr 2022 23:50:47 +0800</pubDate>
+        
+        <guid>/post/tech/iso2dockerimage/</guid>
+        <description>&lt;h2 id=&#34;下载好-iso-文件&#34;&gt;下载好 ISO 文件
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;wget -c http://pkg.loongnix.cn/loongnix/isos/Loongnix-20.1.livecd.mate.loongarch64.iso&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;准备文件和目录&#34;&gt;准备文件和目录
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt install squashfs-tools
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir unsquashfs
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;// 解压 出 ISO 其中的 filesystem.squashfs 文件，你的系统中还可能叫 squashfs.img
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo unsquashfs -f -d unsquashfs/ squashfs.img
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;打镜像&#34;&gt;打镜像
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo tar -C unsquashfs -c . | docker import - loongnix-20.1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;这种方式打出来的镜像太大，我觉得不可取。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

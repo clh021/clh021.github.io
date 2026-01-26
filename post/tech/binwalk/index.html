@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="本周一 安恒萌新粉丝群：928102972分享的工具为 binwalk。 Binwalk是一款快速、易用，用于分析，逆向工程和提取固件映像的工具。简单易用，完全自动化脚本，并通过自定义签名，提取规则和插件模块，还重要一点的是可以轻松地扩展。 在CTF的MISC类题型和IOT安全的固件解包分析中广泛应用，可以大大提高效率。该工具对linux支持较好，对于windows功能支持较差，有条件的童鞋可以在linux上使用练习该神器。\n">
+<title>Binwalk</title>
+
+<link rel='canonical' href='/post/tech/binwalk/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Binwalk">
+<meta property='og:description' content="本周一 安恒萌新粉丝群：928102972分享的工具为 binwalk。 Binwalk是一款快速、易用，用于分析，逆向工程和提取固件映像的工具。简单易用，完全自动化脚本，并通过自定义签名，提取规则和插件模块，还重要一点的是可以轻松地扩展。 在CTF的MISC类题型和IOT安全的固件解包分析中广泛应用，可以大大提高效率。该工具对linux支持较好，对于windows功能支持较差，有条件的童鞋可以在linux上使用练习该神器。\n">
+<meta property='og:url' content='/post/tech/binwalk/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='binwalk' /><meta property='article:published_time' content='2021-12-24T15:55:36&#43;08:00'/><meta property='article:modified_time' content='2021-12-24T15:55:36&#43;08:00'/>
+<meta name="twitter:title" content="Binwalk">
+<meta name="twitter:description" content="本周一 安恒萌新粉丝群：928102972分享的工具为 binwalk。 Binwalk是一款快速、易用，用于分析，逆向工程和提取固件映像的工具。简单易用，完全自动化脚本，并通过自定义签名，提取规则和插件模块，还重要一点的是可以轻松地扩展。 在CTF的MISC类题型和IOT安全的固件解包分析中广泛应用，可以大大提高效率。该工具对linux支持较好，对于windows功能支持较差，有条件的童鞋可以在linux上使用练习该神器。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/binwalk/">Binwalk</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2021-12-24T15:55:36&#43;08:00'>2021-12-24 15:55:36</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 12 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>本周一 <code>安恒萌新粉丝群：928102972</code>分享的工具为 <code>binwalk</code>。 <code>Binwalk</code>是一款快速、易用，用于分析，逆向工程和提取固件映像的工具。简单易用，完全自动化脚本，并通过自定义签名，提取规则和插件模块，还重要一点的是可以轻松地扩展。 在CTF的MISC类题型和IOT安全的固件解包分析中广泛应用，可以大大提高效率。该工具对linux支持较好，对于windows功能支持较差，有条件的童鞋可以在linux上使用练习该神器。</p>
+<p><code>binwalk</code>github项目：https://github.com/ReFirmLabs/binwalk <code>binwalk</code>的wiki：https://github.com/devttys0/binwalk/wiki <code>binwalk</code>是一款 <code>python</code>编写的工具，目前 <code>python2.x</code>和 <code>python3.x</code>都较好的支持，不过在 <code>Python3.x</code>中运行速度更快。在 <code>kali</code>里面已经预装了，在其他发行版 <code>linux</code>中安装也很简单，不过在 <code>windows</code>上会稍微繁琐一些。 <code>windows</code>下的安装和使用方法可以参考 <code>pcat</code>大表哥的方法https://www.cnblogs.com/pcat/p/5256288.html。 <code>wiki</code>上对于安装使用已经说的非常详细了。建议英文好的童鞋可以直接看官方的资料。网上资料也很多，这里就简单的翻译总结一下。 这里使用 <code>kali linux</code>演示（基于Debian的linux发行版开发的一个渗透数字取证的系统） <strong>注意：</strong> 如果原来系统已经安装了旧版 <code>binwalk</code>，这里建议先卸载再安装新版本，以防止出现不兼容和API冲突等问题。</p>
+<p>$ sudo su
+$ binwalk
+$ sudo apt-get remove binwalk
+$ sudo apt-get update
+$ git clone <a class="link" href="https://github.com/ReFirmLabs/binwalk"  target="_blank" rel="noopener"
+    >https://github.com/ReFirmLabs/binwalk</a>
+$ cd binwalk
+$ sudo python setup.py install
+$ sudo apt-get install python-lzma</p>
+<p>如果执行命令的中途出现了 <code>无法获得锁/var/lib/dpkg/lock-open(11:资源暂时不可用)ubuntu安装vim及遇到的错误处理</code>，执行下面命令:</p>
+<p>sudo rm /var/cache/apt/archives/lock
+sudo rm /var/lib/dpkg/lock</p>
+<p><code>binwalk</code>还需要安装一些依赖项，具体的大家可以去 <code>Wilk</code>上查看，如果是 <code>Debian/Ubuntu</code>源代码里已经给了一键自动安装依赖项的脚本，运行命令：</p>
+<p>$ sudo ./deps.sh</p>
+<h3 id="安装ida插件">安装IDA插件
+</h3><p><code>binwalk</code>还可以安装 <code>binwalk IDA</code>插件，这个功能对于做固件逆向的功能是非常方便的。安装：</p>
+<p>$ python setup.py idainstall --idadir = / home / user / ida</p>
+<p>卸载：</p>
+<p>$ python setup.py idauninstall --idadir = / home / user / ida</p>
+<h3 id="显示binwalk帮助输出-h-help">显示binwalk帮助输出(`-h, &ndash;help)
+</h3><p>$ binwalk --help</p>
+<h3 id="扫描固件">扫描固件
+</h3><p><code>binwalk</code>的主要功能 - 也是迄今为止最受欢迎的功能。 <code>Binwalk</code>可以扫描许多不同嵌入式文件类型和文件系统的固件映像，只需给它一个要扫描的文件列表：</p>
+<p>$ binwalk firmware.bin</p>
+<p>DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+0             0x0         DLOB firmware header, boot partition: &ldquo;dev=/dev/mtdblock/2&rdquo;
+112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432 bytes, uncompressed size: 3797616 bytes
+1310832       0x140070    PackImg section delimiter tag, little endian size: 13644032 bytes; big endian size: 3264512 bytes
+1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma, size: 3264162 bytes,  1866 inodes, blocksize: 65536 bytes, created: Tue Apr  3 04:12:22 2012</p>
+<p>这个功能也是一个常用的功能，在CTF中很多文件分解的 <code>misc题</code>都可以使用 <code>binwalk</code>提高效率相对于使用 <code>winhex</code>这类工具。 可以使用 <code>-e</code>选项提取它在固件映像中找到的任何文件。</p>
+<p>$ binwalk -e firmware.bin</p>
+<h3 id="签名分析--b--signature">签名分析( <code>-B,--signature</code>)
+</h3><p>对目标文件执行签名分析，如果未指定其他分析选项，则这是默认值。 如果希望将签名分析与其他分析器（例如 - 熵）结合使用，请使用此选项：</p>
+<p>$ binwalk --signature firmware.bin</p>
+<p>DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+0             0x0         DLOB firmware header, boot partition: &ldquo;dev=/dev/mtdblock/2&rdquo;
+112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432 bytes, uncompressed size: 3797616 bytes
+1310832       0x140070    PackImg section delimiter tag, little endian size: 13644032 bytes; big endian size: 3264512 bytes
+1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma, size: 3264162 bytes,  1866 inodes, blocksize: 65536 bytes, created: Tue Apr  3 04:12:22 2012</p>
+<h3 id="熵分析--e--entropy">熵分析( <code>-E,--entropy</code>)
+</h3><p>对输入文件执行熵分析，打印原始熵数据并生成熵图。 熵分析可以与&ndash;signature，&ndash; raw或&ndash;opcodes结合使用，以便更好地理解目标文件。 用于识别签名扫描可能遗漏的有趣数据部分：</p>
+<p>$ binwalk -E firmware.bin
+DECIMAL       HEXADECIMAL     ENTROPY
+--------------------------------------------------------------------------------
+0             0x0             Rising entropy edge (0.983751)
+1155072       0x11A000        Falling entropy edge (0.000000)
+1181696       0x120800        Rising entropy edge (0.990546)
+3780608       0x39B000        Falling entropy edge (0.000000)</p>
+<p>与&ndash;verbose选项结合使用时，将打印为每个数据块计算的原始熵：</p>
+<p>$ binwalk -E --verbose firmware.bin</p>
+<p>DECIMAL         HEX             ENTROPY ANALYSIS
+--------------------------------------------------------------------------------
+0               0x0             0.964914
+1024            0x400           0.978591
+2048            0x800           0.973048
+3072            0xC00           0.976195
+4096            0x1000          0.976072
+5120            0x1400          0.976734
+6144            0x1800          0.976861
+7168            0x1C00          0.972385
+8192            0x2000          0.972518
+&hellip;</p>
+<p><strong>注意：</strong> 如果是使用 <code>python API</code>调用熵分析，需要禁用图形（&ndash;nplot）以防止脚本过早退出。</p>
+<h3 id="保存熵图为png文件并不显示--j--save">保存熵图为PNG文件并不显示( <code>-J,--save</code>)
+</h3><p>$ binwalk --save -E firmware.bin</p>
+<h3 id="搜索字符串--r--rawstring">搜索字符串( <code>-R，--raw=&lt;string&gt;</code>)
+</h3><p>搜索字符串包括转义的八进制和/或十六进制值。 需要搜索自定义的原始字节序列时，可以使用此选项：</p>
+<p>$ binwalk -R &ldquo;\x00\x01\x02\x03\x04&rdquo; firmware.bin</p>
+<p>DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+377654        0x5C336     Raw string signature</p>
+<h3 id="搜索各种cpu架构常见的可执行操作码--a--opcodes">搜索各种CPU架构常见的可执行操作码( <code>-A,--opcodes</code>)
+</h3><p><code>binwalk</code>可以在指定文件中搜索各种CPU架构常见的可执行操作码。<strong>注：</strong> 某些操作码签名很短，因此容易产生误报结果。 当需要在文件中找到可执行代码时，如果需要确定可执行文件的体系结构时，可以使用此选项：</p>
+<p>$ binwalk -A firmware.bin</p>
+<p>DECIMAL         HEX             DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+268             0x10C           MIPS instructions, function prologue
+412             0x19C           MIPS instructions, function prologue
+636             0x27C           MIPS instructions, function prologue
+812             0x32C           MIPS instructions, function epilogue
+920             0x398           MIPS instructions, function epilogue
+948             0x3B4           MIPS instructions, function prologue
+1056            0x420           MIPS instructions, function epilogue
+1080            0x438           MIPS instructions, function prologue
+1356            0x54C           MIPS instructions, function epilogue
+1392            0x570           MIPS instructions, function prologue
+1836            0x72C           MIPS instructions, function epilogue
+2012            0x7DC           MIPS instructions, function prologue
+2260            0x8D4           MIPS instructions, function epilogue
+2512            0x9D0           MIPS instructions, function prologue
+2552            0x9F8           MIPS instructions, function epilogue</p>
+<h3 id="搜索签名的自定义魔术签名文件--m--magicfile">搜索签名的自定义魔术签名文件( <code>-m，--magic=&lt;file&gt;</code>)
+</h3><p>加载备用魔术签名文件而不是默认文件。</p>
+<p>$ binwalk -m ./foobar.mgc firmware.bin</p>
+<p>DECIMAL         HEX             DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+268             0x10C           Foobar
+412             0x19C           Foobar
+636             0x27C           Foobar</p>
+<h3 id="禁用智能签名匹配--b--dumb">禁用“智能”签名匹配( <code>-b,--dumb</code>)
+</h3><p>智能签名匹配可能导致错过其他有效签名时（例如，通过jump-to-offset关键字），可以使用：</p>
+<p>$ binwalk -b firmware.bin</p>
+<h3 id="显示所有包括误标记为无效结果--i--invalid">显示所有包括误标记为无效结果( <code>-I,--invalid</code>)
+</h3><p>binwalk将有效结果误标记为无效结果，并产生大量垃圾输出，可以使用：</p>
+<p>$ binwalk -I firmware.bin</p>
+<h3 id="签名排除过滤器--x--excludefilter">签名排除过滤器( <code>-x，--exclude=&lt;filter&gt;</code>)
+</h3><p>不过滤被过滤器匹配的签名，过滤器是小写的正则表达式; 可以指定多个过滤器。第一行与指定过滤器匹配的魔术签名根本不会被加载; 因此，使用此过滤器可以帮助减少签名扫描时间。用于排除不需要或不感兴趣的结果：</p>
+<p>$ binwalk -x &lsquo;mach-o&rsquo; -x &lsquo;^hp&rsquo; firmware.bin # exclude HP calculator and OSX mach-o signatures</p>
+<h3 id="签名过滤器--y--includefilter">签名过滤器( <code>-y，--include=&lt;filter&gt;</code>)
+</h3><p>过滤被过滤器匹配的签名，过滤器是小写的正则表达式; 可以指定多个过滤器。只会加载第一行与指定过滤器匹配的魔术签名; 因此，使用此过滤器可以帮助减少签名扫描时间。仅搜索特定签名或签名类型时很有用：</p>
+<p>$ binwalk -y &lsquo;filesystem&rsquo; firmware.bin # only search for filesystem signatures</p>
+<h3 id="识别反汇编代码的cpu体系结构--y--disasm">识别反汇编代码的CPU体系结构( <code>-Y，--disasm</code>)
+</h3><p>使用 <code>capstone</code>反汇编程序识别文件中包含的可执行代码的CPU体系结构。 使用此扫描指定 <code>--verbose</code>将另外打印反汇编的指令。 通常比 <code>--opcodes</code>执行的简单签名分析更健壮，但支持更少的体系结构：</p>
+<p>$ binwalk --disasm firmware.bin</p>
+<p>DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+428           0x1AC           MIPS executable code, 32/64-bit, little endian, at least 750 valid instructions</p>
+<h3 id="设置反汇编结果的最小连续指令数--t--minsn">设置反汇编结果的最小连续指令数( <code>-T,--minsn</code>)
+</h3><p>将&ndash;disasm结果的最小连续指令数设置为有效。默认值为500条指令：</p>
+<p>$ binwalk --minsn=1200 -Y firmware.bin</p>
+<p>DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+428           0x1AC           MIPS executable code, 32/64-bit, little endian, at least 1250 valid instructions</p>
+<h3 id="反汇编结果连续执行--k--continue">反汇编结果连续执行( <code>-k,--continue</code>)
+</h3><p>指示 - disasm不会停在第一个结果：</p>
+<p>$ binwalk --continue -Y firmware.bin</p>
+<p>DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+428           0x1AC           MIPS executable code, 32/64-bit, little endian, at least 1250 valid instructions
+1048576       0x100000        MIPS executable code, 32/64-bit, little endian, at least 1250 valid instructions
+&hellip;</p>
+<h3 id="忽略entropy生成的熵图中的图例--q--nngend">忽略&ndash;entropy生成的熵图中的图例( <code>-Q，--nngend</code>)
+</h3><p>$ binwalk --entropy -Q firmware.bin</p>
+<h3 id="禁止对图形熵地块entropy扫描--n--nplot">禁止对图形熵地块&ndash;entropy扫描( <code>-N，--nplot</code>)
+</h3><p>$ binwalk --entropy -N firmware.bin</p>
+<h3 id="设置上升沿熵触发电平--h--highfloat">设置上升沿熵触发电平( <code>-H，--high=&lt;float&gt;</code>)
+</h3><p>仅在与&ndash;entropy一起使用时有效。指定的值应介于0和1之间：</p>
+<p>$ binwalk --entropy -H .9 firmware.bin</p>
+<h3 id="设置下降沿熵触发电平--l--lowfloat">设置下降沿熵触发电平( <code>-L，--low=&lt;float&gt;</code>)
+</h3><p>仅在与&ndash;entropy一起使用时有效。指定的值应介于0和1之间：</p>
+<p>$ binwalk --entropy -L .3 firmware.bin</p>
+<h3 id="十六进制字节彩色输出--w--hexdump">十六进制字节彩色输出( <code>-W，--hexdump</code>)
+</h3><p>绿色 - 所有文件中的这些字节都相同 红色 - 这些字节在所有文件中都不同 蓝色 - 这些字节在某些文件中只有不同 可以任意数量的任意文件; 其他有用的选项是&ndash;block， - offset， - length和&ndash;terse：</p>
+<p>$ binwalk -W --block = 8 --length = 64 firmware1.bin firmware2.bin firmware3.bin</p>
+<p><strong>注意：</strong> 如果您需要页面输出安装most实用程序，因为它更好地支持彩色输出的分页。 仅在&ndash;hexdump期间显示包含 <code>绿色</code>字节的行：</p>
+<p>$ binwalk -W --green firmware1.bin firmware2.bin firmware3.bin</p>
+<p>仅在&ndash;hexdump期间显示包含 <code>红色</code>字节的行：</p>
+<p>$ binwalk -W --red firmware1.bin firmware2.bin firmware3.bin</p>
+<p>仅在&ndash;hexdump期间显示包含 <code>蓝色</code>字节的行：</p>
+<p>$ binwalk -W --blue firmware1.bin firmware2.bin firmware3.bin</p>
+<h3 id="提取签名扫描期间识别的文件--d--ddtypeextcmd">提取签名扫描期间识别的文件( <code>-D,--dd=&lt;type[:ext[:cmd]]&gt;</code>)
+</h3><p>提取 - 签名扫描期间识别的文件。可以指定多个&ndash;dd选项。 type是签名描述中包含的小写字符串（支持正则表达式） ext是保存数据磁盘时使用的文件扩展名（默认为none） cmd是在将数据保存到磁盘后执行的可选命令 默认情况下，文件名是找到签名的十六进制偏移量，除非在签名本身中指定了备用文件名。 以下示例演示如何使用&ndash;dd选项指定提取规则，该选项将提取包含文件扩展名为“zip”的字符串“zip archive”的任何签名，然后执行“unzip”命令。此外，PNG图像按原样提取，带有&rsquo;png&rsquo;文件扩展名。 请注意使用&rsquo;％e&rsquo;占位符。执行unzip命令时，此占位符将替换为解压缩文件的相对路径：</p>
+<p>$ binwalk -D &lsquo;zip archive:zip:unzip %e&rsquo; -D &lsquo;png image:png&rsquo; firmware.bin</p>
+<h3 id="签名扫描期间递归扫描提取的文件--m--matryoshka">签名扫描期间递归扫描提取的文件( <code>-M,--matryoshka</code>)
+</h3><p>只有有效使用时&ndash;extract或&ndash;dd。</p>
+<p>$ binwalk -e -M firmware.bin</p>
+<h3 id="设置提取数据的输出目录--c--directorystr">设置提取数据的输出目录( <code>-C,--directory=&lt;str&gt;</code>)
+</h3><p>默认值：当前工作目录 仅适用与使用时&ndash;extract或&ndash;dd选项：</p>
+<p>$ binwalk -e --directory = / tmp firmware.bin</p>
+<h3 id="限制matryoshka递归深度--d--depthint">限制&ndash;matryoshka递归深度( <code>-d,--depth=&lt;int&gt;</code>)
+</h3><p>限制&ndash;matryoshka递归深度。默认情况下，深度设置为8。 仅在与&ndash;matryoshka选项一起使用时才适用：</p>
+<p>$ binwalk -Me -d 5 firmware.bin</p>
+<h3 id="限制从目标文件中分割出的数据大小--j--sizeint">限制从目标文件中分割出的数据大小( <code>-j,--size=&lt;int&gt;</code>)
+</h3><p>默认情况下，没有大小限制。 只有有效使用时&ndash;extract或&ndash;dd。 请注意，此选项不限制外部提取实用程序提取/解压缩的数据大小。 从具有有限磁盘空间的大型文件中雕刻或提取数据时非常有用：</p>
+<p>$ binwalk -e --size=0x100000 firmware.bin</p>
+<h3 id="清除无法处理的零文件和文件--r--rm">清除无法处理的零文件和文件( <code>-r,--rm</code>)
+</h3><p>只有有效使用时&ndash;extract或&ndash;dd。 用于清除在提取期间从目标文件复制的误报文件：</p>
+<p>$ binwalk -e -r firmware.bin</p>
+<h3 id="刻录数据但不自动提取解压缩该数据--z--carve">刻录数据但不自动提取/解压缩该数据( <code>-z,--carve</code>)
+</h3><p>只有有效使用时&ndash;extract或&ndash;dd。</p>
+<p>$ binwalk -e --carve firmware.bin</p>
+<h3 id="暴力识别原始deflate压缩数据流--x--deflate">暴力识别原始deflate压缩数据流( <code>-X,--deflate</code>)
+</h3><p>用于从具有损坏/修改/缺少标头的文件中恢复数据。可以与&ndash;lzma结合使用。 此扫描可能很慢，因此使用&ndash;offset和/或&ndash;length限制扫描区域非常有用：</p>
+<p>$ binwalk --deflate -o 0x100 -l 10000 firmware.bin</p>
+<h3 id="暴力识别原始lzma压缩数据流--z--lzma">暴力识别原始LZMA压缩数据流( <code>-Z,--lzma</code>)
+</h3><p>用于从具有损坏/修改/缺少标头的文件中恢复数据。可以与&ndash;deflate结合使用。 由于LZMA压缩选项的数量不同，此扫描可能非常慢，因此使用&ndash;offset和/或&ndash;length限制扫描区域非常有用：</p>
+<p>$ binwalk --lzma -o 0x100 -l 10000 firmware.bin</p>
+<h3 id="常见压缩选项搜索压缩流--p--partial">常见压缩选项搜索压缩流( <code>-P,--partial</code>)
+</h3><p>可以显着提高&ndash;lzma扫描的速度：</p>
+<p>$ binwalk --partial -Z -o 0x100 -l 10000 firmware.bin</p>
+<h3 id="在扫描到第一个结果停止--s--stop">在扫描到第一个结果停止( <code>-S,--stop</code>)
+</h3><p>与&ndash;lzma和/或&ndash;deflate选项一起使用时，这将在显示第一个结果后停止扫描：</p>
+<p>$ binwalk --stop -Z firmware.bin</p>
+<h3 id="设置目标文件中要分析的字节数--l--lengthint">设置目标文件中要分析的字节数( <code>-l,--length=&lt;int&gt;</code>)
+</h3><p>$ binwalk --length=0x100 firmware.bin</p>
+<h3 id="设置起始偏移量--o--offsetint">设置起始偏移量( <code>-o,--offset=&lt;int&gt;</code>)
+</h3><p>设置开始分析目标文件的起始偏移量。还可以指定负偏移（距文件结束的距离）：</p>
+<p>$ binwalk --offset=0x100 firmware.bin</p>
+<h3 id="设置所有打印偏移的基址--o--baseint">设置所有打印偏移的基址( <code>-O,--base=&lt;int&gt;</code>)
+</h3><p>此值将添加到所有打印结果的原始文件偏移量中：</p>
+<p>$ binwalk --base=0x80001000 firmware.bin</p>
+<h3 id="设置分析期间使用的块大小--k--blockint">设置分析期间使用的块大小( <code>-K,--block=&lt;int&gt;</code>)
+</h3><p>设置分析期间使用的块大小（以字节为单位）。 与 - 熵一起使用时，这决定了在熵分析期间分析的每个块的大小。 与&ndash;hexdump一起使用时，它设置十六进制输出中每行显示的字节数。</p>
+<p>$ binwalk --diff -K 8 firmware1.bin firmware2.bin</p>
+<h3 id="扫描之前反转n个字节--g--swapint">扫描之前反转n个字节( <code>-g,--swap=&lt;int&gt;</code>)
+</h3><p>$ binwalk --swap=2 firmware.bin</p>
+<h3 id="扫描结果记录到指定的文件--f--logfile">扫描结果记录到指定的文件( <code>-f,--log=&lt;file&gt;</code>)
+</h3><p>除非指定了&ndash;csv，否则保存到日志文件的数据将与终端中显示的数据相同。 即使指定了&ndash;quiet，数据也将保存到日志文件中：</p>
+<p>$ binwalk --log=binwalk.log firmware.bin</p>
+<h3 id="日志数据以csv格式保存--c--csv">日志数据以CSV格式保存( <code>-c,--csv</code>)
+</h3><p>如果与&ndash;cast或&ndash;hexdump一起使用，则忽略此选项。 仅在与&ndash;log选项结合使用时才有效：</p>
+<p>$ binwalk --log=binwalk.log --csv firmware.bin</p>
+<h3 id="格式输出适应终端窗口宽度--t--term">格式输出适应终端窗口宽度( <code>-t,--term</code>)
+</h3><p>使输出更具可读性:</p>
+<p>$ binwalk --term firmware.bin</p>
+<p>DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------
+0             0x0         DLOB firmware header, boot partition: &ldquo;dev=/dev/mtdblock/2&rdquo;
+112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432
+bytes, uncompressed size: 3805904 bytes
+1310832       0x140070    PackImg section delimiter tag, little endian size: 15741184 bytes; big
+endian size: 3272704 bytes
+1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma,
+size: 3268870 bytes,  1860 inodes, blocksize: 65536 bytes, created:
+Mon Apr 22 04:56:42 2013</p>
+<h3 id="禁用输出到stdout--q--quiet">禁用输出到stdout( <code>-q,--quiet</code>)
+</h3><p>与&ndash;log或verbose扫描一起使用时最方便，例如&ndash;entropy：</p>
+<p>$ binwalk --quiet -f binwalk.log firmware.bin</p>
+<h3 id="启用详细输出包括目标文件md5和扫描时间戳--v--verbose">启用详细输出，包括目标文件MD5和扫描时间戳( <code>-v,--verbose</code>)
+</h3><p>如果指定了两次，如果还指定了&ndash;extract，则将显示外部提取实用程序的输出：</p>
+<p>$ binwalk --verbose firmware.bin</p>
+<p>Scan Time:     2013-11-10 21:04:04
+Signatures:    265
+Target File:   firmware.bin
+MD5 Checksum:  6b91cdff1b4f0134b24b7041e079dd3e</p>
+<p>DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+0             0x0         DLOB firmware header, boot partition: &ldquo;dev=/dev/mtdblock/2&rdquo;
+112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432 bytes, uncompressed size: 3805904 bytes
+1310832       0x140070    PackImg section delimiter tag, little endian size: 15741184 bytes; big endian size: 3272704 bytes
+1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma, size: 3268870 bytes,  1860 inodes, blocksize: 65536 bytes, created: Mon Apr 22 04:56:42 2013</p>
+<h3 id="扫描名称与给定正则表达式字符串匹配的文件--a--fincludestr">扫描名称与给定正则表达式字符串匹配的文件( <code>-a,--finclude=&lt;str&gt;</code>)
+</h3><p>当与组合&ndash;matryoshka和&ndash;extract</p>
+<p>$ binwalk -M -e --finclude=&rsquo;\.bin$&rsquo; firmware.bin</p>
+<h3 id="不要扫描名称与给定正则表达式字符串匹配的文件--p--fexcludestr">不要扫描名称与给定正则表达式字符串匹配的文件( <code>-p,--fexclude=&lt;str&gt;</code>)
+</h3><p>当与组合&ndash;matryoshka和&ndash;extract</p>
+<p>$ binwalk -M -e --fexclude=&rsquo;\.pdf$&rsquo; firmware_archive.zip</p>
+<h3 id="指定的端口号上启用状态服务器--s--statusint">指定的端口号上启用状态服务器( <code>-s,--status=&lt;int&gt;</code>)
+</h3><p>状态服务器仅侦听localhost并打印出与当前扫描状态相关的人类可读ASCII数据。您可以使用telnet，netcat等连接到它。</p>
+<p>$ binwalk --status=8080 firmware_archive.zip</p>
+<h3 id="总结">总结
+</h3><p>binwalk还有很多功能，比如python API，和IDA配合使用，以及实际应用会遇到很多小技巧，能大大提高取证，逆向固件和CTF misc的效率。当然也存在特别多的问题，也欢迎童鞋们去使用解决这些问题提交 <code>issue</code>。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/binwalk/">Binwalk</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

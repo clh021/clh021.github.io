@@ -1,0 +1,1368 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Vim on 良宏</title>
+        <link>/tags/vim/</link>
+        <description>Recent content in Vim on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 06 Apr 2022 20:53:48 +0800</lastBuildDate><atom:link href="/tags/vim/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Vim2</title>
+        <link>/post/vim2/</link>
+        <pubDate>Wed, 06 Apr 2022 20:53:48 +0800</pubDate>
+        
+        <guid>/post/vim2/</guid>
+        <description>&lt;h2 id=&#34;如何理解-timeoutlen-和-ttimeoutlen&#34;&gt;如何理解 timeoutlen 和 ttimeoutlen?
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-vimrc&#34; data-lang=&#34;vimrc&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;:&lt;span style=&#34;color:#66d9ef&#34;&gt;set&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;timeout&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;timeoutlen&lt;/span&gt;=&lt;span style=&#34;color:#ae81ff&#34;&gt;3000&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ttimeoutlen&lt;/span&gt;=&lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;inoremap&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;jk&lt;/span&gt; &amp;lt;&lt;span style=&#34;color:#a6e22e&#34;&gt;esc&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此示例中，插入模式并键入j时，vim将等待timeoutlen毫秒确定是&lt;code&gt;j&lt;/code&gt;还是&lt;code&gt;jk&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;0, 使用终端命令行 :terminal Ctrl+W w 相互切换
+0, 水平打开终端 :vertical terminal
+0, 垂直打开终端 :belowright terminal   |  :bel term&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;多使用 &lt;code&gt;:Te&lt;/code&gt; 命令来进行选项卡浏览，normal 下 &lt;code&gt;gt&lt;/code&gt; 切换选项卡&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;vim -On file1 file2 ...&lt;/code&gt; 大写O来垂直分屏，n是数字，表示分成几个屏&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;vim -on file1 file2 ...&lt;/code&gt; 小写o来水平分屏&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Ctrl+W c&lt;/code&gt; 关闭当前窗口&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Ctrl+W q&lt;/code&gt; 关闭最后一个窗口退出vim&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Ctrl+W s&lt;/code&gt; 上下分割打开的文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:sp filename&lt;/code&gt; 上下分割打开新文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Ctrl+W v&lt;/code&gt; 左右分割打开的文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:vsp filename&lt;/code&gt; 左右分割打开新文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;分屏中移动光标&lt;code&gt;Ctrl+W l|h|k|j|w&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;分屏的移动&lt;code&gt;Ctrl+W L|H|K|J&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;分屏的尺寸&lt;code&gt;Ctrl+W =+-&lt;/code&gt; 一样高度|增加|减少&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;?? &lt;code&gt;:He[!]&lt;/code&gt; 在下边[上边]分屏浏览目录&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;?? &lt;code&gt;:Ve[!]&lt;/code&gt; 在左边[右边]分屏浏览目录&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:set scb[!]&lt;/code&gt; 两个屏中都命令后即可[取消]同步移动 set scrollbind&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:Te&lt;/code&gt; 分页式浏览 Tab explorer 标签前面的数字表示那一页打开文件的个数
+&lt;code&gt;gt&lt;/code&gt; 到下一页
+&lt;code&gt;gT&lt;/code&gt; 到上一页
+&lt;code&gt;{i}gt&lt;/code&gt; 到第{i}gt
+&lt;code&gt;tabs&lt;/code&gt; 查看打开的窗口和Tab情况
+&lt;code&gt;tabclose [i]&lt;/code&gt; 关闭指定页，如果没有就关闭当前页
+&lt;code&gt;vim -p cool.cpp shell.cpp haoel.cpp | vim -p *.cpp&lt;/code&gt; -p 参数用Tab页方式打开多个文件
+&lt;code&gt;bufdo tab split&lt;/code&gt; 把 buffer 中的文件全转成 tab 的话&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:mksession ~/.mysession.vim&lt;/code&gt; 保存会话状态&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;vim -S ~/.mysession.vim&lt;/code&gt; 打开会话状态&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:wqa&lt;/code&gt; 保存全部并退出全部&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:make&lt;/code&gt; 可以直接根据 makefile 进行编译&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:cw&lt;/code&gt;   可以把 make 出错信息显示到分屏中
+&lt;code&gt;:cp&lt;/code&gt;   跳到上一个错误
+&lt;code&gt;:cn&lt;/code&gt;   跳到下一个错误
+&lt;code&gt;:cl&lt;/code&gt;   列出所有错误
+&lt;code&gt;:cc&lt;/code&gt;   显示错误详细信息&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;:grep -r –include=”*.[ch]” NGX_HTTP_VAR_INDEXED src/&lt;/code&gt; 递归查询src目录下.c&amp;amp;.h文件,&lt;code&gt;:cw&lt;/code&gt;取出&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码补全
+&lt;code&gt;Ctrl+N&lt;/code&gt; &lt;code&gt;Ctrl+P&lt;/code&gt; 搜索所在目录的代码
+&lt;code&gt;Ctrl + X Ctrl + D&lt;/code&gt; 宏定义
+&lt;code&gt;Ctrl + X Ctrl + ]&lt;/code&gt; Tag
+&lt;code&gt;Ctrl + X Ctrl + F&lt;/code&gt; 文件名
+&lt;code&gt;Ctrl + X Ctrl + I&lt;/code&gt; 关键词(词后有所在文件名标记)
+&lt;code&gt;Ctrl + X Ctrl + V&lt;/code&gt; 表达式
+&lt;code&gt;Ctrl + X Ctrl + L&lt;/code&gt; 整行补全&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字符相关技巧
+guu|Vu 一行变小写
+gUU|VU 一行改大写
+v 选择文本 u|U 转 小写|大写
+ga 光标处字符的 ascii 码
+g8 光标处字符的 utf-8 码
+gf 打开光标处所指的文件(#include 头文件时好用，仅限于有路径的)
+*|# 当前文件搜索光标单词&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缩进相关技巧&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;|&amp;laquo;|=|=% 缩进|反缩进|对齐缩进|缩进代码块 当前行
+G=gg || G=gg 缩进整个文件&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;光标移动相关
+Ctrl + O 回退你的光标移动
+Ctrl + l 追赶光标移动
+可以在Tab页和Window中向前和向后 trace 你的光标键也方便跳转光标&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;读取 Shell 命令相关
+:r!date 插入日期
+:read 的所写，!表示读取一个shell命令运行的输出到vim中&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;vim 的终极插件&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        <item>
+        <title>Space Vim</title>
+        <link>/post/tech/space-vim/</link>
+        <pubDate>Fri, 24 Dec 2021 15:53:58 +0800</pubDate>
+        
+        <guid>/post/tech/space-vim/</guid>
+        <description>&lt;h1 id=&#34;项目用途&#34;&gt;项目用途
+&lt;/h1&gt;&lt;h3 id=&#34;小问题&#34;&gt;小问题
+&lt;/h3&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;1, normal 状态时确保为英文状态
+1, 如何高效使用 git 快捷管理
+1, 如何修改启动界面，显示待办事项
+1, 使用模糊搜索打开文件
+启用 leaderf 模块，使用 Ctrl + p 模糊搜索
+1, # 如何使用 session
+1, 如何使用函数列表
+1, 显示空格，制表符，换行符的配置
+1, 如何灵活使用标签管理器 SPC t t（补充到文档）
+1, 窗口管理器快捷键 Normal s 使用
+1, snippt 插件和脚本生成器的使用
+1, 查找补充备份以下 snippt: bootstrap,elements
+1, 能否自动保存会话 alias 或者插件
+
+u   撤销
+C+r 恢复
+最佳实践会话恢复与保存
+
+命令            操作             重复       回退
+{edit}          修改             .           u
+f{char}/t{char} 行内找下一个字符 ;           ,
+F{char}/t{char} 行内找上一个字符 ;           ,
+/pattern&amp;lt;CR&amp;gt;    文档下一个匹配   n           N
+?pattern&amp;lt;CR&amp;gt;    文档上一个匹配   n           N
+:s/target/replacment             &amp;amp;           u
+qx{changes}q    执行一系列修改   @x          u
+
+: function AuMksession()
+:    if v:this_session != &amp;#34;&amp;#34;
+:        exe &amp;#34;mksession! &amp;#34; .  v:this_session
+:    endif
+: endfunction
+
+
+&amp;#34;:echo s:SessionLoadOwn
+: au VimLeavePre  * call   AuMksession()
+
+保存会话
+:mksession
+:mks!
+:mksession ~/mysession.vim
+恢复会话
+vim -S Session.vim
+:source Session.vim
+会话选项
+
+:help &amp;#39;sessionoptions&amp;#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bookstack.cn/read/SpaceVim-zh/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bookstack.cn/read/SpaceVim-zh/&lt;/a&gt;
+&lt;/h1&gt;&lt;h2 id=&#34;javascript&#34;&gt;javascript
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;npm install -g eslint-cli #语法检查
+npm install -g js-beautify #代码格式化
+可通过快捷键 SPC l s i 启动 node -i 交互窗口 # 交互式编程
+
+工程根目录添加 .project_alt.json 文件
+{
+  &amp;#34;src/*.js&amp;#34;: {&amp;#34;alternate&amp;#34;: &amp;#34;test/{}.js&amp;#34;},
+  &amp;#34;test/*.js&amp;#34;: {&amp;#34;alternate&amp;#34;: &amp;#34;src/{}.js&amp;#34;}
+}
+就可以使用命令 :A 在源文件和测试文件之间进行跳转
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;golang&#34;&gt;golang
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件
+SPC l b #异步执行 go build
+SPC b f #对当前文件执行 gofmt 命令 #依赖 format 模块 # 默认使用 neoformat 这一插件
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;php&#34;&gt;php
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;php-language-server # 代码自动补全
+composer require --dev vimeo/psalm # 语法检查 checkers 模块默认使用 neomake 语法检查工具异步调用 psalm 命令来完成
+
+# 配置文件中添加如下内容即可为 PHP 启用语言服务器
+[[layers]]
+  name = &amp;#34;lsp&amp;#34;
+  filetypes = [
+    &amp;#34;php&amp;#34;
+  ]
+  [layers.override_cmd]
+    php = [&amp;#34;php-language-server&amp;#34;]
+
+
+# 工程文件跳转，项目根目录添加工程文件 .project_alt.json
+{
+  &amp;#34;src/*.php&amp;#34;: {&amp;#34;alternate&amp;#34;: &amp;#34;test/{}.php&amp;#34;},
+  &amp;#34;test/*.php&amp;#34;: {&amp;#34;alternate&amp;#34;: &amp;#34;src/{}.php&amp;#34;}
+}
+就可以使用命令 :A 在源文件和测试文件之间进行跳转
+
+pear install PHP_Beautifier # 代码格式化
+SPC l r # 快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件
+SPC l s i #启动 php -a 交互窗口 # 交互式编程
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;typescript&#34;&gt;typescript
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;npm install -g tslint #语法检查 #checkers 模块默认使用 neomake 异步语法检查工具调用 tslint 来完成.
+工程根目录添加  .project_alt.json 文件
+{
+  &amp;#34;src/*.ts&amp;#34;: {&amp;#34;alternate&amp;#34;: &amp;#34;test/{}.ts&amp;#34;},
+  &amp;#34;test/*.ts&amp;#34;: {&amp;#34;alternate&amp;#34;: &amp;#34;src/{}.ts&amp;#34;}
+}
+就可以使用命令 :A 在源文件和测试文件之间进行跳转
+SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件
+
+npm install -g typescript-formatter # 代码格式化
+SPC l s i #启动 ts-node -i 交互窗口# 交互式编程
+TypeScript 交互式编程还未完全实现，主要是因为 ts-node -i 执行是并不刷新buffer
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;全局快捷键&#34;&gt;全局快捷键
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC b h 打开欢迎界面
+SPC t n 显示/隐藏行号
+SPC T F 切换全屏(TODO)
+
+SPC [1-9] 跳至指定序号的窗口
+SPC t m t 显示/隐藏时间
+SPC t m d 显示/隐藏日期
+SPC t m T 显示/隐藏状态栏
+SPC t m v 显示/隐藏版本控制信息
+使用 / 或 ? 进行搜索时，或当按下 n 或 N 后，搜索结果序号将被展示在状态栏中，使用类似于 20/22 这样的分数
+SPC t c 清理高亮
+SPC t 8 ⑧ 8 高亮指定列后所有字符
+SPC t f ⓕ f 高亮指定列字符
+SPC t s ⓢ s 语法检查
+SPC t S Ⓢ S 拼写检查
+SPC t w ⓦ w 行尾空格检查
+
+Tab 或者 Buffer 可通过快捷键 &amp;lt;Leader&amp;gt; number 进行快速访问，默认的 &amp;lt;Leader&amp;gt; 是 \
+&amp;lt;Leader&amp;gt; 1 跳至标签栏序号 1
+&amp;lt;Leader&amp;gt; 2 跳至标签栏序号 2
+&amp;lt;Leader&amp;gt; 3 跳至标签栏序号 3
+g r 跳至前一个 Tab，常用于两个 Tab 来回切换
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;文件树&#34;&gt;文件树
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;F3 或 SPC f t 或 SPC f T 文件树
+
+N	在光标位置新建文件
+y y	复制光标下文件路径至系统剪切板
+y Y	复制光标下文件至系统剪切板
+P	在光标位置黏贴文件
+.	切换显示隐藏文件
+s v	分屏编辑该文件
+s g	垂直分屏编辑该文件
+p	预览文件
+i	切换至文件夹历史
+v	快速查看
+&amp;gt;	放大文件树窗口宽度
+&amp;lt;	缩小文件树窗口宽度
+g x	使用相关程序执行该文件
+&amp;#39;	标记光标下的文件（夹）
+V	清除所有标记
+Ctrl+r	刷新页面
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;基本操作&#34;&gt;基本操作
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Ctrl-f 向下翻页 (Ctrl-f / Ctrl-d)
+Ctrl-b 向上翻页 (C-b / C-u)
+Ctrl-e 向下滚屏 (3 Ctrl-e/j)
+Ctrl-y 向上滚屏 (3Ctrl-y/k)
+Ctrl-Shift-Up 向上移动当前行
+Ctrl-Shift-Down 向下移动当前行
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;原生功能&#34;&gt;原生功能
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;leader&amp;gt; q r	原生 q 快捷键
+&amp;lt;leader&amp;gt; q r/	原生 q / 快捷键，打开命令行窗口
+&amp;lt;leader&amp;gt; q r?	原生 q ? 快捷键，打开命令行窗口
+&amp;lt;leader&amp;gt; q r:	原生 q : 快捷键，打开命令行窗口
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;命令行模式快捷键&#34;&gt;命令行模式快捷键
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Ctrl-a	移动光标至行首
+Ctrl-b	向左移动光标
+Ctrl-f	向右移动光标
+Ctrl-w	删除光标前词
+Ctrl-u	移除光标前所有字符
+Ctrl-k	移除光标后所有字符
+Ctrl-c/Esc	离开命令行模式
+Tab	选择下一个匹配
+Shift-Tab	选择上一个匹配
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;快捷键导航&#34;&gt;快捷键导航
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[SPC] 空格键 SpaceVim 默认前缀键
+[Window] windows_leader / s SpaceVim 默认窗口前缀键
+&amp;lt;leader&amp;gt; 默认的 Vim leader 键 Vim/Neovim 默认前缀键
+
+快捷键导航窗口内，按下 Ctrl-h 键，可以获取一些帮助信息
+可以通过 SPC ? 将当前快捷键罗列出来。然后可以输入快捷键按键字母或者描述，可以模糊匹配并展示结果。
+使用 &amp;lt;Tab&amp;gt; 键或者上下方向键选择你需要的快捷键，回车将执行这一快捷键。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;移动文本块&#34;&gt;移动文本块
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt; / Shift-Tab	  向左移动文本
+&amp;gt; / Tab	        向右移动文本
+Ctrl-Shift-Up	  向上移动选中行
+Ctrl-Shift-Down	向下移动选中行
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;文本操作命令&#34;&gt;文本操作命令
+&lt;/h1&gt;&lt;p&gt;文本相关的命令 (以 x 开头)：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC x a #	基于分隔符 # 进行文本对齐
+SPC x a :	基于分隔符 : 进行文本对齐
+SPC x a =	基于分隔符 = 进行文本对齐
+SPC x a ¦	基于分隔符 ¦ 进行文本对齐
+SPC x a |	基于分隔符 | 进行文本对齐
+SPC x a r	基于用户自定义正则表达式进行文本对齐
+SPC x a o	对齐算术运算符 +-*/
+SPC x c	统计选中区域的字符/单词/行数
+SPC x d w	删除行尾空白字符
+SPC x g t	使用 Google Translate 翻译当前单词
+SPC x j c	居中对齐当前段落
+SPC x j f	set the justification to full (TODO)
+SPC x j l	左对齐当前段落
+SPC x j n	set the justification to none (TODO)
+SPC x j r	右对齐当前段落
+SPC x J	将当前行向下移动一行并进入临时快捷键状态
+SPC x K	将当前行向上移动一行并进入临时快捷键状态
+SPC x t c	交换当前字符和前一个字符的位置
+SPC x t C	交换当前字符和后一个字符的位置
+SPC x t w	交换当前单词和前一个单词的位置
+SPC x t W	交换当前单词和后一个单词的位置
+SPC x t l	交换当前行和前一行的位置
+SPC x t L	交换当前行和后一行的位置
+SPC x u	将选中字符串转为小写
+SPC x U	将选中字符串转为大写
+SPC x w c	统计选中区域的单词数
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;文本插入命令&#34;&gt;文本插入命令
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC i l l	insert lorem-ipsum list
+SPC i l p	insert lorem-ipsum paragraph
+SPC i l s	insert lorem-ipsum sentence
+SPC i p 1	insert simple password
+SPC i p 2	insert stronger password
+SPC i p 3	insert password for paranoids
+SPC i p p	insert a phonetically easy password
+SPC i p n	insert a numerical password
+SPC i u	Search for Unicode characters and insert them into the active buffer.
+SPC i U 1	insert UUIDv1 (use universal argument to insert with CID format)
+SPC i U 4	insert UUIDv4 (use universal argument to insert with CID format)
+SPC i U U	insert UUIDv4 (use universal argument to insert with CID format)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;提示： 您可以使用前缀参数指定密码字符的数量，（例如，10 SPC i p 1 将生成 10 个简单密码字符）&lt;/p&gt;
+&lt;h1 id=&#34;增加或减小数字&#34;&gt;增加或减小数字
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC n +	为光标下的数字加 1 并进入 临时快捷键状态
+SPC n -	为光标下的数字减 1 并进入 临时快捷键状态
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在临时快捷键模式下：&lt;/p&gt;
+&lt;p&gt;快捷键 功能描述&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为光标下的数字加 1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;为光标下的数字减 1
+其它任意键 离开临时快捷键状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;复制粘贴&#34;&gt;复制粘贴
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;Leader&amp;gt; y	复制文本至系统剪切板
+&amp;lt;Leader&amp;gt; p	粘贴系统剪切板文字至当前位置之后
+&amp;lt;Leader&amp;gt; P	粘贴系统剪切板文字至当前位置之前
+&amp;lt;Leader&amp;gt; Y	复制文本至 pastebin
+echo &amp;#34;selected text&amp;#34; | curl -s -F &amp;#34;content=&amp;lt;-&amp;#34; http://dpaste.com/api/v2/
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;增删注释&#34;&gt;增删注释
+&lt;/h1&gt;&lt;p&gt;注释的增删是通过插件 nerdcommenter 来实现的&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC ;	进入注释操作模式
+SPC c h	隐藏/显示注释
+SPC c l	注释/反注释当前行
+SPC c L	注释行
+SPC c u	反注释行
+SPC c p	注释/反注释段落
+SPC c P	注释段落
+SPC c s	使用完美格式注释
+SPC c t	注释/反注释到行
+SPC c T	注释到行
+SPC c y	注释/反注释同时复制(TODO)
+SPC c Y	复制到未命名寄存器后注释
+SPC c $	从光标位置开始注释当前行
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;用 SPC ; 可以启动一个注释操作符模式，在该模式下，可以使用移动命令确认注释的范围， 比如 SPC ; 4 j，这个组合键会注释当前行以及下方的 4 行。这个数字即为相对行号，可在左侧看到。&lt;/p&gt;
+&lt;h1 id=&#34;编辑历史&#34;&gt;编辑历史
+&lt;/h1&gt;&lt;p&gt;在编辑历史窗口内的快捷键如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;G	move_bottom
+J	move_older_write
+K	move_newer_write
+N	previous_match
+P	play_to
+&amp;lt;2-LeftMouse&amp;gt;	mouse_click
+/	search
+&amp;lt;CR&amp;gt;	preview
+d	diff
+&amp;lt;down&amp;gt;	move_older
+&amp;lt;up&amp;gt;	move_newer
+i	toggle_inline
+j	move_older
+k	move_newer
+n	next_match
+o	preview
+p	diff_current_buffer
+q	quit
+r	diff
+gg	move_top
+?	toggle_help
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;文本编码格式&#34;&gt;文本编码格式
+&lt;/h1&gt;&lt;p&gt;修复混乱的显示：SPC e a 是自动选择文件编码的按键映射。在选择好文件编码方式后，你可以运行下面的代码来修复编码：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;set enc=utf-8
+write
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;窗口管理&#34;&gt;窗口管理
+&lt;/h1&gt;&lt;p&gt;常用的窗口管理快捷键有一个统一的前缀，默认的前缀 [Window] 是按键 s，可以在配置文件中通过修改 SpaceVim 选项 window_leader 的值来设为其它按键：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[options]
+    windows_leader = &amp;#34;s&amp;#34;
+
+q	智能关闭当前窗口
+[Window] v	水平分屏
+[Window] V	水平分屏，并编辑上一个文件
+[Window] g	垂直分屏
+[Window] G	垂直分屏，并编辑上一个文件
+[Window] t	新建新的标签页
+[Window] o	关闭其他窗口
+[Window] x	关闭当前缓冲区，并保留新的空白缓冲区
+[Window] q	关闭当前缓冲区
+[Window] Q	关闭当前窗口
+Shift-&amp;lt;Tab&amp;gt;	切换至前一窗口
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;常用编辑器窗口&#34;&gt;常用编辑器窗口
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;F2&amp;gt;	打开、关闭语法树
+&amp;lt;F3&amp;gt;	打开、关闭文件树
+Ctrl-&amp;lt;Down&amp;gt;	切换至下方窗口
+Ctrl-&amp;lt;Up&amp;gt;	切换至上方窗口
+Ctrl-&amp;lt;Left&amp;gt;	切换至左边窗口
+Ctrl-&amp;lt;Right&amp;gt;	切换至右边窗口
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;窗口操作常用快捷键&#34;&gt;窗口操作常用快捷键
+&lt;/h1&gt;&lt;p&gt;每一个窗口都有一个编号，该编号显示在状态栏的最前端，可通过 SPC 编号 进行快速窗口跳转。
+窗口操作相关快捷键（以 SPC w 为前缀)：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC w .	启用窗口临时快捷键
+SPC w &amp;lt;Tab&amp;gt;	在同一标签内进行窗口切换
+SPC w =	对齐分离的窗口
+SPC w c	进入阅读模式，浏览当前窗口 (需要 tools 模块)
+SPC w C	选择某一个窗口，并且进入阅读模式 (需要 tools 模块)
+SPC w d	删除一个窗口
+SPC w D	选择一个窗口并关闭
+SPC w F	新建一个新的标签页
+SPC w h	移至左边窗口
+SPC w H	将窗口向左移动
+SPC w j	移至下方窗口
+SPC w J	将窗口向下移动
+SPC w k	移至上方窗口
+SPC w K	将窗口向上移动
+SPC w l	移至右方窗口
+SPC w L	将窗口向右移动
+SPC w m	最大化/最小化窗口（最大化相当于关闭其它窗口）
+SPC w M	选择窗口进行替换
+SPC w o	按序切换标签页
+SPC w p m	使用弹窗打开消息
+SPC w p p	关闭当前弹窗窗口
+SPC w r	顺序切换窗口
+SPC w R	逆序切换窗口
+SPC w s/-	水平分割窗口
+SPC w S	水平分割窗口，并切换至新窗口
+SPC w u	恢复窗口布局
+SPC w U	撤销恢复窗口布局
+SPC w v//	垂直分离窗口
+SPC w V	垂直分离窗口，并切换至新窗口
+SPC w w	切换至前一窗口
+SPC w W	选择一个窗口
+SPC w x	切换窗口文件
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;缓冲区管理&#34;&gt;缓冲区管理
+&lt;/h1&gt;&lt;p&gt;缓冲区（Buffer）操作相关快捷键都是以 SPC b 为前缀的，以下为常用的缓冲区操作快捷键， 主要包括了缓冲区的切换和删除等操作：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC &amp;lt;Tab&amp;gt;	切换至前一缓冲区，常用于两个缓冲区来回切换
+SPC b .	启用缓冲区临时快捷键
+SPC b b	通过模糊搜索工具进行缓冲区切换，需要启用一个模糊搜索工具模块
+SPC b d	删除当前缓冲区，但保留编辑窗口
+SPC u SPC b d	kill the current buffer and window (does not delete the visited file) (TODO)
+SPC b D	选择一个窗口，并删除其缓冲区
+SPC u SPC b D	kill a visible buffer and its window using ace-window(TODO)
+SPC b c	删除其它已保存的缓冲区
+SPC b C-d	删除其它所有缓冲区
+SPC b C-D	kill buffers using a regular expression(TODO)
+SPC b e	清除当前缓冲区内容，需要手动确认
+SPC b h	打开欢迎界面, 等同于快捷键 SPC a s
+SPC b n	切换至下一个缓冲区，排除特殊插件的缓冲区
+SPC b m	打开消息缓冲区
+SPC u SPC b m	kill all buffers and windows except the current one(TODO)
+SPC b p	切换至前一个缓冲区，排除特殊插件的缓冲区
+SPC b P	使用系统剪切板内容替换当前缓冲区
+SPC b R	从磁盘重新读取当前缓冲区所对应的文件
+SPC b s	switch to the scratch buffer (create it if needed) (TODO)
+SPC b w	切换只读权限
+SPC b Y	将整个缓冲区复制到系统剪切板
+z f	Make current function or comments visible in buffer as much as possible (TODO)
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;新建空白-buffer&#34;&gt;新建空白 buffer
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC b N h	在左侧新建一个窗口，并在其中新建空白 buffer
+SPC b N j	在下方新建一个窗口，并在其中新建空白 buffer
+SPC b N k	在上方新建一个窗口，并在其中新建空白 buffer
+SPC b N l	在右侧新建一个窗口，并在其中新建空白 buffer
+SPC b N n	在当前窗口新建一个空白 buffer
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;文件操作相关快捷键&#34;&gt;文件操作相关快捷键
+&lt;/h1&gt;&lt;p&gt;文件操作相关的快捷键都是以 SPC f 为前缀的：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC f /	使用 find 或者 fd 命令查找文件，支持参数提示
+SPC f b	跳至文件书签
+SPC f c	copy current file to a different location(TODO)
+SPC f C d	修改文件编码 unix -&amp;gt; dos
+SPC f C u	修改文件编码 dos -&amp;gt; unix
+SPC f D	删除文件以及 buffer，需要手动确认
+SPC f E	open a file with elevated privileges (sudo edit)(TODO)
+SPC f f	打开文件
+SPC f F	打开光标下的文件
+SPC f o	代开文件树，并定位到当前文件
+SPC f R	rename the current file(TODO)
+SPC f s / Ctrl-s	保存文件 (:w)
+SPC f W	使用管理员模式保存
+SPC f S	保存所有文件
+SPC f r	打开文件历史
+SPC f t	切换侧栏文件树
+SPC f T	打开文件树侧栏
+SPC f d	Windows 下显示/隐藏磁盘管理器
+SPC f y	复制并显示当前文件的绝对路径
+SPC f Y	复制并显示当前文件的远程路径
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;vim-和-spacevim-相关文件&#34;&gt;Vim 和 SpaceVim 相关文件
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC f v d	打开 SpaceVim 的用户配置文件
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;模块管理&#34;&gt;模块管理
+&lt;/h1&gt;&lt;p&gt;所有可用模块可以通过命令 :SPLayer -l 或者快捷键 SPC h l 来展示。
+可通过快捷键 &lt;!-- raw HTML omitted --&gt; f p 列出所有已安装的插件，支持模糊搜索，回车将使用浏览器打开该插件的官网。
+这些模块都提供了非常类似的快捷键，包括文件搜索、跳转历史搜索等功能， 具体快捷键列表如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;Leader&amp;gt; f &amp;lt;Space&amp;gt;	模糊查找快捷键，并执行该快捷键
+&amp;lt;Leader&amp;gt; f e	模糊搜索寄存器
+&amp;lt;Leader&amp;gt; f h	模糊搜索 history/yank
+&amp;lt;Leader&amp;gt; f j	模糊搜索 jump, change
+&amp;lt;Leader&amp;gt; f l	模糊搜索 location list
+&amp;lt;Leader&amp;gt; f m	模糊搜索 output messages
+&amp;lt;Leader&amp;gt; f o	模糊搜索函数列表
+&amp;lt;Leader&amp;gt; f q	模糊搜索 quickfix list
+&amp;lt;Leader&amp;gt; f r	重置上次搜索窗口
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;由于不同工具的局限性，有些模块还不能完全提供上述功能，目前仅有 denite 和 unite 模块可以提供完整的功能。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;功能特性	unite	denite	leaderf	ctrlp	fzf
+模糊查找快捷键，并执行该快捷键	yes	yes	no	no	no
+模块搜索寄存器	yes	yes	no	yes	yes
+模糊搜索文件	yes	yes	yes	yes	yes
+模糊搜索复制历史	yes	yes	no	no	yes
+模糊搜索跳转历史	yes	yes	no	yes	yes
+模糊搜索位置列表	yes	yes	no	no	yes
+模糊搜索语法树	yes	yes	yes	yes	yes
+模糊搜索消息	yes	yes	no	no	yes
+模糊搜索全局位置列表	yes	yes	no	yes	yes
+重置上次搜索窗口	yes	yes	no	no	no
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;模糊搜索窗口内的快捷键：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;Tab&amp;gt; / Ctrl-j	下一个选项
+Shift-&amp;lt;Tab&amp;gt; / Ctrl-k	上一个选项
+jk	离开输入模式（仅支持 denite 和 unite 模块）
+Ctrl-w	删除光标前词语
+&amp;lt;Enter&amp;gt;	执行默认动作
+Ctrl-s	在分割窗口内打开
+Ctrl-v	在垂直分割窗口内打开
+Ctrl-t	在新的标签页里打开
+Ctrl-g	推出模糊搜索插件
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Denite 或 Unite 模块可视模式下快捷键：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Ctrl+h/k/l/r	未定义
+Ctrl+l	刷新窗口
+&amp;lt;Tab&amp;gt;	选择即将执行的动作
+Space	切换标记当前选项
+r	替换或者重命名
+Ctrl+z	切换窗口分割方式
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;以上这些快捷键仅仅是模糊搜索模块的部分快捷键，其他快捷键信息可查阅对应模块文档。&lt;/p&gt;
+&lt;h1 id=&#34;在任意目录中进行搜索&#34;&gt;在任意目录中进行搜索
+&lt;/h1&gt;&lt;p&gt;需要去搜索非当前项目下的一些文件。 按下快捷键后，首先提示的是输入搜索词，之后提示输入搜索的目录地址。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC s f	使用默认的搜索工具进行搜索
+SPC s F	使用默认的搜索工具搜索光标下的词
+SPC s &amp;lt;tool&amp;gt; f/F 来指定搜索工具
+&amp;lt;tool&amp;gt; : a:ag, g:grep, k:ack, r:rg, t:pt
+
+搜索范围(大小写意义一致):
+f/F  任意目录搜索
+p/P  整个工程目录
+j/J  后台进行工程搜索
+b/B  所有打开的缓冲区中进行搜索
+d/D  当前文件所在的文件夹中搜索
+s/S  当前文件中进行搜索
+g/w  在网上进行搜索(g:google,w:wikipedia)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;实时代码检索&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC s /	在工程中使用默认工具实时检索代码
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Flygrep 搜索窗口结果窗口内的常用快捷键：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;Esc&amp;gt;	关闭搜索窗口
+&amp;lt;Enter&amp;gt;	打开当前选中的文件位置
+Ctrl-t	在新标签栏打开选中项
+Ctrl-s	在分屏打开选中项
+Ctrl-v	在垂直分屏打开选中项
+Ctrl-q	将搜索结果转移至 quickfix
+&amp;lt;Tab&amp;gt;	选中下一行文件位置
+Shift-&amp;lt;Tab&amp;gt;	选中上一行文件位置
+&amp;lt;Backspace&amp;gt;	删除上一个输入字符
+Ctrl-w	删除光标前的单词
+Ctrl-u	删除光标前所有内容
+Ctrl-k	删除光标后所有内容
+Ctrl-a / &amp;lt;Home&amp;gt;	将光标移至行首
+Ctrl-e / &amp;lt;End&amp;gt;	将光标移至行尾
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;获取帮助信息&#34;&gt;获取帮助信息
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC h SPC	使用 fuzzy find 模块展示 SpaceVim 帮助文档章节目录
+SPC h i	获取光标下单词的帮助信息
+SPC h k	使用快捷键导航，展示 SpaceVim 所支持的前缀键
+SPC h m	使用 Unite 浏览所有 man 文档
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;常用的成对快捷键&#34;&gt;常用的成对快捷键
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[ SPC	在当前行或已选区域上方添加空行
+] SPC	在当前行或已选区域下方添加空行
+[ b	跳至前一 buffer
+] b	跳至下一 buffer
+[ n	跳至前一冲突位置
+] n	跳至下一冲突位置
+[ f	跳至文件夹中的前一个文件
+] f	跳至文件夹中的下一个文件
+[ l	跳至前一个错误处
+] l	跳至下一个错误处
+[ c	跳至前一个 vcs hunk (需要 VersionControl 模块)
+] c	跳至下一个 vcs hunk (需要 VersionControl 模块)
+[ q	跳至前一个错误
+] q	跳至下一个错误
+[ t	跳至前一个标签页
+] t	跳至下一个标签页
+[ w	跳至前一个窗口
+] w	跳至下一个窗口
+[ e	向上移动当前行或者已选择行
+] e	向下移动当前行或者已选择行
+[ p	粘贴至当前行上方
+] p	粘贴至当前行下方
+g p	选择粘贴的区域
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;跳转合并拆分&#34;&gt;跳转，合并，拆分
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC j 0	跳至行首，并且在原始位置留下标签，以便跳回
+SPC j $	跳至行尾，并且在原始位置留下标签，以便跳回
+SPC j b	向后回跳
+SPC j f	向前跳
+SPC j d	跳至当前目录某个文件夹
+SPC j D	跳至当前目录某个文件夹（在另外窗口展示文件列表）
+SPC j i	跳至当前文件的某个函数，使用 Denite 打开语法树
+SPC j I	跳至所有 Buffer 的语法树（TODO）
+SPC j j	跳至当前窗口的某个字符 (easymotion)
+SPC j J	跳至当前窗口的某两个字符的组合 (easymotion)
+SPC j k	跳至下一行，并且对齐下一行
+SPC j l	跳至某一行 (easymotion)
+SPC j q	show the dumb-jump quick look tooltip (TODO)
+SPC j u	跳至窗口某个 URL (TODO)
+SPC j v	跳至某个 Vim 函数的定义处 (TODO)
+SPC j w	跳至 Buffer 中某个单词 (easymotion)
+
+J	合并当前行和下一行
+SPC j k	跳至下一行，并且对齐该行
+SPC j n	从光标处断开当前行，并且插入空行以及进行对齐
+SPC j o	从光标处拆分该行，光标停留在当前行行尾
+SPC j s	从光标处拆分 String
+SPC j S	从光标处使用换行符拆分 String，并自动缩进新行
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;其它快捷键&#34;&gt;其它快捷键
+&lt;/h1&gt;&lt;p&gt;以 g 为前缀的快捷键
+在 Normal 模式下按下 g 之后，如果你不记得快捷键出现按键延迟，那么快捷键导航将会提示你所有以 g 为前缀的快捷键。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;g #	反向搜索光标下的词
+g $	跳向本行最右侧字符
+g &amp;amp;	针对所有行重复执行上一次 “:s” 命令
+g &amp;#39;	跳至标签
+g *	正向搜索光标下的词
+g +	newer text state
+g ,	newer position in change list
+g -	older text state
+g /	stay incsearch
+g 0	go to leftmost character
+g ;	older position in change list
+g &amp;lt;	last page of previous command output
+g &amp;lt;Home&amp;gt;	go to leftmost character
+g E	end of previous word
+g F	edit file under cursor(jump to line after name)
+g H	select line mode
+g I	insert text in column 1
+g J	join lines without space
+g N	visually select previous match
+g Q	switch to Ex mode
+g R	enter VREPLACE mode
+g T	previous tag page
+g U	make motion text uppercase
+g ]	tselect cursor tag
+g ^	go to leftmost no-white character
+g _	go to last char
+g `	跳至标签，等同于 g&amp;#39;
+g a	打印光标字符的 ascii 值
+g d	跳至定义处
+g e	go to end of previous word
+g f	edit file under cursor
+g g	go to line N
+g h	select mode
+g i	insert text after ‘^ mark
+g j	move cursor down screen line
+g k	move cursor up screen line
+g m	go to middle of screenline
+g n	visually select next match
+g o	goto byte N in the buffer
+g s	sleep N seconds
+g t	next tag page
+g u	make motion text lowercase
+g ~	swap case for Nmove text
+g &amp;lt;End&amp;gt;	跳至本行最右侧字符，等同于 g$
+g Ctrl-G	显示光标信息
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;以 z 开头的命令
+当你不记得按键映射时，你可以在普通模式下输入前缀 z, 然后你会看到所有以 z 为前缀的函数映射。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;z &amp;lt;Right&amp;gt;	scroll screen N characters to left
+z +	cursor to screen top line N
+z -	cursor to screen bottom line N
+z .	cursor line to center
+z &amp;lt;Cr&amp;gt;	cursor line to top
+z =	spelling suggestions
+z A	toggle folds recursively
+z C	close folds recursively
+z D	delete folds recursively
+z E	eliminate all folds
+z F	create a fold for N lines
+z G	mark good spelled(update internal-wordlist)
+z H	scroll half a screenwidth to the right
+z L	scroll half a screenwidth to the left
+z M	set foldlevel to zero
+z N	set foldenable
+z O	open folds recursively
+z R	set foldlevel to deepest fold
+z W	mark wrong spelled
+z X	re-apply foldlevel
+z ^	cursor to screen bottom line N
+z a	toggle a fold
+z b	redraw, cursor line at bottom
+z c	close a fold
+z d	delete a fold
+z e	right scroll horizontally to cursor position
+z f	create a fold for motion
+z g	mark good spelled
+z h	scroll screen N characters to right
+z i	toggle foldenable
+z j	mode to start of next fold
+z k	mode to end of previous fold
+z l	scroll screen N characters to left
+z m	subtract one from foldlevel
+z n	reset foldenable
+z o	open fold
+z r	add one to foldlevel
+z s	left scroll horizontally to cursor position
+z t	cursor line at top of window
+z v	open enough folds to view cursor line
+z x	re-apply foldlevel and do “zV”
+z z	smart scroll
+z &amp;lt;Left&amp;gt;	scroll screen N characters to right
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;小技巧&#34;&gt;小技巧
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 光标跳转
+% 对括号匹配, 进行跳转,象形字表意, 匹配的括号, 会被高亮显示,  根据光标的 &amp;#34;闪烁&amp;#34; 来区分当前 光标实际所在的位置
+括号本身的命令
+{和}是对段落进行跳转开头/结尾
+(和)是针对一个句子的开头/结尾
+[[和]]是对函数的跳转开头和结尾
+
+单引号, 双引号, 括号(大中小/ 尖括号)在noraml状态下的操作规律:
+这个操作命令由三个部分组成 : 操作类型(选择/删除/修改等) + i/a + 符号
+i/a: 对符号内的内容进行操作。 i: 不含符号  a:包括符号在内
+操作类型包括: c表示修改, d表示删除, y表示复制yank, v(visual选择模式)表示选择
+eg: di{ 就表示删除大括号中的内容
+c和d的区别: d表示删除 但删除后仍然处于 normal状态, 而cc: 表示删除行同时 还会转换为 insert 状态!! c: change!
+如何理解：
+dw        删除后面的一个单词  同理解 d2w, c3w, 4yy
+di{, da(  d:动作 (/{:操作对象 i/a:表操作范围
+
+
+# 快速选中、删除、复制标点内的内容
+ci&amp;#39;、ci&amp;#34;、ci(、ci[、ci{、ci&amp;lt; - 分别更改这些配对标点符号中的文本内容
+di&amp;#39;、di&amp;#34;、di(或dib、di[、di{或diB、di&amp;lt; - 分别删除这些配对标点符号中的文本内容
+yi&amp;#39;、yi&amp;#34;、yi(、yi[、yi{、yi&amp;lt; - 分别复制这些配对标点符号中的文本内容
+vi&amp;#39;、vi&amp;#34;、vi(、vi[、vi{、vi&amp;lt; - 分别选中这些配对标点符号中的文本内容
+另外如果把上面的i改成a可以连配对标点一起操作。
+eg：文本：111&amp;#34;222&amp;#34;333
+将光标移到&amp;#34;222&amp;#34;的任何一个字符处输入命令 di&amp;#34; ,文本会变成： 111&amp;#34;&amp;#34;333
+若输入命令 da&amp;#34; ,文本会变成： 111333,如果在此行只有一对&amp;#34;&amp;#34;,那么在行首以及后一个&amp;#34;之前输入命令是一样的效果,
+
+# 快速在单词或句子两侧输入标点
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;工程管理&#34;&gt;工程管理
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;SPC p &amp;#39;	在当前工程的根目录打开 shell（需要 shell 模块）
+SPC p f	在当前工程中查找文件
+SPC p /	在当前工程中搜索文本内容
+SPC p k	关闭当前工程的所有缓冲区
+SPC p p	显示所有工程
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;自定义跳转文件&#34;&gt;自定义跳转文件
+&lt;/h2&gt;&lt;h2 id=&#34;标签管理&#34;&gt;标签管理
+&lt;/h2&gt;&lt;h2 id=&#34;任务管理&#34;&gt;任务管理
+&lt;/h2&gt;&lt;h2 id=&#34;自定义任务项目相关支持前后台运行&#34;&gt;自定义任务(项目相关支持前后台运行)
+&lt;/h2&gt;&lt;h2 id=&#34;任务自动识别npm-packagejson&#34;&gt;任务自动识别(npm package.json)
+&lt;/h2&gt;&lt;h2 id=&#34;任务提供源自动检测并新建任务&#34;&gt;任务提供源（自动检测并新建任务）
+&lt;/h2&gt;&lt;h1 id=&#34;iedit-多光标编辑&#34;&gt;Iedit 多光标编辑
+&lt;/h1&gt;&lt;h2 id=&#34;iedit-快捷键&#34;&gt;Iedit 快捷键
+&lt;/h2&gt;&lt;h2 id=&#34;高亮光标下变量&#34;&gt;高亮光标下变量
+&lt;/h2&gt;&lt;h1 id=&#34;异步运行器和交互式编程&#34;&gt;异步运行器和交互式编程
+&lt;/h1&gt;&lt;h1 id=&#34;错误处理&#34;&gt;错误处理
+&lt;/h1&gt;&lt;h1 id=&#34;格式规范&#34;&gt;格式规范
+&lt;/h1&gt;&lt;h1 id=&#34;后台服务&#34;&gt;后台服务
+&lt;/h1&gt;</description>
+        </item>
+        <item>
+        <title>Vim</title>
+        <link>/post/tech/vim/</link>
+        <pubDate>Fri, 24 Dec 2021 15:53:48 +0800</pubDate>
+        
+        <guid>/post/tech/vim/</guid>
+        <description>&lt;h1 id=&#34;1-vim的几种模式&#34;&gt;1. Vim的几种模式
+&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;正常模式&lt;/strong&gt;：可以使用快捷键命令，或按:输入命令行。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;插入模式&lt;/strong&gt;：可以输入文本，在正常模式下，按i、a、o等都可以进入插入模式。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可视模式&lt;/strong&gt;：正常模式下按v可以进入可视模式， 在可视模式下，移动光标可以选择文本。按V进入可视行模式， 总是整行整行的选中。ctrl+v进入可视块模式。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;替换模式&lt;/strong&gt;：正常模式下，按R进入。&lt;/p&gt;
+&lt;h1 id=&#34;2-启动vim&#34;&gt;2. 启动Vim
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vim -c cmd file: 在打开文件前，先执行指定的命令；
+vim -r file: 恢复上次异常退出的文件；
+vim -R file: 以只读的方式打开文件，但可以强制保存；
+vim -M file: 以只读的方式打开文件，不可以强制保存；
+vim -y num file: 将编辑窗口的大小设为num行；
+vim + file: 从文件的末尾开始；
+vim +num file: 从第num行开始；
+vim +/string file: 打开file，并将光标停留在第一个找到的string上。
+vim --remote file: 用已有的vim进程打开指定的文件。 如果你不想启用多个vim会话，这个很有用。但要注意， 如果你用vim，会寻找名叫VIM的服务器；如果你已经有一个gvim在运行了， 你可以用gvim --remote file在已有的gvim中打开文件。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;3-文档操作&#34;&gt;3. 文档操作
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:e file --关闭当前编辑的文件，并开启新的文件。 如果对当前文件的修改未保存，vi会警告。
+:e! file --放弃对当前文件的修改，编辑新的文件。
+:e+file -- 开始新的文件，并从文件尾开始编辑。
+:e+n file -- 开始新的文件，并从第n行开始编辑。
+:enew --编译一个未命名的新文档。(CTRL-W n)
+:e -- 重新加载当前文档。
+:e! -- 重新加载当前文档，并丢弃已做的改动。
+:e#或ctrl+^ -- 回到刚才编辑的文件，很实用。
+:f或ctrl+g -- 显示文档名，是否修改，和光标位置。
+:f filename -- 改变编辑的文件名，这时再保存相当于另存为。
+gf -- 打开以光标所在字符串为文件名的文件。
+:w -- 保存修改。
+:n1,n2w filename -- 选择性保存从某n1行到另n2行的内容。
+:wq -- 保存并退出。
+ZZ -- 保存并退出。
+:x -- 保存并退出。
+:q[uit] ——退出当前窗口。(CTRL-W q或CTRL-W CTRL-Q)
+:saveas newfilename -- 另存为
+:browse e -- 会打开一个文件浏览器让你选择要编辑的文件。 如果是终端中，则会打开netrw的文件浏览窗口； 如果是gvim，则会打开一个图形界面的浏览窗口。 实际上:browse后可以跟任何编辑文档的命令，如sp等。 用browse打开的起始目录可以由browsedir来设置：
+:set browsedir=last -- 用上次访问过的目录（默认）；
+:set browsedir=buffer -- 用当前文件所在目录；
+:set browsedir=current -- 用当前工作目录；
+:Sex -- 水平分割一个窗口，浏览文件系统；
+:Vex -- 垂直分割一个窗口，浏览文件系统；
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;4-光标的移动&#34;&gt;4. 光标的移动
+&lt;/h1&gt;&lt;h2 id=&#34;41-基本移动&#34;&gt;4.1 基本移动
+&lt;/h2&gt;&lt;p&gt;以下移动都是在normal模式下。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;h或退格: 左移一个字符；
+l或空格: 右移一个字符；
+j: 下移一行；
+k: 上移一行；
+gj: 移动到一段内的下一行；
+gk: 移动到一段内的上一行；
++或Enter: 把光标移至下一行第一个非空白字符。
+-: 把光标移至上一行第一个非空白字符。
+w: 前移一个单词，光标停在下一个单词开头；
+W: 移动下一个单词开头，但忽略一些标点；
+e: 前移一个单词，光标停在下一个单词末尾；
+E: 移动到下一个单词末尾，如果词尾有标点，则移动到标点；
+b: 后移一个单词，光标停在上一个单词开头；
+B: 移动到上一个单词开头，忽略一些标点；
+ge: 后移一个单词，光标停在上一个单词末尾；
+gE: 同 ge ，不过‘单词’包含单词相邻的标点。
+(: 前移1句。
+): 后移1句。
+{: 前移1段。
+}: 后移1段。
+fc: 把光标移到同一行的下一个c字符处
+Fc: 把光标移到同一行的上一个c字符处
+tc: 把光标移到同一行的下一个c字符前
+Tc: 把光标移到同一行的上一个c字符后
+;: 配合f &amp;amp; t使用，重复一次
+,: 配合f &amp;amp; t使用，反向重复一次
+上面的操作都可以配合n使用，比如在正常模式(下面会讲到)下输入3h， 则光标向左移动3个字符。
+
+0: 移动到行首。
+g0: 移到光标所在屏幕行行首。
+^: 移动到本行第一个非空白字符。
+g^: 同 ^ ，但是移动到当前屏幕行第一个非空字符处。
+$: 移动到行尾。
+g$: 移动光标所在屏幕行行尾。
+n|: 把光标移到递n列上。
+nG: 到文件第n行。
+:n&amp;lt;cr&amp;gt; 移动到第n行。
+:$&amp;lt;cr&amp;gt; 移动到最后一行。
+H: 把光标移到屏幕最顶端一行。
+M: 把光标移到屏幕中间一行。
+L: 把光标移到屏幕最底端一行。
+gg: 到文件头部。
+G: 到文件尾部。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;42-翻屏&#34;&gt;4.2 翻屏
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ctrl+f: 下翻一屏。
+ctrl+b: 上翻一屏。
+ctrl+d: 下翻半屏。
+ctrl+u: 上翻半屏。
+ctrl+e: 向下滚动一行。
+ctrl+y: 向上滚动一行。
+n%: 到文件n%的位置。
+zz: 将当前行移动到屏幕中央。
+zt: 将当前行移动到屏幕顶端。
+zb: 将当前行移动到屏幕底端。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;43-标记&#34;&gt;4.3 标记
+&lt;/h2&gt;&lt;p&gt;使用标记可以快速移动。到达标记后，可以用Ctrl+o返回原来的位置。 Ctrl+o和Ctrl+i 很像浏览器上的 后退 和 前进 。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;m{a-z}: 标记光标所在位置，局部标记，只用于当前文件。
+m{A-Z}: 标记光标所在位置，全局标记。标记之后，退出Vim， 重新启动，标记仍然有效。
+`{a-z}: 移动到标记位置。
+&amp;#39;{a-z}: 移动到标记行的行首。
+`{0-9}：回到上[2-10]次关闭vim时最后离开的位置。
+``: 移动到上次编辑的位置。&amp;#39;&amp;#39;也可以，不过``精确到列，而&amp;#39;&amp;#39;精确到行 。如果想跳转到更老的位置，可以按C-o，跳转到更新的位置用C-i。
+`&amp;#34;: 移动到上次离开的地方。
+`.: 移动到最后改动的地方。
+:marks 显示所有标记。
+:delmarks a b -- 删除标记a和b。
+:delmarks a-c -- 删除标记a、b和c。
+:delmarks a c-f -- 删除标记a、c、d、e、f。
+:delmarks! -- 删除当前缓冲区的所有标记。
+:help mark-motions 查看更多关于mark的知识。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;5-插入文本&#34;&gt;5. 插入文本
+&lt;/h1&gt;&lt;h2 id=&#34;51-基本插入&#34;&gt;5.1 基本插入
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;i: 在光标前插入；一个小技巧：按8，再按i，进入插入模式，输入=， 按esc进入命令模式，就会出现8个=。 这在插入分割线时非常有用，如30i+&amp;lt;esc&amp;gt;就插入了36个+组成的分割线。
+I: 在当前行第一个非空字符前插入；
+gI: 在当前行第一列插入；
+a: 在光标后插入；
+A: 在当前行最后插入；
+o: 在下面新建一行插入；
+O: 在上面新建一行插入；
+:r filename在当前位置插入另一个文件的内容。
+:[n]r filename在第n行插入另一个文件的内容。
+:r !date 在光标处插入当前日期与时间。同理，:r !command可以将其它shell命令的输出插入当前文档。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;52-改写插入&#34;&gt;5.2 改写插入
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;c[n]w: 改写光标后1(n)个词。
+c[n]l: 改写光标后n个字母。
+c[n]h: 改写光标前n个字母。
+[n]cc: 修改当前[n]行。
+[n]s: 以输入的文本替代光标之后1(n)个字符，相当于c[n]l。
+[n]S: 删除指定数目的行，并以所输入文本代替之。
+注意，类似cnw,dnw,ynw的形式同样可以写为ncw,ndw,nyw。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;6-剪切复制和寄存器&#34;&gt;6. 剪切复制和寄存器
+&lt;/h1&gt;&lt;h2 id=&#34;61-剪切和复制粘贴&#34;&gt;6.1 剪切和复制、粘贴
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[n]x: 剪切光标右边n个字符，相当于d[n]l。
+[n]X: 剪切光标左边n个字符，相当于d[n]h。
+y: 复制在可视模式下选中的文本。
+yy or Y: 复制整行文本。
+y[n]w: 复制一(n)个词。
+y[n]l: 复制光标右边1(n)个字符。
+y[n]h: 复制光标左边1(n)个字符。
+y$: 从光标当前位置复制到行尾。
+y0: 从光标当前位置复制到行首。
+:m,ny&amp;lt;cr&amp;gt; 复制m行到n行的内容。
+y1G或ygg: 复制光标以上的所有行。
+yG: 复制光标以下的所有行。
+yaw和yas：复制一个词和复制一个句子，即使光标不在词首和句首也没关系。
+d: 删除（剪切）在可视模式下选中的文本。
+d$ or D: 删除（剪切）当前位置到行尾的内容。
+d[n]w: 删除（剪切）1(n)个单词
+d[n]l: 删除（剪切）光标右边1(n)个字符。
+d[n]h: 删除（剪切）光标左边1(n)个字符。
+d0: 删除（剪切）当前位置到行首的内容
+[n] dd: 删除（剪切）1(n)行。
+:m,nd&amp;lt;cr&amp;gt; 剪切m行到n行的内容。
+d1G或dgg: 剪切光标以上的所有行。
+dG: 剪切光标以下的所有行。
+daw和das：剪切一个词和剪切一个句子，即使光标不在词首和句首也没关系。
+d/f&amp;lt;cr&amp;gt;：这是一个比较高级的组合命令，它将删除当前位置 到下一个f之间的内容。
+p: 在光标之后粘贴。
+P: 在光标之前粘贴。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;62-文本对象&#34;&gt;6.2 文本对象
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;aw：一个词
+as：一句。
+ap：一段。
+ab：一块（包含在圆括号中的）。
+y, d, c, v都可以跟文本对象。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;63-寄存器&#34;&gt;6.3 寄存器
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;a-z：都可以用作寄存器名。&amp;#34;ayy把当前行的内容放入a寄存器。
+A-Z：用大写字母索引寄存器，可以在寄存器中追加内容。 如&amp;#34;Ayy把当前行的内容追加到a寄存器中。
+:reg 显示所有寄存器的内容。
+&amp;#34;&amp;#34;：不加寄存器索引时，默认使用的寄存器。
+&amp;#34;*：当前选择缓冲区，&amp;#34;*yy把当前行的内容放入当前选择缓冲区。
+&amp;#34;+：系统剪贴板。&amp;#34;+yy把当前行的内容放入系统剪贴板。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;7-查找与替换&#34;&gt;7. 查找与替换
+&lt;/h1&gt;&lt;h2 id=&#34;71-查找&#34;&gt;7.1 查找
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;/something: 在后面的文本中查找something。
+?something: 在前面的文本中查找something。
+/pattern/+number: 将光标停在包含pattern的行后面第number行上。
+/pattern/-number: 将光标停在包含pattern的行前面第number行上。
+n: 向后查找下一个。
+N: 向前查找下一个。
+可以用grep或vimgrep查找一个模式都在哪些地方出现过，
+
+其中:grep是调用外部的grep程序，而:vimgrep是vim自己的查找算法。
+
+用法为： :vim[grep]/pattern/[g] [j] files
+
+g的含义是如果一个模式在一行中多次出现，则这一行也在结果中多次出现。
+
+j的含义是grep结束后，结果停在第j项，默认是停在第一项。
+
+vimgrep前面可以加数字限定搜索结果的上限，如
+
+:1vim/pattern/ % 只查找那个模式在本文件中的第一个出现。
+
+
+
+其实vimgrep在读纯文本电子书时特别有用，可以生成导航的目录。
+
+比如电子书中每一节的标题形式为：n. xxxx。你就可以这样：
+
+:vim/^d{1,}./ %
+
+然后用:cw或:copen查看结果，可以用C-w H把quickfix窗口移到左侧，
+
+就更像个目录了。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;72-替换&#34;&gt;7.2 替换
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:s/old/new - 用new替换当前行第一个old。
+:s/old/new/g - 用new替换当前行所有的old。
+:n1,n2s/old/new/g - 用new替换文件n1行到n2行所有的old。
+:%s/old/new/g - 用new替换文件中所有的old。
+:%s/^/xxx/g - 在每一行的行首插入xxx，^表示行首。
+:%s/$/xxx/g - 在每一行的行尾插入xxx，$表示行尾。
+所有替换命令末尾加上c，每个替换都将需要用户确认。 如：%s/old/new/gc，加上i则忽略大小写(ignore)。
+还有一种比替换更灵活的方式，它是匹配到某个模式后执行某种命令，
+
+语法为 :[range]g/pattern/command
+
+例如 :%g/^ xyz/normal dd。
+
+表示对于以一个空格和xyz开头的行执行normal模式下的dd命令。
+
+关于range的规定为：
+
+如果不指定range，则表示当前行。
+m,n: 从m行到n行。
+0: 最开始一行（可能是这样）。
+$: 最后一行
+.: 当前行
+%: 所有行
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;73-正则表达式&#34;&gt;7.3 正则表达式
+&lt;/h2&gt;&lt;p&gt;高级的查找替换就要用到正则表达式。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\d: 表示十进制数（我猜的）
+\s: 表示空格
+\S: 非空字符
+\a: 英文字母
+\|: 表示 或
+\.: 表示.
+{m,n}: 表示m到n个字符。这要和 \s与\a等连用，如 \a\{m,n} 表示m 到n个英文字母。
+{m,}: 表示m到无限多个字符。
+**: 当前目录下的所有子目录。
+:help pattern得到更多帮助。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;8-排版&#34;&gt;8. 排版
+&lt;/h1&gt;&lt;h2 id=&#34;81-基本排版&#34;&gt;8.1 基本排版
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;&amp;lt; 向左缩进一个shiftwidth
+&amp;gt;&amp;gt; 向右缩进一个shiftwidth
+:ce(nter) 本行文字居中
+:le(ft) 本行文字靠左
+:ri(ght) 本行文字靠右
+gq 对选中的文字重排，即对过长的文字进行断行
+gqq 重排当前行
+gqnq 重排n行
+gqap 重排当前段
+gqnap 重排n段
+gqnj 重排当前行和下面n行
+gqQ 重排当前段对文章末尾
+J 拼接当前行和下一行
+gJ 同 J ，不过合并后不留空格。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;82-拼写检查&#34;&gt;8.2 拼写检查
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:set spell－开启拼写检查功能
+:set nospell－关闭拼写检查功能
+]s－移到下一个拼写错误的单词
+[s－作用与上一命令类似，但它是从相反方向进行搜索
+z=－显示一个有关拼写错误单词的列表，可从中选择
+zg－告诉拼写检查器该单词是拼写正确的
+zw－与上一命令相反，告诉拼写检查器该单词是拼写错误的
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;83-统计字数&#34;&gt;8.3 统计字数
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;g ^g可以统计文档字符数，行数。 将光标放在最后一个字符上，用字符数减去行数可以粗略统计中文文档的字数。 以上对 Mac 或 Unix 的文件格式适用。 如果是 Windows 文件格式（即换行符有两个字节），字数的统计方法为： 字符数 - 行数 * 2。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;9-编辑多个文件&#34;&gt;9. 编辑多个文件
+&lt;/h1&gt;&lt;h2 id=&#34;91-一次编辑多个文件&#34;&gt;9.1 一次编辑多个文件
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;我们可以一次打开多个文件，如
+
+vi a.txt b.txt c.txt
+使用:next(:n)编辑下一个文件。
+:2n 编辑下2个文件。
+使用:previous或:N编辑上一个文件。
+使用:wnext，保存当前文件，并编辑下一个文件。
+使用:wprevious，保存当前文件，并编辑上一个文件。
+使用:args 显示文件列表。
+:n filenames或:args filenames 指定新的文件列表。
+vi -o filenames 在水平分割的多个窗口中编辑多个文件。
+vi -O filenames 在垂直分割的多个窗口中编辑多个文件。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;92-多标签编辑&#34;&gt;9.2 多标签编辑
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vim -p files: 打开多个文件，每个文件占用一个标签页。
+:tabe, tabnew -- 如果加文件名，就在新的标签中打开这个文件， 否则打开一个空缓冲区。
+^w gf -- 在新的标签页里打开光标下路径指定的文件。
+:tabn -- 切换到下一个标签。Control + PageDown，也可以。
+:tabp -- 切换到上一个标签。Control + PageUp，也可以。
+[n] gt -- 切换到下一个标签。如果前面加了 n ， 就切换到第n个标签。第一个标签的序号就是1。
+:tab split -- 将当前缓冲区的内容在新页签中打开。
+:tabc[lose] -- 关闭当前的标签页。
+:tabo[nly] -- 关闭其它的标签页。
+:tabs -- 列出所有的标签页和它们包含的窗口。
+:tabm[ove] [N] -- 移动标签页，移动到第N个标签页之后。 如 tabm 0 当前标签页，就会变成第一个标签页。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;93-缓冲区&#34;&gt;9.3 缓冲区
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:buffers或:ls或:files 显示缓冲区列表。
+ctrl+^：在最近两个缓冲区间切换。
+:bn -- 下一个缓冲区。
+:bp -- 上一个缓冲区。
+:bl -- 最后一个缓冲区。
+:b[n]或:[n]b -- 切换到第n个缓冲区。
+:nbw(ipeout) -- 彻底删除第n个缓冲区。
+:nbd(elete) -- 删除第n个缓冲区，并未真正删除，还在unlisted列表中。
+:ba[ll] -- 把所有的缓冲区在当前页中打开，每个缓冲区占一个窗口。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;10-分屏编辑&#34;&gt;10. 分屏编辑
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vim -o file1 file2:水平分割窗口，同时打开file1和file2
+vim -O file1 file2:垂直分割窗口，同时打开file1和file2
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;101-水平分割&#34;&gt;10.1 水平分割
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:split(:sp) -- 把当前窗水平分割成两个窗口。(CTRL-W s 或 CTRL-W CTRL-S) 注意如果在终端下，CTRL-S可能会冻结终端，请按CTRL-Q继续。
+:split filename -- 水平分割窗口，并在新窗口中显示另一个文件。
+:nsplit(:nsp) -- 水平分割出一个n行高的窗口。
+:[N]new -- 水平分割出一个N行高的窗口，并编辑一个新文件。 (CTRL-W n或 CTRL-W CTRL-N)
+ctrl+w f --水平分割出一个窗口，并在新窗口打开名称为光标所在词的文件 。
+C-w C-^ -- 水平分割一个窗口，打开刚才编辑的文件。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;102-垂直分割&#34;&gt;10.2 垂直分割
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:vsplit(:vsp) -- 把当前窗口分割成水平分布的两个窗口。 (CTRL-W v或CTRL CTRL-V)
+:[N]vne[w] -- 垂直分割出一个新窗口。
+:vertical 水平分割的命令： 相应的垂直分割。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;103-关闭子窗口&#34;&gt;10.3 关闭子窗口
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:qall -- 关闭所有窗口，退出vim。
+:wall -- 保存所有修改过的窗口。
+:only -- 只保留当前窗口，关闭其它窗口。(CTRL-W o)
+:close -- 关闭当前窗口，CTRL-W c能实现同样的功能。 (象 :q :x同样工作 )
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;104-调整窗口大小&#34;&gt;10.4 调整窗口大小
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ctrl+w + --当前窗口增高一行。也可以用n增高n行。
+ctrl+w - --当前窗口减小一行。也可以用n减小n行。
+ctrl+w _ --当前窗口扩展到尽可能的大。也可以用n设定行数。
+:resize n -- 当前窗口n行高。
+ctrl+w = -- 所有窗口同样高度。
+n ctrl+w _ -- 当前窗口的高度设定为n行。
+ctrl+w &amp;lt; --当前窗口减少一列。也可以用n减少n列。
+ctrl+w &amp;gt; --当前窗口增宽一列。也可以用n增宽n列。
+ctrl+w | --当前窗口尽可能的宽。也可以用n设定列数。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;105-切换和移动窗口&#34;&gt;10.5 切换和移动窗口
+&lt;/h2&gt;&lt;p&gt;如果支持鼠标，切换和调整子窗口的大小就简单了。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ctrl+w ctrl+w: 切换到下一个窗口。或者是ctrl+w w。
+ctrl+w p: 切换到前一个窗口。
+ctrl+w h(l,j,k):切换到左（右，下，上）的窗口。
+ctrl+w t(b):切换到最上（下）面的窗口。&amp;lt;BR&amp;gt;
+ctrl+w H(L,K,J): 将当前窗口移动到最左（右、上、下）面。
+ctrl+w r：旋转窗口的位置。
+ctrl+w T: 将当前的窗口移动到新的标签页上。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;11-快速编辑&#34;&gt;11. 快速编辑
+&lt;/h1&gt;&lt;h2 id=&#34;111-改变大小写&#34;&gt;11.1 改变大小写
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;~: 反转光标所在字符的大小写。
+可视模式下的U或u：把选中的文本变为大写或小写。
+gu(U)接范围（如$，或G），可以把从光标当前位置到指定位置之间字母全部 转换成小写或大写。如ggguG，就是把开头到最后一行之间的字母全部变为小 写。再如gu5j，把当前行和下面四行全部变成小写。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;112-替换normal模式&#34;&gt;11.2 替换（normal模式）
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;r: 替换光标处的字符，同样支持汉字。
+R: 进入替换模式，按esc回到正常模式。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;113-撤消与重做normal模式&#34;&gt;11.3 撤消与重做（normal模式）
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[n] u: 取消一(n)个改动。
+:undo 5 -- 撤销5个改变。
+:undolist -- 你的撤销历史。
+ctrl + r: 撤销刚才的撤销。
+U: 取消当前行中所有的改动。
+:earlier 4m -- 回到4分钟前
+:later 55s -- 前进55秒
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;114-宏&#34;&gt;11.4 宏
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;. --重复上一个编辑动作
+qa：开始录制宏a（键盘操作记录）
+q：停止录制
+@a：播放宏a
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;12-编辑特殊文件&#34;&gt;12. 编辑特殊文件
+&lt;/h1&gt;&lt;h2 id=&#34;121-文件加解密&#34;&gt;12.1 文件加解密
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vim -x file: 开始编辑一个加密的文件。
+:X -- 为当前文件设置密码。
+:set key= -- 去除文件的密码。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里是 滇狐总结的比较高级的vi技巧。&lt;/p&gt;
+&lt;h2 id=&#34;122-文件的编码&#34;&gt;12.2 文件的编码
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:e ++enc=utf8 filename, 让vim用utf-8的编码打开这个文件。
+:w ++enc=gbk，不管当前文件什么编码，把它转存成gbk编码。
+:set fenc或:set fileencoding，查看当前文件的编码。
+在vimrc中添加set fileencoding=ucs-bom,utf-8,cp936，vim会根据要打开的文件选择合适的编码。 注意：编码之间不要留空格。 cp936对应于gbk编码。 ucs-bom对应于windows下的文件格式。
+让vim 正确处理文件格式和文件编码，有赖于 ~/.vimrc的正确配置
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;123-文件格式&#34;&gt;12.3 文件格式
+&lt;/h2&gt;&lt;p&gt;大致有三种文件格式：unix, dos, mac. 三种格式的区别主要在于回车键的编码：dos 下是回车加换行，unix 下只有 换行符，mac 下只有回车符。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:e ++ff=dos filename, 让vim用dos格式打开这个文件。
+:w ++ff=mac filename, 以mac格式存储这个文件。
+:set ff，显示当前文件的格式。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在vimrc中添加set fileformats=unix,dos,mac，让vim自动识别文件格式。&lt;/p&gt;
+&lt;h1 id=&#34;13-编程辅助&#34;&gt;13. 编程辅助
+&lt;/h1&gt;&lt;h2 id=&#34;131-一些按键&#34;&gt;13.1 一些按键
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;gd: 跳转到局部变量的定义处；
+gD: 跳转到全局变量的定义处，从当前文件开头开始搜索；
+g;: 上一个修改过的地方；
+g,: 下一个修改过的地方；
+[[: 跳转到上一个函数块开始，需要有单独一行的{。
+]]: 跳转到下一个函数块开始，需要有单独一行的{。
+[]: 跳转到上一个函数块结束，需要有单独一行的}。
+][: 跳转到下一个函数块结束，需要有单独一行的}。
+[{: 跳转到当前块开始处；
+]}: 跳转到当前块结束处；
+[/: 跳转到当前注释块开始处；
+]/: 跳转到当前注释块结束处；
+%: 不仅能移动到匹配的(),{}或[]上，而且能在#if，#else， #endif之间跳跃。
+下面的括号匹配对编程很实用的。
+
+ci&amp;#39;, di&amp;#39;, yi&amp;#39;：修改、剪切或复制&amp;#39;之间的内容。
+ca&amp;#39;, da&amp;#39;, ya&amp;#39;：修改、剪切或复制&amp;#39;之间的内容，包含&amp;#39;。
+ci&amp;#34;, di&amp;#34;, yi&amp;#34;：修改、剪切或复制&amp;#34;之间的内容。
+ca&amp;#34;, da&amp;#34;, ya&amp;#34;：修改、剪切或复制&amp;#34;之间的内容，包含&amp;#34;。
+ci(, di(, yi(：修改、剪切或复制()之间的内容。
+ca(, da(, ya(：修改、剪切或复制()之间的内容，包含()。
+ci[, di[, yi[：修改、剪切或复制[]之间的内容。
+ca[, da[, ya[：修改、剪切或复制[]之间的内容，包含[]。
+ci{, di{, yi{：修改、剪切或复制{}之间的内容。
+ca{, da{, ya{：修改、剪切或复制{}之间的内容，包含{}。
+ci&amp;lt;, di&amp;lt;, yi&amp;lt;：修改、剪切或复制&amp;lt;&amp;gt;之间的内容。
+ca&amp;lt;, da&amp;lt;, ya&amp;lt;：修改、剪切或复制&amp;lt;&amp;gt;之间的内容，包含&amp;lt;&amp;gt;。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;132-ctags&#34;&gt;13.2 ctags
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ctags -R: 生成tag文件，-R表示也为子目录中的文件生成tags
+:set tags=path/tags -- 告诉ctags使用哪个tag文件
+:tag xyz -- 跳到xyz的定义处，或者将光标放在xyz上按C-]，返回用C-t
+:stag xyz -- 用分割的窗口显示xyz的定义，或者C-w ]， 如果用C-w n ]，就会打开一个n行高的窗口
+:ptag xyz -- 在预览窗口中打开xyz的定义，热键是C-w }。
+:pclose -- 关闭预览窗口。热键是C-w z。
+:pedit abc.h -- 在预览窗口中编辑abc.h
+:psearch abc -- 搜索当前文件和当前文件include的文件，显示包含abc的行。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;有时一个tag可能有多个匹配，如函数重载，一个函数名就会有多个匹配。 这种情况会先跳转到第一个匹配处。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:[n]tnext -- 下一[n]个匹配。
+:[n]tprev -- 上一[n]个匹配。
+:tfirst -- 第一个匹配
+:tlast -- 最后一个匹配
+:tselect tagname -- 打开选择列表
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;tab键补齐&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:tag xyz&amp;lt;tab&amp;gt; -- 补齐以xyz开头的tag名，继续按tab键，会显示其他的。
+:tag /xyz&amp;lt;tab&amp;gt; -- 会用名字中含有xyz的tag名补全。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;133-cscope&#34;&gt;13.3 cscope
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;cscope -Rbq: 生成cscope.out文件
+:cs add /path/to/cscope.out /your/work/dir
+:cs find c func -- 查找func在哪些地方被调用
+:cw -- 打开quickfix窗口查看结果
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;134-gtags&#34;&gt;13.4 gtags
+&lt;/h2&gt;&lt;p&gt;Gtags综合了ctags和cscope的功能。 使用Gtags之前，你需要安装GNU Gtags。 然后在工程目录运行 gtags 。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:Gtags funcname 定位到 funcname 的定义处。
+:Gtags -r funcname 查询 funcname被引用的地方。
+:Gtags -s symbol 定位 symbol 出现的地方。
+:Gtags -g string Goto string 出现的地方。 :Gtags -gi string 忽略大小写。
+:Gtags -f filename 显示 filename 中的函数列表。 你可以用 :Gtags -f % 显示当前文件。
+:Gtags -P pattern 显示路径中包含特定模式的文件。 如 :Gtags -P .h$ 显示所有头文件， :Gtags -P /vm/ 显示vm目录下的文件。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;135-编译&#34;&gt;13.5 编译
+&lt;/h2&gt;&lt;p&gt;vim提供了:make来编译程序，默认调用的是make， 如果你当前目录下有makefile，简单地:make即可。&lt;/p&gt;
+&lt;p&gt;如果你没有make程序，你可以通过配置makeprg选项来更改make调用的程序。 如果你只有一个abc.java文件，你可以这样设置：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;set makeprg=javac\ abc.java
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后:make即可。如果程序有错，可以通过quickfix窗口查看错误。 不过如果要正确定位错误，需要设置好errorformat，让vim识别错误信息。 如：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:setl efm=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
+%f表示文件名，%l表示行号， %m表示错误信息，其它的还不能理解。 请参考 :help errorformat。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;136-快速修改窗口&#34;&gt;13.6 快速修改窗口
+&lt;/h2&gt;&lt;p&gt;其实是quickfix插件提供的功能， 对编译调试程序非常有用 :)&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:copen -- 打开快速修改窗口。
+:cclose -- 关闭快速修改窗口。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;快速修改窗口在make程序时非常有用，当make之后：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:cl -- 在快速修改窗口中列出错误。
+:cn -- 定位到下一个错误。
+:cp -- 定位到上一个错误。
+:cr -- 定位到第一个错误。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;137-自动补全&#34;&gt;13.7 自动补全
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;C-x C-s -- 拼写建议。
+C-x C-v -- 补全vim选项和命令。
+C-x C-l -- 整行补全。
+C-x C-f -- 自动补全文件路径。弹出菜单后，按C-f循环选择，当然也可以按 C-n和C-p。
+C-x C-p 和C-x C-n -- 用文档中出现过的单词补全当前的词。 直接按C-p和C-n也可以。
+C-x C-o -- 编程时可以补全关键字和函数名啊。
+C-x C-i -- 根据头文件内关键字补全。
+C-x C-d -- 补全宏定义。
+C-x C-n -- 按缓冲区中出现过的关键字补全。 直接按C-n或C-p即可。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当弹出补全菜单后：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;C-p 向前切换成员；
+C-n 向后切换成员；
+C-e 退出下拉菜单，并退回到原来录入的文字；
+C-y 退出下拉菜单，并接受当前选项。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;138-多行缩进缩出&#34;&gt;13.8 多行缩进缩出
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;正常模式下，按两下&amp;gt;;光标所在行会缩进。
+如果先按了n，再按两下&amp;gt;;，光标以下的n行会缩进。
+对应的，按两下&amp;lt;;，光标所在行会缩出。
+如果在编辑代码文件，可以用=进行调整。
+在可视模式下，选择要调整的代码块，按=，代码会按书写规则缩排好。
+或者n =，调整n行代码的缩排。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;139-折叠&#34;&gt;13.9 折叠
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;zf -- 创建折叠的命令，可以在一个可视区域上使用该命令；
+zd -- 删除当前行的折叠；
+zD -- 删除当前行的折叠；
+zfap -- 折叠光标所在的段；
+zo -- 打开折叠的文本；
+zc -- 收起折叠；
+za -- 打开/关闭当前折叠；
+zr -- 打开嵌套的折行；
+zm -- 收起嵌套的折行；
+zR (zO) -- 打开所有折行；
+zM (zC) -- 收起所有折行；
+zj -- 跳到下一个折叠处；
+zk -- 跳到上一个折叠处；
+zi -- enable/disable fold;
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;14-命令行&#34;&gt;14. 命令行
+&lt;/h1&gt;&lt;p&gt;normal模式下按:进入命令行模式&lt;/p&gt;
+&lt;h2 id=&#34;141-命令行模式下的快捷键&#34;&gt;14.1 命令行模式下的快捷键：
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;上下方向键：上一条或者下一条命令。如果已经输入了部分命令，则找上一 条或者下一条匹配的命令。
+左右方向键：左/右移一个字符。
+C-w： 向前删除一个单词。
+C-h： 向前删除一个字符，等同于Backspace。
+C-u： 从当前位置移动到命令行开头。
+C-b： 移动到命令行开头。
+C-e： 移动到命令行末尾。
+Shift-Left： 左移一个单词。
+Shift-Right： 右移一个单词。
+@： 重复上一次的冒号命令。
+q： 正常模式下，q然后按&amp;#39;:&amp;#39;，打开命令行历史缓冲区， 可以像编辑文件一样编辑命令。
+q/和q? 可以打开查找历史记录。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;142-执行外部命令&#34;&gt;14.2 执行外部命令
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:! cmd 执行外部命令。
+:!! 执行上一次的外部命令。
+:sh 调用shell，用exit返回vim。
+:r !cmd 将命令的返回结果插入文件当前位置。
+:m,nw !cmd 将文件的m行到n行之间的内容做为命令输入执行命令。
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;15-其它&#34;&gt;15. 其它
+&lt;/h1&gt;&lt;h2 id=&#34;151-工作目录&#34;&gt;15.1 工作目录
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:pwd 显示vim的工作目录。
+:cd path 改变vim的工作目录。
+:set autochdir 可以让vim 根据编辑的文件自动切换工作目录。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;152-一些快捷键收集中&#34;&gt;15.2 一些快捷键（收集中）
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;K: 打开光标所在词的manpage。
+*: 向下搜索光标所在词。
+g*: 同上，但部分符合即可。
+#: 向上搜索光标所在词。
+g#: 同上，但部分符合即可。
+g C-g: 统计全文或统计部分的字数。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;153-在线帮助&#34;&gt;15.3 在线帮助
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;:h(elp)或F1 打开总的帮助。
+:help user-manual 打开用户手册。
+命令帮助的格式为：第一行指明怎么使用那个命令； 然后是缩进的一段解释这个命令的作用，然后是进一步的信息。
+:helptags somepath 为somepath中的文档生成索引。
+:helpgrep 可以搜索整个帮助文档，匹配的列表显示在quickfix窗口中。
+Ctrl+] 跳转到tag主题，Ctrl+t 跳回。
+:ver 显示版本信息。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;154-一些小功能&#34;&gt;15.4 一些小功能
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;简单计算器: 在插入模式下，输入C-r =，然后输入表达式，就能在 光标处得到计算结果。
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

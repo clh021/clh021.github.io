@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="介绍 linux 环境下，使用 iptables 可以执行 netfilter 的复杂流量过滤逻辑。 包含 filter, nat, managle, raw, security 五个表，分别对应不同的网络层，传输层，应用层，网络层，安全层。一般使用 filter, nat 两个表最多。\n">
+<title>iptables</title>
+
+<link rel='canonical' href='/post/tech/iptables/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="iptables">
+<meta property='og:description' content="介绍 linux 环境下，使用 iptables 可以执行 netfilter 的复杂流量过滤逻辑。 包含 filter, nat, managle, raw, security 五个表，分别对应不同的网络层，传输层，应用层，网络层，安全层。一般使用 filter, nat 两个表最多。\n">
+<meta property='og:url' content='/post/tech/iptables/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='iptables' /><meta property='article:published_time' content='2024-07-03T14:17:18&#43;08:00'/><meta property='article:modified_time' content='2024-07-03T14:17:18&#43;08:00'/>
+<meta name="twitter:title" content="iptables">
+<meta name="twitter:description" content="介绍 linux 环境下，使用 iptables 可以执行 netfilter 的复杂流量过滤逻辑。 包含 filter, nat, managle, raw, security 五个表，分别对应不同的网络层，传输层，应用层，网络层，安全层。一般使用 filter, nat 两个表最多。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/iptables/">iptables</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2024-07-03T14:17:18&#43;08:00'>2024-07-03 14:17:18</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="介绍">介绍
+</h2><p>linux 环境下，使用 iptables 可以执行 netfilter 的复杂流量过滤逻辑。
+包含 filter, nat, managle, raw, security 五个表，分别对应不同的网络层，传输层，应用层，网络层，安全层。一般使用 filter, nat 两个表最多。</p>
+<h2 id="理解流量路径中的链">理解流量路径中的链
+</h2><pre tabindex="0"><code>网卡      -&gt;                netfilter              -&gt;        应用
+网卡      -&gt;  prerouting链 -&gt;  -&gt;    -&gt; input链     -&gt;        应用
+             数据包抵达系统时    |    数据包目标是本机时
+                              |forward链
+                              |数据包目标不是本机只是经过本机时
+网卡       &lt;-  postrouting链 &lt;-v  &lt;-    &lt;- output链           应用
+             数据包离开系统时          数据包从本机出去时
+</code></pre><p>filter 表管理 input,forward,output 三个链
+至此，只要在对应的链里添加规则，即可管理有关本机的所有流量。</p>
+<h2 id="理解链中添加规则">理解链中添加规则
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables --table filter --list <span style="color:#75715e"># 列出 filter 表中所有链</span>
+</span></span><span style="display:flex;"><span>iptables --list <span style="color:#75715e"># 列出 filter 表(默认filter表)中所有链</span>
+</span></span><span style="display:flex;"><span>iptables --table filter --list-rules <span style="color:#75715e"># 列出 filter 表中所有链的规则</span>
+</span></span><span style="display:flex;"><span>iptables --table filter --append INPUT --source 192.168.3.20 --jump REJECT <span style="color:#75715e"># 添加规则，从192.168.3.20来的数据包，跳转到 REJECT 链，即拒绝</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 两次执行会添加两条规则，比如将 REJECT 改为 DROP，将会多一条 DROP 规则，最终会从上往下执行</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 所以，如果想要删除第一条规则，避免后面添加的规则不受影响，可以先查看规则的行数</span>
+</span></span><span style="display:flex;"><span>iptables --table filter --list --line-numbers
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 然后执行删除命令，删除第一条规则</span>
+</span></span><span style="display:flex;"><span>iptables --table filter --delete INPUT <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>查看规则</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables --table filter --list --line-numbers
+</span></span><span style="display:flex;"><span>target     prot opt source               destination
+</span></span><span style="display:flex;"><span>ACCEPT     tcp  --  anywhere             172.17.0.3           tcp dpt:cslistener
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># prot 表示协议，常见值有: tcp, udp, icmp, all</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># target 表示动作，常见值有: ACCEPT, DROP, REJECT, LOG, MARK, SNAT, DNAT, RETURN, JUMP</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># opt 表示选项，常见值有: dpt, sport, dport, sport, saddr, daddr,</span>
+</span></span></code></pre></div><h2 id="ip段的获取和处理">IP段的获取和处理
+</h2><p>查看 ipdeny.com 的 ip 段，通过 Country IP blocks 获取要屏蔽的国家地址段。
+以印度为例，ipdeny.com 的 ip 段如下：
+使用 aggregated 可以用更少的 IP 段，更高效的屏蔽工作。
+下载了 aggregated 文件后，会发现，即使是使用 shell 来全部添加到 iptables 规则里，也会消耗不少CPU。 ipset 可以让我们更优雅的处理这个问题。</p>
+<h2 id="ipset">ipset
+</h2><p>可以把众多IP地址段汇集到一个集合中，然后通过集合，集合可以生成唯一的哈希值，来添加到 iptables 规则里。
+当为 iptables 添加 IP 地址时，只需要用这个哈希值来代表背后的IP地址段集合。会自动将 IP 地址添加到集合中。</p>
+<h3 id="创建集合">创建集合
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ipset create indiaip hash:net <span style="color:#75715e"># 因为我们要处理的是网络地址而不是主机名，所以使用 hash:net</span>
+</span></span><span style="display:flex;"><span>ipset list indiaip <span style="color:#75715e"># 查看集合，加入好的IP会在 Members 字段显示出来</span>
+</span></span></code></pre></div><h3 id="编写脚本">编写脚本
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#  cat block-india.sh</span>
+</span></span><span style="display:flex;"><span>ipset create indiaip hash:net -exist <span style="color:#75715e"># 如果存在就忽略，避免报错</span>
+</span></span><span style="display:flex;"><span>ipset flush indiaip <span style="color:#75715e"># 清空集合，避免重复添加</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span> -f <span style="color:#e6db74">&#34;in-aggregated.zone&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> rm -f in-aggregated.zone <span style="color:#75715e"># 删除旧的文件，保证下载的是最新文件</span>
+</span></span><span style="display:flex;"><span>wget https://www.ipdeny.com/ipblocks/data/aggregated/in-aggregated.zone
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $? -eq <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;Download success&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> ip in <span style="color:#e6db74">`</span>cat in-aggregated.zone<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    ipset add indiaip $ip -exist
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;Download failed&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加规则</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 当访问来自印度的IP时，丢弃请求数据包</span>
+</span></span><span style="display:flex;"><span>iptables <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--table filter <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--append INPUT <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--match set --match-set indiaip src <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--jump DROP
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chmod +x block-india.sh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ping -c3auth-dns-01.skyberbrroadband.co.in. <span style="color:#75715e"># ping  一个印度域名测试</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./block-india.sh <span style="color:#75715e"># 运行脚本</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ipset list indiaip | less <span style="color:#75715e"># 查看集合，加入好的IP会在 Members 字段显示出来</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ipset list indiaip | grep 103.130.110 <span style="color:#75715e"># 检查 ping 测试的 IP 是否在集合里</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>iptables --table filter --list --line-numbers <span style="color:#75715e"># 检查规则，如果有多于的规则，应及时删除</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ping -c3auth-dns-01.skyberbrroadband.co.in. <span style="color:#75715e"># 再次 ping  一个印度域名测试，ping 会 loss 100%</span>
+</span></span></code></pre></div><h3 id="持久化">持久化
+</h3><p>重启服务后，像刚刚的设置方式 添加的 iptables 规则都会丢失，所以需要持久化。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ipset save &gt; /etc/rules.ipset <span style="color:#75715e"># 将集合保存到文件</span>
+</span></span><span style="display:flex;"><span>iptables-save &gt; /etc/rules.iptables <span style="color:#75715e"># 将 iptables 规则保存到文件</span>
+</span></span><span style="display:flex;"><span>iptables -L <span style="color:#75715e"># 查看 iptables 规则</span>
+</span></span><span style="display:flex;"><span>ipset list <span style="color:#75715e"># 查看集合</span>
+</span></span><span style="display:flex;"><span>ipset restore &lt; /etc/rules.ipset <span style="color:#75715e"># 恢复集合</span>
+</span></span><span style="display:flex;"><span>iptables-restore &lt; /etc/rules.iptables <span style="color:#75715e"># 恢复 iptables 规则</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果不想把原来的内容覆盖掉，可以在 iptables-restore 前加上 --noflush 或者 -n 参数</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 同理 ipset restore 也可以加上 -exist 参数</span>
+</span></span></code></pre></div><h3 id="net服务">net服务
+</h3><pre tabindex="0"><code># 域名
+dns 解析的默认端口号是 53，所以可以做一条 iptables 规则去拦截 53 端口的请求
+做一下 dns 的解析，然后能拿到一个 ip list，之后只要将 list 中所有的 ip 都传给 iptables 就 ok 了。
+</code></pre>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/iptables/">Iptables</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

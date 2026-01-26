@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="快速使用 # 先在 NAS网络设置内 启用 Open vSwitch sudo docker network create --driver=macvlan --subnet=10.0.0.1/24 --gateway=10.0.0.1 --ip-range=10.0.0.32/28 --opt parent=ovs_eth0 Route # 如果命令无法执行，可以尝试UI添加网络 docker pull adguard/adguardhome docker run --name adguardhome -v /my/own/workdir:/opt/adguardhome/work -v /my/own/confdir:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p 68:68/udp -p 80:80/tcp -p 443:443/tcp -p 853:853/tcp -p 3000:3000/tcp -d adguard/adguardhome # 脚本已包含 一般来说，设置好 3000 端口和 53 端口即可\n">
+<title>AdGuard搭建</title>
+
+<link rel='canonical' href='/post/live/adguard/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="AdGuard搭建">
+<meta property='og:description' content="快速使用 # 先在 NAS网络设置内 启用 Open vSwitch sudo docker network create --driver=macvlan --subnet=10.0.0.1/24 --gateway=10.0.0.1 --ip-range=10.0.0.32/28 --opt parent=ovs_eth0 Route # 如果命令无法执行，可以尝试UI添加网络 docker pull adguard/adguardhome docker run --name adguardhome -v /my/own/workdir:/opt/adguardhome/work -v /my/own/confdir:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p 68:68/udp -p 80:80/tcp -p 443:443/tcp -p 853:853/tcp -p 3000:3000/tcp -d adguard/adguardhome # 脚本已包含 一般来说，设置好 3000 端口和 53 端口即可\n">
+<meta property='og:url' content='/post/live/adguard/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='AdGuard' /><meta property='article:published_time' content='2021-06-01T12:01:20&#43;08:00'/><meta property='article:modified_time' content='2021-06-01T12:01:20&#43;08:00'/>
+<meta name="twitter:title" content="AdGuard搭建">
+<meta name="twitter:description" content="快速使用 # 先在 NAS网络设置内 启用 Open vSwitch sudo docker network create --driver=macvlan --subnet=10.0.0.1/24 --gateway=10.0.0.1 --ip-range=10.0.0.32/28 --opt parent=ovs_eth0 Route # 如果命令无法执行，可以尝试UI添加网络 docker pull adguard/adguardhome docker run --name adguardhome -v /my/own/workdir:/opt/adguardhome/work -v /my/own/confdir:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p 68:68/udp -p 80:80/tcp -p 443:443/tcp -p 853:853/tcp -p 3000:3000/tcp -d adguard/adguardhome # 脚本已包含 一般来说，设置好 3000 端口和 53 端口即可\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/live/" style="background-color: #2a9d8f; color: #fff;">
+                Live
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/live/adguard/">AdGuard搭建</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2021-06-01T12:01:20&#43;08:00'>2021-06-01 12:01:20</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="快速使用">快速使用
+</h2><pre tabindex="0"><code># 先在 NAS网络设置内 启用 Open vSwitch
+sudo docker network create --driver=macvlan --subnet=10.0.0.1/24 --gateway=10.0.0.1 --ip-range=10.0.0.32/28 --opt parent=ovs_eth0 Route
+
+
+# 如果命令无法执行，可以尝试UI添加网络
+docker pull adguard/adguardhome
+docker run --name adguardhome -v /my/own/workdir:/opt/adguardhome/work -v /my/own/confdir:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p 68:68/udp -p 80:80/tcp -p 443:443/tcp -p 853:853/tcp -p 3000:3000/tcp -d adguard/adguardhome
+# 脚本已包含
+</code></pre><p>一般来说，设置好 3000 端口和 53 端口即可</p>
+<h2 id="优化">优化
+</h2><blockquote>
+<p>假设你已经成功跑起来，并设置好管理帐号，登录了管理面板</p>
+</blockquote>
+<ul>
+<li>
+<p>常规设置
+勾选【使用过滤器和 Hosts 文件以拦截指定域名】、【使用 AdGuard 浏览安全网页服务】、【强制安全搜索】，需要的话也可以勾选【使用 AdGuard 家长控制服务】。</p>
+</li>
+<li>
+<p>过滤器
+虽然 AdGuard 本身提供了 AdGuard、AdAway 的广告过滤规则，但在中国有点水土不服，如果要想更完美的实现广告屏蔽还需要自己添加规则，AdGuard 可以兼容 Adblock 的语法。最知名的过滤规则 EasyList 就是由 Adblock Plus 团队维护，过滤规则往往是一个 txt 文件，在文件的开头部分会显示规则的最后更新日期。</p>
+</li>
+</ul>
+<p>推荐广告过滤规则：</p>
+<p>EasyList China : 国内网站广告过滤的主规则。
+<a class="link" href="https://easylist-downloads.adblockplus.org/easylistchina.txt"  target="_blank" rel="noopener"
+    >https://easylist-downloads.adblockplus.org/easylistchina.txt</a>
+EasyPrivacy : EasyPrivacy 是隐私保护，不被跟踪。
+<a class="link" href="https://easylist-downloads.adblockplus.org/easyprivacy.txt"  target="_blank" rel="noopener"
+    >https://easylist-downloads.adblockplus.org/easyprivacy.txt</a>
+CJX’s Annoyance List : 过滤烦人的自我推广，并补充EasyPrivacy隐私规则。
+<a class="link" href="https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt"  target="_blank" rel="noopener"
+    >https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt</a>
+广告净化器规则 : 国内大部分视频网站的广告过滤。
+&hellip; <a class="link" href="http://tools.yiclear.com/ChinaList2.0.txt"  target="_blank" rel="noopener"
+    >http://tools.yiclear.com/ChinaList2.0.txt</a>
+I don’t care about cookies : 我不关心 Cookie 的问题，屏蔽网站的 cookies 相关的警告。
+<a class="link" href="https://www.i-dont-care-about-cookies.eu/abp/"  target="_blank" rel="noopener"
+    >https://www.i-dont-care-about-cookies.eu/abp/</a>
+优酷网如果播放无限加载，那在自定义静态规则（自定义过滤器规则）里加入一条规则 @@mp4.ts （参考下图）。</p>
+<ul>
+<li>上游 DNS 设置
+官方默认使用 Cloudflare 的 DNS over HTTPS 作为上游服务器，在国内可能请求上游 DNS 延迟比较高，可以加上或替换国内的 DNS。我自己另外加了中科大的两组无污染 DNS，每次查询的时候会对所有的上游 DNS 同时查询，加速解析。</li>
+</ul>
+<p><a class="link" href="http://ip.yqie.com/dns_jiaoyu.htm"  target="_blank" rel="noopener"
+    >http://ip.yqie.com/dns_jiaoyu.htm</a>
+<a class="link" href="https://lug.ustc.edu.cn/wiki/server/mirrors/start"  target="_blank" rel="noopener"
+    >https://lug.ustc.edu.cn/wiki/server/mirrors/start</a>
+<a class="link" href="https://tuna.moe/help/dns/"  target="_blank" rel="noopener"
+    >https://tuna.moe/help/dns/</a>
+<a class="link" href="https://www.opendns.com/setupguide/"  target="_blank" rel="noopener"
+    >https://www.opendns.com/setupguide/</a>
+208.67.222.222
+208.67.220.220
+2620:119:35::35
+2620:119:53::53</p>
+<ul>
+<li>提升 QPS
+有两个参数可以明显提升 QPS：</li>
+</ul>
+<p>ratelimit : DDoS 保护，客户端每秒接收的数据包数。建议禁用该参数（将值改为 0），默认值是 20。（DNS 设置 - DNS服务设定 - 速度限制）
+blocked_response_ttl : TTL 缓存时间，建议设置为 60
+配置文件默认路径是 /opt/adguardhome/conf/AdGuardHome.yaml (具体路径通过启动参数查找，docker和软件安装不一样)</p>
+<p>Linux全局智能分流方案
+<a class="link" href="https://fuckcloudnative.io/posts/linux-circumvent/"  target="_blank" rel="noopener"
+    >https://fuckcloudnative.io/posts/linux-circumvent/</a></p>
+<p>8.8.8.8太慢，
+114，阿里云(223.5.5.5)，DNSPod，百度DNS解析 <a class="link" href="https://www.google.com"  target="_blank" rel="noopener"
+    >www.google.com</a>的ip地址都是不可用的，只有中科大的解析正常!!</p>
+<p><a class="link" href="https://blog.liyuans.com/archives/pure-dns-collection.html"  target="_blank" rel="noopener"
+    >https://blog.liyuans.com/archives/pure-dns-collection.html</a>
+名称	DNS1	DNS2	官网	其他
+PdoMo-DNS	101.132.183.99	123.207.40.32	官网	博客 DNS2 将于 11 月 3 日停止服务
+Mogu DNS	115.159.96.69	122.114.245.45	官网
+XsicoDNS	115.159.157.26		官网
+AIXYZ DNS	115.159.146.99	123.206.21.48	官网
+FUN DNS	119.23.248.241		官网
+阿里 DNS	223.5.5.5	223.6.6.6	官网
+OpenDNS	208.67.222.222	208.67.220.220	官网	支持 443 端口，有效防止 DNS 污染
+114DNS	114.114.114.114	114.114.115.115	官网
+oneDNS	114.215.126.16	112.124.47.27	官网	恶意网站实验室旗下，有恶意网站拦截和广告过滤功能
+百度 DNS	180.76.76.76		官网
+DNSpod	119.29.29.29	182.254.116.116	官网	腾讯旗下
+cloudxns	124.251.124.251		官网	世纪互联旗下快网
+SDNS	1.2.4.8	210.2.4.8	官网	官方机构 CNNIC 旗下
+Yandex Basic	77.88.8.8	77.88.8.1	官网	毛子的良心企业
+Yandex Basic	77.88.8.8	77.88.8.2	官网	毛子的良心企业
+Yandex Basic	77.88.8.7	77.88.8.3	官网	毛子的良心企业
+BAI DNS	223.113.97.99		来自龙文	科学使用务必 HTTPS，支持 EDNS 并且为无污染 DNS</p>
+<p>港澳台DNS服务器地址</p>
+<p>香港：</p>
+<p>205.252.144.228</p>
+<p>208.151.69.65</p>
+<p>202.181.202.140</p>
+<p>202.181.224.2</p>
+<p>香港宽频 Hong Kong BroadBand Network DNS
+203.80.96.10
+203.80.96.9</p>
+<p>HKNet 宽频 DNS
+202.67.240.222
+202.67.240.221</p>
+<p>和记环球电讯DNS
+202.45.84.58
+202.45.84.59</p>
+<p>NetFront前线
+202.81.252.1
+202.81.252.2</p>
+<p>Pacific SuperNet
+202.14.67.4
+202.14.67.14</p>
+<p>CyberExpress
+202.85.146.104
+202.60.252.8</p>
+<p>澳门：
+202.175.3.8
+202.175.3.3</p>
+<p>台湾：
+168.95.192.1
+168.95.1.1</p>
+<p>国外DNS服务器地址</p>
+<p>美国：
+208.67.222.222
+208.67.220.220
+165.87.13.129
+165.87.201.244
+205.171.3.65
+205.171.2.65
+198.41.0.4
+198.41.0.4
+198.32.64.12
+192.33.4.12
+192.203.230.10
+192.5.5.241
+192.112.36.4
+192.36.148.17
+192.58.128.30
+192.9.9.3
+193.0.14.129
+128.9.0.107
+128.8.10.90
+66.33.206.206.
+208.96.10.221
+66.33.216.216
+205.171.3.65
+205.171.2.65
+165.87.13.129
+165.87.201.244
+A INTERNIC.NET（美国，弗吉尼亚州） 198.41.0.4
+B 美国信息科学研究所（美国，加利弗尼亚州） 128.9.0.107
+C PSINet公司（美国，弗吉尼亚州） 192.33.4.12
+D 马里兰大学（美国马里兰州） 128.8.10.90
+E 美国航空航天管理局[NASA]（美国加利弗尼亚州） 192.203.230.10
+F 因特网软件联盟（美国加利弗尼亚州） 192.5.5.241
+G 美国国防部网络信息中心（美国弗吉尼亚州） 192.112.36.4
+H 美国陆军研究所（美国马里兰州） 128.63.2.53
+I Autonomica公司（瑞典，斯德哥尔摩） 192.36.148.17
+J VeriSign公司（美国，弗吉尼亚州） 192.58.128.30
+K RIPE NCC（英国，伦敦） 193.0.14.129
+L IANA （美国，弗吉尼亚州） 198.32.64.12‍</p>
+<p>OpenDNS
+208.67.222.222
+208.67.220.220</p>
+<p>GoogleDNS
+8.8.8.8
+8.8.4.4</p>
+<p>加拿大：
+209.166.160.36
+209.166.160.132</p>
+<p>英国：
+193.0.14.129</p>
+<p>日本
+202.12.27.33
+202.216.228.18</p>
+<p>韩国：
+164.124.101.31
+203.248.240.31
+168.126.63.60
+168.126.63.61</p>
+<p>新西兰：
+202.27.184.3</p>
+<p>泰国：
+209.166.160.132
+202.44.8.34
+202.44.8.2</p>
+<p>印度：
+202.138.103.100
+202.138.96.2</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/adguard/">AdGuard</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

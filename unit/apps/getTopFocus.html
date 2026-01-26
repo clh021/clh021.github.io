@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取聚焦状态</title>
+    <script src="./index/global.js"></script>
+</head>
+<body style="background-color: azure;">
+    <button onclick="getTopFocus()">开始监听聚焦状态</button>
+    <button onclick="stopFocus()">停止监听聚焦状态</button>
+        <button onclick="win.keep_above()">保持窗口置顶</button>
+    <pre id="focusResult" style="float: left;"></pre>
+
+    <script>
+    function output(str, Id){
+        //console.info(str);
+        let res = document.getElementById(Id);
+        var pobj=document.createElement('p');
+        var textobj=document.createTextNode(str+"\r\n");
+        res.appendChild(pobj.appendChild(textobj))
+    }
+    let testFocusTime=setInterval(function(){getTopFocus()},3000);
+    function getTopFocus() {
+        let allWins = window.lnks.MainWindow.all();
+        allWins.forEach(w => {
+            // w.win.focus();//可使窗口聚焦
+            // w.cwin.focus();//可使窗口聚焦
+            console.log("w.has_toplevel_focus():", w.has_toplevel_focus());
+            output("DOC 标题:"+w.title, "focusResult");
+            output("聚焦状态:"+w.has_toplevel_focus(), "focusResult");
+        });
+            output("-------------------------------", "focusResult");
+    }
+    function stopFocus() {
+        clearInterval(testFocusTime);
+    }
+    // 全局变量准备
+    window.onload = function () {
+        if (window.lnks) {
+            window.document.title="聚焦测试"+getRandomInt(99);
+            this.win = new window.lnks.MainWindow(window);
+            // let allWins = window.lnks.MainWindow.all();
+        }
+    }
+    </script>
+</body>
+</html>

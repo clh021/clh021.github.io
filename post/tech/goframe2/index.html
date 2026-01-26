@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="gf发行版 在线文档 离线文档\n代码生成 框架的目的是让开发者将精力聚焦于业务逻辑实现本身。controller,dao/entity/do,service 都可以通过开发工具生成 需要注意的是，manifest/config.yaml 是部署用的配置，而开发时使用的配置在 hack/config.yml\n">
+<title>goframe2</title>
+
+<link rel='canonical' href='/post/tech/goframe2/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="goframe2">
+<meta property='og:description' content="gf发行版 在线文档 离线文档\n代码生成 框架的目的是让开发者将精力聚焦于业务逻辑实现本身。controller,dao/entity/do,service 都可以通过开发工具生成 需要注意的是，manifest/config.yaml 是部署用的配置，而开发时使用的配置在 hack/config.yml\n">
+<meta property='og:url' content='/post/tech/goframe2/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='goframe' /><meta property='article:tag' content='golang' /><meta property='article:published_time' content='2024-01-31T20:14:47&#43;08:00'/><meta property='article:modified_time' content='2024-01-31T20:14:47&#43;08:00'/>
+<meta name="twitter:title" content="goframe2">
+<meta name="twitter:description" content="gf发行版 在线文档 离线文档\n代码生成 框架的目的是让开发者将精力聚焦于业务逻辑实现本身。controller,dao/entity/do,service 都可以通过开发工具生成 需要注意的是，manifest/config.yaml 是部署用的配置，而开发时使用的配置在 hack/config.yml\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+            
+            
+            
+            <a href="/categories/frame/" style="background-color: #df7988; color: #fff;">
+                Frame
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/goframe2/">goframe2</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2024-01-31T20:14:47&#43;08:00'>2024-01-31 20:14:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 9 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p><a class="link" href="https://github.com/gogf/gf/releases"  target="_blank" rel="noopener"
+    >gf发行版</a>
+<a class="link" href="https://goframe.org"  target="_blank" rel="noopener"
+    >在线文档</a>
+<a class="link" href="https://github.com/gogf/goframe.org-pdf/releases"  target="_blank" rel="noopener"
+    >离线文档</a></p>
+<h1 id="代码生成">代码生成
+</h1><p>框架的目的是让开发者将精力聚焦于业务逻辑实现本身。<code>controller</code>,<code>dao/entity/do</code>,<code>service</code> 都可以通过<a class="link" href="https://goframe.org/pages/viewpage.action?pageId=1115790"  target="_blank" rel="noopener"
+    >开发工具生成</a>
+需要注意的是，<code>manifest/config.yaml</code> 是部署用的配置，而开发时使用的配置在 <code>hack/config.yml</code></p>
+<p>请确认，您已在一个 <code>goframe2</code> 的项目中，或者通过 <code>gf init demoProj -u</code> 生成一个项目。</p>
+<h2 id="生成dao">生成<code>dao</code>
+</h2><blockquote>
+<p>代码生成依赖于数据库表结构，所以我们先创建一个实际数据库和表结构</p>
+</blockquote>
+<h3 id="创建数据库及表结构">创建数据库及表结构
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sqlite3 db.sqlite3
+</span></span></code></pre></div><blockquote>
+<p>进入 sqlite命令行界面</p>
+</blockquote>
+<pre tabindex="0"><code class="language-sqlite" data-lang="sqlite">CREATE TABLE IF NOT EXISTS &#34;detect_item&#34; (
+  &#34;id&#34; INTEGER,
+  &#34;name&#34; VARCHAR(55),
+  &#34;create_at&#34; DATETIME,
+  &#34;updated_at&#34; DATETIME,
+  &#34;deleted_at&#34; DATETIME,
+  PRIMARY KEY(&#34;id&#34;)
+);
+INSERT INTO detect_item VALUES(1,&#39;C++源代码基础检测&#39;,&#39;2024-01-01 01:01:01&#39;,NULL,NULL);
+INSERT INTO detect_item VALUES(2,&#39;C++源代码规范检测&#39;,&#39;2024-01-01 01:01:01&#39;,NULL,NULL);
+INSERT INTO detect_item VALUES(3,&#39;浏览器JS源代码检测&#39;,&#39;2024-01-01 01:01:01&#39;,NULL,NULL);
+INSERT INTO detect_item VALUES(4,&#39;浏览器CSS源代码检测&#39;,&#39;2024-01-01 01:01:01&#39;,NULL,NULL);
+INSERT INTO detect_item VALUES(5,&#39;浏览器HTML源代码检测&#39;,&#39;2024-01-01 01:01:01&#39;,NULL,NULL);
+INSERT INTO detect_item VALUES(6,&#39;二进制文件检测&#39;,&#39;2024-01-01 01:01:01&#39;,NULL,NULL);
+INSERT INTO detect_item VALUES(7,&#39;二进制依赖检测&#39;,&#39;2024-01-01 01:01:01&#39;,NULL,NULL);
+.tables -- 查看所有表
+.schema user -- 查看user表结构
+.exit -- 退出sqlite命令行界面
+</code></pre><p>有关<a class="link" href="https://goframe.org/pages/viewpage.action?pageId=1114139"  target="_blank" rel="noopener"
+    >时间维护</a>的文档见<a class="link" href="https://www.bookstack.cn/read/goframe-2.6-zh/4fec5162cfb4d90e.md"  target="_blank" rel="noopener"
+    >此处</a>
+sqlite 备份还原操作</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sqlite3 db.sqlite3 <span style="color:#e6db74">&#34;.output sqlite3.data.sql&#34;</span> <span style="color:#e6db74">&#34;.dump&#34;</span>
+</span></span><span style="display:flex;"><span>sqlite3 db.sqlite3 <span style="color:#e6db74">&#34;.read sqlite3.data.sql&#34;</span>
+</span></span></code></pre></div><h3 id="配置开发数据库">配置开发数据库
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># hack/config.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">gfcli</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">gen</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">dao</span>: <span style="color:#75715e"># 注意层级关系</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">#link: &#34;mysql:root:root@tcp(127.0.0.1:3306)/goframe?loc=Local&amp;parseTime=true&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">link</span>: <span style="color:#e6db74">&#34;sqlite::@file(./resource/db.sqlite3)&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">tables</span>: <span style="color:#e6db74">&#34;detect_item&#34;</span> <span style="color:#75715e"># 对应要生成的表</span>
+</span></span></code></pre></div><p>更多配置选项请参考<a class="link" href="https://goframe.org/pages/viewpage.action?pageId=3673173"  target="_blank" rel="noopener"
+    >这里</a></p>
+<p>确定配置数据库表都正确时，可以直接在项目根目录下执行 <code>make dao</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ make dao
+</span></span><span style="display:flex;"><span>generated: internal/dao/detect_item.go
+</span></span><span style="display:flex;"><span>generated: internal/dao/internal/detect_item.go
+</span></span><span style="display:flex;"><span>generated: internal/model/do/detect_item.go
+</span></span><span style="display:flex;"><span>generated: internal/model/entity/detect_item.go
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>编写好诸如 <span style="color:#e6db74">`</span>mysql<span style="color:#e6db74">`</span> 的字段注释，可以生成更详细的字段注释信息
+</span></span></code></pre></div><h2 id="生成ctrl">生成<code>ctrl</code>
+</h2><p><code>make ctrl</code>命令会分析给定的api接口定义目录下的代码，自动生成对应的控制器/SDK Go代码文件</p>
+<blockquote>
+<p>如何编写 <code>api</code>呢？可以先看看以下示例代码</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#75715e">// 默认值的struct tag名称为d(也可以使用default)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GetListReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Meta</span> <span style="color:#e6db74">`path:&#34;/&#34; method:&#34;get&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Type</span>   <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`v:&#34;required#请选择内容模型&#34; dc:&#34;内容模型&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Page</span>   <span style="color:#66d9ef">int</span>    <span style="color:#e6db74">`v:&#34;min:0#分页号码错误&#34;      dc:&#34;分页号码&#34; d:&#34;1&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Size</span>   <span style="color:#66d9ef">int</span>    <span style="color:#e6db74">`v:&#34;max:50#分页数量最大50条&#34; dc:&#34;分页数量，最大50&#34; d:&#34;10&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Sort</span>   <span style="color:#66d9ef">int</span>    <span style="color:#e6db74">`v:&#34;in:0,1,2#排序类型不合法&#34; dc:&#34;排序类型(0:最新, 默认。1:活跃, 2:热度)&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GetListRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Items</span> []<span style="color:#a6e22e">Item</span> <span style="color:#e6db74">`dc:&#34;内容列表&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Item</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Id</span>    <span style="color:#66d9ef">int64</span>  <span style="color:#e6db74">`dc:&#34;内容ID&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Title</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`dc:&#34;内容标题&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// RegisterReq 注册请求数据结构</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">RegisterReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Name</span>  <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`p:&#34;username&#34;  v:&#34;required|length:4,30#请输入账号|账号长度为:{min}到:{max}位&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Pass</span>  <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`p:&#34;password1&#34; v:&#34;required|length:6,30#请输入密码|密码长度不够&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Pass2</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`p:&#34;password2&#34; v:&#34;required|length:6,30|same:password1#请确认密码|密码长度不够|两次密码不一致&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// RegisterRes 注册返回数据结构</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">RegisterRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Code</span>  <span style="color:#66d9ef">int</span>         <span style="color:#e6db74">`json:&#34;code&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Error</span> <span style="color:#66d9ef">string</span>      <span style="color:#e6db74">`json:&#34;error&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Data</span>  <span style="color:#66d9ef">interface</span>{} <span style="color:#e6db74">`json:&#34;data&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>参考 以上<code>代码示例</code> 新建自己的 <code>api</code> 接口文件。还可以参考<a class="link" href="https://github.com/gogf/focus-single/blob/master/api/v1/content.go"  target="_blank" rel="noopener"
+    >这里</a> 和 <a class="link" href="https://goframe.org/pages/viewpage.action?pageId=7296348"  target="_blank" rel="noopener"
+    >这里</a></p>
+<blockquote>
+<p><code>GoFrame</code>的<code>struct tag</code>(标签) 有哪些？</p>
+</blockquote>
+<p>参数请求、数据校验、<code>OpenAPIv3</code>、命令管理、数据库ORM。</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Tag(简写)</th>
+          <th>全称</th>
+          <th>描述</th>
+          <th>相关文档</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>v</code></td>
+          <td><code>valid</code></td>
+          <td>数据校验标签。</td>
+          <td><a class="link" href="https://goframe.org/pages/viewpage.action?pageId=7302150"  target="_blank" rel="noopener"
+    >Struct校验-基本使用</a></td>
+      </tr>
+      <tr>
+          <td><code>p</code></td>
+          <td><code>param</code></td>
+          <td>自定义请求参数匹配。</td>
+          <td><a class="link" href="https://goframe.org/pages/viewpage.action?pageId=1114185"  target="_blank" rel="noopener"
+    >请求输入-对象处理</a></td>
+      </tr>
+      <tr>
+          <td><code>d</code></td>
+          <td><code>default</code></td>
+          <td>请求参数默认值绑定。</td>
+          <td><a class="link" href="https://goframe.org/pages/viewpage.action?pageId=3671922"  target="_blank" rel="noopener"
+    >请求输入-默认值绑定</a></td>
+      </tr>
+      <tr>
+          <td><code>orm</code></td>
+          <td><code>orm</code></td>
+          <td>ORM标签，用于指定表名、关联关系。</td>
+          <td><a class="link" href="https://goframe.org/pages/viewpage.action?pageId=3673173"  target="_blank" rel="noopener"
+    >数据规范-gen dao</a> <a class="link" href="https://goframe.org/pages/viewpage.action?pageId=7297190"  target="_blank" rel="noopener"
+    >模型关联-静态关联-With特性</a></td>
+      </tr>
+      <tr>
+          <td><code>dc</code></td>
+          <td><code>description</code></td>
+          <td>通用结构体属性描述，ORM和接口使用</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table></div>
+<p>我这里使用以下内容成功进行了<code>control</code>代码生成。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#75715e">// internal/model/common.go // 综合考虑后，将以下内容存放在 model 下可以共同使用</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">model</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CommonPaginationReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Page</span> <span style="color:#66d9ef">int</span> <span style="color:#e6db74">`json:&#34;page&#34; in:&#34;query&#34; d:&#34;1&#34;  v:&#34;min:0#分页号码错误&#34;     dc:&#34;分页号码，默认1&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Size</span> <span style="color:#66d9ef">int</span> <span style="color:#e6db74">`json:&#34;size&#34; in:&#34;query&#34; d:&#34;10&#34; v:&#34;max:50#分页数量最大50条&#34; dc:&#34;分页数量，最大50&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CommonPaginationRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Total</span> <span style="color:#66d9ef">int</span> <span style="color:#e6db74">`dc:&#34;总数&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Page</span>  <span style="color:#66d9ef">int</span> <span style="color:#e6db74">`json:&#34;page&#34; in:&#34;query&#34; d:&#34;1&#34;  v:&#34;min:0#分页号码错误&#34;     dc:&#34;分页号码，默认1&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Size</span>  <span style="color:#66d9ef">int</span> <span style="color:#e6db74">`json:&#34;size&#34; in:&#34;query&#34; d:&#34;10&#34; v:&#34;max:50#分页数量最大50条&#34; dc:&#34;分页数量，最大50&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#75715e">// /api/compat/v1/detect_item.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">v1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;demo/internal/model&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;demo/internal/model/entity&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;github.com/gogf/gf/v2/frame/g&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemGetAllReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Meta</span> <span style="color:#e6db74">`path:&#34;/detect_item/all&#34; method:&#34;get&#34; summary:&#34;查询所有的检测项目&#34; tags:&#34;检测项目&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemGetAllRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">List</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">DetectItem</span> <span style="color:#e6db74">`json:&#34;list&#34;            dc:&#34;所有的检测项&#34;`</span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemGetListReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Meta</span> <span style="color:#e6db74">`path:&#34;/detect_item&#34; method:&#34;get&#34; summary:&#34;查询检测项目列表(分页)&#34; tags:&#34;检测项目&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">model</span>.<span style="color:#a6e22e">CommonPaginationReq</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemGetListRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">List</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">DetectItem</span> <span style="color:#e6db74">`json:&#34;list&#34;            dc:&#34;检测项列表(分页)&#34;`</span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	model.CommonPaginationRes</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemSearchReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Meta</span> <span style="color:#e6db74">`path:&#34;/detect_item/search&#34; method:&#34;get&#34; summary:&#34;查询检测项目列表(搜索分页)&#34; tags:&#34;检测项目&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Name</span>   <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;name&#34; v:&#34;required|length:2,30#搜索项目名|项目名长度为:{min}到:{max}位&#34; dc:&#34;检测项编号&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">model</span>.<span style="color:#a6e22e">CommonPaginationReq</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemSearchRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">List</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">DetectItem</span> <span style="color:#e6db74">`json:&#34;list&#34;            dc:&#34;检测项列表(搜索分页)&#34;`</span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	model.CommonPaginationRes</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemGetOneReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Meta</span> <span style="color:#e6db74">`path:&#34;/detect_item/{id}&#34; method:&#34;get&#34; tags:&#34;检测项目&#34; summary:&#34;查询单个检测项目信息&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Id</span>     <span style="color:#66d9ef">uint</span> <span style="color:#e6db74">`json:&#34;id&#34; in:&#34;path&#34;  v:&#34;min:1#检测项的编号不正确&#34; dc:&#34;检测项编号&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemGetOneRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">DetectItem</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Id   uint   `json:&#34;id&#34;                dc:&#34;检测项编号&#34;` //</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Name string `json:&#34;name&#34;              dc:&#34;检测项名称&#34;` //</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemCreateReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Meta</span> <span style="color:#e6db74">`path:&#34;/detect_item/create&#34; method:&#34;get&#34; tags:&#34;检测项目&#34; summary:&#34;创建检测项目信息&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Name</span>   <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;name&#34; v:&#34;required|length:2,50#项目名|项目名长度为:{min}到:{max}位&#34;   dc:&#34;检测项名称&#34;`</span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	// entity.DetectItem</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemCreateRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">NewID</span> <span style="color:#66d9ef">uint</span> <span style="color:#e6db74">`json:&#34;new_id&#34;           dc:&#34;ID&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemUpdateReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Meta</span> <span style="color:#e6db74">`path:&#34;/detect_item/update/{id}&#34; method:&#34;post&#34; tags:&#34;检测项目&#34; summary:&#34;修改内容接口&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Id</span>     <span style="color:#66d9ef">uint</span>   <span style="color:#e6db74">`json:&#34;id&#34; in:&#34;path&#34; v:&#34;min:1#检测项的编号不正确&#34; dc:&#34;检测项编号&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Name</span>   <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;name&#34;         v:&#34;required|length:2,50#项目名|项目名长度为:{min}到:{max}位&#34;  dc:&#34;检测项名称&#34;`</span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemUpdateRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemDeleteReq</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Meta</span> <span style="color:#e6db74">`path:&#34;/detect_item/delete&#34; method:&#34;delete&#34; tags:&#34;检测项目&#34; summary:&#34;删除内容接口&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Id</span>     <span style="color:#66d9ef">uint</span> <span style="color:#e6db74">`json:&#34;id&#34;             v:&#34;min:1#检测项的编号不正确&#34; dc:&#34;检测项编号&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DetectItemDeleteRes</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>编写好自己的 api 接口文件后，就可以通过 <code>make ctrl</code> 来生成控制器</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">make</span> <span style="color:#a6e22e">ctrl</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">generated</span>: <span style="color:#f92672">/</span><span style="color:#a6e22e">home</span><span style="color:#f92672">/</span><span style="color:#a6e22e">lee</span><span style="color:#f92672">/</span><span style="color:#a6e22e">Projects</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">-</span><span style="color:#a6e22e">detect</span><span style="color:#f92672">-</span><span style="color:#a6e22e">tools</span><span style="color:#f92672">/</span><span style="color:#a6e22e">demo</span><span style="color:#f92672">/</span><span style="color:#a6e22e">api</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span>.<span style="color:#66d9ef">go</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">generated</span>: <span style="color:#a6e22e">internal</span><span style="color:#f92672">/</span><span style="color:#a6e22e">controller</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span>.<span style="color:#66d9ef">go</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">generated</span>: <span style="color:#a6e22e">internal</span><span style="color:#f92672">/</span><span style="color:#a6e22e">controller</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat_new</span>.<span style="color:#66d9ef">go</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">generated</span>: <span style="color:#a6e22e">internal</span><span style="color:#f92672">/</span><span style="color:#a6e22e">controller</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat_v1_detect_item_get_list</span>.<span style="color:#66d9ef">go</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">generated</span>: <span style="color:#a6e22e">internal</span><span style="color:#f92672">/</span><span style="color:#a6e22e">controller</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat_v1_detect_item_get_one</span>.<span style="color:#66d9ef">go</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">generated</span>: <span style="color:#a6e22e">internal</span><span style="color:#f92672">/</span><span style="color:#a6e22e">controller</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat_v1_detect_item_create</span>.<span style="color:#66d9ef">go</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">generated</span>: <span style="color:#a6e22e">internal</span><span style="color:#f92672">/</span><span style="color:#a6e22e">controller</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat_v1_detect_item_update</span>.<span style="color:#66d9ef">go</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">generated</span>: <span style="color:#a6e22e">internal</span><span style="color:#f92672">/</span><span style="color:#a6e22e">controller</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat_v1_detect_item_delete</span>.<span style="color:#66d9ef">go</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">generated</span>: <span style="color:#f92672">/</span><span style="color:#a6e22e">home</span><span style="color:#f92672">/</span><span style="color:#a6e22e">lee</span><span style="color:#f92672">/</span><span style="color:#a6e22e">Projects</span><span style="color:#f92672">/</span><span style="color:#a6e22e">compat</span><span style="color:#f92672">-</span><span style="color:#a6e22e">detect</span><span style="color:#f92672">-</span><span style="color:#a6e22e">tools</span><span style="color:#f92672">/</span><span style="color:#a6e22e">demo</span><span style="color:#f92672">/</span><span style="color:#a6e22e">api</span><span style="color:#f92672">/</span><span style="color:#a6e22e">hello</span><span style="color:#f92672">/</span><span style="color:#a6e22e">hello</span>.<span style="color:#66d9ef">go</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">done</span>!
+</span></span></code></pre></div><h2 id="路由注册">路由注册
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#75715e">// internal/cmd/cmd.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Main</span> = <span style="color:#a6e22e">gcmd</span>.<span style="color:#a6e22e">Command</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Name</span>:  <span style="color:#e6db74">&#34;main&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Usage</span>: <span style="color:#e6db74">&#34;main&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Brief</span>: <span style="color:#e6db74">&#34;start http server&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Func</span>: <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">parser</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gcmd</span>.<span style="color:#a6e22e">Parser</span>) (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Server</span>()
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Group</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">group</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ghttp</span>.<span style="color:#a6e22e">RouterGroup</span>) {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">group</span>.<span style="color:#a6e22e">Middleware</span>(<span style="color:#a6e22e">ghttp</span>.<span style="color:#a6e22e">MiddlewareHandlerResponse</span>)
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">group</span>.<span style="color:#a6e22e">Bind</span>(
+</span></span><span style="display:flex;"><span>					<span style="color:#a6e22e">compat</span>.<span style="color:#a6e22e">NewV1</span>(), <span style="color:#75715e">// 添加这一行，注册路由，就可以开始访问接口了</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#a6e22e">hello</span>.<span style="color:#a6e22e">NewV1</span>(),
+</span></span><span style="display:flex;"><span>				)
+</span></span><span style="display:flex;"><span>			})
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Run</span>()
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="使用swagger接口文档">使用<code>swagger</code>接口文档
+</h2><p>参考这篇<a class="link" href="https://goframe.org/pages/viewpage.action?pageId=47703685"  target="_blank" rel="noopener"
+    >接口文档-自定义ui</a>
+粘贴以下<code>html</code>到 <code>resource/template/apidoc.html</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;viewport&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width=device-width, initial-scale=1&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;description&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SwaggerUI&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">title</span>&gt;SwaggerUI&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://unpkg.com/swagger-ui-dist@latest/swagger-ui.css&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;swagger-ui&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://unpkg.com/swagger-ui-dist@latest/swagger-ui-bundle.js&#34;</span> <span style="color:#a6e22e">crossorigin</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>	window.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> () =&gt; {
+</span></span><span style="display:flex;"><span>		window.<span style="color:#a6e22e">ui</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">SwaggerUIBundle</span>({
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">url</span><span style="color:#f92672">:</span>    <span style="color:#e6db74">&#39;/api.json&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">dom_id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;#swagger-ui&#39;</span>,
+</span></span><span style="display:flex;"><span>		});
+</span></span><span style="display:flex;"><span>	};
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>在 <code>internal/cmd/cmd.go</code> 中添加路由绑定</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Main</span> = <span style="color:#a6e22e">gcmd</span>.<span style="color:#a6e22e">Command</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Name</span>:  <span style="color:#e6db74">&#34;main&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Usage</span>: <span style="color:#e6db74">&#34;main&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Brief</span>: <span style="color:#e6db74">&#34;start http server&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Func</span>: <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">parser</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gcmd</span>.<span style="color:#a6e22e">Parser</span>) (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Server</span>()
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// --- begin ------------------------------</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// 添加下面三行</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">BindHandler</span>(<span style="color:#e6db74">&#34;/apidoc&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ghttp</span>.<span style="color:#a6e22e">Request</span>) {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Response</span>.<span style="color:#a6e22e">WriteTpl</span>(<span style="color:#e6db74">&#34;/apidoc.html&#34;</span>)
+</span></span><span style="display:flex;"><span>			})
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// --- end --------------------------------</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Group</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">group</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ghttp</span>.<span style="color:#a6e22e">RouterGroup</span>) {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">group</span>.<span style="color:#a6e22e">Middleware</span>(<span style="color:#a6e22e">ghttp</span>.<span style="color:#a6e22e">MiddlewareHandlerResponse</span>)
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">group</span>.<span style="color:#a6e22e">Bind</span>(
+</span></span><span style="display:flex;"><span>					<span style="color:#a6e22e">compat</span>.<span style="color:#a6e22e">NewV1</span>(),
+</span></span><span style="display:flex;"><span>					<span style="color:#a6e22e">hello</span>.<span style="color:#a6e22e">NewV1</span>(),
+</span></span><span style="display:flex;"><span>				)
+</span></span><span style="display:flex;"><span>			})
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Run</span>()
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>然后服务自动重启，就可以访问 <code>http://localhost:8000/apidoc</code> 尝试 <code>try it out</code> 了。</p>
+<p>另外值得一提的是：如果从 <a class="link" href="https://github.com/swagger-api/swagger-ui/releases"  target="_blank" rel="noopener"
+    >swagger-ui</a> 下载最新版本，解压其中的 <code>dist</code> 到 <code>serve/resource/public/resource/</code> 目录下 ，比如 <code>swagger-ui-5.11.2.dist</code> 目录。
+然后在 <code>manifest/config/config.yaml</code> 下配置 <code>server:serverRoot</code> 的值为 <code>/resource/public/resource</code> ，手动重启服务，就可以通过 <code>http://localhost:8000/swagger-ui-5.11.2.dist/</code> 来访问了。此时打开的是别的接口地址，只需要替换 <code>resource/public/resource/swagger-ui-5.11.2.dist/swagger-initializer.js</code> 中的 <code>url</code> 为 <code>/api.json</code> 即可。</p>
+<p>虽然可以访问所有接口，但是其实，我们的接口都只是构造好了，还没有具体实现。
+下面我们就开始实现具体的接口功能。</p>
+<h2 id="生成service">生成<code>service</code>
+</h2><p><code>make service</code>该命令通过分析给定的<code>logic</code>业务逻辑模块目录下的代码，自动生成<code>service</code>目录接口代码。</p>
+<p>所以现在我们开始尝试编写 <code>logic</code> 业务逻辑代码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#75715e">// /internal/logic/detectitem/detectitem.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">detectitem</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;context&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">v1</span> <span style="color:#e6db74">&#34;demo/api/compat/v1&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;demo/internal/dao&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;demo/internal/service&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;github.com/gogf/gf/frame/g&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sDetectItem</span> <span style="color:#66d9ef">struct</span>{}
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">New</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">sDetectItem</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sDetectItem</span>{}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sDetectItem</span>) <span style="color:#a6e22e">GetAll</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">in</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetAllReq</span>) (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetAllRes</span>, <span style="color:#a6e22e">e</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetAllRes</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">e</span> = <span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Ctx</span>(<span style="color:#a6e22e">ctx</span>).<span style="color:#a6e22e">Scan</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">List</span>, <span style="color:#66d9ef">true</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sDetectItem</span>) <span style="color:#a6e22e">GetList</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">in</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetListReq</span>) (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetListRes</span>, <span style="color:#a6e22e">e</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetListRes</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">Page</span> = <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Page</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">Size</span> = <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Size</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">orm</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Ctx</span>(<span style="color:#a6e22e">ctx</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">e</span> = <span style="color:#a6e22e">orm</span>.<span style="color:#a6e22e">Page</span>(<span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Page</span>, <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Size</span>).<span style="color:#a6e22e">ScanAndCount</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">List</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">Total</span>, <span style="color:#66d9ef">true</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sDetectItem</span>) <span style="color:#a6e22e">Search</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">in</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemSearchReq</span>) (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemSearchRes</span>, <span style="color:#a6e22e">e</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemSearchRes</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">Page</span> = <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Page</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">Size</span> = <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Size</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">orm</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Ctx</span>(<span style="color:#a6e22e">ctx</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">orm</span> = <span style="color:#a6e22e">orm</span>.<span style="color:#a6e22e">WhereLike</span>(<span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Columns</span>().<span style="color:#a6e22e">Name</span>, <span style="color:#e6db74">&#34;%&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Name</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;%&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">e</span> = <span style="color:#a6e22e">orm</span>.<span style="color:#a6e22e">Page</span>(<span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Page</span>, <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Size</span>).<span style="color:#a6e22e">ScanAndCount</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">List</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">Total</span>, <span style="color:#66d9ef">true</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sDetectItem</span>) <span style="color:#a6e22e">GetOne</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">in</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetOneReq</span>) (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetOneRes</span>, <span style="color:#a6e22e">e</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetOneRes</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Ctx</span>(<span style="color:#a6e22e">ctx</span>).<span style="color:#a6e22e">WherePri</span>(<span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Id</span>).<span style="color:#a6e22e">Scan</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">out</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sDetectItem</span>) <span style="color:#a6e22e">Create</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">in</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemCreateReq</span>) (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemCreateRes</span>, <span style="color:#a6e22e">e</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">lastInsertID</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Ctx</span>(<span style="color:#a6e22e">ctx</span>).<span style="color:#a6e22e">Data</span>(<span style="color:#a6e22e">in</span>).<span style="color:#a6e22e">InsertAndGetId</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">out</span>, <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemCreateRes</span>{<span style="color:#a6e22e">NewID</span>: uint(<span style="color:#a6e22e">lastInsertID</span>)}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sDetectItem</span>) <span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">in</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemUpdateReq</span>) (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemUpdateRes</span>, <span style="color:#a6e22e">e</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> = <span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Ctx</span>(<span style="color:#a6e22e">ctx</span>).<span style="color:#a6e22e">Data</span>(<span style="color:#a6e22e">in</span>).
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">FieldsEx</span>(<span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Columns</span>().<span style="color:#a6e22e">Id</span>).
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Where</span>(<span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Columns</span>().<span style="color:#a6e22e">Id</span>, <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Id</span>).
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Update</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sDetectItem</span>) <span style="color:#a6e22e">Delete</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">in</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemDeleteReq</span>) (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemDeleteRes</span>, <span style="color:#a6e22e">e</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> = <span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Ctx</span>(<span style="color:#a6e22e">ctx</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Map</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">DetectItem</span>.<span style="color:#a6e22e">Columns</span>().<span style="color:#a6e22e">Id</span>: <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Id</span>,
+</span></span><span style="display:flex;"><span>	}).<span style="color:#a6e22e">Delete</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>然后执行 <code>make service</code> 命令，即可生成 <code>service</code> 目录下的 <code>detectitem.go</code> 文件。</p>
+<p>执行后，再修改一次 <code>logic</code> 文件，注册 <code>service</code>，即添加 <code>func init()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">RegisterDetectItem</span>(<span style="color:#a6e22e">New</span>())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>Visual Studio Code</code> 可以安装插件 <code>RunOnSave</code> 随后配置插件，可以在修改 <code>logic</code>(比如新增函数) 时自动更新 <code>service</code>。：</p>
+<pre tabindex="0"><code>		&#34;emeraldwalk.runonsave&#34;: {
+			&#34;commands&#34;: [
+				{
+					&#34;match&#34;: &#34;.*logic.*go&#34;,
+					&#34;isAsync&#34;: true,
+					&#34;cmd&#34;: &#34;gf gen service&#34;
+				}
+			]
+		}
+</code></pre><p>注意配置数据库 <code>manifest/config/config.yaml</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># https://goframe.org/pages/viewpage.action?pageId=1114245</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">database</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">default</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">link</span>: <span style="color:#e6db74">&#34;sqlite::@file(./resource/db.sqlite3)&#34;</span>
+</span></span></code></pre></div><p>注意导入驱动 <code>/main.go</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#75715e">// https://github.com/gogf/gf/blob/master/contrib/drivers/README.MD</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/gogf/gf/contrib/drivers/mysql/v2&#34;</span> <span style="color:#75715e">// MySQL/MariaDB/TiDB</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/gogf/gf/contrib/drivers/sqlite/v2&#34;</span> <span style="color:#75715e">// SQLite</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/gogf/gf/contrib/drivers/pgsql/v2&#34;</span> <span style="color:#75715e">// PostgreSQL</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/gogf/gf/contrib/drivers/mssql/v2&#34;</span> <span style="color:#75715e">// SQL Server</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/gogf/gf/contrib/drivers/oracle/v2&#34;</span> <span style="color:#75715e">// Oracle</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/gogf/gf/contrib/drivers/clickhouse/v2&#34;</span> <span style="color:#75715e">// ClickHouse</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/gogf/gf/contrib/drivers/dm/v2&#34;</span> <span style="color:#75715e">// DM (达梦)</span>
+</span></span></code></pre></div><p>最后访问接口，发现接口均提示&quot;未实现&quot;。下面我们将 controller 和 service 对接上。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#75715e">// internal/controller/compat/compat_v1_detect_item_create.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ControllerV1</span>) <span style="color:#a6e22e">DetectItemCreate</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">req</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemCreateReq</span>) (<span style="color:#a6e22e">res</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemCreateRes</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">DetectItem</span>().<span style="color:#a6e22e">Create</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">req</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// internal/controller/compat/compat_v1_detect_item_delete.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ControllerV1</span>) <span style="color:#a6e22e">DetectItemDelete</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">req</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemDeleteReq</span>) (<span style="color:#a6e22e">res</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemDeleteRes</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">DetectItem</span>().<span style="color:#a6e22e">Delete</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">req</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// internal/controller/compat/compat_v1_detect_item_get_all.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ControllerV1</span>) <span style="color:#a6e22e">DetectItemGetAll</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">req</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetAllReq</span>) (<span style="color:#a6e22e">res</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetAllRes</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">DetectItem</span>().<span style="color:#a6e22e">GetAll</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">req</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// internal/controller/compat/compat_v1_detect_item_get_list.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ControllerV1</span>) <span style="color:#a6e22e">DetectItemGetList</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">req</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetListReq</span>) (<span style="color:#a6e22e">res</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetListRes</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">DetectItem</span>().<span style="color:#a6e22e">GetList</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">req</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// internal/controller/compat/compat_v1_detect_item_get_one.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ControllerV1</span>) <span style="color:#a6e22e">DetectItemGetOne</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">req</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetOneReq</span>) (<span style="color:#a6e22e">res</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemGetOneRes</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">DetectItem</span>().<span style="color:#a6e22e">GetOne</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">req</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// internal/controller/compat/compat_v1_detect_item_search.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ControllerV1</span>) <span style="color:#a6e22e">DetectItemSearch</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">req</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemSearchReq</span>) (<span style="color:#a6e22e">res</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemSearchRes</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">DetectItem</span>().<span style="color:#a6e22e">Search</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">req</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// internal/controller/compat/compat_v1_detect_item_update.go</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ControllerV1</span>) <span style="color:#a6e22e">DetectItemUpdate</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">req</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemUpdateReq</span>) (<span style="color:#a6e22e">res</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">v1</span>.<span style="color:#a6e22e">DetectItemUpdateRes</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">DetectItem</span>().<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">req</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>其实 <code>controller</code> 本身是介于<code>API接口</code>和 <code>service服务</code> 之间的存在，一个 <code>controller</code> 可能需要调用多个 <code>service</code> 才能完成接口功能。此处示例较为简单，所以不需要调用多个 <code>service</code> 。</p>
+<p>上述代码，应该可以完成一个 基础的增删改查了。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/goframe/">Goframe</a>
+        
+            <a href="/tags/golang/">Golang</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/hotgo/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">hotgo</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/gfast-v32/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">gfast-v32</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/goframe/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">goframe</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/call-func-by-string-in-golang/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">call func by string in golang</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/go2javascript/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Go to javascript</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

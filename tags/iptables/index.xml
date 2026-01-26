@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Iptables on 良宏</title>
+        <link>/tags/iptables/</link>
+        <description>Recent content in Iptables on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 03 Jul 2024 14:17:18 +0800</lastBuildDate><atom:link href="/tags/iptables/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>iptables</title>
+        <link>/post/tech/iptables/</link>
+        <pubDate>Wed, 03 Jul 2024 14:17:18 +0800</pubDate>
+        
+        <guid>/post/tech/iptables/</guid>
+        <description>&lt;h2 id=&#34;介绍&#34;&gt;介绍
+&lt;/h2&gt;&lt;p&gt;linux 环境下，使用 iptables 可以执行 netfilter 的复杂流量过滤逻辑。
+包含 filter, nat, managle, raw, security 五个表，分别对应不同的网络层，传输层，应用层，网络层，安全层。一般使用 filter, nat 两个表最多。&lt;/p&gt;
+&lt;h2 id=&#34;理解流量路径中的链&#34;&gt;理解流量路径中的链
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;网卡      -&amp;gt;                netfilter              -&amp;gt;        应用
+网卡      -&amp;gt;  prerouting链 -&amp;gt;  -&amp;gt;    -&amp;gt; input链     -&amp;gt;        应用
+             数据包抵达系统时    |    数据包目标是本机时
+                              |forward链
+                              |数据包目标不是本机只是经过本机时
+网卡       &amp;lt;-  postrouting链 &amp;lt;-v  &amp;lt;-    &amp;lt;- output链           应用
+             数据包离开系统时          数据包从本机出去时
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;filter 表管理 input,forward,output 三个链
+至此，只要在对应的链里添加规则，即可管理有关本机的所有流量。&lt;/p&gt;
+&lt;h2 id=&#34;理解链中添加规则&#34;&gt;理解链中添加规则
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables --table filter --list &lt;span style=&#34;color:#75715e&#34;&gt;# 列出 filter 表中所有链&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables --list &lt;span style=&#34;color:#75715e&#34;&gt;# 列出 filter 表(默认filter表)中所有链&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables --table filter --list-rules &lt;span style=&#34;color:#75715e&#34;&gt;# 列出 filter 表中所有链的规则&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables --table filter --append INPUT --source 192.168.3.20 --jump REJECT &lt;span style=&#34;color:#75715e&#34;&gt;# 添加规则，从192.168.3.20来的数据包，跳转到 REJECT 链，即拒绝&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 两次执行会添加两条规则，比如将 REJECT 改为 DROP，将会多一条 DROP 规则，最终会从上往下执行&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 所以，如果想要删除第一条规则，避免后面添加的规则不受影响，可以先查看规则的行数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables --table filter --list --line-numbers
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 然后执行删除命令，删除第一条规则&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables --table filter --delete INPUT &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;查看规则&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables --table filter --list --line-numbers
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;target     prot opt source               destination
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ACCEPT     tcp  --  anywhere             172.17.0.3           tcp dpt:cslistener
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# prot 表示协议，常见值有: tcp, udp, icmp, all&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# target 表示动作，常见值有: ACCEPT, DROP, REJECT, LOG, MARK, SNAT, DNAT, RETURN, JUMP&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# opt 表示选项，常见值有: dpt, sport, dport, sport, saddr, daddr,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;ip段的获取和处理&#34;&gt;IP段的获取和处理
+&lt;/h2&gt;&lt;p&gt;查看 ipdeny.com 的 ip 段，通过 Country IP blocks 获取要屏蔽的国家地址段。
+以印度为例，ipdeny.com 的 ip 段如下：
+使用 aggregated 可以用更少的 IP 段，更高效的屏蔽工作。
+下载了 aggregated 文件后，会发现，即使是使用 shell 来全部添加到 iptables 规则里，也会消耗不少CPU。 ipset 可以让我们更优雅的处理这个问题。&lt;/p&gt;
+&lt;h2 id=&#34;ipset&#34;&gt;ipset
+&lt;/h2&gt;&lt;p&gt;可以把众多IP地址段汇集到一个集合中，然后通过集合，集合可以生成唯一的哈希值，来添加到 iptables 规则里。
+当为 iptables 添加 IP 地址时，只需要用这个哈希值来代表背后的IP地址段集合。会自动将 IP 地址添加到集合中。&lt;/p&gt;
+&lt;h3 id=&#34;创建集合&#34;&gt;创建集合
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ipset create indiaip hash:net &lt;span style=&#34;color:#75715e&#34;&gt;# 因为我们要处理的是网络地址而不是主机名，所以使用 hash:net&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ipset list indiaip &lt;span style=&#34;color:#75715e&#34;&gt;# 查看集合，加入好的IP会在 Members 字段显示出来&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;编写脚本&#34;&gt;编写脚本
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#  cat block-india.sh&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ipset create indiaip hash:net -exist &lt;span style=&#34;color:#75715e&#34;&gt;# 如果存在就忽略，避免报错&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ipset flush indiaip &lt;span style=&#34;color:#75715e&#34;&gt;# 清空集合，避免重复添加&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; -f &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;in-aggregated.zone&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -f in-aggregated.zone &lt;span style=&#34;color:#75715e&#34;&gt;# 删除旧的文件，保证下载的是最新文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget https://www.ipdeny.com/ipblocks/data/aggregated/in-aggregated.zone
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; $? -eq &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Download success&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; ip in &lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;cat in-aggregated.zone&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    ipset add indiaip $ip -exist
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Download failed&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 添加规则&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 当访问来自印度的IP时，丢弃请求数据包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;--table filter &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;--append INPUT &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;--match set --match-set indiaip src &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;--jump DROP
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;chmod +x block-india.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ping -c3auth-dns-01.skyberbrroadband.co.in. &lt;span style=&#34;color:#75715e&#34;&gt;# ping  一个印度域名测试&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./block-india.sh &lt;span style=&#34;color:#75715e&#34;&gt;# 运行脚本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ipset list indiaip | less &lt;span style=&#34;color:#75715e&#34;&gt;# 查看集合，加入好的IP会在 Members 字段显示出来&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ipset list indiaip | grep 103.130.110 &lt;span style=&#34;color:#75715e&#34;&gt;# 检查 ping 测试的 IP 是否在集合里&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables --table filter --list --line-numbers &lt;span style=&#34;color:#75715e&#34;&gt;# 检查规则，如果有多于的规则，应及时删除&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ping -c3auth-dns-01.skyberbrroadband.co.in. &lt;span style=&#34;color:#75715e&#34;&gt;# 再次 ping  一个印度域名测试，ping 会 loss 100%&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;持久化&#34;&gt;持久化
+&lt;/h3&gt;&lt;p&gt;重启服务后，像刚刚的设置方式 添加的 iptables 规则都会丢失，所以需要持久化。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ipset save &amp;gt; /etc/rules.ipset &lt;span style=&#34;color:#75715e&#34;&gt;# 将集合保存到文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables-save &amp;gt; /etc/rules.iptables &lt;span style=&#34;color:#75715e&#34;&gt;# 将 iptables 规则保存到文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables -L &lt;span style=&#34;color:#75715e&#34;&gt;# 查看 iptables 规则&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ipset list &lt;span style=&#34;color:#75715e&#34;&gt;# 查看集合&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ipset restore &amp;lt; /etc/rules.ipset &lt;span style=&#34;color:#75715e&#34;&gt;# 恢复集合&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iptables-restore &amp;lt; /etc/rules.iptables &lt;span style=&#34;color:#75715e&#34;&gt;# 恢复 iptables 规则&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 如果不想把原来的内容覆盖掉，可以在 iptables-restore 前加上 --noflush 或者 -n 参数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 同理 ipset restore 也可以加上 -exist 参数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;net服务&#34;&gt;net服务
+&lt;/h3&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 域名
+dns 解析的默认端口号是 53，所以可以做一条 iptables 规则去拦截 53 端口的请求
+做一下 dns 的解析，然后能拿到一个 ip list，之后只要将 list 中所有的 ip 都传给 iptables 就 ok 了。
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

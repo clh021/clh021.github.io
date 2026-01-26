@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Install sudo apt install debootstrap Use sudo debootstrap --arch [平台] [发行版本代号] [目录] sudo debootstrap --arch amd64 buster ./ # 此句收尾代表成功 # I: Base system installed successfully. 当前环境中 debootstrap 支持的发行版本可以在 /usr/share/debootstrap/scripts 查看，补充两个版本代号信息相关的链接有兴趣可以了解一下，版本代号网上都可以查到。\n">
+<title>debootstrap</title>
+
+<link rel='canonical' href='/post/tech/debootstrap/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="debootstrap">
+<meta property='og:description' content="Install sudo apt install debootstrap Use sudo debootstrap --arch [平台] [发行版本代号] [目录] sudo debootstrap --arch amd64 buster ./ # 此句收尾代表成功 # I: Base system installed successfully. 当前环境中 debootstrap 支持的发行版本可以在 /usr/share/debootstrap/scripts 查看，补充两个版本代号信息相关的链接有兴趣可以了解一下，版本代号网上都可以查到。\n">
+<meta property='og:url' content='/post/tech/debootstrap/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='debootstrap' /><meta property='article:published_time' content='2022-04-27T23:54:47&#43;08:00'/><meta property='article:modified_time' content='2022-04-27T23:54:47&#43;08:00'/>
+<meta name="twitter:title" content="debootstrap">
+<meta name="twitter:description" content="Install sudo apt install debootstrap Use sudo debootstrap --arch [平台] [发行版本代号] [目录] sudo debootstrap --arch amd64 buster ./ # 此句收尾代表成功 # I: Base system installed successfully. 当前环境中 debootstrap 支持的发行版本可以在 /usr/share/debootstrap/scripts 查看，补充两个版本代号信息相关的链接有兴趣可以了解一下，版本代号网上都可以查到。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/debootstrap/">debootstrap</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2022-04-27T23:54:47&#43;08:00'>2022-04-27 23:54:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="install">Install
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install debootstrap
+</span></span></code></pre></div><h2 id="use">Use
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo debootstrap --arch <span style="color:#f92672">[</span>平台<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>发行版本代号<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>目录<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>sudo debootstrap --arch amd64 buster ./
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 此句收尾代表成功</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># I: Base system installed successfully.</span>
+</span></span></code></pre></div><p>当前环境中 <code>debootstrap</code> 支持的发行版本可以在 <code>/usr/share/debootstrap/scripts</code> 查看，补充两个版本代号信息相关的链接有兴趣可以了解一下，版本代号网上都可以查到。</p>
+<h2 id="应用场景">应用场景
+</h2><h3 id="构建一个编译环境">构建一个编译环境
+</h3><p>amd64架构debian10案例</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建环境进入</span>
+</span></span><span style="display:flex;"><span>mkdir buster&amp;cd buster
+</span></span><span style="display:flex;"><span>sudo debootstrap --arch amd64 buster ./
+</span></span><span style="display:flex;"><span>sudo chroot .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改云源</span>
+</span></span><span style="display:flex;"><span>echo deb http://mirrors.ustc.edu.cn/debian buster main &gt; /etc/apt/sources.list
+</span></span><span style="display:flex;"><span>echo deb-src http://mirrors.ustc.edu.cn/debian buster main &gt;&gt; /etc/apt/sources.list
+</span></span><span style="display:flex;"><span>apt-get update
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 部分版本是没有装编译工具包的</span>
+</span></span><span style="display:flex;"><span>apt-get install dpkg-dev
+</span></span><span style="display:flex;"><span>apt-get install debhelper
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载编译源码</span>
+</span></span><span style="display:flex;"><span>cd /tmp
+</span></span><span style="display:flex;"><span>apt-get source redis
+</span></span><span style="display:flex;"><span>apt-get build-dep redis
+</span></span><span style="display:flex;"><span>cd redis.x.x
+</span></span><span style="display:flex;"><span>dpkg-buildpackage
+</span></span><span style="display:flex;"><span>find ../*.deb
+</span></span></code></pre></div><h3 id="从软件源构建一个系统的基础镜像">从软件源构建一个系统的基础镜像
+</h3><ul>
+<li>
+<p>确定软件源(loongarch64)
+deb <a class="link" href="https://education-packages.chinauos.com/desktop-education"  target="_blank" rel="noopener"
+    >https://education-packages.chinauos.com/desktop-education</a> uranus/dc80 main</p>
+</li>
+<li>
+<p>开始构建(同架构下的debootstrap用同样的方法应该已经安装好了)</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo debootstrap --no-check-gpg uranus/dc80 rootfs https://education-packages.chinauos.com/desktop-education sid
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 需要确保当前路径下 不存在 rootfs 目录 或者只有 空的 rootfs 目录。</span>
+</span></span><span style="display:flex;"><span>sudo du --human-readable --summarize rootfs
+</span></span><span style="display:flex;"><span>391M    rootfs/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 我这里省略了下面的步骤</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sudo mount --bind /dev     rootfs/dev</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sudo mount --bind /dev/pts rootfs/dev/pts</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sudo mount --bind /proc    rootfs/proc</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sudo mount --bind /sys     rootfs/sys</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo chroot rootfs/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>apt-get remove --allow-remove-essential e2fsprogs e2fslibs nano pinentry-curses whiptail kmod iptables iproute2 dmidecode
+</span></span><span style="display:flex;"><span>apt-get clean
+</span></span><span style="display:flex;"><span>find /var/lib/apt/lists/ -maxdepth <span style="color:#ae81ff">2</span> -type f -delete
+</span></span><span style="display:flex;"><span>exit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 因为先前没有挂载，所以我也不用做这个步骤</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sudo umount rootfs/dev/pts</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sudo umount rootfs/dev</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sudo umount rootfs/proc</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sudo umount rootfs/sys</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo du --human-readable --summarize rootfs
+</span></span><span style="display:flex;"><span>203M    rootfs/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo rm rootfs/var/log/bootstrap.log
+</span></span><span style="display:flex;"><span>sudo rm -rf rootfs/var/log/*
+</span></span><span style="display:flex;"><span>sudo rm rootfs/var/log/apt/*
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo du --human-readable --summarize rootfs
+</span></span><span style="display:flex;"><span>203M    rootfs/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo su
+</span></span><span style="display:flex;"><span>tar -C rootfs/ -c . | docker import -
+</span></span><span style="display:flex;"><span>docker tag 259ce466a72d3d4c35c203d7912b7067ef4b1f85c1fdcc27aa1a0d0cd7afe4a9 registry.linakesi.com/uos-edu-desktop:loongarch64
+</span></span></code></pre></div><ul>
+<li>测试使用</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run --rm -it registry.linakesi.com/uos-edu-desktop:loongarch64 bash
+</span></span><span style="display:flex;"><span>apt install git
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 测试成功</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 后续使用中如果有问题，考虑从 apt-get remove 操作中找原因，比如我发现执行 remove 时有 deepin-keyring 包被卸载。</span>
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/debootstrap/">Debootstrap</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

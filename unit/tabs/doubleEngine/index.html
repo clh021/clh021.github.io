@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>双引擎联测</title>
+    <script src="./apps/index/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<button onclick="animation_play()">开始动画</button>
+<button onclick="animation_stop()">结束动画</button>
+<span id="animation_dot" style="position: absolute">O</span>
+<script type="text/javascript" charset="utf-8">
+    var timer = null;
+    function animation_play() {
+        clearInterval(timer);
+        var oBtn = document.getElementById("animation_dot");
+        let offsetNum = 1;
+        let direction = 1;
+        timer = setInterval(function () {
+            if (oBtn.offsetLeft == 500) {
+                direction = -1;
+            } else if (oBtn.offsetLeft == 200) {
+                direction = 1;
+            }
+            oBtn.style.left = (oBtn.offsetLeft + (offsetNum * direction)) + "px";
+        }, 20)
+    }
+    function animation_stop() {
+        clearInterval(timer);
+    }
+</script>
+<fieldset>
+    <legend>双引擎传输长度联测</legend>
+    标题
+    <select id="longTitle">
+        <option value="测试页online">测试页online(limitPayload:13574:489次)</option>
+        <option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890">字母数字(limitPayload:30501:479次)
+        </option>
+        <option value='!@#$%^&*()~,./<>?;"[]{}`'>特殊字符(limitPayload:43052:473次)</option>
+        <option value="叠加抽象函数变量类别枚举数组">普通汉字(limitPayload:61223:482次)</option>
+        <option value="魑魅魍魉">特殊汉字(limitPayload:82149:2220次)</option>
+        <option value='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()~,./<>?;"[]{}叠加抽象函数变量类别枚举数组'>
+            混合字符(limitPayload:81661:298次)
+        </option>
+    </select>
+    重复<input id="longTitleRepeat" type="text" value="500"/>次
+    <button onclick="testLongTitle()">longTitleTest</button>
+    <!-- // 分别打开好两个引擎界面
+    // 两边读出数据
+    // 一边写入数据
+    // 另一边再次读出数据
+    // 关闭其中一个引擎窗口，再打开，读出数据
+    // 关闭另一个引擎窗口，再打开，读出数据
+    // 关闭所有窗口(退出进程)，再打开，读出数据 -->
+    <script type="text/javascript" charset="utf-8">
+        function getNewLongTitle() {
+            let _tBase = $("#longTitle").val();
+            let _tRepeat = parseInt($("#longTitleRepeat").val());
+            let _tArr = Array(_tRepeat);
+            _tArr.fill(_tBase, 0, _tRepeat);
+            return _tArr.join(".");
+        }
+
+        // https://github.com/protobufjs/protobuf.js/issues/907#issuecomment-392087787
+        // 当数据被强制转换为某种字符串编码（如 utf8）时，通常会发生这样的事情。避免这种情况的最佳方法是确保数据从生成到使用都保持二进制，或者，如果出于某种原因需要进行字符串转换，请使用 base64 编码。
+        function testLongTitle() {
+            if (!window.lastWin) {
+                window.wins = lnks.MainWindow.all();
+                for (const w of window.wins) {
+                    console.log(`title:${w.title}`);//, appId:${w.appId}, url:${w.url}
+                }
+                window.lastWin = window.wins[window.wins.length - 1];
+            }
+            let newTitle = getNewLongTitle();
+            console.log("newTitle.len:", newTitle.length); //  | > 3358: error
+            window.lastWin.setTitle(newTitle);
+            window.lastWin.title;
+        }
+    </script>
+</fieldset>
+<fieldset>
+    <legend>双引擎传输密集调用联测</legend>
+    重复<input id="socketRepeat" type="text" value="100"/>次
+    <button onclick="repeatFunc((i)=>{console.log(`${i}: `,document.cookie)})">Cookie读取</button>
+    <button onclick="repeatFunc((i)=>{let exp = new Date();exp.setTime(exp.getTime() + 30*24*60*60*1000);document.cookie = `username${i}=John Doe${i};expires=${exp.toGMTString()}`;})">Cookie写入</button>
+    <button onclick="repeatFunc((i)=>{console.log(`${i}`, localStorage.getItem(`key${i}`))})">localStorage 读取</button>
+    <button onclick="repeatFunc((i)=>{console.log(`${i}: `,localStorage.setItem(`key${i}`, i))})">localStorage 写入</button>
+    <script type="text/javascript" charset="utf-8">
+        let _start = performance.now();
+        function repeatFunc(callbackFunc) {
+            let start = performance.now();
+            console.log('本页面打开至此时: ', `${start - _start}ms`);
+            let repeatCnt = parseInt($("#socketRepeat").val());
+            for (let i = 0; i <repeatCnt; i++) {
+                callbackFunc(i);
+            }
+            let end = performance.now();
+            console.log('time: ', `${end - start}ms`);
+        }
+    </script>
+</fieldset>
+<fieldset>
+    <legend>双引擎窗口联测</legend>
+    <button onclick="openGeckoWindow()">打开Gecko引擎</button>
+    <button onclick="openChromiumWindow()">打开Chromium引擎</button>
+    <button onclick="openWindowByTxtConf()">根据TxtConf打开引擎</button>
+    <button onclick="allWin()">查看多窗口控制</button>
+
+    <script type="text/javascript" charset="utf-8">
+        let doubleEngine = window._unitTestPageRoot + "/doubleEngine/";
+        function getUrl(url) {
+            if (url.startsWith("http://") || url.startsWith("https://")) {
+                return url;
+            }
+            return doubleEngine + url;
+        }
+        function openGeckoWindow(url=location.href) {
+            lnks.openWindow2({
+                url: `${getUrl(url)}`,
+                useGecko: true,
+            });
+        }
+
+        function openChromiumWindow(url=location.href) {
+            lnks.openWindow2({
+                url: `${getUrl(url)}`,
+                useGecko: false,
+            });
+        }
+
+        function openWindowByTxtConf(url=location.href) {
+            lnks.openWindow2({
+                url: `${getUrl(url)}`,
+            });
+        }
+
+        /**
+         * win defined in index.html
+         */
+        // if (window.lnks && win && !win.isGecko()) {
+        //     lnks.openWindow2({
+        //         url: `${location.href}`,
+        //         useGecko: true,
+        //     });
+        // }
+
+        function allWin() {
+            window.wins = lnks.MainWindow.all();
+            for (const w of window.wins) {
+                console.log(`title:${w.title}`);//, appId:${w.appId}, url:${w.url}
+            }
+            window.lastWin = window.wins[window.wins.length - 1];
+        }
+    </script>
+</fieldset>
+<fieldset>
+    <legend>Chromium 崩溃服务测试</legend>
+    <button onclick="lnks.openWindow2({url: 'chrome://crash'})">演示 Renderer 进程崩溃</button>
+    <button onclick="lnks.openWindow2({url: 'chrome://inducebrowsercrashforrealz'})">演示 Browser 进程崩溃</button>
+    <button onclick="lnks.openWindow2({url: 'chrome://gpucrash'})">演示 GPU 进程崩溃</button>
+</fieldset>
+</body>
+</html>

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 由于要做负载均衡的系统部署，然后，希望用docker的方式将整个程序打包，系统本身是建立在wordpress和部分插件之上的，所以，这导致了必须要先安装wordpress，然后再初始化数据库，安装插件，做好基本的插件配置，然后再才启用自己些的插件，去做初始化配置，这太繁琐了，所以需要一个极简的安装页面，一键初始化所有操作。于是……\n">
+<title>简易的系统初始化页面</title>
+
+<link rel='canonical' href='/post/live/init-web-system-page/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="简易的系统初始化页面">
+<meta property='og:description' content=" 由于要做负载均衡的系统部署，然后，希望用docker的方式将整个程序打包，系统本身是建立在wordpress和部分插件之上的，所以，这导致了必须要先安装wordpress，然后再初始化数据库，安装插件，做好基本的插件配置，然后再才启用自己些的插件，去做初始化配置，这太繁琐了，所以需要一个极简的安装页面，一键初始化所有操作。于是……\n">
+<meta property='og:url' content='/post/live/init-web-system-page/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='系统初始化' /><meta property='article:tag' content='PHP' /><meta property='article:tag' content='WordPress' /><meta property='article:published_time' content='2019-02-20T12:45:26&#43;08:00'/><meta property='article:modified_time' content='2019-02-20T12:45:26&#43;08:00'/>
+<meta name="twitter:title" content="简易的系统初始化页面">
+<meta name="twitter:description" content=" 由于要做负载均衡的系统部署，然后，希望用docker的方式将整个程序打包，系统本身是建立在wordpress和部分插件之上的，所以，这导致了必须要先安装wordpress，然后再初始化数据库，安装插件，做好基本的插件配置，然后再才启用自己些的插件，去做初始化配置，这太繁琐了，所以需要一个极简的安装页面，一键初始化所有操作。于是……\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/live/" style="background-color: #2a9d8f; color: #fff;">
+                Live
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/live/init-web-system-page/">简易的系统初始化页面</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2019-02-20T12:45:26&#43;08:00'>2019-02-20 12:45:26</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>由于要做负载均衡的系统部署，然后，希望用docker的方式将整个程序打包，系统本身是建立在wordpress和部分插件之上的，所以，这导致了必须要先安装wordpress，然后再初始化数据库，安装插件，做好基本的插件配置，然后再才启用自己些的插件，去做初始化配置，这太繁琐了，所以需要一个极简的安装页面，一键初始化所有操作。于是……</p>
+</blockquote>
+<p><code>/index.php</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span><span style="color:#a6e22e">file_exists</span>(<span style="color:#e6db74">&#39;init.api.lock&#39;</span>)) {<span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: /install.php&#39;</span>);<span style="color:#66d9ef">die</span>();}
+</span></span></code></pre></div><p><code>/install.php</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// var_dump($_SERVER);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($_POST) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">file_exists</span>(<span style="color:#e6db74">&#39;init.api.lock&#39;</span>)){
+</span></span><span style="display:flex;"><span>    $_POST[<span style="color:#e6db74">&#39;r&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">isset</span>($_POST[<span style="color:#e6db74">&#39;r&#39;</span>]) <span style="color:#f92672">?</span> $_POST[<span style="color:#e6db74">&#39;r&#39;</span>] <span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>    $last_status <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    $last_message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">switch</span> ($_POST[<span style="color:#e6db74">&#39;r&#39;</span>]) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;connect&#39;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>            $mysqli <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">mysqli</span>($_POST[<span style="color:#e6db74">&#39;host&#39;</span>],$_POST[<span style="color:#e6db74">&#39;user&#39;</span>],$_POST[<span style="color:#e6db74">&#39;pass&#39;</span>],$_POST[<span style="color:#e6db74">&#39;name&#39;</span>]);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">mysqli_connect_errno</span>()) {
+</span></span><span style="display:flex;"><span>                $last_message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Connect failed: &#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mysqli_connect_error</span>();
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>                $last_message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Connect success&#34;</span>;
+</span></span><span style="display:flex;"><span>                $last_status <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// $sql = file_get_contents(&#39;mysqldump.sql&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">var_dump</span>($_POST);
+</span></span><span style="display:flex;"><span>    $mysqli <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">mysqli</span>($_POST[<span style="color:#e6db74">&#39;host&#39;</span>],$_POST[<span style="color:#e6db74">&#39;user&#39;</span>],$_POST[<span style="color:#e6db74">&#39;pass&#39;</span>],$_POST[<span style="color:#e6db74">&#39;name&#39;</span>]);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">mysqli_connect_errno</span>()) { <span style="color:#75715e">/* check connection */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Connect failed: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#a6e22e">mysqli_connect_error</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">exit</span>();
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;Connect success&#39;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* execute multi query */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// if ($mysqli-&gt;multi_query($sql)) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//     echo &#34;success&#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// } else {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//   echo &#34;error&#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// file_put_contents(&#39;&#39;,&#39;init.api.lock&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">die</span>(<span style="color:#a6e22e">json_encode</span>([<span style="color:#e6db74">&#39;status&#39;</span><span style="color:#f92672">=&gt;</span>$last_status,<span style="color:#e6db74">&#39;message&#39;</span><span style="color:#f92672">=&gt;</span>$last_message]));
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// $host=&#39;dbhost:3306&#39;;$name=&#39;api_www&#39;;$user=&#39;api_user&#39;;$pass=&#39;api_pass&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    $host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>;$name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>;$user<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>;$pass<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;!doctype html&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;html lang=&#34;en&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &lt;head&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;!-- Required meta tags --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;meta charset=&#34;utf-8&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1, shrink-to-fit=no&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;!-- Bootstrap CSS --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;link rel=&#34;stylesheet&#34; href=&#34;https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css&#34; integrity=&#34;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&#34; crossorigin=&#34;anonymous&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;style type=&#34;text/css&#34;&gt;body,html{height:100%}body{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-align:center;-ms-flex-pack:center;-webkit-box-align:center;align-items:center;-webkit-box-pack:center;justify-content:center;padding-top:40px;padding-bottom:40px;background-color:#f5f5f5}.form-signin{width:100%;max-width:330px;padding:15px;margin:0 auto}.form-signin .form-control{position:relative;box-sizing:border-box;height:auto;padding:10px;font-size:16px}.form-signin .form-control:focus{z-index:2}.progress{margin: 5px 0;}&lt;/style&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;title&gt;接口管理平台&lt;/title&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &lt;/head&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &lt;body class=&#34;text-center&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;form class=&#34;form-signin&#34; id=&#34;init&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;h1 class=&#34;h3 mb-3 font-weight-normal&#34;&gt;接口平台初始化&lt;/h1&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;input type=&#34;text&#34; id=&#34;dbhost&#34; class=&#34;form-control&#34; placeholder=&#34;数据库主机(192.168.1.1:3306)&#34; required autofocus value=&#34;&lt;?= $host?&gt;&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;input type=&#34;text&#34; id=&#34;dbname&#34; class=&#34;form-control&#34; placeholder=&#34;数据库的名称&#34; required value=&#34;&lt;?= $name?&gt;&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;input type=&#34;text&#34; id=&#34;dbuser&#34; class=&#34;form-control&#34; placeholder=&#34;数据库用户名&#34; required value=&#34;&lt;?= $user?&gt;&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;input type=&#34;password&#34; id=&#34;dbpass&#34; class=&#34;form-control&#34; placeholder=&#34;数据库密码&#34; required value=&#34;&lt;?= $pass?&gt;&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;div class=&#34;progress&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">          &lt;div class=&#34;progress-bar progress-bar-striped&#34; role=&#34;progressbar&#34; style=&#34;width: 0%&#34; aria-valuenow=&#34;1&#34; aria-valuemin=&#34;0&#34; aria-valuemax=&#34;100&#34;&gt;&lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;button class=&#34;btn btn-lg btn-primary btn-block&#34; type=&#34;submit&#34;&gt;开始初始化&lt;/button&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;p class=&#34;mt-5 mb-3 text-muted&#34;&gt;&amp;copy; &lt;?= date(&#39;Y&#39;)?&gt;&lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;/form&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;!-- Optional JavaScript --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;script src=&#34;https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js&#34;&gt;&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        $(document).ready(function(){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            $(&#34;#init&#34;).submit(function(){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                let host = $(&#39;#dbhost&#39;).val();
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                let name = $(&#39;#dbname&#39;).val();
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                let user = $(&#39;#dbuser&#39;).val();
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                let pass = $(&#39;#dbpass&#39;).val();
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                if(host &amp;&amp; name &amp;&amp; user &amp;&amp; pass) {
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    console.info(&#39;ls:&#39;,host,name,user,pass);
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    $.post(&#34;/install.php&#34;,{host:host,name:name,user:user,pass:pass},function(result){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                        console.info(result);
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                        console.info(result.status);
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                        console.info(JSON.stringify(result));
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                        return false;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    });
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    $(&#34;.progress-bar&#34;).attr(&#39;style&#39;,&#39;width: 10%&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    return false;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                } else {
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    return false;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            });
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        });
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &lt;/body&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;/html&gt;&lt;?php
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">?&gt;
+</span></span></span></code></pre></div><blockquote>
+<p>其实我还想到了另外一种方案，所有的配置都配置在环境变量中，index负责初始化操作，这样就没有操作的界面了。如果部署的要求更偏技术化，那么就可以连初始化的操作都免了，不需要本页面。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// define(&#39;SHORTINIT&#39;, true);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// require(&#39;wp-load.php&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// WP_Filesystem();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// global $wp_filesystem;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// global $wpdb;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// echo &#39;Current Path is &#39;. __DIR__;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// $file =  __DIR__.&#34;/sql/my_insert_query.sql&#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// if(!is_readable($file)) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//     echo &#39;File not found or not readable &#39;.$file;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// }     
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// // $table_name = $wpdb-&gt;prefix . &#34;tableName&#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// // $sql_insert = &#34;INSERT INTO $table_name (id, something) &#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// // $sql_insert .= $wp_filesystem-&gt;get_contents( $file );
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// // $rows_affected = $wpdb-&gt;query( $sql_insert );
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// $tables = $wpdb-&gt;get_results(&#34;show tables&#34;, ARRAY_A);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// var_dump($tables);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// file_put_contents(&#39;&#39;,&#39;init.api.lock&#39;);
+</span></span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96/">系统初始化</a>
+        
+            <a href="/tags/php/">PHP</a>
+        
+            <a href="/tags/wordpress/">WordPress</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/wordpress.dev/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WordPress开发笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/wordpress.env/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WordPress环境及资料整理</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/live/cut-image-in-php/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">PHP等比裁剪图像</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/discuz-add-internationalization/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">给Discuz加上国际化功能</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/easy.api.doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">API DOC</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>haha</title>
+</head>
+<body>
+    <h1>正在打开 gecko 引擎.</h1>
+    <script>
+        lnks.openWindow2({
+            url:"http://localhost:8000",
+            useGecko: true,
+            width:900,
+            height:200,
+            winMode: 'normal',
+        }, "");
+        let win = lnks.MainWindow();
+        win.minimize();
+    </script>
+</body>
+</html>

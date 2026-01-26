@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="准备（GNU/Linux Debian/Ubuntu） 安装构建环境所需的应用程序。\nsudo apt-get install \\ binutils \\ debootstrap \\ squashfs-tools \\ xorriso \\ grub-pc-bin \\ grub-efi-amd64-bin \\ mtools mkdir $HOME/live-ubuntu-from-scratch 引导程序 构建基础系统 sudo debootstrap \\ --arch=amd64 \\ --variant=minbase \\ 22.04 \\ $HOME/live-ubuntu-from-scratch/chroot \\ https://mirrors.aliyun.com/ubuntu/ debootstrap 用于从头开始创建 Debian 基础系统，而不需要dpkg或apt的可用性。它通过从镜像站点下载 .deb 文件并将其解压缩到最终可以chroot到的目录中来做到这一点。\n">
+<title>custom linux live</title>
+
+<link rel='canonical' href='/post/tech/create.custom.linux.live.iso/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="custom linux live">
+<meta property='og:description' content="准备（GNU/Linux Debian/Ubuntu） 安装构建环境所需的应用程序。\nsudo apt-get install \\ binutils \\ debootstrap \\ squashfs-tools \\ xorriso \\ grub-pc-bin \\ grub-efi-amd64-bin \\ mtools mkdir $HOME/live-ubuntu-from-scratch 引导程序 构建基础系统 sudo debootstrap \\ --arch=amd64 \\ --variant=minbase \\ 22.04 \\ $HOME/live-ubuntu-from-scratch/chroot \\ https://mirrors.aliyun.com/ubuntu/ debootstrap 用于从头开始创建 Debian 基础系统，而不需要dpkg或apt的可用性。它通过从镜像站点下载 .deb 文件并将其解压缩到最终可以chroot到的目录中来做到这一点。\n">
+<meta property='og:url' content='/post/tech/create.custom.linux.live.iso/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='custom' /><meta property='article:tag' content='live' /><meta property='article:published_time' content='2022-05-04T13:14:17&#43;08:00'/><meta property='article:modified_time' content='2022-05-04T13:14:17&#43;08:00'/>
+<meta name="twitter:title" content="custom linux live">
+<meta name="twitter:description" content="准备（GNU/Linux Debian/Ubuntu） 安装构建环境所需的应用程序。\nsudo apt-get install \\ binutils \\ debootstrap \\ squashfs-tools \\ xorriso \\ grub-pc-bin \\ grub-efi-amd64-bin \\ mtools mkdir $HOME/live-ubuntu-from-scratch 引导程序 构建基础系统 sudo debootstrap \\ --arch=amd64 \\ --variant=minbase \\ 22.04 \\ $HOME/live-ubuntu-from-scratch/chroot \\ https://mirrors.aliyun.com/ubuntu/ debootstrap 用于从头开始创建 Debian 基础系统，而不需要dpkg或apt的可用性。它通过从镜像站点下载 .deb 文件并将其解压缩到最终可以chroot到的目录中来做到这一点。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/create.custom.linux.live.iso/">custom linux live</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2022-05-04T13:14:17&#43;08:00'>2022-05-04 13:14:17</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="准备gnulinux-debianubuntu">准备（GNU/Linux Debian/Ubuntu）
+</h1><p>安装构建环境所需的应用程序。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get install <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    binutils <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    debootstrap <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    squashfs-tools <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    xorriso <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    grub-pc-bin <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    grub-efi-amd64-bin <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    mtools
+</span></span><span style="display:flex;"><span>mkdir $HOME/live-ubuntu-from-scratch
+</span></span></code></pre></div><h1 id="引导程序">引导程序
+</h1><h2 id="构建基础系统">构建基础系统
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo debootstrap <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --arch<span style="color:#f92672">=</span>amd64 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --variant<span style="color:#f92672">=</span>minbase <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   22.04 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   $HOME/live-ubuntu-from-scratch/chroot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   https://mirrors.aliyun.com/ubuntu/
+</span></span></code></pre></div><p><code>debootstrap</code> 用于从头开始创建 <code>Debian</code> 基础系统，而不需要<code>dpkg</code>或<code>apt</code>的可用性。它通过从镜像站点下载 <code>.deb</code> 文件并将其解压缩到最终可以chroot到的目录中来做到这一点。</p>
+<h2 id="外部挂载点">外部挂载点
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo mount --bind /dev $HOME/live-ubuntu-from-scratch/chroot/dev
+</span></span><span style="display:flex;"><span>sudo mount --bind /run $HOME/live-ubuntu-from-scratch/chroot/run
+</span></span></code></pre></div><p>由于将更新和安装的一些软件包（其中包括grub），这些挂载点在chroot环境中是必需的。</p>
+<h2 id="定义-chroot-环境">定义 chroot 环境
+</h2><p>Unix操作系统上的<a class="link" href="https://en.wikipedia.org/wiki/Chroot"  target="_blank" rel="noopener"
+    >chroot</a>是一种更改当前运行进程及其子进程的明显根目录的操作。在这种修改后的环境中运行的程序无法命名（因此通常无法访问）指定目录树之外的文件。术语“chroot”可以指 <code>chroot</code> 系统调用或 <code>chroot</code> 包装程序。修改后的环境称为 <code>chroot jail</code>。</p>
+<h2 id="访问chroot环境">访问chroot环境
+</h2><p><code>sudo chroot $HOME/live-ubuntu-from-scratch/chroot</code></p>
+<h2 id="配置挂载点家庭和语言环境">配置挂载点、家庭和语言环境
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>挂载无 -t proc /proc
+</span></span><span style="display:flex;"><span>挂载无 -t sysfs /sys
+</span></span><span style="display:flex;"><span>挂载无 -t devpts /dev/pts
+</span></span><span style="display:flex;"><span>导出 HOME<span style="color:#f92672">=</span>/root
+</span></span><span style="display:flex;"><span>导出 LC_ALL<span style="color:#f92672">=</span>C
+</span></span><span style="display:flex;"><span>这些挂载点在chroot环境中是必需的，因此我们能够顺利完成安装。
+</span></span></code></pre></div><p>设置自定义主机名
+<code>echo &quot;ubuntu-fs-live&quot; &gt; /etc/hostname</code></p>
+<h2 id="配置-apt-sourceslist">配置 apt sources.list
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/apt/sources.list
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb-src http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb-src http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb-src http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="更新包索引">更新包索引
+</h2><p><code>apt-get update</code></p>
+<h2 id="安装systemd">安装<code>systemd</code>
+</h2><p><code>apt-get install -y libterm-readline-gnu-perl systemd-sysv</code>
+systemd是 Linux 的系统和服务管理器。它提供了积极的并行化能力，使用套接字和 D-Bus 激活来启动服务，提供守护进程的按需启动，使用 Linux 控制组跟踪进程，维护挂载和自动挂载点，并实现精细的基于事务依赖的服务控制逻辑。</p>
+<h2 id="配置-machine-id-并转移">配置 <code>machine-id</code> 并转移
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dbus-uuidgen &gt; /etc/machine-id
+</span></span><span style="display:flex;"><span>ln -fs /etc/machine-id /var/lib/dbus/machine-id
+</span></span></code></pre></div><blockquote>
+<p>该/etc/machine-id文件包含在安装或引导期间设置的本地系统的唯一机器 ID。机器 ID 是一个以换行符结尾的十六进制 32 个字符的小写 ID。从十六进制解码时，这对应于 16 字节/128 位值。此 ID 可能并非全为零。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dpkg-divert --local --rename --add /sbin/initctl
+</span></span><span style="display:flex;"><span>ln -s /bin/true /sbin/initctl
+</span></span></code></pre></div><blockquote>
+<p>dpkg-divert是用于设置和更新转移列表的实用程序。</p>
+</blockquote>
+<h2 id="安装-live-system-所需的软件包">安装 Live System 所需的软件包
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    sudo <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    ubuntu-standard <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    casper <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    lupin-casper <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    discover <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    laptop-detect <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    os-prober <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    network-manager <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    resolvconf <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    net-tools <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    wireless-tools <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    wpagui <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    locales <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    grub-common <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    grub-gfxpayload-lists <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    grub-pc <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    grub-pc-bin <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    grub2-common
+</span></span><span style="display:flex;"><span>apt-get install -y --no-install-recommends linux-generic
+</span></span></code></pre></div><h2 id="图形安装程序">图形安装程序
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    ubiquity <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    ubiquity-casper <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    ubiquity-frontend-gtk <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    ubiquity-slideshow-ubuntu <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    ubiquity-ubuntu-artwork
+</span></span></code></pre></div><p>安装过程中将出现<code>tui</code>对话框，无需做任何配置修改。</p>
+<h2 id="安装窗口管理器">安装窗口管理器
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    plymouth-theme-ubuntu-logo <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    ubuntu-gnome-desktop <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    ubuntu-gnome-wallpapers
+</span></span></code></pre></div><h2 id="安装有用的应用程序">安装有用的应用程序
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    clamav-daemon <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    terminator <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    apt-transport-https <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    curl <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    vim <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    nano <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    less
+</span></span></code></pre></div><h2 id="安装-visual-studio-code-可选">安装 Visual Studio Code (可选)
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor &gt; microsoft.gpg
+</span></span><span style="display:flex;"><span>install -o root -g root -m <span style="color:#ae81ff">644</span> microsoft.gpg /etc/apt/trusted.gpg.d/
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main&#34;</span> &gt; /etc/apt/sources.list.d/vscode.list
+</span></span><span style="display:flex;"><span>rm microsoft.gpg
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>apt-get update
+</span></span><span style="display:flex;"><span>apt-get install -y code
+</span></span></code></pre></div><h2 id="安装-google-chrome-可选">安装 Google Chrome (可选)
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;deb http://dl.google.com/linux/chrome/deb/ stable main&#34;</span> &gt; /etc/apt/sources.list.d/google-chrome.list
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>apt-get update
+</span></span><span style="display:flex;"><span>apt-get install google-chrome-stable
+</span></span></code></pre></div><h2 id="安装-jdk-可选">安装 JDK (可选)
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get install -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     openjdk-8-jdk <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     openjdk-8-jre
+</span></span></code></pre></div><h2 id="移除不需要的应用-可选">移除不需要的应用 (可选)
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get purge -y <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     transmission-gtk <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     transmission-common <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     gnome-mahjongg <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     gnome-mines <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     gnome-sudoku <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     aisleriot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     hitori
+</span></span></code></pre></div><h2 id="删除不用的软件包">删除不用的软件包
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get autoremove -y
+</span></span></code></pre></div><h1 id="重新配置">重新配置
+</h1><h2 id="生成语言配置">生成语言配置
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dpkg-reconfigure locales
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 选择语言和默认语言</span>
+</span></span></code></pre></div><h2 id="重新配置-resolvconf">重新配置 <code>resolvconf</code>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dpkg-reconfigure resolvconf
+</span></span></code></pre></div><h2 id="配置网络">配置网络
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/NetworkManager/NetworkManager.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[main]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">rc-manager=resolvconf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">plugins=ifupdown,keyfile
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">dns=dnsmasq
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[ifupdown]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">managed=false
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dpkg-reconfigure network-manager
+</span></span></code></pre></div><h2 id="清理-chroot-环境">清理 chroot 环境
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># If have installed software</span>
+</span></span><span style="display:flex;"><span>truncate -s <span style="color:#ae81ff">0</span> /etc/machine-id
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Remove the diversion</span>
+</span></span><span style="display:flex;"><span>rm /sbin/initctl
+</span></span><span style="display:flex;"><span>dpkg-divert --rename --remove /sbin/initctl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Clean up</span>
+</span></span><span style="display:flex;"><span>apt-get clean
+</span></span><span style="display:flex;"><span>rm -rf /tmp/* ~/.bash_history
+</span></span><span style="display:flex;"><span>umount /proc
+</span></span><span style="display:flex;"><span>umount /sys
+</span></span><span style="display:flex;"><span>umount /dev/pts
+</span></span><span style="display:flex;"><span>export HISTSIZE<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>exit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Unbind mount points</span>
+</span></span><span style="display:flex;"><span>sudo umount $HOME/live-ubuntu-from-scratch/chroot/dev
+</span></span><span style="display:flex;"><span>sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
+</span></span></code></pre></div><h1 id="映像目录并填充">映像目录并填充
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd $HOME/live-ubuntu-from-scratch
+</span></span><span style="display:flex;"><span>mkdir -p image/<span style="color:#f92672">{</span>casper,isolinux,install<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>sudo cp chroot/boot/vmlinuz-**-**-generic image/casper/vmlinuz
+</span></span><span style="display:flex;"><span>sudo cp chroot/boot/initrd.img-**-**-generic image/casper/initrd
+</span></span><span style="display:flex;"><span>sudo cp chroot/boot/memtest86+.bin image/install/memtest86+
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>wget --progress<span style="color:#f92672">=</span>dot https://www.memtest86.com/downloads/memtest86-usb.zip -O image/install/memtest86-usb.zip
+</span></span><span style="display:flex;"><span>unzip -p image/install/memtest86-usb.zip memtest86-usb.img &gt; image/install/memtest86
+</span></span><span style="display:flex;"><span>rm image/install/memtest86-usb.zip
+</span></span></code></pre></div><h1 id="grub-配置">Grub 配置
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd $HOME/live-ubuntu-from-scratch
+</span></span><span style="display:flex;"><span>touch image/ubuntu
+</span></span></code></pre></div><h2 id="创建-imageisolinuxgrubcfg">创建 /image/isolinux/grub.cfg
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; image/isolinux/grub.cfg
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">search --set=root --file /ubuntu
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">insmod all_video
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">set default=&#34;0&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">set timeout=30
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">menuentry &#34;Try Ubuntu FS without installing&#34; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   linux /casper/vmlinuz boot=casper quiet splash ---
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   initrd /casper/initrd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">menuentry &#34;Install Ubuntu FS&#34; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   initrd /casper/initrd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">menuentry &#34;Check disc for defects&#34; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   linux /casper/vmlinuz boot=casper integrity-check quiet splash ---
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   initrd /casper/initrd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">menuentry &#34;Test memory Memtest86+ (BIOS)&#34; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   linux16 /install/memtest86+
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">menuentry &#34;Test memory Memtest86 (UEFI, long load time)&#34; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   insmod part_gpt
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   insmod search_fs_uuid
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   insmod chain
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   loopback loop /install/memtest86
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h1 id="创建-manifest">创建 <code>manifest</code>
+</h1><p>在接下来的步骤中，清单的创建很重要，因为它告诉我们每个包的哪个版本安装在 Live 版本中，以及哪些包将在将要安装的版本中删除或维护（保留在硬盘中）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd $HOME/live-ubuntu-from-scratch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo chroot chroot dpkg-query -W --showformat<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;${Package} ${Version}\n&#39;</span> | sudo tee image/casper/filesystem.manifest
+</span></span><span style="display:flex;"><span>sudo cp -v image/casper/filesystem.manifest image/casper/filesystem.manifest-desktop
+</span></span><span style="display:flex;"><span>sudo sed -i <span style="color:#e6db74">&#39;/ubiquity/d&#39;</span> image/casper/filesystem.manifest-desktop
+</span></span><span style="display:flex;"><span>sudo sed -i <span style="color:#e6db74">&#39;/casper/d&#39;</span> image/casper/filesystem.manifest-desktop
+</span></span><span style="display:flex;"><span>sudo sed -i <span style="color:#e6db74">&#39;/discover/d&#39;</span> image/casper/filesystem.manifest-desktop
+</span></span><span style="display:flex;"><span>sudo sed -i <span style="color:#e6db74">&#39;/laptop-detect/d&#39;</span> image/casper/filesystem.manifest-desktop
+</span></span><span style="display:flex;"><span>sudo sed -i <span style="color:#e6db74">&#39;/os-prober/d&#39;</span> image/casper/filesystem.manifest-desktop
+</span></span></code></pre></div><h2 id="压缩-chroot">压缩 <code>chroot</code>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd $HOME/live-ubuntu-from-scratch
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建 squashfs</span>
+</span></span><span style="display:flex;"><span>sudo mksquashfs chroot image/casper/filesystem.squashfs
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 生成 filesystem.size</span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#66d9ef">$(</span>sudo du -sx --block-size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> chroot | cut -f1<span style="color:#66d9ef">)</span> &gt; image/casper/filesystem.size
+</span></span></code></pre></div><blockquote>
+<p>Squashfs是一个高度压缩的 Linux 只读文件系统。它使用 zlib 压缩来压缩文件、inode 和目录。系统中的 inode 非常小，所有块都被打包以最小化数据开销。支持大于 4K 的块大小，最大支持 64K。
+Squashfs旨在用于一般只读文件系统、存档使用（即在可能使用 .tar.gz 文件的情况下）以及需要低开销的受限块设备/内存系统（例如嵌入式系统）。</p>
+</blockquote>
+<h2 id="创建磁盘说明">创建磁盘说明
+</h2><p>README文件通常可以在 Linux LiveCD 安装光盘上找到，例如 Ubuntu Linux 安装光盘；通常命名为“ README.diskdefines ”并且可以在安装过程中被引用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd $HOME/live-ubuntu-from-scratch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create file image/README.diskdefines</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; image/README.diskdefines
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define DISKNAME  Ubuntu from scratch
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define TYPE  binary
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define TYPEbinary  1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define ARCH  amd64
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define ARCHamd64  1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define DISKNUM  1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define DISKNUM1  1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define TOTALNUM  0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define TOTALNUM0  1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="为-livecd-创建-iso-映像-bios--uefi">为 LiveCD 创建 ISO 映像 (BIOS + UEFI)
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd $HOME/live-ubuntu-from-scratch/image
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建 grub UEFI 映像</span>
+</span></span><span style="display:flex;"><span>grub-mkstandalone <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --format<span style="color:#f92672">=</span>x86_64-efi <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --output<span style="color:#f92672">=</span>isolinux/bootx64.efi <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --locales<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --fonts<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   <span style="color:#e6db74">&#34;boot/grub/grub.cfg=isolinux/grub.cfg&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建包含 EFI 引导加载程序的 FAT16 UEFI 引导磁盘映像</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>   cd isolinux <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/dev/zero of<span style="color:#f92672">=</span>efiboot.img bs<span style="color:#f92672">=</span>1M count<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   sudo mkfs.vfat efiboot.img <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   LC_CTYPE<span style="color:#f92672">=</span>C mmd -i efiboot.img efi efi/boot <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   LC_CTYPE<span style="color:#f92672">=</span>C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/
+</span></span><span style="display:flex;"><span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建 grub BIOS 映像</span>
+</span></span><span style="display:flex;"><span>grub-mkstandalone <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --format<span style="color:#f92672">=</span>i386-pc <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --output<span style="color:#f92672">=</span>isolinux/core.img <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --install-modules<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;linux16 linux normal iso9660 biosdisk memdisk search tar ls&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --modules<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;linux16 linux normal iso9660 biosdisk search&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --locales<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --fonts<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   <span style="color:#e6db74">&#34;boot/grub/grub.cfg=isolinux/grub.cfg&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 组合可引导的 grub cdboot.img</span>
+</span></span><span style="display:flex;"><span>cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img &gt; isolinux/bios.img
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 生成md5sum.txt</span>
+</span></span><span style="display:flex;"><span>sudo /bin/bash -c <span style="color:#e6db74">&#34;(find . -type f -print0 | xargs -0 md5sum | grep -v &#34;</span><span style="color:#ae81ff">\.</span>/md5sum.txt<span style="color:#e6db74">&#34; &gt; md5sum.txt)&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用命令行从镜像目录创建iso</span>
+</span></span><span style="display:flex;"><span>sudo xorriso <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -as mkisofs <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -iso-level <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -full-iso9660-filenames <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -volid <span style="color:#e6db74">&#34;Ubuntu from scratch&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -output <span style="color:#e6db74">&#34;../ubuntu-from-scratch.iso&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -eltorito-boot boot/grub/bios.img <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      -no-emul-boot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      -boot-load-size <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      -boot-info-table <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      --eltorito-catalog boot/grub/boot.cat <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      --grub2-boot-info <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -eltorito-alt-boot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      -e EFI/efiboot.img <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      -no-emul-boot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -append_partition <span style="color:#ae81ff">2</span> 0xef isolinux/efiboot.img <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -m <span style="color:#e6db74">&#34;isolinux/efiboot.img&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -m <span style="color:#e6db74">&#34;isolinux/bios.img&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -graft-points <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      <span style="color:#e6db74">&#34;/EFI/efiboot.img=isolinux/efiboot.img&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      <span style="color:#e6db74">&#34;/boot/grub/bios.img=isolinux/bios.img&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>      <span style="color:#e6db74">&#34;.&#34;</span>
+</span></span></code></pre></div><h1 id="另一种方法如果前一个失败创建一个混合-iso">另一种方法，如果前一个失败，创建一个混合 ISO
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建 ISOLINUX (syslinux) 启动菜单</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF&gt; isolinux/isolinux.cfg
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">UI vesamenu.c32
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU TITLE Boot Menu
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">DEFAULT linux
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">TIMEOUT 600
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU RESOLUTION 640 480
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU COLOR border       30;44   #40ffffff #a0000000 std
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU COLOR title        1;36;44 #9033ccff #a0000000 std
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU COLOR sel          7;37;40 #e0ffffff #20ffffff all
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU COLOR unsel        37;44   #50ffffff #a0000000 std
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU COLOR help         37;40   #c0ffffff #a0000000 std
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU COLOR timeout_msg  37;40   #80ffffff #00000000 std
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU COLOR timeout      1;37;40 #c0ffffff #00000000 std
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU COLOR msg07        37;40   #90ffffff #a0000000 std
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MENU COLOR tabmsg       31;40   #30ffffff #00000000 std
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">LABEL linux
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> MENU LABEL Try Ubuntu FS
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> MENU DEFAULT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> KERNEL /casper/vmlinuz
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> APPEND initrd=/casper/initrd boot=casper
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">LABEL linux
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> MENU LABEL Try Ubuntu FS (nomodeset)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> MENU DEFAULT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> KERNEL /casper/vmlinuz
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> APPEND initrd=/casper/initrd boot=casper nomodeset
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 包括 syslinux bios 模块</span>
+</span></span><span style="display:flex;"><span>apt install -y syslinux-common <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>cp /usr/lib/ISOLINUX/isolinux.bin isolinux/ <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>cp /usr/lib/syslinux/modules/bios/* isolinux/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 从镜像目录创建iso</span>
+</span></span><span style="display:flex;"><span>sudo xorriso <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -as mkisofs <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -iso-level <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -full-iso9660-filenames <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -volid <span style="color:#e6db74">&#34;Ubuntu from scratch&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -output <span style="color:#e6db74">&#34;../ubuntu-from-scratch.iso&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span> -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span> -eltorito-boot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     isolinux/isolinux.bin <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     -no-emul-boot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     -boot-load-size <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     -boot-info-table <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     --eltorito-catalog isolinux/isolinux.cat <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span> -eltorito-alt-boot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     -e /EFI/boot/efiboot.img <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     -no-emul-boot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     -isohybrid-gpt-basdat <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span> -append_partition <span style="color:#ae81ff">2</span> 0xef EFI/boot/efiboot.img <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/live-ubuntu-from-scratch/image&#34;</span>
+</span></span></code></pre></div><h1 id="制作可启动的-usb-映像">制作可启动的 USB 映像
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>ubuntu-from-scratch.iso of<span style="color:#f92672">=</span>&lt;device&gt; status<span style="color:#f92672">=</span>progress oflag<span style="color:#f92672">=</span>sync
+</span></span></code></pre></div><h1 id="小结">小结
+</h1><p>生成的 ISO 可以在虚拟机中进行测试，例如VirtualBox或写入媒体并从标准 PC 启动。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/custom/">Custom</a>
+        
+            <a href="/tags/live/">Live</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

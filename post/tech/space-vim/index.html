@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="项目用途 小问题 1, normal 状态时确保为英文状态 1, 如何高效使用 git 快捷管理 1, 如何修改启动界面，显示待办事项 1, 使用模糊搜索打开文件 启用 leaderf 模块，使用 Ctrl + p 模糊搜索 1, # 如何使用 session 1, 如何使用函数列表 1, 显示空格，制表符，换行符的配置 1, 如何灵活使用标签管理器 SPC t t（补充到文档） 1, 窗口管理器快捷键 Normal s 使用 1, snippt 插件和脚本生成器的使用 1, 查找补充备份以下 snippt: bootstrap,elements 1, 能否自动保存会话 alias 或者插件 u 撤销 C+r 恢复 最佳实践会话恢复与保存 命令 操作 重复 回退 {edit} 修改 . u f{char}/t{char} 行内找下一个字符 ; , F{char}/t{char} 行内找上一个字符 ; , /pattern&lt;CR&gt; 文档下一个匹配 n N ?pattern&lt;CR&gt; 文档上一个匹配 n N :s/target/replacment &amp; u qx{changes}q 执行一系列修改 @x u : function AuMksession() : if v:this_session != &#34;&#34; : exe &#34;mksession! &#34; . v:this_session : endif : endfunction &#34;:echo s:SessionLoadOwn : au VimLeavePre * call AuMksession() 保存会话 :mksession :mks! :mksession ~/mysession.vim 恢复会话 vim -S Session.vim :source Session.vim 会话选项 :help &#39;sessionoptions&#39; https://www.bookstack.cn/read/SpaceVim-zh/ javascript npm install -g eslint-cli #语法检查 npm install -g js-beautify #代码格式化 可通过快捷键 SPC l s i 启动 node -i 交互窗口 # 交互式编程 工程根目录添加 .project_alt.json 文件 { &#34;src/*.js&#34;: {&#34;alternate&#34;: &#34;test/{}.js&#34;}, &#34;test/*.js&#34;: {&#34;alternate&#34;: &#34;src/{}.js&#34;} } 就可以使用命令 :A 在源文件和测试文件之间进行跳转 golang SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件 SPC l b #异步执行 go build SPC b f #对当前文件执行 gofmt 命令 #依赖 format 模块 # 默认使用 neoformat 这一插件 php php-language-server # 代码自动补全 composer require --dev vimeo/psalm # 语法检查 checkers 模块默认使用 neomake 语法检查工具异步调用 psalm 命令来完成 # 配置文件中添加如下内容即可为 PHP 启用语言服务器 [[layers]] name = &#34;lsp&#34; filetypes = [ &#34;php&#34; ] [layers.override_cmd] php = [&#34;php-language-server&#34;] # 工程文件跳转，项目根目录添加工程文件 .project_alt.json { &#34;src/*.php&#34;: {&#34;alternate&#34;: &#34;test/{}.php&#34;}, &#34;test/*.php&#34;: {&#34;alternate&#34;: &#34;src/{}.php&#34;} } 就可以使用命令 :A 在源文件和测试文件之间进行跳转 pear install PHP_Beautifier # 代码格式化 SPC l r # 快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件 SPC l s i #启动 php -a 交互窗口 # 交互式编程 typescript npm install -g tslint #语法检查 #checkers 模块默认使用 neomake 异步语法检查工具调用 tslint 来完成. 工程根目录添加 .project_alt.json 文件 { &#34;src/*.ts&#34;: {&#34;alternate&#34;: &#34;test/{}.ts&#34;}, &#34;test/*.ts&#34;: {&#34;alternate&#34;: &#34;src/{}.ts&#34;} } 就可以使用命令 :A 在源文件和测试文件之间进行跳转 SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件 npm install -g typescript-formatter # 代码格式化 SPC l s i #启动 ts-node -i 交互窗口# 交互式编程 TypeScript 交互式编程还未完全实现，主要是因为 ts-node -i 执行是并不刷新buffer 全局快捷键 SPC b h 打开欢迎界面 SPC t n 显示/隐藏行号 SPC T F 切换全屏(TODO) SPC [1-9] 跳至指定序号的窗口 SPC t m t 显示/隐藏时间 SPC t m d 显示/隐藏日期 SPC t m T 显示/隐藏状态栏 SPC t m v 显示/隐藏版本控制信息 使用 / 或 ? 进行搜索时，或当按下 n 或 N 后，搜索结果序号将被展示在状态栏中，使用类似于 20/22 这样的分数 SPC t c 清理高亮 SPC t 8 ⑧ 8 高亮指定列后所有字符 SPC t f ⓕ f 高亮指定列字符 SPC t s ⓢ s 语法检查 SPC t S Ⓢ S 拼写检查 SPC t w ⓦ w 行尾空格检查 Tab 或者 Buffer 可通过快捷键 &lt;Leader&gt; number 进行快速访问，默认的 &lt;Leader&gt; 是 \\ &lt;Leader&gt; 1 跳至标签栏序号 1 &lt;Leader&gt; 2 跳至标签栏序号 2 &lt;Leader&gt; 3 跳至标签栏序号 3 g r 跳至前一个 Tab，常用于两个 Tab 来回切换 文件树 F3 或 SPC f t 或 SPC f T 文件树 N\t在光标位置新建文件 y y\t复制光标下文件路径至系统剪切板 y Y\t复制光标下文件至系统剪切板 P\t在光标位置黏贴文件 .\t切换显示隐藏文件 s v\t分屏编辑该文件 s g\t垂直分屏编辑该文件 p\t预览文件 i\t切换至文件夹历史 v\t快速查看 &gt;\t放大文件树窗口宽度 &lt;\t缩小文件树窗口宽度 g x\t使用相关程序执行该文件 &#39;\t标记光标下的文件（夹） V\t清除所有标记 Ctrl+r\t刷新页面 基本操作 Ctrl-f 向下翻页 (Ctrl-f / Ctrl-d) Ctrl-b 向上翻页 (C-b / C-u) Ctrl-e 向下滚屏 (3 Ctrl-e/j) Ctrl-y 向上滚屏 (3Ctrl-y/k) Ctrl-Shift-Up 向上移动当前行 Ctrl-Shift-Down 向下移动当前行 原生功能 &lt;leader&gt; q r\t原生 q 快捷键 &lt;leader&gt; q r/\t原生 q / 快捷键，打开命令行窗口 &lt;leader&gt; q r?\t原生 q ? 快捷键，打开命令行窗口 &lt;leader&gt; q r:\t原生 q : 快捷键，打开命令行窗口 命令行模式快捷键 Ctrl-a\t移动光标至行首 Ctrl-b\t向左移动光标 Ctrl-f\t向右移动光标 Ctrl-w\t删除光标前词 Ctrl-u\t移除光标前所有字符 Ctrl-k\t移除光标后所有字符 Ctrl-c/Esc\t离开命令行模式 Tab\t选择下一个匹配 Shift-Tab\t选择上一个匹配 快捷键导航 [SPC] 空格键 SpaceVim 默认前缀键 [Window] windows_leader / s SpaceVim 默认窗口前缀键 &lt;leader&gt; 默认的 Vim leader 键 Vim/Neovim 默认前缀键 快捷键导航窗口内，按下 Ctrl-h 键，可以获取一些帮助信息 可以通过 SPC ? 将当前快捷键罗列出来。然后可以输入快捷键按键字母或者描述，可以模糊匹配并展示结果。 使用 &lt;Tab&gt; 键或者上下方向键选择你需要的快捷键，回车将执行这一快捷键。 移动文本块 &lt; / Shift-Tab\t向左移动文本 &gt; / Tab\t向右移动文本 Ctrl-Shift-Up\t向上移动选中行 Ctrl-Shift-Down\t向下移动选中行 文本操作命令 文本相关的命令 (以 x 开头)：\n">
+<title>Space Vim</title>
+
+<link rel='canonical' href='/post/tech/space-vim/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Space Vim">
+<meta property='og:description' content="项目用途 小问题 1, normal 状态时确保为英文状态 1, 如何高效使用 git 快捷管理 1, 如何修改启动界面，显示待办事项 1, 使用模糊搜索打开文件 启用 leaderf 模块，使用 Ctrl + p 模糊搜索 1, # 如何使用 session 1, 如何使用函数列表 1, 显示空格，制表符，换行符的配置 1, 如何灵活使用标签管理器 SPC t t（补充到文档） 1, 窗口管理器快捷键 Normal s 使用 1, snippt 插件和脚本生成器的使用 1, 查找补充备份以下 snippt: bootstrap,elements 1, 能否自动保存会话 alias 或者插件 u 撤销 C+r 恢复 最佳实践会话恢复与保存 命令 操作 重复 回退 {edit} 修改 . u f{char}/t{char} 行内找下一个字符 ; , F{char}/t{char} 行内找上一个字符 ; , /pattern&lt;CR&gt; 文档下一个匹配 n N ?pattern&lt;CR&gt; 文档上一个匹配 n N :s/target/replacment &amp; u qx{changes}q 执行一系列修改 @x u : function AuMksession() : if v:this_session != &#34;&#34; : exe &#34;mksession! &#34; . v:this_session : endif : endfunction &#34;:echo s:SessionLoadOwn : au VimLeavePre * call AuMksession() 保存会话 :mksession :mks! :mksession ~/mysession.vim 恢复会话 vim -S Session.vim :source Session.vim 会话选项 :help &#39;sessionoptions&#39; https://www.bookstack.cn/read/SpaceVim-zh/ javascript npm install -g eslint-cli #语法检查 npm install -g js-beautify #代码格式化 可通过快捷键 SPC l s i 启动 node -i 交互窗口 # 交互式编程 工程根目录添加 .project_alt.json 文件 { &#34;src/*.js&#34;: {&#34;alternate&#34;: &#34;test/{}.js&#34;}, &#34;test/*.js&#34;: {&#34;alternate&#34;: &#34;src/{}.js&#34;} } 就可以使用命令 :A 在源文件和测试文件之间进行跳转 golang SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件 SPC l b #异步执行 go build SPC b f #对当前文件执行 gofmt 命令 #依赖 format 模块 # 默认使用 neoformat 这一插件 php php-language-server # 代码自动补全 composer require --dev vimeo/psalm # 语法检查 checkers 模块默认使用 neomake 语法检查工具异步调用 psalm 命令来完成 # 配置文件中添加如下内容即可为 PHP 启用语言服务器 [[layers]] name = &#34;lsp&#34; filetypes = [ &#34;php&#34; ] [layers.override_cmd] php = [&#34;php-language-server&#34;] # 工程文件跳转，项目根目录添加工程文件 .project_alt.json { &#34;src/*.php&#34;: {&#34;alternate&#34;: &#34;test/{}.php&#34;}, &#34;test/*.php&#34;: {&#34;alternate&#34;: &#34;src/{}.php&#34;} } 就可以使用命令 :A 在源文件和测试文件之间进行跳转 pear install PHP_Beautifier # 代码格式化 SPC l r # 快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件 SPC l s i #启动 php -a 交互窗口 # 交互式编程 typescript npm install -g tslint #语法检查 #checkers 模块默认使用 neomake 异步语法检查工具调用 tslint 来完成. 工程根目录添加 .project_alt.json 文件 { &#34;src/*.ts&#34;: {&#34;alternate&#34;: &#34;test/{}.ts&#34;}, &#34;test/*.ts&#34;: {&#34;alternate&#34;: &#34;src/{}.ts&#34;} } 就可以使用命令 :A 在源文件和测试文件之间进行跳转 SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件 npm install -g typescript-formatter # 代码格式化 SPC l s i #启动 ts-node -i 交互窗口# 交互式编程 TypeScript 交互式编程还未完全实现，主要是因为 ts-node -i 执行是并不刷新buffer 全局快捷键 SPC b h 打开欢迎界面 SPC t n 显示/隐藏行号 SPC T F 切换全屏(TODO) SPC [1-9] 跳至指定序号的窗口 SPC t m t 显示/隐藏时间 SPC t m d 显示/隐藏日期 SPC t m T 显示/隐藏状态栏 SPC t m v 显示/隐藏版本控制信息 使用 / 或 ? 进行搜索时，或当按下 n 或 N 后，搜索结果序号将被展示在状态栏中，使用类似于 20/22 这样的分数 SPC t c 清理高亮 SPC t 8 ⑧ 8 高亮指定列后所有字符 SPC t f ⓕ f 高亮指定列字符 SPC t s ⓢ s 语法检查 SPC t S Ⓢ S 拼写检查 SPC t w ⓦ w 行尾空格检查 Tab 或者 Buffer 可通过快捷键 &lt;Leader&gt; number 进行快速访问，默认的 &lt;Leader&gt; 是 \\ &lt;Leader&gt; 1 跳至标签栏序号 1 &lt;Leader&gt; 2 跳至标签栏序号 2 &lt;Leader&gt; 3 跳至标签栏序号 3 g r 跳至前一个 Tab，常用于两个 Tab 来回切换 文件树 F3 或 SPC f t 或 SPC f T 文件树 N\t在光标位置新建文件 y y\t复制光标下文件路径至系统剪切板 y Y\t复制光标下文件至系统剪切板 P\t在光标位置黏贴文件 .\t切换显示隐藏文件 s v\t分屏编辑该文件 s g\t垂直分屏编辑该文件 p\t预览文件 i\t切换至文件夹历史 v\t快速查看 &gt;\t放大文件树窗口宽度 &lt;\t缩小文件树窗口宽度 g x\t使用相关程序执行该文件 &#39;\t标记光标下的文件（夹） V\t清除所有标记 Ctrl+r\t刷新页面 基本操作 Ctrl-f 向下翻页 (Ctrl-f / Ctrl-d) Ctrl-b 向上翻页 (C-b / C-u) Ctrl-e 向下滚屏 (3 Ctrl-e/j) Ctrl-y 向上滚屏 (3Ctrl-y/k) Ctrl-Shift-Up 向上移动当前行 Ctrl-Shift-Down 向下移动当前行 原生功能 &lt;leader&gt; q r\t原生 q 快捷键 &lt;leader&gt; q r/\t原生 q / 快捷键，打开命令行窗口 &lt;leader&gt; q r?\t原生 q ? 快捷键，打开命令行窗口 &lt;leader&gt; q r:\t原生 q : 快捷键，打开命令行窗口 命令行模式快捷键 Ctrl-a\t移动光标至行首 Ctrl-b\t向左移动光标 Ctrl-f\t向右移动光标 Ctrl-w\t删除光标前词 Ctrl-u\t移除光标前所有字符 Ctrl-k\t移除光标后所有字符 Ctrl-c/Esc\t离开命令行模式 Tab\t选择下一个匹配 Shift-Tab\t选择上一个匹配 快捷键导航 [SPC] 空格键 SpaceVim 默认前缀键 [Window] windows_leader / s SpaceVim 默认窗口前缀键 &lt;leader&gt; 默认的 Vim leader 键 Vim/Neovim 默认前缀键 快捷键导航窗口内，按下 Ctrl-h 键，可以获取一些帮助信息 可以通过 SPC ? 将当前快捷键罗列出来。然后可以输入快捷键按键字母或者描述，可以模糊匹配并展示结果。 使用 &lt;Tab&gt; 键或者上下方向键选择你需要的快捷键，回车将执行这一快捷键。 移动文本块 &lt; / Shift-Tab\t向左移动文本 &gt; / Tab\t向右移动文本 Ctrl-Shift-Up\t向上移动选中行 Ctrl-Shift-Down\t向下移动选中行 文本操作命令 文本相关的命令 (以 x 开头)：\n">
+<meta property='og:url' content='/post/tech/space-vim/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='vim' /><meta property='article:tag' content='space-vim' /><meta property='article:tag' content='SpaceVim' /><meta property='article:published_time' content='2021-12-24T15:53:58&#43;08:00'/><meta property='article:modified_time' content='2021-12-24T15:53:58&#43;08:00'/>
+<meta name="twitter:title" content="Space Vim">
+<meta name="twitter:description" content="项目用途 小问题 1, normal 状态时确保为英文状态 1, 如何高效使用 git 快捷管理 1, 如何修改启动界面，显示待办事项 1, 使用模糊搜索打开文件 启用 leaderf 模块，使用 Ctrl + p 模糊搜索 1, # 如何使用 session 1, 如何使用函数列表 1, 显示空格，制表符，换行符的配置 1, 如何灵活使用标签管理器 SPC t t（补充到文档） 1, 窗口管理器快捷键 Normal s 使用 1, snippt 插件和脚本生成器的使用 1, 查找补充备份以下 snippt: bootstrap,elements 1, 能否自动保存会话 alias 或者插件 u 撤销 C+r 恢复 最佳实践会话恢复与保存 命令 操作 重复 回退 {edit} 修改 . u f{char}/t{char} 行内找下一个字符 ; , F{char}/t{char} 行内找上一个字符 ; , /pattern&lt;CR&gt; 文档下一个匹配 n N ?pattern&lt;CR&gt; 文档上一个匹配 n N :s/target/replacment &amp; u qx{changes}q 执行一系列修改 @x u : function AuMksession() : if v:this_session != &#34;&#34; : exe &#34;mksession! &#34; . v:this_session : endif : endfunction &#34;:echo s:SessionLoadOwn : au VimLeavePre * call AuMksession() 保存会话 :mksession :mks! :mksession ~/mysession.vim 恢复会话 vim -S Session.vim :source Session.vim 会话选项 :help &#39;sessionoptions&#39; https://www.bookstack.cn/read/SpaceVim-zh/ javascript npm install -g eslint-cli #语法检查 npm install -g js-beautify #代码格式化 可通过快捷键 SPC l s i 启动 node -i 交互窗口 # 交互式编程 工程根目录添加 .project_alt.json 文件 { &#34;src/*.js&#34;: {&#34;alternate&#34;: &#34;test/{}.js&#34;}, &#34;test/*.js&#34;: {&#34;alternate&#34;: &#34;src/{}.js&#34;} } 就可以使用命令 :A 在源文件和测试文件之间进行跳转 golang SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件 SPC l b #异步执行 go build SPC b f #对当前文件执行 gofmt 命令 #依赖 format 模块 # 默认使用 neoformat 这一插件 php php-language-server # 代码自动补全 composer require --dev vimeo/psalm # 语法检查 checkers 模块默认使用 neomake 语法检查工具异步调用 psalm 命令来完成 # 配置文件中添加如下内容即可为 PHP 启用语言服务器 [[layers]] name = &#34;lsp&#34; filetypes = [ &#34;php&#34; ] [layers.override_cmd] php = [&#34;php-language-server&#34;] # 工程文件跳转，项目根目录添加工程文件 .project_alt.json { &#34;src/*.php&#34;: {&#34;alternate&#34;: &#34;test/{}.php&#34;}, &#34;test/*.php&#34;: {&#34;alternate&#34;: &#34;src/{}.php&#34;} } 就可以使用命令 :A 在源文件和测试文件之间进行跳转 pear install PHP_Beautifier # 代码格式化 SPC l r # 快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件 SPC l s i #启动 php -a 交互窗口 # 交互式编程 typescript npm install -g tslint #语法检查 #checkers 模块默认使用 neomake 异步语法检查工具调用 tslint 来完成. 工程根目录添加 .project_alt.json 文件 { &#34;src/*.ts&#34;: {&#34;alternate&#34;: &#34;test/{}.ts&#34;}, &#34;test/*.ts&#34;: {&#34;alternate&#34;: &#34;src/{}.ts&#34;} } 就可以使用命令 :A 在源文件和测试文件之间进行跳转 SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件 npm install -g typescript-formatter # 代码格式化 SPC l s i #启动 ts-node -i 交互窗口# 交互式编程 TypeScript 交互式编程还未完全实现，主要是因为 ts-node -i 执行是并不刷新buffer 全局快捷键 SPC b h 打开欢迎界面 SPC t n 显示/隐藏行号 SPC T F 切换全屏(TODO) SPC [1-9] 跳至指定序号的窗口 SPC t m t 显示/隐藏时间 SPC t m d 显示/隐藏日期 SPC t m T 显示/隐藏状态栏 SPC t m v 显示/隐藏版本控制信息 使用 / 或 ? 进行搜索时，或当按下 n 或 N 后，搜索结果序号将被展示在状态栏中，使用类似于 20/22 这样的分数 SPC t c 清理高亮 SPC t 8 ⑧ 8 高亮指定列后所有字符 SPC t f ⓕ f 高亮指定列字符 SPC t s ⓢ s 语法检查 SPC t S Ⓢ S 拼写检查 SPC t w ⓦ w 行尾空格检查 Tab 或者 Buffer 可通过快捷键 &lt;Leader&gt; number 进行快速访问，默认的 &lt;Leader&gt; 是 \\ &lt;Leader&gt; 1 跳至标签栏序号 1 &lt;Leader&gt; 2 跳至标签栏序号 2 &lt;Leader&gt; 3 跳至标签栏序号 3 g r 跳至前一个 Tab，常用于两个 Tab 来回切换 文件树 F3 或 SPC f t 或 SPC f T 文件树 N\t在光标位置新建文件 y y\t复制光标下文件路径至系统剪切板 y Y\t复制光标下文件至系统剪切板 P\t在光标位置黏贴文件 .\t切换显示隐藏文件 s v\t分屏编辑该文件 s g\t垂直分屏编辑该文件 p\t预览文件 i\t切换至文件夹历史 v\t快速查看 &gt;\t放大文件树窗口宽度 &lt;\t缩小文件树窗口宽度 g x\t使用相关程序执行该文件 &#39;\t标记光标下的文件（夹） V\t清除所有标记 Ctrl+r\t刷新页面 基本操作 Ctrl-f 向下翻页 (Ctrl-f / Ctrl-d) Ctrl-b 向上翻页 (C-b / C-u) Ctrl-e 向下滚屏 (3 Ctrl-e/j) Ctrl-y 向上滚屏 (3Ctrl-y/k) Ctrl-Shift-Up 向上移动当前行 Ctrl-Shift-Down 向下移动当前行 原生功能 &lt;leader&gt; q r\t原生 q 快捷键 &lt;leader&gt; q r/\t原生 q / 快捷键，打开命令行窗口 &lt;leader&gt; q r?\t原生 q ? 快捷键，打开命令行窗口 &lt;leader&gt; q r:\t原生 q : 快捷键，打开命令行窗口 命令行模式快捷键 Ctrl-a\t移动光标至行首 Ctrl-b\t向左移动光标 Ctrl-f\t向右移动光标 Ctrl-w\t删除光标前词 Ctrl-u\t移除光标前所有字符 Ctrl-k\t移除光标后所有字符 Ctrl-c/Esc\t离开命令行模式 Tab\t选择下一个匹配 Shift-Tab\t选择上一个匹配 快捷键导航 [SPC] 空格键 SpaceVim 默认前缀键 [Window] windows_leader / s SpaceVim 默认窗口前缀键 &lt;leader&gt; 默认的 Vim leader 键 Vim/Neovim 默认前缀键 快捷键导航窗口内，按下 Ctrl-h 键，可以获取一些帮助信息 可以通过 SPC ? 将当前快捷键罗列出来。然后可以输入快捷键按键字母或者描述，可以模糊匹配并展示结果。 使用 &lt;Tab&gt; 键或者上下方向键选择你需要的快捷键，回车将执行这一快捷键。 移动文本块 &lt; / Shift-Tab\t向左移动文本 &gt; / Tab\t向右移动文本 Ctrl-Shift-Up\t向上移动选中行 Ctrl-Shift-Down\t向下移动选中行 文本操作命令 文本相关的命令 (以 x 开头)：\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/editor/" style="background-color: #df7988; color: #fff;">
+                Editor
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+            
+            
+            
+            <a href="/categories/keymap/" style="background-color: darkgreen; color: #fff;">
+                Keymap
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/space-vim/">Space Vim</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2021-12-24T15:53:58&#43;08:00'>2021-12-24 15:53:58</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 16 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="项目用途">项目用途
+</h1><h3 id="小问题">小问题
+</h3><pre tabindex="0"><code>1, normal 状态时确保为英文状态
+1, 如何高效使用 git 快捷管理
+1, 如何修改启动界面，显示待办事项
+1, 使用模糊搜索打开文件
+启用 leaderf 模块，使用 Ctrl + p 模糊搜索
+1, # 如何使用 session
+1, 如何使用函数列表
+1, 显示空格，制表符，换行符的配置
+1, 如何灵活使用标签管理器 SPC t t（补充到文档）
+1, 窗口管理器快捷键 Normal s 使用
+1, snippt 插件和脚本生成器的使用
+1, 查找补充备份以下 snippt: bootstrap,elements
+1, 能否自动保存会话 alias 或者插件
+
+u   撤销
+C+r 恢复
+最佳实践会话恢复与保存
+
+命令            操作             重复       回退
+{edit}          修改             .           u
+f{char}/t{char} 行内找下一个字符 ;           ,
+F{char}/t{char} 行内找上一个字符 ;           ,
+/pattern&lt;CR&gt;    文档下一个匹配   n           N
+?pattern&lt;CR&gt;    文档上一个匹配   n           N
+:s/target/replacment             &amp;           u
+qx{changes}q    执行一系列修改   @x          u
+
+: function AuMksession()
+:    if v:this_session != &#34;&#34;
+:        exe &#34;mksession! &#34; .  v:this_session
+:    endif
+: endfunction
+
+
+&#34;:echo s:SessionLoadOwn
+: au VimLeavePre  * call   AuMksession()
+
+保存会话
+:mksession
+:mks!
+:mksession ~/mysession.vim
+恢复会话
+vim -S Session.vim
+:source Session.vim
+会话选项
+
+:help &#39;sessionoptions&#39;
+</code></pre><h1 id=""><a class="link" href="https://www.bookstack.cn/read/SpaceVim-zh/"  target="_blank" rel="noopener"
+    >https://www.bookstack.cn/read/SpaceVim-zh/</a>
+</h1><h2 id="javascript">javascript
+</h2><pre tabindex="0"><code>npm install -g eslint-cli #语法检查
+npm install -g js-beautify #代码格式化
+可通过快捷键 SPC l s i 启动 node -i 交互窗口 # 交互式编程
+
+工程根目录添加 .project_alt.json 文件
+{
+  &#34;src/*.js&#34;: {&#34;alternate&#34;: &#34;test/{}.js&#34;},
+  &#34;test/*.js&#34;: {&#34;alternate&#34;: &#34;src/{}.js&#34;}
+}
+就可以使用命令 :A 在源文件和测试文件之间进行跳转
+</code></pre><h2 id="golang">golang
+</h2><pre tabindex="0"><code>SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件
+SPC l b #异步执行 go build
+SPC b f #对当前文件执行 gofmt 命令 #依赖 format 模块 # 默认使用 neoformat 这一插件
+</code></pre><h2 id="php">php
+</h2><pre tabindex="0"><code>php-language-server # 代码自动补全
+composer require --dev vimeo/psalm # 语法检查 checkers 模块默认使用 neomake 语法检查工具异步调用 psalm 命令来完成
+
+# 配置文件中添加如下内容即可为 PHP 启用语言服务器
+[[layers]]
+  name = &#34;lsp&#34;
+  filetypes = [
+    &#34;php&#34;
+  ]
+  [layers.override_cmd]
+    php = [&#34;php-language-server&#34;]
+
+
+# 工程文件跳转，项目根目录添加工程文件 .project_alt.json
+{
+  &#34;src/*.php&#34;: {&#34;alternate&#34;: &#34;test/{}.php&#34;},
+  &#34;test/*.php&#34;: {&#34;alternate&#34;: &#34;src/{}.php&#34;}
+}
+就可以使用命令 :A 在源文件和测试文件之间进行跳转
+
+pear install PHP_Beautifier # 代码格式化
+SPC l r # 快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件
+SPC l s i #启动 php -a 交互窗口 # 交互式编程
+</code></pre><h2 id="typescript">typescript
+</h2><pre tabindex="0"><code>npm install -g tslint #语法检查 #checkers 模块默认使用 neomake 异步语法检查工具调用 tslint 来完成.
+工程根目录添加  .project_alt.json 文件
+{
+  &#34;src/*.ts&#34;: {&#34;alternate&#34;: &#34;test/{}.ts&#34;},
+  &#34;test/*.ts&#34;: {&#34;alternate&#34;: &#34;src/{}.ts&#34;}
+}
+就可以使用命令 :A 在源文件和测试文件之间进行跳转
+SPC l r #快速运行当前文件 根据当前缓存器调用相对应的 node 命令，无需保存文件
+
+npm install -g typescript-formatter # 代码格式化
+SPC l s i #启动 ts-node -i 交互窗口# 交互式编程
+TypeScript 交互式编程还未完全实现，主要是因为 ts-node -i 执行是并不刷新buffer
+</code></pre><h1 id="全局快捷键">全局快捷键
+</h1><pre tabindex="0"><code>SPC b h 打开欢迎界面
+SPC t n 显示/隐藏行号
+SPC T F 切换全屏(TODO)
+
+SPC [1-9] 跳至指定序号的窗口
+SPC t m t 显示/隐藏时间
+SPC t m d 显示/隐藏日期
+SPC t m T 显示/隐藏状态栏
+SPC t m v 显示/隐藏版本控制信息
+使用 / 或 ? 进行搜索时，或当按下 n 或 N 后，搜索结果序号将被展示在状态栏中，使用类似于 20/22 这样的分数
+SPC t c 清理高亮
+SPC t 8 ⑧ 8 高亮指定列后所有字符
+SPC t f ⓕ f 高亮指定列字符
+SPC t s ⓢ s 语法检查
+SPC t S Ⓢ S 拼写检查
+SPC t w ⓦ w 行尾空格检查
+
+Tab 或者 Buffer 可通过快捷键 &lt;Leader&gt; number 进行快速访问，默认的 &lt;Leader&gt; 是 \
+&lt;Leader&gt; 1 跳至标签栏序号 1
+&lt;Leader&gt; 2 跳至标签栏序号 2
+&lt;Leader&gt; 3 跳至标签栏序号 3
+g r 跳至前一个 Tab，常用于两个 Tab 来回切换
+</code></pre><h1 id="文件树">文件树
+</h1><pre tabindex="0"><code>F3 或 SPC f t 或 SPC f T 文件树
+
+N	在光标位置新建文件
+y y	复制光标下文件路径至系统剪切板
+y Y	复制光标下文件至系统剪切板
+P	在光标位置黏贴文件
+.	切换显示隐藏文件
+s v	分屏编辑该文件
+s g	垂直分屏编辑该文件
+p	预览文件
+i	切换至文件夹历史
+v	快速查看
+&gt;	放大文件树窗口宽度
+&lt;	缩小文件树窗口宽度
+g x	使用相关程序执行该文件
+&#39;	标记光标下的文件（夹）
+V	清除所有标记
+Ctrl+r	刷新页面
+</code></pre><h1 id="基本操作">基本操作
+</h1><pre tabindex="0"><code>Ctrl-f 向下翻页 (Ctrl-f / Ctrl-d)
+Ctrl-b 向上翻页 (C-b / C-u)
+Ctrl-e 向下滚屏 (3 Ctrl-e/j)
+Ctrl-y 向上滚屏 (3Ctrl-y/k)
+Ctrl-Shift-Up 向上移动当前行
+Ctrl-Shift-Down 向下移动当前行
+</code></pre><h1 id="原生功能">原生功能
+</h1><pre tabindex="0"><code>&lt;leader&gt; q r	原生 q 快捷键
+&lt;leader&gt; q r/	原生 q / 快捷键，打开命令行窗口
+&lt;leader&gt; q r?	原生 q ? 快捷键，打开命令行窗口
+&lt;leader&gt; q r:	原生 q : 快捷键，打开命令行窗口
+</code></pre><h1 id="命令行模式快捷键">命令行模式快捷键
+</h1><pre tabindex="0"><code>Ctrl-a	移动光标至行首
+Ctrl-b	向左移动光标
+Ctrl-f	向右移动光标
+Ctrl-w	删除光标前词
+Ctrl-u	移除光标前所有字符
+Ctrl-k	移除光标后所有字符
+Ctrl-c/Esc	离开命令行模式
+Tab	选择下一个匹配
+Shift-Tab	选择上一个匹配
+</code></pre><h1 id="快捷键导航">快捷键导航
+</h1><pre tabindex="0"><code>[SPC] 空格键 SpaceVim 默认前缀键
+[Window] windows_leader / s SpaceVim 默认窗口前缀键
+&lt;leader&gt; 默认的 Vim leader 键 Vim/Neovim 默认前缀键
+
+快捷键导航窗口内，按下 Ctrl-h 键，可以获取一些帮助信息
+可以通过 SPC ? 将当前快捷键罗列出来。然后可以输入快捷键按键字母或者描述，可以模糊匹配并展示结果。
+使用 &lt;Tab&gt; 键或者上下方向键选择你需要的快捷键，回车将执行这一快捷键。
+</code></pre><h1 id="移动文本块">移动文本块
+</h1><pre tabindex="0"><code>&lt; / Shift-Tab	  向左移动文本
+&gt; / Tab	        向右移动文本
+Ctrl-Shift-Up	  向上移动选中行
+Ctrl-Shift-Down	向下移动选中行
+</code></pre><h1 id="文本操作命令">文本操作命令
+</h1><p>文本相关的命令 (以 x 开头)：</p>
+<pre tabindex="0"><code>SPC x a #	基于分隔符 # 进行文本对齐
+SPC x a :	基于分隔符 : 进行文本对齐
+SPC x a =	基于分隔符 = 进行文本对齐
+SPC x a ¦	基于分隔符 ¦ 进行文本对齐
+SPC x a |	基于分隔符 | 进行文本对齐
+SPC x a r	基于用户自定义正则表达式进行文本对齐
+SPC x a o	对齐算术运算符 +-*/
+SPC x c	统计选中区域的字符/单词/行数
+SPC x d w	删除行尾空白字符
+SPC x g t	使用 Google Translate 翻译当前单词
+SPC x j c	居中对齐当前段落
+SPC x j f	set the justification to full (TODO)
+SPC x j l	左对齐当前段落
+SPC x j n	set the justification to none (TODO)
+SPC x j r	右对齐当前段落
+SPC x J	将当前行向下移动一行并进入临时快捷键状态
+SPC x K	将当前行向上移动一行并进入临时快捷键状态
+SPC x t c	交换当前字符和前一个字符的位置
+SPC x t C	交换当前字符和后一个字符的位置
+SPC x t w	交换当前单词和前一个单词的位置
+SPC x t W	交换当前单词和后一个单词的位置
+SPC x t l	交换当前行和前一行的位置
+SPC x t L	交换当前行和后一行的位置
+SPC x u	将选中字符串转为小写
+SPC x U	将选中字符串转为大写
+SPC x w c	统计选中区域的单词数
+</code></pre><h1 id="文本插入命令">文本插入命令
+</h1><pre tabindex="0"><code>SPC i l l	insert lorem-ipsum list
+SPC i l p	insert lorem-ipsum paragraph
+SPC i l s	insert lorem-ipsum sentence
+SPC i p 1	insert simple password
+SPC i p 2	insert stronger password
+SPC i p 3	insert password for paranoids
+SPC i p p	insert a phonetically easy password
+SPC i p n	insert a numerical password
+SPC i u	Search for Unicode characters and insert them into the active buffer.
+SPC i U 1	insert UUIDv1 (use universal argument to insert with CID format)
+SPC i U 4	insert UUIDv4 (use universal argument to insert with CID format)
+SPC i U U	insert UUIDv4 (use universal argument to insert with CID format)
+</code></pre><p>提示： 您可以使用前缀参数指定密码字符的数量，（例如，10 SPC i p 1 将生成 10 个简单密码字符）</p>
+<h1 id="增加或减小数字">增加或减小数字
+</h1><pre tabindex="0"><code>SPC n +	为光标下的数字加 1 并进入 临时快捷键状态
+SPC n -	为光标下的数字减 1 并进入 临时快捷键状态
+</code></pre><p>在临时快捷键模式下：</p>
+<p>快捷键 功能描述</p>
+<ul>
+<li>为光标下的数字加 1</li>
+</ul>
+<ul>
+<li>为光标下的数字减 1
+其它任意键 离开临时快捷键状态</li>
+</ul>
+<h1 id="复制粘贴">复制粘贴
+</h1><pre tabindex="0"><code>&lt;Leader&gt; y	复制文本至系统剪切板
+&lt;Leader&gt; p	粘贴系统剪切板文字至当前位置之后
+&lt;Leader&gt; P	粘贴系统剪切板文字至当前位置之前
+&lt;Leader&gt; Y	复制文本至 pastebin
+echo &#34;selected text&#34; | curl -s -F &#34;content=&lt;-&#34; http://dpaste.com/api/v2/
+</code></pre><h1 id="增删注释">增删注释
+</h1><p>注释的增删是通过插件 nerdcommenter 来实现的</p>
+<pre tabindex="0"><code>SPC ;	进入注释操作模式
+SPC c h	隐藏/显示注释
+SPC c l	注释/反注释当前行
+SPC c L	注释行
+SPC c u	反注释行
+SPC c p	注释/反注释段落
+SPC c P	注释段落
+SPC c s	使用完美格式注释
+SPC c t	注释/反注释到行
+SPC c T	注释到行
+SPC c y	注释/反注释同时复制(TODO)
+SPC c Y	复制到未命名寄存器后注释
+SPC c $	从光标位置开始注释当前行
+</code></pre><p>用 SPC ; 可以启动一个注释操作符模式，在该模式下，可以使用移动命令确认注释的范围， 比如 SPC ; 4 j，这个组合键会注释当前行以及下方的 4 行。这个数字即为相对行号，可在左侧看到。</p>
+<h1 id="编辑历史">编辑历史
+</h1><p>在编辑历史窗口内的快捷键如下：</p>
+<pre tabindex="0"><code>G	move_bottom
+J	move_older_write
+K	move_newer_write
+N	previous_match
+P	play_to
+&lt;2-LeftMouse&gt;	mouse_click
+/	search
+&lt;CR&gt;	preview
+d	diff
+&lt;down&gt;	move_older
+&lt;up&gt;	move_newer
+i	toggle_inline
+j	move_older
+k	move_newer
+n	next_match
+o	preview
+p	diff_current_buffer
+q	quit
+r	diff
+gg	move_top
+?	toggle_help
+</code></pre><h1 id="文本编码格式">文本编码格式
+</h1><p>修复混乱的显示：SPC e a 是自动选择文件编码的按键映射。在选择好文件编码方式后，你可以运行下面的代码来修复编码：</p>
+<pre tabindex="0"><code>set enc=utf-8
+write
+</code></pre><h1 id="窗口管理">窗口管理
+</h1><p>常用的窗口管理快捷键有一个统一的前缀，默认的前缀 [Window] 是按键 s，可以在配置文件中通过修改 SpaceVim 选项 window_leader 的值来设为其它按键：</p>
+<pre tabindex="0"><code>[options]
+    windows_leader = &#34;s&#34;
+
+q	智能关闭当前窗口
+[Window] v	水平分屏
+[Window] V	水平分屏，并编辑上一个文件
+[Window] g	垂直分屏
+[Window] G	垂直分屏，并编辑上一个文件
+[Window] t	新建新的标签页
+[Window] o	关闭其他窗口
+[Window] x	关闭当前缓冲区，并保留新的空白缓冲区
+[Window] q	关闭当前缓冲区
+[Window] Q	关闭当前窗口
+Shift-&lt;Tab&gt;	切换至前一窗口
+</code></pre><h1 id="常用编辑器窗口">常用编辑器窗口
+</h1><pre tabindex="0"><code>&lt;F2&gt;	打开、关闭语法树
+&lt;F3&gt;	打开、关闭文件树
+Ctrl-&lt;Down&gt;	切换至下方窗口
+Ctrl-&lt;Up&gt;	切换至上方窗口
+Ctrl-&lt;Left&gt;	切换至左边窗口
+Ctrl-&lt;Right&gt;	切换至右边窗口
+</code></pre><h1 id="窗口操作常用快捷键">窗口操作常用快捷键
+</h1><p>每一个窗口都有一个编号，该编号显示在状态栏的最前端，可通过 SPC 编号 进行快速窗口跳转。
+窗口操作相关快捷键（以 SPC w 为前缀)：</p>
+<pre tabindex="0"><code>SPC w .	启用窗口临时快捷键
+SPC w &lt;Tab&gt;	在同一标签内进行窗口切换
+SPC w =	对齐分离的窗口
+SPC w c	进入阅读模式，浏览当前窗口 (需要 tools 模块)
+SPC w C	选择某一个窗口，并且进入阅读模式 (需要 tools 模块)
+SPC w d	删除一个窗口
+SPC w D	选择一个窗口并关闭
+SPC w F	新建一个新的标签页
+SPC w h	移至左边窗口
+SPC w H	将窗口向左移动
+SPC w j	移至下方窗口
+SPC w J	将窗口向下移动
+SPC w k	移至上方窗口
+SPC w K	将窗口向上移动
+SPC w l	移至右方窗口
+SPC w L	将窗口向右移动
+SPC w m	最大化/最小化窗口（最大化相当于关闭其它窗口）
+SPC w M	选择窗口进行替换
+SPC w o	按序切换标签页
+SPC w p m	使用弹窗打开消息
+SPC w p p	关闭当前弹窗窗口
+SPC w r	顺序切换窗口
+SPC w R	逆序切换窗口
+SPC w s/-	水平分割窗口
+SPC w S	水平分割窗口，并切换至新窗口
+SPC w u	恢复窗口布局
+SPC w U	撤销恢复窗口布局
+SPC w v//	垂直分离窗口
+SPC w V	垂直分离窗口，并切换至新窗口
+SPC w w	切换至前一窗口
+SPC w W	选择一个窗口
+SPC w x	切换窗口文件
+</code></pre><h1 id="缓冲区管理">缓冲区管理
+</h1><p>缓冲区（Buffer）操作相关快捷键都是以 SPC b 为前缀的，以下为常用的缓冲区操作快捷键， 主要包括了缓冲区的切换和删除等操作：</p>
+<pre tabindex="0"><code>SPC &lt;Tab&gt;	切换至前一缓冲区，常用于两个缓冲区来回切换
+SPC b .	启用缓冲区临时快捷键
+SPC b b	通过模糊搜索工具进行缓冲区切换，需要启用一个模糊搜索工具模块
+SPC b d	删除当前缓冲区，但保留编辑窗口
+SPC u SPC b d	kill the current buffer and window (does not delete the visited file) (TODO)
+SPC b D	选择一个窗口，并删除其缓冲区
+SPC u SPC b D	kill a visible buffer and its window using ace-window(TODO)
+SPC b c	删除其它已保存的缓冲区
+SPC b C-d	删除其它所有缓冲区
+SPC b C-D	kill buffers using a regular expression(TODO)
+SPC b e	清除当前缓冲区内容，需要手动确认
+SPC b h	打开欢迎界面, 等同于快捷键 SPC a s
+SPC b n	切换至下一个缓冲区，排除特殊插件的缓冲区
+SPC b m	打开消息缓冲区
+SPC u SPC b m	kill all buffers and windows except the current one(TODO)
+SPC b p	切换至前一个缓冲区，排除特殊插件的缓冲区
+SPC b P	使用系统剪切板内容替换当前缓冲区
+SPC b R	从磁盘重新读取当前缓冲区所对应的文件
+SPC b s	switch to the scratch buffer (create it if needed) (TODO)
+SPC b w	切换只读权限
+SPC b Y	将整个缓冲区复制到系统剪切板
+z f	Make current function or comments visible in buffer as much as possible (TODO)
+</code></pre><h2 id="新建空白-buffer">新建空白 buffer
+</h2><pre tabindex="0"><code>SPC b N h	在左侧新建一个窗口，并在其中新建空白 buffer
+SPC b N j	在下方新建一个窗口，并在其中新建空白 buffer
+SPC b N k	在上方新建一个窗口，并在其中新建空白 buffer
+SPC b N l	在右侧新建一个窗口，并在其中新建空白 buffer
+SPC b N n	在当前窗口新建一个空白 buffer
+</code></pre><h1 id="文件操作相关快捷键">文件操作相关快捷键
+</h1><p>文件操作相关的快捷键都是以 SPC f 为前缀的：</p>
+<pre tabindex="0"><code>SPC f /	使用 find 或者 fd 命令查找文件，支持参数提示
+SPC f b	跳至文件书签
+SPC f c	copy current file to a different location(TODO)
+SPC f C d	修改文件编码 unix -&gt; dos
+SPC f C u	修改文件编码 dos -&gt; unix
+SPC f D	删除文件以及 buffer，需要手动确认
+SPC f E	open a file with elevated privileges (sudo edit)(TODO)
+SPC f f	打开文件
+SPC f F	打开光标下的文件
+SPC f o	代开文件树，并定位到当前文件
+SPC f R	rename the current file(TODO)
+SPC f s / Ctrl-s	保存文件 (:w)
+SPC f W	使用管理员模式保存
+SPC f S	保存所有文件
+SPC f r	打开文件历史
+SPC f t	切换侧栏文件树
+SPC f T	打开文件树侧栏
+SPC f d	Windows 下显示/隐藏磁盘管理器
+SPC f y	复制并显示当前文件的绝对路径
+SPC f Y	复制并显示当前文件的远程路径
+</code></pre><h1 id="vim-和-spacevim-相关文件">Vim 和 SpaceVim 相关文件
+</h1><pre tabindex="0"><code>SPC f v d	打开 SpaceVim 的用户配置文件
+</code></pre><h1 id="模块管理">模块管理
+</h1><p>所有可用模块可以通过命令 :SPLayer -l 或者快捷键 SPC h l 来展示。
+可通过快捷键 <!-- raw HTML omitted --> f p 列出所有已安装的插件，支持模糊搜索，回车将使用浏览器打开该插件的官网。
+这些模块都提供了非常类似的快捷键，包括文件搜索、跳转历史搜索等功能， 具体快捷键列表如下：</p>
+<pre tabindex="0"><code>&lt;Leader&gt; f &lt;Space&gt;	模糊查找快捷键，并执行该快捷键
+&lt;Leader&gt; f e	模糊搜索寄存器
+&lt;Leader&gt; f h	模糊搜索 history/yank
+&lt;Leader&gt; f j	模糊搜索 jump, change
+&lt;Leader&gt; f l	模糊搜索 location list
+&lt;Leader&gt; f m	模糊搜索 output messages
+&lt;Leader&gt; f o	模糊搜索函数列表
+&lt;Leader&gt; f q	模糊搜索 quickfix list
+&lt;Leader&gt; f r	重置上次搜索窗口
+</code></pre><p>由于不同工具的局限性，有些模块还不能完全提供上述功能，目前仅有 denite 和 unite 模块可以提供完整的功能。</p>
+<pre tabindex="0"><code>功能特性	unite	denite	leaderf	ctrlp	fzf
+模糊查找快捷键，并执行该快捷键	yes	yes	no	no	no
+模块搜索寄存器	yes	yes	no	yes	yes
+模糊搜索文件	yes	yes	yes	yes	yes
+模糊搜索复制历史	yes	yes	no	no	yes
+模糊搜索跳转历史	yes	yes	no	yes	yes
+模糊搜索位置列表	yes	yes	no	no	yes
+模糊搜索语法树	yes	yes	yes	yes	yes
+模糊搜索消息	yes	yes	no	no	yes
+模糊搜索全局位置列表	yes	yes	no	yes	yes
+重置上次搜索窗口	yes	yes	no	no	no
+</code></pre><p>模糊搜索窗口内的快捷键：</p>
+<pre tabindex="0"><code>&lt;Tab&gt; / Ctrl-j	下一个选项
+Shift-&lt;Tab&gt; / Ctrl-k	上一个选项
+jk	离开输入模式（仅支持 denite 和 unite 模块）
+Ctrl-w	删除光标前词语
+&lt;Enter&gt;	执行默认动作
+Ctrl-s	在分割窗口内打开
+Ctrl-v	在垂直分割窗口内打开
+Ctrl-t	在新的标签页里打开
+Ctrl-g	推出模糊搜索插件
+</code></pre><p>Denite 或 Unite 模块可视模式下快捷键：</p>
+<pre tabindex="0"><code>Ctrl+h/k/l/r	未定义
+Ctrl+l	刷新窗口
+&lt;Tab&gt;	选择即将执行的动作
+Space	切换标记当前选项
+r	替换或者重命名
+Ctrl+z	切换窗口分割方式
+</code></pre><p>以上这些快捷键仅仅是模糊搜索模块的部分快捷键，其他快捷键信息可查阅对应模块文档。</p>
+<h1 id="在任意目录中进行搜索">在任意目录中进行搜索
+</h1><p>需要去搜索非当前项目下的一些文件。 按下快捷键后，首先提示的是输入搜索词，之后提示输入搜索的目录地址。</p>
+<pre tabindex="0"><code>SPC s f	使用默认的搜索工具进行搜索
+SPC s F	使用默认的搜索工具搜索光标下的词
+SPC s &lt;tool&gt; f/F 来指定搜索工具
+&lt;tool&gt; : a:ag, g:grep, k:ack, r:rg, t:pt
+
+搜索范围(大小写意义一致):
+f/F  任意目录搜索
+p/P  整个工程目录
+j/J  后台进行工程搜索
+b/B  所有打开的缓冲区中进行搜索
+d/D  当前文件所在的文件夹中搜索
+s/S  当前文件中进行搜索
+g/w  在网上进行搜索(g:google,w:wikipedia)
+</code></pre><p>实时代码检索</p>
+<pre tabindex="0"><code>SPC s /	在工程中使用默认工具实时检索代码
+</code></pre><p>Flygrep 搜索窗口结果窗口内的常用快捷键：</p>
+<pre tabindex="0"><code>&lt;Esc&gt;	关闭搜索窗口
+&lt;Enter&gt;	打开当前选中的文件位置
+Ctrl-t	在新标签栏打开选中项
+Ctrl-s	在分屏打开选中项
+Ctrl-v	在垂直分屏打开选中项
+Ctrl-q	将搜索结果转移至 quickfix
+&lt;Tab&gt;	选中下一行文件位置
+Shift-&lt;Tab&gt;	选中上一行文件位置
+&lt;Backspace&gt;	删除上一个输入字符
+Ctrl-w	删除光标前的单词
+Ctrl-u	删除光标前所有内容
+Ctrl-k	删除光标后所有内容
+Ctrl-a / &lt;Home&gt;	将光标移至行首
+Ctrl-e / &lt;End&gt;	将光标移至行尾
+</code></pre><h1 id="获取帮助信息">获取帮助信息
+</h1><pre tabindex="0"><code>SPC h SPC	使用 fuzzy find 模块展示 SpaceVim 帮助文档章节目录
+SPC h i	获取光标下单词的帮助信息
+SPC h k	使用快捷键导航，展示 SpaceVim 所支持的前缀键
+SPC h m	使用 Unite 浏览所有 man 文档
+</code></pre><h1 id="常用的成对快捷键">常用的成对快捷键
+</h1><pre tabindex="0"><code>[ SPC	在当前行或已选区域上方添加空行
+] SPC	在当前行或已选区域下方添加空行
+[ b	跳至前一 buffer
+] b	跳至下一 buffer
+[ n	跳至前一冲突位置
+] n	跳至下一冲突位置
+[ f	跳至文件夹中的前一个文件
+] f	跳至文件夹中的下一个文件
+[ l	跳至前一个错误处
+] l	跳至下一个错误处
+[ c	跳至前一个 vcs hunk (需要 VersionControl 模块)
+] c	跳至下一个 vcs hunk (需要 VersionControl 模块)
+[ q	跳至前一个错误
+] q	跳至下一个错误
+[ t	跳至前一个标签页
+] t	跳至下一个标签页
+[ w	跳至前一个窗口
+] w	跳至下一个窗口
+[ e	向上移动当前行或者已选择行
+] e	向下移动当前行或者已选择行
+[ p	粘贴至当前行上方
+] p	粘贴至当前行下方
+g p	选择粘贴的区域
+</code></pre><h1 id="跳转合并拆分">跳转，合并，拆分
+</h1><pre tabindex="0"><code>SPC j 0	跳至行首，并且在原始位置留下标签，以便跳回
+SPC j $	跳至行尾，并且在原始位置留下标签，以便跳回
+SPC j b	向后回跳
+SPC j f	向前跳
+SPC j d	跳至当前目录某个文件夹
+SPC j D	跳至当前目录某个文件夹（在另外窗口展示文件列表）
+SPC j i	跳至当前文件的某个函数，使用 Denite 打开语法树
+SPC j I	跳至所有 Buffer 的语法树（TODO）
+SPC j j	跳至当前窗口的某个字符 (easymotion)
+SPC j J	跳至当前窗口的某两个字符的组合 (easymotion)
+SPC j k	跳至下一行，并且对齐下一行
+SPC j l	跳至某一行 (easymotion)
+SPC j q	show the dumb-jump quick look tooltip (TODO)
+SPC j u	跳至窗口某个 URL (TODO)
+SPC j v	跳至某个 Vim 函数的定义处 (TODO)
+SPC j w	跳至 Buffer 中某个单词 (easymotion)
+
+J	合并当前行和下一行
+SPC j k	跳至下一行，并且对齐该行
+SPC j n	从光标处断开当前行，并且插入空行以及进行对齐
+SPC j o	从光标处拆分该行，光标停留在当前行行尾
+SPC j s	从光标处拆分 String
+SPC j S	从光标处使用换行符拆分 String，并自动缩进新行
+</code></pre><h1 id="其它快捷键">其它快捷键
+</h1><p>以 g 为前缀的快捷键
+在 Normal 模式下按下 g 之后，如果你不记得快捷键出现按键延迟，那么快捷键导航将会提示你所有以 g 为前缀的快捷键。</p>
+<pre tabindex="0"><code>g #	反向搜索光标下的词
+g $	跳向本行最右侧字符
+g &amp;	针对所有行重复执行上一次 “:s” 命令
+g &#39;	跳至标签
+g *	正向搜索光标下的词
+g +	newer text state
+g ,	newer position in change list
+g -	older text state
+g /	stay incsearch
+g 0	go to leftmost character
+g ;	older position in change list
+g &lt;	last page of previous command output
+g &lt;Home&gt;	go to leftmost character
+g E	end of previous word
+g F	edit file under cursor(jump to line after name)
+g H	select line mode
+g I	insert text in column 1
+g J	join lines without space
+g N	visually select previous match
+g Q	switch to Ex mode
+g R	enter VREPLACE mode
+g T	previous tag page
+g U	make motion text uppercase
+g ]	tselect cursor tag
+g ^	go to leftmost no-white character
+g _	go to last char
+g `	跳至标签，等同于 g&#39;
+g a	打印光标字符的 ascii 值
+g d	跳至定义处
+g e	go to end of previous word
+g f	edit file under cursor
+g g	go to line N
+g h	select mode
+g i	insert text after ‘^ mark
+g j	move cursor down screen line
+g k	move cursor up screen line
+g m	go to middle of screenline
+g n	visually select next match
+g o	goto byte N in the buffer
+g s	sleep N seconds
+g t	next tag page
+g u	make motion text lowercase
+g ~	swap case for Nmove text
+g &lt;End&gt;	跳至本行最右侧字符，等同于 g$
+g Ctrl-G	显示光标信息
+</code></pre><p>以 z 开头的命令
+当你不记得按键映射时，你可以在普通模式下输入前缀 z, 然后你会看到所有以 z 为前缀的函数映射。</p>
+<pre tabindex="0"><code>z &lt;Right&gt;	scroll screen N characters to left
+z +	cursor to screen top line N
+z -	cursor to screen bottom line N
+z .	cursor line to center
+z &lt;Cr&gt;	cursor line to top
+z =	spelling suggestions
+z A	toggle folds recursively
+z C	close folds recursively
+z D	delete folds recursively
+z E	eliminate all folds
+z F	create a fold for N lines
+z G	mark good spelled(update internal-wordlist)
+z H	scroll half a screenwidth to the right
+z L	scroll half a screenwidth to the left
+z M	set foldlevel to zero
+z N	set foldenable
+z O	open folds recursively
+z R	set foldlevel to deepest fold
+z W	mark wrong spelled
+z X	re-apply foldlevel
+z ^	cursor to screen bottom line N
+z a	toggle a fold
+z b	redraw, cursor line at bottom
+z c	close a fold
+z d	delete a fold
+z e	right scroll horizontally to cursor position
+z f	create a fold for motion
+z g	mark good spelled
+z h	scroll screen N characters to right
+z i	toggle foldenable
+z j	mode to start of next fold
+z k	mode to end of previous fold
+z l	scroll screen N characters to left
+z m	subtract one from foldlevel
+z n	reset foldenable
+z o	open fold
+z r	add one to foldlevel
+z s	left scroll horizontally to cursor position
+z t	cursor line at top of window
+z v	open enough folds to view cursor line
+z x	re-apply foldlevel and do “zV”
+z z	smart scroll
+z &lt;Left&gt;	scroll screen N characters to right
+</code></pre><h2 id="小技巧">小技巧
+</h2><pre tabindex="0"><code># 光标跳转
+% 对括号匹配, 进行跳转,象形字表意, 匹配的括号, 会被高亮显示,  根据光标的 &#34;闪烁&#34; 来区分当前 光标实际所在的位置
+括号本身的命令
+{和}是对段落进行跳转开头/结尾
+(和)是针对一个句子的开头/结尾
+[[和]]是对函数的跳转开头和结尾
+
+单引号, 双引号, 括号(大中小/ 尖括号)在noraml状态下的操作规律:
+这个操作命令由三个部分组成 : 操作类型(选择/删除/修改等) + i/a + 符号
+i/a: 对符号内的内容进行操作。 i: 不含符号  a:包括符号在内
+操作类型包括: c表示修改, d表示删除, y表示复制yank, v(visual选择模式)表示选择
+eg: di{ 就表示删除大括号中的内容
+c和d的区别: d表示删除 但删除后仍然处于 normal状态, 而cc: 表示删除行同时 还会转换为 insert 状态!! c: change!
+如何理解：
+dw        删除后面的一个单词  同理解 d2w, c3w, 4yy
+di{, da(  d:动作 (/{:操作对象 i/a:表操作范围
+
+
+# 快速选中、删除、复制标点内的内容
+ci&#39;、ci&#34;、ci(、ci[、ci{、ci&lt; - 分别更改这些配对标点符号中的文本内容
+di&#39;、di&#34;、di(或dib、di[、di{或diB、di&lt; - 分别删除这些配对标点符号中的文本内容
+yi&#39;、yi&#34;、yi(、yi[、yi{、yi&lt; - 分别复制这些配对标点符号中的文本内容
+vi&#39;、vi&#34;、vi(、vi[、vi{、vi&lt; - 分别选中这些配对标点符号中的文本内容
+另外如果把上面的i改成a可以连配对标点一起操作。
+eg：文本：111&#34;222&#34;333
+将光标移到&#34;222&#34;的任何一个字符处输入命令 di&#34; ,文本会变成： 111&#34;&#34;333
+若输入命令 da&#34; ,文本会变成： 111333,如果在此行只有一对&#34;&#34;,那么在行首以及后一个&#34;之前输入命令是一样的效果,
+
+# 快速在单词或句子两侧输入标点
+</code></pre><h1 id="工程管理">工程管理
+</h1><pre tabindex="0"><code>SPC p &#39;	在当前工程的根目录打开 shell（需要 shell 模块）
+SPC p f	在当前工程中查找文件
+SPC p /	在当前工程中搜索文本内容
+SPC p k	关闭当前工程的所有缓冲区
+SPC p p	显示所有工程
+</code></pre><h2 id="自定义跳转文件">自定义跳转文件
+</h2><h2 id="标签管理">标签管理
+</h2><h2 id="任务管理">任务管理
+</h2><h2 id="自定义任务项目相关支持前后台运行">自定义任务(项目相关支持前后台运行)
+</h2><h2 id="任务自动识别npm-packagejson">任务自动识别(npm package.json)
+</h2><h2 id="任务提供源自动检测并新建任务">任务提供源（自动检测并新建任务）
+</h2><h1 id="iedit-多光标编辑">Iedit 多光标编辑
+</h1><h2 id="iedit-快捷键">Iedit 快捷键
+</h2><h2 id="高亮光标下变量">高亮光标下变量
+</h2><h1 id="异步运行器和交互式编程">异步运行器和交互式编程
+</h1><h1 id="错误处理">错误处理
+</h1><h1 id="格式规范">格式规范
+</h1><h1 id="后台服务">后台服务
+</h1>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vim/">Vim</a>
+        
+            <a href="/tags/space-vim/">Space-Vim</a>
+        
+            <a href="/tags/spacevim/">SpaceVim</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/vim/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vim</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

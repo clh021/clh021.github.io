@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="sed sed [options] &#39;[地址定界] command&#39; file(s) options: -n：不输出模式空间内容到屏幕，即不自动打印，只打印匹配到的行 -e：多点编辑，对每行处理时，可以有多个Script -f：把Script写到文件当中，在执行sed时-f 指定文件路径，如果是多个Script，换行写 -r：支持扩展的正则表达式 -i：直接将处理的结果写入文件 -i.bak：在将处理的结果写入文件之前备份一份 地址定界: 不给地址：对全文进行处理 单地址： #: 指定的行 /pattern/：被此处模式所能够匹配到的每一行 地址范围： #,# #,+# /pat1/,/pat2/ #,/pat1/ ~：步进 sed -n &#39;1~2p&#39; 只打印奇数行 （1~2 从第1行，一次加2行） sed -n &#39;2~2p&#39; 只打印偶数行 command: d：删除模式空间匹配的行，并立即启用下一轮循环 p：打印当前模式空间内容，追加到默认输出之后 a：在指定行后面追加文本，支持使用\\n实现多行追加 i：在行前面插入文本，支持使用\\n实现多行追加 c：替换行为单行或多行文本，支持使用\\n实现多行追加 w：保存模式匹配的行至指定文件 r：读取指定文件的文本至模式空间中匹配到的行后 =：为模式空间中的行打印行号 !：模式空间中匹配行取反处理 s///：查找替换，支持使用其它分隔符，如：s@@@，s###； 加g表示行内全局替换； 在替换时，可以加一下命令，实现大小写转换 \\l：把下个字符转换成小写。 \\L：把replacement字母转换成小写，直到\\U或\\E出现。 \\u：把下个字符转换成大写。 \\U：把replacement字母转换成大写，直到\\L或\\E出现。 \\E：停止以\\L或\\U开始的大小写转换 实战\n">
+<title>sed</title>
+
+<link rel='canonical' href='/post/tech/sed/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="sed">
+<meta property='og:description' content="sed sed [options] &#39;[地址定界] command&#39; file(s) options: -n：不输出模式空间内容到屏幕，即不自动打印，只打印匹配到的行 -e：多点编辑，对每行处理时，可以有多个Script -f：把Script写到文件当中，在执行sed时-f 指定文件路径，如果是多个Script，换行写 -r：支持扩展的正则表达式 -i：直接将处理的结果写入文件 -i.bak：在将处理的结果写入文件之前备份一份 地址定界: 不给地址：对全文进行处理 单地址： #: 指定的行 /pattern/：被此处模式所能够匹配到的每一行 地址范围： #,# #,+# /pat1/,/pat2/ #,/pat1/ ~：步进 sed -n &#39;1~2p&#39; 只打印奇数行 （1~2 从第1行，一次加2行） sed -n &#39;2~2p&#39; 只打印偶数行 command: d：删除模式空间匹配的行，并立即启用下一轮循环 p：打印当前模式空间内容，追加到默认输出之后 a：在指定行后面追加文本，支持使用\\n实现多行追加 i：在行前面插入文本，支持使用\\n实现多行追加 c：替换行为单行或多行文本，支持使用\\n实现多行追加 w：保存模式匹配的行至指定文件 r：读取指定文件的文本至模式空间中匹配到的行后 =：为模式空间中的行打印行号 !：模式空间中匹配行取反处理 s///：查找替换，支持使用其它分隔符，如：s@@@，s###； 加g表示行内全局替换； 在替换时，可以加一下命令，实现大小写转换 \\l：把下个字符转换成小写。 \\L：把replacement字母转换成小写，直到\\U或\\E出现。 \\u：把下个字符转换成大写。 \\U：把replacement字母转换成大写，直到\\L或\\E出现。 \\E：停止以\\L或\\U开始的大小写转换 实战\n">
+<meta property='og:url' content='/post/tech/sed/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='sed' /><meta property='article:tag' content='三剑客' /><meta property='article:published_time' content='2021-12-24T15:54:47&#43;08:00'/><meta property='article:modified_time' content='2021-12-24T15:54:47&#43;08:00'/>
+<meta name="twitter:title" content="sed">
+<meta name="twitter:description" content="sed sed [options] &#39;[地址定界] command&#39; file(s) options: -n：不输出模式空间内容到屏幕，即不自动打印，只打印匹配到的行 -e：多点编辑，对每行处理时，可以有多个Script -f：把Script写到文件当中，在执行sed时-f 指定文件路径，如果是多个Script，换行写 -r：支持扩展的正则表达式 -i：直接将处理的结果写入文件 -i.bak：在将处理的结果写入文件之前备份一份 地址定界: 不给地址：对全文进行处理 单地址： #: 指定的行 /pattern/：被此处模式所能够匹配到的每一行 地址范围： #,# #,+# /pat1/,/pat2/ #,/pat1/ ~：步进 sed -n &#39;1~2p&#39; 只打印奇数行 （1~2 从第1行，一次加2行） sed -n &#39;2~2p&#39; 只打印偶数行 command: d：删除模式空间匹配的行，并立即启用下一轮循环 p：打印当前模式空间内容，追加到默认输出之后 a：在指定行后面追加文本，支持使用\\n实现多行追加 i：在行前面插入文本，支持使用\\n实现多行追加 c：替换行为单行或多行文本，支持使用\\n实现多行追加 w：保存模式匹配的行至指定文件 r：读取指定文件的文本至模式空间中匹配到的行后 =：为模式空间中的行打印行号 !：模式空间中匹配行取反处理 s///：查找替换，支持使用其它分隔符，如：s@@@，s###； 加g表示行内全局替换； 在替换时，可以加一下命令，实现大小写转换 \\l：把下个字符转换成小写。 \\L：把replacement字母转换成小写，直到\\U或\\E出现。 \\u：把下个字符转换成大写。 \\U：把replacement字母转换成大写，直到\\L或\\E出现。 \\E：停止以\\L或\\U开始的大小写转换 实战\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/sed/">sed</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2021-12-24T15:54:47&#43;08:00'>2021-12-24 15:54:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="sed">sed
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#f92672">[</span>options<span style="color:#f92672">]</span> <span style="color:#e6db74">&#39;[地址定界] command&#39;</span> file<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>options:
+</span></span><span style="display:flex;"><span> -n：不输出模式空间内容到屏幕，即不自动打印，只打印匹配到的行
+</span></span><span style="display:flex;"><span> -e：多点编辑，对每行处理时，可以有多个Script
+</span></span><span style="display:flex;"><span> -f：把Script写到文件当中，在执行sed时-f 指定文件路径，如果是多个Script，换行写
+</span></span><span style="display:flex;"><span> -r：支持扩展的正则表达式
+</span></span><span style="display:flex;"><span> -i：直接将处理的结果写入文件
+</span></span><span style="display:flex;"><span> -i.bak：在将处理的结果写入文件之前备份一份
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>地址定界:
+</span></span><span style="display:flex;"><span> 不给地址：对全文进行处理
+</span></span><span style="display:flex;"><span> 单地址：
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#: 指定的行</span>
+</span></span><span style="display:flex;"><span> /pattern/：被此处模式所能够匹配到的每一行
+</span></span><span style="display:flex;"><span> 地址范围：
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#,#</span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#,+#</span>
+</span></span><span style="display:flex;"><span> /pat1/,/pat2/
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#,/pat1/</span>
+</span></span><span style="display:flex;"><span> ~：步进
+</span></span><span style="display:flex;"><span>  sed -n <span style="color:#e6db74">&#39;1~2p&#39;</span>  只打印奇数行 （1~2 从第1行，一次加2行）
+</span></span><span style="display:flex;"><span>  sed -n <span style="color:#e6db74">&#39;2~2p&#39;</span>  只打印偶数行
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>command:
+</span></span><span style="display:flex;"><span> d：删除模式空间匹配的行，并立即启用下一轮循环
+</span></span><span style="display:flex;"><span> p：打印当前模式空间内容，追加到默认输出之后
+</span></span><span style="display:flex;"><span> a：在指定行后面追加文本，支持使用<span style="color:#ae81ff">\n</span>实现多行追加
+</span></span><span style="display:flex;"><span> i：在行前面插入文本，支持使用<span style="color:#ae81ff">\n</span>实现多行追加
+</span></span><span style="display:flex;"><span> c：替换行为单行或多行文本，支持使用<span style="color:#ae81ff">\n</span>实现多行追加
+</span></span><span style="display:flex;"><span> w：保存模式匹配的行至指定文件
+</span></span><span style="display:flex;"><span> r：读取指定文件的文本至模式空间中匹配到的行后
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">=</span>：为模式空间中的行打印行号
+</span></span><span style="display:flex;"><span> !：模式空间中匹配行取反处理
+</span></span><span style="display:flex;"><span> s///：查找替换，支持使用其它分隔符，如：s@@@，s###；
+</span></span><span style="display:flex;"><span> 加g表示行内全局替换；
+</span></span><span style="display:flex;"><span> 在替换时，可以加一下命令，实现大小写转换
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">\l</span>：把下个字符转换成小写。
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">\L</span>：把replacement字母转换成小写，直到<span style="color:#ae81ff">\U</span>或<span style="color:#ae81ff">\E</span>出现。
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">\u</span>：把下个字符转换成大写。
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">\U</span>：把replacement字母转换成大写，直到<span style="color:#ae81ff">\L</span>或<span style="color:#ae81ff">\E</span>出现。
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">\E</span>：停止以<span style="color:#ae81ff">\L</span>或<span style="color:#ae81ff">\U</span>开始的大小写转换
+</span></span></code></pre></div><p>实战</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># options</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat demo</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#34;/aaa/p&#34; demo  #匹配到的行会打印一遍，不匹配的行也会打印</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#34;/aaa/p&#34; demo  #-n不显示没匹配的行</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -e &#34;s/a/A/&#34; -e &#34;s/b/B/&#34; demo  #-e多点编辑</span>
+</span></span><span style="display:flex;"><span>Aaa
+</span></span><span style="display:flex;"><span>Bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat sedscript.txt</span>
+</span></span><span style="display:flex;"><span>s/A/a/g
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -f sedscript.txt demo  #-f使用文件处理</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>aaBBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -i.bak &#34;s/a/A/g&#34; demo  #-i直接对文件进行处理</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat demo</span>
+</span></span><span style="display:flex;"><span>AAA
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat demo.bak</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 地址界定</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat demo</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#34;p&#34; demo  #不指定行，打印全文</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#34;2s/b/B/g&#34; demo  #替换第2行的b-&gt;B</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>BBBB
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#34;/aaa/p&#34; demo</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#34;1,2p&#34; demo  #打印1-2行</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#34;/aaa/,/DD/p&#34; demo</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#34;2,/DD/p&#34; demo</span>
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#34;1~2s/[aA]/E/g&#34; demo  #将奇数行的a或A替换为E</span>
+</span></span><span style="display:flex;"><span>EEE
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>EEBBCCDD
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># command</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat demo</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#34;2d&#34; demo  #删除第2行</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#34;2p&#34; demo  #打印第2行</span>
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#34;2a123&#34; demo  #在第2行后加123</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">123</span>
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#34;1i123&#34; demo  #在第1行前加123</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">123</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#34;3c123\n456&#34; demo  #替换第3行内容</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">123</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">456</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#34;3w/root/demo3&#34; demo  #保存第3行的内容到demo3文件中</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat demo3</span>
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#34;1r/root/demo3&#34; demo  #读取demo3的内容到第1行后</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span>bbbb
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#34;=&#34; demo  #=打印行号</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed -n &#39;2!p&#39; demo  #打印除了第2行的内容</span>
+</span></span><span style="display:flex;"><span>aaa
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#39;s@[a-z]@\u&amp;@g&#39; demo  #将全文的小写字母替换为大写字母</span>
+</span></span><span style="display:flex;"><span>AAA
+</span></span><span style="display:flex;"><span>BBBB
+</span></span><span style="display:flex;"><span>AABBCCDD
+</span></span></code></pre></div><p>高级编辑命令
+（1）格式</p>
+<pre tabindex="0"><code> h：把模式空间中的内容覆盖至保持空间中
+ H：把模式空间中的内容追加至保持空间中
+ g：从保持空间取出数据覆盖至模式空间
+ G：从保持空间取出内容追加至模式空间
+ x：把模式空间中的内容与保持空间中的内容进行互换
+ n：读取匹配到的行的下一行覆盖 至模式空间
+ N：读取匹配到的行的下一行追加 至模式空间
+ d：删除模式空间中的行
+ D：删除 当前模式空间开端至\n 的内容（不再传 至标准输出），放弃之后的命令，但是对剩余模式空间重新执行sed
+</code></pre><p>（2）一个案例+示意图演示
+① 案例：倒序输出文本内容</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat num.txt</span>
+</span></span><span style="display:flex;"><span>One
+</span></span><span style="display:flex;"><span>Two
+</span></span><span style="display:flex;"><span>Three
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@along ~<span style="color:#f92672">]</span><span style="color:#75715e"># sed &#39;1!G;h;$!d&#39; num.txt</span>
+</span></span><span style="display:flex;"><span>Three
+</span></span><span style="display:flex;"><span>Two
+</span></span><span style="display:flex;"><span>One
+</span></span></code></pre></div><p>② 示意图如下：
+<img src="/post/tech/sed/1.png"
+	width="997"
+	height="420"
+	srcset="/post/tech/sed/1_hu_a0afa30f3124a0e9.png 480w, /post/tech/sed/1_hu_1d21390242d0ad9a.png 1024w"
+	loading="lazy"
+	
+		alt="1.png"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="237"
+		data-flex-basis="569px"
+	
+>
+③ 总结模式空间与保持空间关系：</p>
+<p>保持空间是模式空间一个临时存放数据的缓冲区，协助模式空间进行数据处理</p>
+<p>（3）演示</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>seq <span style="color:#ae81ff">9</span> |sed -n <span style="color:#e6db74">&#39;n;p&#39;</span> <span style="color:#75715e"># 显示偶数行</span>
+</span></span><span style="display:flex;"><span>seq <span style="color:#ae81ff">9</span> |sed  <span style="color:#e6db74">&#39;1!G;h;$!d&#39;</span> <span style="color:#75715e"># 倒序显示</span>
+</span></span><span style="display:flex;"><span>seq <span style="color:#ae81ff">9</span> |sed <span style="color:#e6db74">&#39;H;n;d&#39;</span> <span style="color:#75715e"># 显示奇数行</span>
+</span></span><span style="display:flex;"><span>seq <span style="color:#ae81ff">9</span> |sed <span style="color:#e6db74">&#39;N;D&#39;</span> <span style="color:#75715e"># 显示最后一行</span>
+</span></span><span style="display:flex;"><span>seq <span style="color:#ae81ff">9</span> |sed <span style="color:#e6db74">&#39;G&#39;</span> <span style="color:#75715e"># 每行之间加空行</span>
+</span></span><span style="display:flex;"><span>seq <span style="color:#ae81ff">9</span> |sed <span style="color:#e6db74">&#34;g&#34;</span> <span style="color:#75715e"># 把每行内容替换成空行</span>
+</span></span><span style="display:flex;"><span>seq <span style="color:#ae81ff">9</span> |sed <span style="color:#e6db74">&#39;/^$/d;G&#39;</span> <span style="color:#75715e"># 确保每一行下面都有一个空行</span>
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/sed/">Sed</a>
+        
+            <a href="/tags/%E4%B8%89%E5%89%91%E5%AE%A2/">三剑客</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/awk/awk/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Awk</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

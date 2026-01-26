@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <script src="./index/jquery-3.6.0.min.js"></script>
+    <title>示例</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .contain,
+    fieldset {
+        padding: 8px;
+    }
+</style>
+
+<body>
+    Test by http://localhost:3000/apps/trayIcon.html
+    <div class="contain">
+        <fieldset>
+            <legend>任务栏 & 托盘</legend>
+            <button onclick="win.skip_bar()">跳过任务栏</button>
+            <button onclick="win.skip_bar(false)">显示任务栏</button>
+            <button onclick="addTray()">创建托盘</button>
+            <button onclick="getTrayGeometry()">获取托盘位置</button>
+            <button onclick="delTray()">销毁托盘</button>
+        </fieldset>
+    </div>
+</body>
+
+<script language="javascript">
+    function addTray() {
+        this.trayIcon = new lnks.TrayIcon(window, "./nazha.ico");
+        setTimeout(() => {
+            let g = this.trayIcon.geometry;
+            let width = 100;
+            let height = 260;
+            console.log("g:", g)
+            console.log('p:', g.x - (width / 2), g.y - height);
+            // console.log("trayIcon:", this.trayIcon);
+            lnks.openWindow2({
+                "url": "./apps/popup.html",
+                // "skip_bar": true,
+                "skipBar": true,
+                "width": width,
+                "height": height,
+                "positionX": g.x - (width / 2),
+                "positionY": g.y - height,
+                "hideChrome": true,
+                "hidden": true
+            }, {
+                "HomeWindow": this.win,
+                "TrayIcon": this.trayIcon,
+            });
+        }, 1000)
+    }
+    function getTrayGeometry() {
+        let g = this.trayIcon.geometry;
+        console.info("g", g)
+        alert(JSON.stringify(g));
+    }
+    function delTray() {
+        if (this.trayIcon) {
+            this.trayIcon.destroy();
+        } else {
+            alert("TrayIcon not created");
+        }
+    }
+    // 全局变量准备
+    window.onload = function () {
+        if (window.lnks) {
+            this.win = new window.lnks.MainWindow(window);
+        } else {
+            alert("浏览器不支持本Demo")
+        }
+    }
+</script>
+
+</html>

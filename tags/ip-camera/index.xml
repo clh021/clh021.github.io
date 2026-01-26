@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Ip-Camera on 良宏</title>
+        <link>/tags/ip-camera/</link>
+        <description>Recent content in Ip-Camera on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Mon, 18 Apr 2022 08:01:20 +0800</lastBuildDate><atom:link href="/tags/ip-camera/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>给家里安装安防监控</title>
+        <link>/post/live/ip.carmer/</link>
+        <pubDate>Mon, 18 Apr 2022 08:01:20 +0800</pubDate>
+        
+        <guid>/post/live/ip.carmer/</guid>
+        <description>&lt;p&gt;疫情又严重了，而家里几年前的小米摄像头已经退役了。所以决定要给老人小孩安装一个安防监控，既能得个心安，方便随时了解情况；又能解决在出差时内心的牵挂。&lt;/p&gt;
+&lt;p&gt;手机比较老旧了，已经安装了很多 App 了，不想再多安装一个 App 。而工作出差使用的电脑又不固定，特别是出差时电脑环境比较特殊，也不能安装电脑端软件。所以找来找去，这里选购了 tp-link ，&lt;a class=&#34;link&#34; href=&#34;https://security.tp-link.com.cn/service/artilce?classtip=1&amp;amp;p=1&amp;amp;o=0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方说明&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://security.tp-link.com.cn/service/detail_article_3502.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;无线IPC有独立的WEB界面&lt;/a&gt;，可以在浏览器地址栏输入IPC的管理IP地址，通过用户名、密码来登录。浏览器地址栏输入无线IPC的IP地址，回车输入用户名密码登陆。登录用户名为admin；若无线IPC未激活，登录密码为空，若无线IPC已被激活，请输入管理密码登录。如果忘记了管理密码，可以通过长按Reset复位孔5秒以上将设备恢复出厂重新设置。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://security.tp-link.com.cn/service/detail_article_4515.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;如果设备登录TP-LINK ID&lt;/a&gt;，就可以用安防电脑客户端进行远程监控。但是很多朋友在使用电脑监控远程时，由于各种原因（例如无固定电脑、需要同步配置、希望长时间预览）不方便下载电脑客户端，希望使用WEB来远程监控，也就是在浏览器输入IP地址，就可以像在局域网WEB访问一样实现远程监控。&lt;/p&gt;
+&lt;p&gt;不好，由于官方文档说明浏览器需要&lt;a class=&#34;link&#34; href=&#34;https://security.tp-link.com.cn/service/detail_article_3214.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;安装插件&lt;/a&gt;，为了避免出差时插件不能安装。&lt;/p&gt;
+&lt;p&gt;这里选用了&lt;a class=&#34;link&#34; href=&#34;https://open.ys7.com/bbs/supportcenter.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;萤石摄像头&lt;/a&gt;，官方明确说明了可以实现无插件播放&lt;a class=&#34;link&#34; href=&#34;https://open.ys7.com/bbs/article/6&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;，对萤石摄像头还不了解的朋友可以去&lt;a class=&#34;link&#34; href=&#34;http://www.ys7.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;萤石官网&lt;/a&gt;浏览一下，属于海康威视旗下的专门针对家庭与门店设计的物美价廉的摄像头。&lt;/p&gt;
+&lt;p&gt;观看方法查看&lt;a class=&#34;link&#34; href=&#34;https://open.ys7.com/help/30&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方文档&lt;/a&gt;，需要一点点的开发操作，但是这对看这篇文章的你来说应该不是问题。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

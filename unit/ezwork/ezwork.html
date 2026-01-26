@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lnks</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .tray-container {
+        background: rgba(0, 0, 0. 0);
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .tray-container button {
+        width: 100%;
+        height: 30px;
+        padding: auto;
+        margin: auto;
+        text-align: center;
+    }
+</style>
+
+<body style="background:rgba(175, 175, 175, 0.3);">
+    <div class="tray-container">
+        <button onclick="mainWin.skip_bar(false)">显示任务栏</button>
+        <button onclick="mainWin.skip_bar()">跳过任务栏</button>
+        <button onclick="mainWin.visibility=true">显示</button>
+        <button onclick="mainWin.visibility=false">隐藏</button>
+        <button onclick="mainWin.maximize()">最大化</button>
+        <button onclick="mainWin.minimize()">最小化</button>
+        <button onclick="lnks.exit()">退出程序</button>
+    </div>
+</body>
+<script>
+    const LITHIUM_PATH = lnks.env.get("LITHIUM_PATH")
+    let CONFIG = {}
+    let ADDRESS = ''
+    let trayWin = new lnks.MainWindow(window);
+    function loadFileAndHandle(filePath, SuccHandle, ErrHandle) {
+        lnks.$(`cat ${LITHIUM_PATH}/gecko/${filePath}`, SuccHandle, ErrHandle)
+    }
+    function main(params) {
+        let loadedConfig = (str) => {
+            CONFIG = JSON.parse(str)
+            loadFileAndHandle('address.ini', loadedAddr, loadedConfigErr)
+        }
+        let loadedConfigErr = (err) => {
+            console.error(err)
+            lnks.logs.error(err)
+        }
+        let loadedAddr = (str) => {
+            ADDRESS = str
+            createTray()
+            // parseArgs()
+            createMainWindow()
+        }
+        // 挂载关闭事件
+        trayWin.onclose = () => {
+            return confirm("确定要退出吗?");
+        }
+        // 启动命令
+        loadFileAndHandle('config.json', loadedConfig, loadedConfigErr)
+    }
+    // 根据配置过滤出打开的窗口
+    function getLnksWin(filterObj, update=false) {
+        if (window.lnks) {
+            if (window.lnksWins) {
+                for (const lnksWin of lnksWins) {
+                    console.log(`遍历窗口: title:${lnksWin.title}, appId:${lnksWin.appId}, url:${lnksWin.url}`)
+                    if (lnksWin.appId == filterObj.appId || lnksWin.url == filterObj.url || lnksWin.title == filterObj.title) {
+                        return lnksWin
+                    }
+                }
+            }
+            if (update) {
+                window.lnksWins = lnks.MainWindow.all();
+                return window.getLnksWin(filterObj, false);
+            }
+        }
+        return null;
+    }
+    // 创建桌面窗口
+    function createMainWindow() {
+        // 根据参数读取桌面地址
+        lnks.openWindow2({
+            url: ADDRESS,
+            appId: 'EzworkMain',
+            hideChrome: true,
+            skipBar: !CONFIG.showTaskBar,
+        })
+    }
+    // 退出所有程序
+    function closeAll() {
+        this.trayIcon.destroy()
+        trayWin.exit()
+    }
+    // 创建托盘
+    function createTray() {
+        this.trayIcon = new window.lnks.TrayIcon(window);
+        // 托盘右键
+        this.trayIcon.onMenuPopup = () => {
+            let height=200
+            console.log("size1:", JSON.stringify(trayWin.size));
+            console.log("tray.visibily:", JSON.stringify(trayWin.visibily));
+            if (trayWin.visibility) {
+                //trayWin.setSize(1,1)//UOS设置无效
+                trayWin.visibility = false;
+                console.log("size2:", JSON.stringify(trayWin.size));
+            } else {
+                // UOS 系统没有显示时不能改位置，显示时可以改位置但是不能超出屏幕
+                let g = this.trayIcon.geometry;
+                console.log("g:", JSON.stringify(g));
+                let px = parseInt((g.x - 100/2)/devicePixelRatio);
+                let py = parseInt((g.y - height)/devicePixelRatio);
+                console.log("p:", px, py);
+                trayWin.setSize(1,1);
+                trayWin.visibility = true;
+                trayWin.setPosition(px, py);
+                trayWin.setSize(100,200)
+            }
+        };
+        // 托盘左键
+        this.trayIcon.onActivate = () => {
+            window.mainWin = getLnksWin({appId:'EzworkMain'}, true)
+            window.mainWin.visibility = !window.mainWin.visibility;
+            //if (mainWin.windowState == "maximized") {
+            //    mainWin.minimize();
+            //} else {
+            //    mainWin.maximize();
+            //}
+        };
+    }
+    // 清理缓存
+    function clearCache() {
+        location.reload(true)
+    }
+    // 分析自定义参数
+    function parseArgs() {
+        // TODO
+        return window.arguments;
+    }
+    // 关闭所有第三方软件
+    function closeOtherSofts() {
+    }
+    // 打开本地第三方软件(需要启动时就打开的)
+    function openOtherSofts(params) {
+
+    }
+    // 用户切换下次启动的界面形态
+    function switchDesktopMode() {
+        // localStorage
+    }
+
+    // 启动入口
+    main()
+
+</script>
+
+</html>

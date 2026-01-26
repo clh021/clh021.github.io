@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <style data-savepage-href="/com.leadal.top.calendar/theme/style.css" type="text/css" media="all">
+    .schedule-header>div {
+      display: inline-block;
+    }
+
+    .schedule-body-week {
+      height: 100%;
+      width: 100%;
+    }
+
+    .schedule-body-day-layout {
+      height: 20%;
+    }
+
+    .schedule-body-day-top>span {
+      height: 31px;
+      width: 31px;
+    }
+
+    .schedule-momth {
+      width: 100%;
+      border: 1px solid #bebebe;
+      position: absolute;
+      top: 85px;
+      bottom: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+  </style>
+  <style data-savepage-href="/com.leadal.top.calendar/theme/newMonth.css" type="text/css" media="all">
+    div {
+      box-sizing: border-box;
+    }
+
+    .schedule-body {
+      position: fixed;
+      top: 0px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #eaeaea;
+    }
+
+    div .schedule-body-day1 {
+      display: inline-block;
+      width: calc(100% / 7);
+      overflow: hidden;
+    }
+
+    .fourteen {
+      width: 100%;
+      height: calc(100% - 36px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .schedule-lists {
+      position: fixed;
+      background-color: #ffffffe6;
+      z-index: 6;
+    }
+
+    .showBox {
+      display: block;
+    }
+
+    .schedule-lists-body {
+      width: 1000px;
+      height: 900px;
+    }
+
+    p {
+      border: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <div class="schedule-body">
+      <!-- 右侧内容 -->
+      <div class="schedule-body-rg">
+        <div class="schedule-momth">
+          <div class="schedule-body-week">
+            <div class="schedule-body-day1  schedule-body-day-layout">
+              <div class="fourteen">
+                <div>
+                  <div>
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                  </div>
+                  <div class="schedule-lists showBox" style="top: 1px; left: 1px;">
+                    <div class="schedule-lists-body">
+                      <div>详情</div>
+                      <h3>问题现象：</h3>
+                      <p>通过lithium浏览器中间件可以打开看到。</p>
+                      <h3>客户问题：</h3>
+                      <p>日历应用中添加日程的功能有一个浮动框，浮动框会在鼠标点击的右下角。多个日程在一个日历格子中会正常显示滚动条。但滚动条会出现在浮动窗口的上层影响用户体验。</p>
+                      <p>火狐上可以正常打开</p>
+                      <p>苍月浏览器上，测试也符合预期</p>
+                      <h3>解决方法：</h3>
+                      <p>DIV自身的层不会盖住所属父元素的滚动条。所以将本 DIV 移出有滚动条的DIV即可。</p>
+                      <h3>遗留问题：</h3>
+                      <p>
+                        我们一直对客户标榜我们是firefox52.3,但是已经出现了太多次firefox52.3是好的，我们却不能正常工作的情形。最后即使都花时间帮助客户找到了原因告诉客户怎么改代码提供了解决办法，仍然无法回避客户说为什么火狐没问题。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="schedule-body-day1  schedule-body-day-layout">
+              <div class="fourteen">
+                <div>
+                  <div>
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="schedule-body-day1  schedule-body-day-layout">
+              <div class="fourteen">
+                <div>
+                  <div>
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="schedule-body-day1  schedule-body-day-layout">
+              <div class="fourteen">
+                <div>
+                  <div>
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="schedule-body-day1  schedule-body-day-layout">
+              <div class="fourteen">
+                <div>
+                  <div>
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                    1<br />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

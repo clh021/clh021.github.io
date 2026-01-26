@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="简介 ps （英文全拼：process status）命令用于显示当前进程的状态，类似于 windows 的任务管理器。 ps 的参数非常多, 在此仅列出几个常用的参数并大略介绍含义。\n">
+<title>ps</title>
+
+<link rel='canonical' href='/post/tech/ps/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="ps">
+<meta property='og:description' content="简介 ps （英文全拼：process status）命令用于显示当前进程的状态，类似于 windows 的任务管理器。 ps 的参数非常多, 在此仅列出几个常用的参数并大略介绍含义。\n">
+<meta property='og:url' content='/post/tech/ps/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ps' /><meta property='article:published_time' content='2022-03-13T10:56:17&#43;08:00'/><meta property='article:modified_time' content='2022-03-13T10:56:17&#43;08:00'/>
+<meta name="twitter:title" content="ps">
+<meta name="twitter:description" content="简介 ps （英文全拼：process status）命令用于显示当前进程的状态，类似于 windows 的任务管理器。 ps 的参数非常多, 在此仅列出几个常用的参数并大略介绍含义。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/ps/">ps</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2022-03-13T10:56:17&#43;08:00'>2022-03-13 10:56:17</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="简介">简介
+</h2><p>ps （英文全拼：process status）命令用于显示当前进程的状态，类似于 windows 的任务管理器。
+ps 的参数非常多, 在此仅列出几个常用的参数并大略介绍含义。</p>
+<pre tabindex="0"><code>-A 列出所有的进程与 -e 一样
+-w 显示加宽可以显示较多的资讯
+-au 显示较详细的资讯
+-aux 显示所有包含其他使用者的行程
+au(x) 输出格式 :
+
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+USER: 行程拥有者
+PID: pid
+%CPU: 占用的 CPU 使用率
+%MEM: 占用的记忆体使用率
+VSZ: 占用的虚拟记忆体大小
+RSS: 占用的记忆体大小
+TTY: 终端的次要装置号码 (minor device number of tty)
+STAT: 该行程的状态:
+  D: 无法中断的休眠状态 (通常 IO 的进程)
+  R: 正在执行中
+  S: 静止状态
+  T: 暂停执行
+  Z: 不存在但暂时无法消除
+  W: 没有足够的记忆体分页可分配
+  &lt;: 高优先序的行程
+  N: 低优先序的行程
+  L: 有记忆体分页分配并锁在记忆体内 (实时系统或捱A I/O)
+START: 行程开始时间
+TIME: 执行的时间
+COMMAND:所执行的指令
+
+输出格式规划：
+
+l ：较长、较详细的将该PID 的的信息列出；
+j ：工作的格式 (jobs format)
+-f ：做一个更为完整的输出。
+</code></pre><h2 id="use">Use
+</h2><pre tabindex="0"><code>ps #显示当前进程
+ps -A #显示所有进程
+ps -ef #显示所有命令，连带命令行
+ps -ef | egrep &#39;(x11vnc|sshd)&#39; # 查找与 x11vnc 和 sshd 相关的进程信息
+ps -aux | egrep &#39;(x11vnc|sshd)&#39; # 查找与 x11vnc 和 sshd 相关的进程PID
+</code></pre><h2 id="other">Other
+</h2><p>要对系统中进程进行监测控制，查看状态，内存，CPU的使用情况，使用命令：/bin/ps</p>
+<p>（1）         ps ：是显示瞬间进程的状态，并不动态连续；</p>
+<p>（2）         top：如果想对进程运行时间监控，应该用 top 命令；</p>
+<p>（3）         kill 用于杀死进程或者给进程发送信号；</p>
+<p>（4）        查看文章最后的man手册，可以查看ps的每项输出的含义，to find: STANDARD FORMAT SPECIFIERS</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">===================================</span>ps 的参数说明<span style="color:#f92672">=============================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>l 长格式输出；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>u 按用户名和启动时间的顺序来显示进程；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>j 用任务格式来显示进程；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>f 用树形格式来显示进程；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>a 显示所有用户的所有进程（包括其它用户）；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x 显示无控制终端的进程；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>r 显示运行中的进程；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ww 避免详细参数被截断；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-A 列出所有的进程
+</span></span><span style="display:flex;"><span>-w 显示加宽可以显示较多的资讯
+</span></span><span style="display:flex;"><span>-au 显示较详细的资讯
+</span></span><span style="display:flex;"><span>-aux 显示所有包含其他使用者的进程
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-e 显示所有进程,环境变量
+</span></span><span style="display:flex;"><span>-f 全格式
+</span></span><span style="display:flex;"><span>-h 不显示标题
+</span></span><span style="display:flex;"><span>-l 长格式
+</span></span><span style="display:flex;"><span>-w 宽输出
+</span></span><span style="display:flex;"><span>a   显示终端上地所有进程,包括其他用户地进程
+</span></span><span style="display:flex;"><span>r   只显示正在运行地进程
+</span></span><span style="display:flex;"><span>x   显示没有控制终端地进程
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>我们常用的选项是组合是 aux 或 lax，还有参数 f 的应用。
+</span></span><span style="display:flex;"><span>pids 只列出进程标识符,之间运用逗号分隔.该进程列表必须在命令行参数地最后一个选项后面紧接着给出,中间不能插入空格.比如：ps -f1,4,5 显示的是进程ID为1,4,5的进程
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>下介绍长命令行选项,这些选项都运用“--”开头：
+</span></span><span style="display:flex;"><span>--sort X<span style="color:#f92672">[</span>+|-<span style="color:#f92672">]</span> key <span style="color:#f92672">[</span>,<span style="color:#f92672">[</span>+|-<span style="color:#f92672">]</span> key <span style="color:#f92672">[</span>,…<span style="color:#f92672">]]</span> 从SORT KEYS段中选一个多字母键.“+”字符是可选地,因为默认地方向就是按数字升序或者词典顺序，“-”字符是逆序排序（即降序）.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>比如： ps -jax -sort<span style="color:#f92672">=</span>uid,-ppid,+pid.
+</span></span><span style="display:flex;"><span>--help 显示帮助信息.
+</span></span><span style="display:flex;"><span>--version 显示该命令地版本信息.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>在前面地选项说明中提到了排序键,接下来对排序键作进一步说明.需要注意地是排序中运用地值是ps运用地内部值,并非仅用于某些输出格式地伪值.排序键列表见下表.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">============</span>排序键列表<span style="color:#f92672">==========================</span>
+</span></span><span style="display:flex;"><span>c cmd   可执行地简单名称
+</span></span><span style="display:flex;"><span>C cmdline   完整命令行
+</span></span><span style="display:flex;"><span>f flags   长模式标志
+</span></span><span style="display:flex;"><span>g pgrp   进程地组ID
+</span></span><span style="display:flex;"><span>G tpgid   控制tty进程组ID
+</span></span><span style="display:flex;"><span>j cutime   累计用户时间
+</span></span><span style="display:flex;"><span>J cstime   累计系统时间
+</span></span><span style="display:flex;"><span>k utime   用户时间
+</span></span><span style="display:flex;"><span>K stime   系统时间
+</span></span><span style="display:flex;"><span>m min_flt   次要页错误地数量
+</span></span><span style="display:flex;"><span>M maj_flt   重点页错误地数量
+</span></span><span style="display:flex;"><span>n cmin_flt 累计次要页错误
+</span></span><span style="display:flex;"><span>N cmaj_flt 累计重点页错误
+</span></span><span style="display:flex;"><span>o session   对话ID
+</span></span><span style="display:flex;"><span>p pid   进程ID
+</span></span><span style="display:flex;"><span>P ppid   父进程ID
+</span></span><span style="display:flex;"><span>r rss   驻留大小
+</span></span><span style="display:flex;"><span>R resident 驻留页
+</span></span><span style="display:flex;"><span>s size   内存大小<span style="color:#f92672">(</span>千字节<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>S share   共享页地数量
+</span></span><span style="display:flex;"><span>t tty   tty次要设备号
+</span></span><span style="display:flex;"><span>T start_time 进程启动地时间
+</span></span><span style="display:flex;"><span>U uid   UID
+</span></span><span style="display:flex;"><span>u user   用户名
+</span></span><span style="display:flex;"><span>v vsize   总地虚拟内存数量<span style="color:#f92672">(</span>字节<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>y priority 内核调度优先级
+</span></span><span style="display:flex;"><span><span style="color:#f92672">========================================</span>ps aux 或 lax 输出的解释<span style="color:#f92672">=========================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>2、ps aux 或 lax 输出的解释
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>au<span style="color:#f92672">(</span>x<span style="color:#f92672">)</span> 输出格式 :
+</span></span><span style="display:flex;"><span>USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>USER: 进程所有者
+</span></span><span style="display:flex;"><span>PID: 进程ID
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>%CPU: 占用的 CPU 使用率
+</span></span><span style="display:flex;"><span>%MEM: 占用的内存使用率
+</span></span><span style="display:flex;"><span>VSZ: 占用的虚拟内存大小
+</span></span><span style="display:flex;"><span>RSS: 占用的内存大小
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TTY: 终端的次要装置号码 <span style="color:#f92672">(</span>minor device number of tty<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>STAT: 进程状态:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>START: 启动进程的时间；
+</span></span><span style="display:flex;"><span>TIME: 进程消耗CPU的时间；
+</span></span><span style="display:flex;"><span>COMMAND:命令的名称和参数；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=========================================</span>进程STAT状态<span style="color:#f92672">==================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>D 无法中断的休眠状态（通常 IO 的进程）；
+</span></span><span style="display:flex;"><span>R 正在运行，在可中断队列中；
+</span></span><span style="display:flex;"><span>S 处于休眠状态，静止状态；
+</span></span><span style="display:flex;"><span>T 停止或被追踪，暂停执行；
+</span></span><span style="display:flex;"><span>W 进入内存交换（从内核2.6开始无效）；
+</span></span><span style="display:flex;"><span>X 死掉的进程；
+</span></span><span style="display:flex;"><span>Z 僵尸进程不存在但暂时无法消除；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>W: 没有足够的记忆体分页可分配
+</span></span><span style="display:flex;"><span>WCHAN 正在等待的进程资源；
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;: 高优先级进程
+</span></span><span style="display:flex;"><span>N: 低优先序进程
+</span></span><span style="display:flex;"><span>L: 有记忆体分页分配并锁在记忆体内 <span style="color:#f92672">(</span>即时系统或捱A I/O<span style="color:#f92672">)</span>，即,有些页被锁进内存
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s 进程的领导者（在它之下有子进程）；
+</span></span><span style="display:flex;"><span>l 多进程的（使用 CLONE_THREAD, 类似 NPTL pthreads）；
+</span></span><span style="display:flex;"><span>+ 位于后台的进程组；
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/ps/">Ps</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

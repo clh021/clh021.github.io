@@ -1,0 +1,27 @@
+scrollbar {
+    position: relative;
+    background: #7c7c7c !important;
+    z-index: 2147483647;
+    padding: 0;
+}
+
+scrollbar[orient="vertical"] {
+    min-width: 4px;
+    max-width: 4px;
+}
+
+scrollbar[orient="horizontal"] {
+    margin-top: -4px;
+    min-height: 4px;
+    max-height: 4px;
+}
+
+scrollbar thumb {
+    border-width: 0px !important;
+    background: #afafaf !important;
+    border-radius: 3px !important;
+}
+
+scrollbar scrollbarbutton, scrollbar gripper {
+    display: none;
+}

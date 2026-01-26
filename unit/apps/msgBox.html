@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+    </head>
+    
+    <body>
+        <button onclick="window.close()">关闭子窗口</button>
+        <button onclick="window.open('./apps/child.html', 'child', 'width=400,height=300,left=200,top=200')">子窗口应该要有外边框</button>
+        这里是一个消息框
+        <script type="text/javascript" charset="utf-8">
+            window.onload = function () {
+                // if (window.navigator.userAgent.indexOf("lithium") != -1) {
+                if (window.lnks) {
+                    // this.msgboxWin = new lnks.MainWindow(window);
+                    // this.msgboxWin.skipBar();
+                    // this.msgboxWin.setSize(380,280);
+                    // this.msgboxWin.setPosition(screen.availWidth-380,screen.availHeight-280);
+                }
+            }
+        </script>
+    </body>
+</html>

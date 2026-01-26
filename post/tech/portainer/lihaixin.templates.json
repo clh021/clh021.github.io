@@ -1,0 +1,2229 @@
+{
+	"version": "2",
+	"templates": [{
+			"type": 1,
+			"title": "Registry",
+			"name": "Registry",
+			"description": "Docker image registry",
+			"categories": ["docker"],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/registry.png",
+			"image": "registry:latest",
+			"ports": [
+				"5000/tcp"
+				],
+			"volumes": [{
+				"container": "/var/lib/registry"
+				}]
+			},
+		        {
+			"type": 1,
+			"title": "portainer",
+			"name": "portainer",
+			"description": "自定义portainer管理面包,包含常用模板,管理地址:https://<ip>:9443",
+			"categories": ["docker"],
+			"platform": "linux",
+			"restart_policy": "always",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/portainer.png",
+			"image": "lihaixin/portainer:ce",
+			"network": "host",
+			"volumes": [{
+				"container": "/var/run/docker.sock",
+				"bind": "/var/run/docker.sock"
+				}]
+			},
+			{
+   		 	"type": 1,
+    			"title": "webssh-8888",
+			"name": "webssh-8888",
+			"hostname": "webssh",
+    			"description": "新版SSH网页客户端",
+			"note": "新版SSH网页客户端,请点击 <a href=\"https://hub.docker.com/r/lihaixin/webssh\" target=\"_blank\">webssh</a> 更多消息",
+    			"categories": ["ssh"],
+   			"platform": "linux",
+			"restart_policy": "always",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/webssh2.png",
+    			"image": "lihaixin/webssh",
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式",
+				"description": "终端显示你的QQ联系方式."
+			}],
+    			"ports": [
+      				"8888/tcp"
+    				]
+  			},
+		      	{
+    			"type": 1,
+    			"title": "ttyd",
+			"name": "ttyd-7681",
+    			"description": "ttyd is a simple command line tool for sharing terminal over the web ",
+    			"categories": ["ssh"],
+    			"platform": "linux",
+			"restart_policy": "always",
+			"hostname": "ttyd",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/ttyd.png",
+    			"image": "lihaixin/ttyd",
+    			"ports": [
+      				"7681/tcp"
+    				],
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "DOMAIN",
+      				"label": "TTYD证书域名",
+				"description": "TYYD使用的域名",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "HOSTNAME",
+      				"label": "TTYD主机名",
+				"description": "TTYD使用的主机",
+      				"default": "hostname"
+    				},
+				{
+      				"name": "USERNAME",
+      				"label": "用户名",
+				"description": "TYYD登陆用户名,输入noauth为不用登陆就能访问",
+      				"default": "noauth"
+    				},
+				{
+      				"name": "PASSWORD",
+      				"label": "密码",
+				"description": "TTYD登陆密码,输入noauth为不用登陆就能访问",
+      				"default": "noauth"
+    				},
+				{
+      				"name": "TTYD_OPT",
+      				"label": "执行程序",
+				"description": "输入需要执行的程序，默认bash 可选择输入iftop tmux",
+      				"default": "bash"
+    				}],
+			"volumes": [
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}]
+  			},
+		      	{
+    			"type": 1,
+    			"title": "next-terminal",
+			"name": "next-terminal-sqlite-8088",
+			"image": "lihaixin/next-terminal",
+    			"description": "Next Terminal是使用Golang和React开发的一款HTML5的远程桌面网关，具有小巧、易安装、易使用、资源占用小的特点，支持RDP、SSH、VNC和Telnet协议的连接和管理 ",
+			"note": "可以通过这个搭建中转机用 <a href=\"https://hub.docker.com/r/lihaixin/next-terminal\" target=\"_blank\">更多查看</a>",
+    			"categories": ["ssh"],
+    			"platform": "linux",
+			"restart_policy": "always",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/Next-Terminal.png",
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "DOMAIN",
+      				"label": "Next Terminal管理域名",
+				"description": "Next Terminal使用的域名",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "HOSTNAME",
+      				"label": "Next Terminal主机名",
+				"description": "Next Terminal使用的主机",
+      				"default": "next"
+    				}],
+			"volumes": [
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				},
+			        {
+      				"container": "/usr/local/next-terminal/data",
+				"bind": "/usr/local/next-terminal/data"
+    				}],
+    			"ports": [
+      				"8088/tcp"
+    				]
+			},
+		      	{
+    			"type": 3,
+    			"title": "19999-netdata",
+			"name": "netdata",
+    			"description": "是一款Linux系统性能实时监控工具，是一个高度优化的Linux守护进程，可以对Linux系统、应用程序(包括但不限于Web服务器，数据库等)、SNMP服务等提供实时的性能监控 ",
+			"note": "Linux系统性能实时监控工具 <a href=\"https://learn.netdata.cloud/docs\" target=\"_blank\">更多查看</a>",
+    			"categories": ["tools"],
+    			"platform": "linux",
+			"restart_policy": "always",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/netdata.png",
+    			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/netdata/docker-compose.yml"
+				}
+			},
+ 			{
+    			"type": 1,
+    			"title": "baidupcs",
+			"name": "baidupcs",
+    			"description": "不限速百度云客户端",
+    			"categories": ["file"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/baidupcs.png",
+    			"image": "lihaixin/baidupcs",
+    			"ports": [
+      				"1999/tcp"
+    				],
+    			"volumes": [{
+				"container": "/defaults"
+				},
+				{
+				"container": "/root/Downloads"
+				}],
+    			"env": [{
+      					"name": "PGID",
+      					"label": "PGID",
+      					"set": "0"
+    				},
+    				{
+      					"name": "PUID",
+      					"label": "PUID",
+      					"set": "0"
+    				}],
+    			"restart_policy": "always"
+  			},
+   			{
+    			"type": 1,
+    			"title": "h5ai",
+			"name": "h5ai",
+    			"description": "h5ai file indexer for HTTP web servers",
+   			"categories": ["file"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/h5ai.png",
+    			"image": "lihaixin/h5ai",
+    			"ports": [
+      				"80/tcp"
+    				],
+    			"restart_policy": "always",
+     			"volumes": [{
+				"container": "/share"
+				}]
+  			},
+  			{
+    			"type": 1,
+    			"title": "h5ai auth",
+			"name": "h5ai auth",
+    			"description": "h5ai file indexer for HTTP web servers",
+    			"categories": ["file"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/h5ai.png",
+    			"image": "lihaixin/h5ai:auth",
+    			"ports": [
+      				"80/tcp"
+    				],
+     			"env": [{
+      				"name": "USER",
+      				"label": "USER",
+      				"set": "test"
+    				},
+     				{
+      				"name": "PASSWD",
+      				"label": "PASSWD",
+      				"set": "test"
+    				}],
+    			"restart_policy": "always",
+     			"volumes": [{
+				"container": "/share"
+				}]
+  			},
+   			{
+    			"type": 1,
+    			"title": "verysync",
+			"name": "verysync",
+    			"description": "file sync uses verysync",
+    			"categories": ["file"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/verysync.png",
+    			"image": "lihaixin/verysync",
+    			"ports": [
+      				"8886/tcp",
+      				"22330/tcp",
+      				"22027/udp",
+      				"22037/udp"
+    				],
+    			"restart_policy": "always",
+			"volumes": [{
+				"container": "/mnt"
+				},
+				{
+				"container": "/verysync"
+				}]
+  			},
+   			{
+    			"type": 1,
+    			"title": "transmission",
+			"name": "transmission",
+    			"description": "bt transmissio web ui",
+    			"categories": ["file"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/transmission.png",
+    			"image": "lihaixin/transmission",
+    			"ports": [
+      				"9091/tcp",
+      				"51413/tcp",
+      				"51413/udp"
+    				],
+			"restart_policy": "always",
+			"volumes": [{
+				"container": "/config"
+				},
+				{
+				"container": "/downloads"
+				},
+				{
+				"container": "/watch"
+				}]
+  			},
+  			{
+    			"type": 1,
+    			"title": "Brook Server",
+			"name": "Brook Server",
+    			"description": "Brook is a cross-platform proxy software",
+    			"categories": ["brook"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/brook.png",
+    			"image": "lihaixin/brook:latest",
+    			"ports": [
+      				"61089/tcp",
+      				"61089/udp"
+    				],
+    			"privileged": true,
+    			"restart_policy": "always"
+  			},
+  			{
+    			"type": 1,
+    			"title": "Brook Client",
+    			"description": "Brook for Linux Client",
+    			"categories": ["brook"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/brook.png",
+    			"image": "lihaixin/brook:client",
+    			"ports": [
+      				"1080/tcp",
+      				"1080/udp"
+    				]
+ 			 },
+   			{
+    			"type": 1,
+    			"title": "Brook Help",
+			"name": "Brook Help",
+    			"description": "Brook Client software download and help",
+    			"categories": ["brook"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/brook.png",
+    			"image": "lihaixin/brook:help",
+    			"ports": [
+      				"80/tcp"
+    				]
+  			},
+   			{
+    			"type": 1,
+    			"title": "v2ray server",
+			"name": "v2ray server",
+    			"description": "A Vee Network Solution server docker run -d --restart=always --name=59028.v2ray.server -p 59028:59028 -p 59028:59028/udp lihaixin/v2ray",
+    			"categories": ["v2ray"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/v2ray.png",
+    			"image": "lihaixin/v2ray",
+    			"ports": [
+      				"59028/tcp",
+      				"59028/udp"
+    				],
+    			"privileged": true
+  			},
+   			{
+    			"type": 1,
+    			"title": "v2ray local",
+			"name": "v2ray local",
+    			"description": "A Vee Network Solution fro linux client",
+    			"categories": ["v2ray"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/v2ray.png",
+    			"image": "lihaixin/v2ray:L",
+    			"ports": [
+      				"1080/tcp",
+      				"1080/udp",
+      				"8080/tcp",
+      				"8080/udp"
+    				]
+  			},
+   			{
+    			"type": 1,
+    			"title": "v2ray help",
+			"name": "v2ray help",
+    			"description": "A Vee Network Solution for client down",
+    			"categories": ["v2ray"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/v2ray.png",
+    			"image": "lihaixin/v2ray:help",
+    			"ports": [
+      				"80/tcp"
+    				]
+ 			 },
+   			{
+    			"type": 1,
+    			"title": "v2ray URL",
+			"name": "v2ray URL",
+    			"description": "v2ray and ss url ",
+    			"categories": ["v2ray"],
+    			"platform": "linux",
+    			"restart_policy": "always",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/v2ray.png",
+    			"image": "lihaixin/v2ray:url",
+    			"ports": [
+      				"80/tcp"
+    				]
+  			},
+		        {
+    			"type": 1,
+    			"title": "shadowsocks Server limit",
+			"name": "shadowsocks Server limit",
+    			"description": "shadowsocks is a cross-platform proxy software",
+    			"categories": ["shadowsocks"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/Shadowsocks.png",
+    			"image": "lihaixin/shadowsocks:limit",
+    			"ports": [
+      				"61080/tcp",
+      				"61080/udp"
+    				],
+     			"env": [{
+      				"name": "RATE",
+      				"label": "RATE",
+      				"set": "200mbit"
+    				},
+     				{
+      				"name": "LIMIT_CONN",
+      				"label": "LIMIT_CONN",
+      				"set": "200"
+    				}],
+   			"privileged": true,
+    			"restart_policy": "always"
+  			},
+ 			{
+    			"type": 1,
+    			"title": "shadowsocks Server ",
+			"name": "shadowsocks Server ",
+    			"description": "shadowsocks is a cross-platform proxy software",
+    			"categories": ["shadowsocks"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/Shadowsocks.png",
+    			"image": "lihaixin/shadowsocks:server",
+    			"ports": [
+      				"61080/tcp",
+      				"61080/udp"
+    				],
+    			"restart_policy": "always"
+  			},
+  			{
+    			"type": 1,
+    			"title": "shadowsocks Server and kcptun udpspeed and udp2raw",
+			"name": "shadowsocks Server and kcptun udpspeed and udp2raw",
+    			"description": "shadowsocks is a cross-platform proxy software and use kcptun",
+    			"categories": ["shadowsocks"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/Shadowsocks.png",
+    			"image": "lihaixin/shadowsocks:udp",
+    			"ports": [
+      				"61080/tcp",
+      				"61080/udp",
+      				"61180/tcp",
+      				"61180/udp"
+    				],
+     			"privileged": true,
+     			"restart_policy": "always"
+  			},
+  			{
+    			"type": 1,
+    			"title": "shadowsocks Client",
+			"name": "shadowsocks Client",
+    			"description": "shadowsocks for Linux Client",
+    			"categories": ["shadowsocks"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/Shadowsocks.png",
+    			"image": "lihaixin/shadowsocks:local",
+    			"ports": [
+      				"1080/tcp",
+      				"1080/udp"
+    				]
+  			},
+   			{
+    			"type": 1,
+    			"title": "shadowsocks Help",
+			"name": "shadowsocks Help",
+    			"description": "shadowsocks Client software download and help",
+    			"categories": ["shadowsocks"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/Shadowsocks.png",
+    			"image": "lihaixin/shadowsocks:help",
+    			"ports": [
+      				"80/tcp"
+    				]
+  			},
+   			{
+    			"type": 1,
+    			"title": "trojan socks5 proxy",
+			"name": "trojan socks5 proxy",
+    			"description": "trojan socks5 proxy server",
+    			"categories": ["trojan"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/trojan.png",
+    			"image": "lihaixin/trojan",
+    			"restart_policy": "always",
+			"ports": [
+      				"443/tcp"
+    				]
+  			},
+   			{
+    			"type": 1,
+    			"title": "trojan socks5 proxy client",
+			"name": "trojan socks5 proxy client",
+    			"description": "trojan socks5 proxy client",
+    			"categories": ["trojan"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/trojan.png",
+    			"image": "lihaixin/trojan:client",
+    			"ports": [
+      				"1080/tcp"
+    				],
+    			"restart_policy": "always"
+  			},
+  			{
+    			"type": 1,
+    			"title": "frps-80-443-7500",
+			"name": "frps-80-443-7500",
+    			"description": "FRP内网穿透服务器",
+			"note": "部署FRP内网穿透服务器, 更多点击<a href=\"https://hub.docker.com/r/lihaixin/frp\" target=\"_blank\">frp doc</a> 了接更多信息",
+    			"categories": ["Reverse Proxy"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/frp.png",
+    			"image": "lihaixin/frp:latest",
+    			"network": "host",
+			"volumes": [{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+      				"name": "DOMAIN",
+      				"label": "你的frp域名",
+				"description": "客户端http使用的域名",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "HOSTNAME",
+      				"label": "你的frp主机名",
+				"description": "客户端http使用的主机",
+      				"default": "frp"
+    				},
+				{
+      				"name": "DASHBOARD_PWD",
+      				"label": "管理面板密码",
+				"description": "登陆https://admin.frp.youdomain.com管理页面的密码",
+      				"default": "password"
+    				},
+				{
+      				"name": "TOKEN",
+      				"label": "客户端登陆的TOKEN",
+				"description": "客户端验证登陆的TOKEN",
+      				"default": "12345678"
+    				}],
+    			"restart_policy": "always"
+  			},
+  			{
+    			"type": 1,
+    			"title": "nps-80-443-8024",
+			"name": "nps-80-443-8024",
+    			"description": "NPS内网穿透服务器",
+			"note": "部署NPS内网穿透服务器, 更多点击<a href=\"https://hub.docker.com/r/lihaixin/nps\" target=\"_blank\">nps doc</a> 了接更多信息",
+    			"categories": ["Reverse Proxy"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/nps.png",
+    			"image": "lihaixin/nps:latest",
+    			"network": "host",
+			"volumes": [{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				},
+				{
+      				"container": "/conf"
+    				}],
+			"env": [{
+      				"name": "DOMAIN",
+      				"label": "你的域名",
+				"description": "使用的域名",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "HOSTNAME",
+      				"label": "你的主机名",
+				"description": "你的主机名",
+      				"default": "nps"
+    				},
+				{
+      				"name": "HTTP_PROXY_PORT",
+      				"label": "HTTP域名代理端口",
+				"description": "域名代理http代理监听端口，可以设置为8024，共享一个端口",
+      				"default": "80"
+    				},
+				{
+      				"name": "HTTPS_PROXY_PORT",
+      				"label": "HTTPS域名代理端口",
+				"description": "域名代理https代理监听端口，可以设置为8024，共享一个端口",
+      				"default": "443"
+    				},
+				{
+      				"name": "WEB_PASSWORD",
+      				"label": "管理面板密码",
+				"description": "登陆管理页面的密码",
+      				"default": "password"
+    				},
+				{
+      				"name": "PUBLIC_VKEY",
+      				"label": "PUBLIC_VKEY",
+				"description": "客户端登陆的公共VKEY",
+      				"default": "12345678"
+    				}],
+    			"restart_policy": "always"
+  			},
+   			{
+    			"type": 1,
+   			"title": "SpeedTest",
+			"name": "SpeedTest",
+    			"description": "html5 web speedtest",
+    			"categories": ["tools"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/speedtest.png",
+    			"image": "lihaixin/speedtest",
+    			"ports": [
+      				"80/tcp"
+    				]
+  			},
+   			{
+    			"type": 1,
+   			"title": "unblockneteasemusic-8080",
+			"name": "unblockneteasemusic-8080",
+    			"description": "解锁网易云音乐客户端变灰歌曲",
+			"note": "解锁网易云音乐客户端变灰歌曲 <a href=\"https://github.com/nondanee/UnblockNeteaseMusic/issues/22\" target=\"_blank\">食用指南</a>",
+    			"categories": ["music"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/163music.png",
+    			"image": "nondanee/unblockneteasemusic",
+    			"ports": [
+      				"8080/tcp"
+    				]
+  			},
+   			{
+    			"type": 1,
+   			"title": "music-player-docker-264",
+			"name": "music-player-docker-264",
+    			"description": "在线音乐播放器，支持下载，基于Meting——支持群晖，威联通等一切X86系统docker部署 ",
+			"note": "在线音乐播放器 <a href=\"https://hub.docker.com/r/oldiy/music-player-docker\" target=\"_blank\">食用指南</a>",
+    			"categories": ["music"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/music.png",
+    			"image": "oldiy/music-player-docker",
+			"volumes": [{
+      				"container": "/var/www/html/cache",
+				"bind": "/var/unblockneteasemusic_cache"
+    				}],
+    			"ports": [
+      				"264/tcp"
+    				]
+  			},
+   			{
+    			"type": 1,
+    			"title": "toolbox",
+			"name": "toolbox",
+    			"description": "常用linux工具集合、包括dig iperf3 htop mtr等,可以使用lh <ssh端口>快速访问宿主机",
+    			"categories": ["tools"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/ttyd.png",
+			"note": "常用linux工具集合、包括dig iperf3 htop 等 <a href=\"https://hub.docker.com/r/lihaixin/toolbox\" target=\"_blank\">更多查看</a>",
+    			"image": "lihaixin/toolbox",
+    			"administrator_only": true,
+			"network": "host",
+			"privileged": true,
+			"interactive": true,
+			"volumes": [
+				{
+      				"container": "/root/.ssh/id_rsa",
+				"bind": "/root/.ssh/id_rsa"
+    				}]
+  			},
+		        {
+			"type": 3,
+			"title": "vnstat-8685",
+			"name": "vnstat-8685",
+			"description": "vnStat 是一个网络流量监视器,使用内核提供的网络接口统计信息,确保少量使用系统资源",
+			"note": "部署网络流量监视器,使用host网络, 更多信息 <a href=\"https://github.com/lihaixin/vnstat\" target=\"_blank\">点击这里</a> ",
+			"categories": ["tools"],
+			"platform": "linux",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/vnstat.png",
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式",
+				"description": "终端显示你的QQ联系方式."
+			}],
+			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/vnstat/docker-compose.yml"
+				}
+		        },
+		        {
+			"type": 3,
+			"title": "iptables",
+			"name": "iptables",
+			"description": "iptables 限制容器指定的端口TCP连接数,最大带宽,部署网络流量监视器,月最大传输量",
+			"note": "iptables 限制容器指定的端口TCP连接数,使用container网络, 更多信息 <a href=\"https://github.com/lihaixin/iptables\" target=\"_blank\">点击这里</a> ",
+			"categories": ["tools"],
+			"platform": "linux",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/iptables.png",
+			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/iptables/docker-compose.yml"
+				}
+		        },
+		      	{
+    			"type": 1,
+    			"title": "ylzq",
+			"name": "ylzq",
+    			"description": "earn money docker run --name=ylzq2_0 -d -e uid=38468 lihaixin/ylzq:v2.0",
+    			"categories": ["money"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/ylzq.png",
+    			"image": "lihaixin/ylzq:v2.0",
+    			"restart_policy": "unless-stopped",
+    			"env": [{
+      				"name": "uid",
+      				"label": "uid",
+      				"set": "38468"
+    				}]
+  			},
+   			{
+    			"type": 1,
+    			"title": "chromium",
+			"name": "chromium",
+    			"description": "chromium browser",
+    			"categories": ["browser"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/chromium.png",
+    			"image": "lihaixin/chromium:latest",
+    			"volumes": ["/root/Downloads"],
+    			"ports": [
+      				"8787/tcp"
+    				]
+  			},
+   			{
+    			"type": 1,
+    			"title": "tor-9051",
+			"name": "tor-9051",
+    			"description": "tor socks5 http proxy",
+			"note": "一键部署tor动态ip代理 <a href=\"https://github.com/lihaixin/tor/blob/main/README.md\" target=\"_blank\">tor doc</a> 端口9051 为tor带密码的socks5/http代理",
+    			"categories": ["browser"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/tor.png",
+    			"image": "lihaixin/tor:latest",
+    			"ports": [
+				"9051/tcp"
+    				],
+			"env": [{
+      				"name": "EXITNODES",
+      				"label": "落地国家",
+				"description": "配置tor落地国家代码",
+      				"default": "{us},{ca}"
+    				},
+			        {
+      				"name": "USER",
+      				"label": "用户名",
+				"description": "配置ss http socks5 https用户名",
+      				"default": "a1"
+    				},
+				{
+      				"name": "PASSWD",
+      				"label": "用户密码",
+				"description": "配置ss http socks5 https密码",
+      				"default": "a1"
+    				},
+			       {
+      				"name": "KILLTIME",
+      				"label": "切换时间",
+				"description": "tor切换时间",
+      				"default": "60"
+    				}]
+  			},
+   			{
+    			"type": 1,
+    			"title": "chromium proxy",
+			"name": "chromium proxy",
+    			"description": "chromium browser use proxy",
+    			"categories": ["browser"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/chromium.png",
+   			"image": "lihaixin/chromium:s5",
+    			"volumes": ["/root/Downloads"],
+    			"ports": [
+      				"8787/tcp"
+    				]
+ 			 },
+   			{
+    			"type": 1,
+    			"title": "firefox proxy",
+			"name": "firefox proxy",
+    			"description": "firefox browser use gost proxy",
+    			"categories": ["browser"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/firefox.png",
+   			"image": "lihaixin/firefox:s5",
+    			"volumes": ["/root/Downloads"],
+			"env": [{
+      				"name": "TZ",
+      				"label": "TZ",
+      				"set": "Asia/Chongqing"
+    				},
+    				{
+      				"name": "VNC_PW",
+      				"label": "VNC_PW",
+      				"set": "test"
+    				}],
+    			"ports": [
+      				"8787/tcp"
+    				]
+ 			 },
+		       	{
+    			"type": 1,
+    			"title": "pihole",
+			"name": "pihole",
+    			"description": "DNS缓存和互联网广告黑洞",
+    			"categories": ["dns"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/pihole.png",
+    			"image": "pihole/pihole:latest",
+    			"env": [{
+      				"name": "TZ",
+      				"label": "TZ",
+      				"set": "Asia/Chongqing"
+    				},
+    				{
+      				"name": "WEBPASSWORD",
+      				"label": "WEBPASSWORD",
+      				"set": "pihole"
+    				}],
+    			"ports": [
+      				"53/tcp",
+      				"53/udp",
+      				"80/tcp",
+      				"443/tcp"
+    				],
+    			"restart_policy": "always",
+			"volumes": [{
+				"container": "/etc/pihole/"
+				},
+				{
+				"container": "/watch"
+				}]
+  			},
+		        {
+			"type": 3,
+			"title": "Wordpress",
+			"name": "wordpress",
+			"description": "Wordpress setup with a MySQL database",
+			"note": "Deploys a Wordpress instance connected to a MySQL database.",
+			"categories": ["CMS"],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/wordpress.png",
+			"repository": {
+				"url": "https://github.com/portainer/templates",
+				"stackfile": "stacks/wordpress/docker-compose.yml"
+			},
+			"env": [{
+				"name": "MYSQL_DATABASE_PASSWORD",
+				"label": "Database root password",
+				"description": "Password used by the MySQL root user."
+			}]
+		},
+		{
+			"type": 3,
+			"title": "npm-80-81-443",
+			"name": "npm-80-81-443",
+			"description": "轻松公开你的服务器",
+			"note": "部署反向代理管理器,使用host网络, 更多信息 <a href=\"https://nginxproxymanager.com\" target=\"_blank\">点击这里</a> ",
+			"categories": ["Reverse Proxy"],
+			"platform": "linux",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/nginx-proxy-manager.png",
+			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/npm/docker-compose.yml"
+			}
+		},
+		{
+			"type": 3,
+			"title": "softethervpn",
+			"name": "softether-500-4500-1194-1701",
+			"description": "构建多合一（L2TP SSTP OPENVPN）VPN服务器",
+			"note": "部署softether,用到450、4500、443、1701、1194端口, 可定义管理密码,可定义是否开启 L2TP,OPENVPN,SSTP 更多信息 <a href=\"https://hub.docker.com/r/lihaixin/softether\" target=\"_blank\">点击这里</a> ",
+			"categories": ["vpn"],
+			"platform": "linux",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/softether.png",			
+			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/softether/docker-compose.yml"
+			},
+			"env": [{
+				"name": "QQ",
+				"label": "QQ *",
+				"description": "用于终端展示QQ",
+				"default": ""
+			},
+			{
+				"name": "DOMAIN",
+				"label": "域名",
+				"description": "用于OPENVPN和SSTP传输过程中,导入数据证书,提前使用lihaixin/acme容器创建好证书",
+				"default": "youdomain.com"
+			},
+			{
+				"name": "HOSTNAME",
+				"label": "主机名",
+				"description": "主机名,主机名+域名构成完整URL",
+				"default": "kr2"
+			},
+			{
+				"name": "MTU",
+				"label": "DEFAULT MTU",
+				"description": "中转机使用1300、落地机使用1200.",
+				"default": "1300"
+			},
+			{
+				"name": "MainINF",
+				"label": "服务器数据出口",
+				"description": "默认为空,让程序自动检查,如果是走其他接口,手工设置,例如openvpn接口出去,设置为tun+ ",
+				"default": ""
+			},
+			{
+				"name": "OPENVPN_PORT",
+				"label": "OPENVPN监听端口",
+				"description": "默认1194被干扰,这里可以调整端口",
+				"default": "11194"
+			},
+			{
+				"name": "USERNAME",
+				"label": "默认创建VPN的用户名",
+				"description": "系统自动创建",
+				"default": "test"
+			},
+			{
+				"name": "PASSWORD",
+				"label": "默认创建VPN的用户名的密码",
+				"description": "系统自动创建",
+				"default": "test"
+			},
+			{
+				"name": "PSK",
+				"label": "L2TP预共享密钥",
+				"description": "自定义L2TP预共享密钥,默认为vpnvpn88",
+				"default": "vpnvpn88"
+			},
+			{
+				"name": "SPW",
+				"label": "VPN服务器管理密码",
+				"description": "自定义VPN服务器管理密码,默认为softether",
+				"default": "softether"
+			},
+			{
+				"name": "MaxUpload",
+				"label": "默认帐号最大上传带宽",
+				"description": "默认帐号最大上传带宽,上传和下载是相对于HUB进出数据",
+				"default": "5000000"
+			},
+			{
+				"name": "MaxDownload",
+				"label": "默认帐号最大下载带宽",
+				"description": "默认帐号最大下载带宽,上传和下载是相对于HUB进出数据",
+				"default": "5000000"
+			},
+			{
+				"name": "MultiLogins",
+				"label": "默认帐号同时可连接数",
+				"description": "默认帐号同时可连接数,可以限制帐号多拨",
+				"default": "3"
+			},
+			{
+				"name": "SSTP",
+				"label": "是否开启SSTP",
+				"description": "默认为关闭,1为开启,0为关闭",
+				"default": "0"
+			},
+			{
+				"name": "OPENVPN",
+				"label": "是否开启OPENVPN",
+				"description": "默认为关闭,1为开启,0为关闭",
+				"default": "0"
+			},
+			{
+				"name": "L2TP",
+				"label": "是否开启L2TP",
+				"description": "默认为关闭,1为开启,0为关闭",
+				"default": "1"
+			},
+			{
+				"name": "DNS",
+				"label": "自定义VPN客户端DNS",
+				"description": "默认为国外 8.8.8.8,1.1.1.1,国内就设置 233.5.5.5,114.114.114.114",
+				"default": "8.8.8.8"
+			},
+			{
+				"name": "DNS2",
+				"label": "自定义VPN客户端DNS2",
+				"description": "默认为国外 8.8.8.8,1.1.1.1,国内就设置 233.5.5.5,114.114.114.114",
+				"default": "1.1.1.1"
+			}]
+		},
+		{
+			"type": 3,
+			"title": "softethervpn",
+			"name": "softether-500-4500-1194-1701",
+			"description": "构建多合一（L2TP SSTP OPENVPN）VPN服务器,多出口",
+			"note": "部署softether,用到450、4500、443、1701、1194端口, 管理密码: softether 更多信息 <a href=\"https://hub.docker.com/r/lihaixin/softether\" target=\"_blank\">点击这里</a> ",
+			"categories": ["vpn"],
+			"platform": "linux",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/softether.png",
+			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/softether/docker-compose-v4.28.yml"
+			},
+			"env": [{
+				"name": "DOMAIN",
+				"label": "域名",
+				"description": "用于OPENVPN和SSTP传输过程中,导入数据证书,提前使用lihaixin/acme容器创建好证书",
+				"default": "youdomain.com"
+			},
+			{
+				"name": "MTU",
+				"label": "DEFAULT MTU",
+				"description": "中转机使用1300、落地机使用1200.",
+				"default": "1300"
+			},
+			{
+				"name": "INTERFACE",
+				"label": "服务器网卡接口",
+				"description": "如果有多个IP,指定后可以批量处理,多IP出口",
+				"default": "ens3"
+			},
+			{
+				"name": "OPENVPN_PORT",
+				"label": "OPENVPN监听端口",
+				"description": "默认1194被干扰,这里可以调整端口",
+				"default": "11194"
+			},
+			{
+				"name": "USERNAME",
+				"label": "默认创建VPN的用户名",
+				"description": "系统自动创建,每个HUB都有",
+				"default": "test"
+			},
+			{
+				"name": "PASSWORD",
+				"label": "默认创建VPN的用户名的密码",
+				"description": "系统自动创建,每个HUB都有",
+				"default": "test"
+			},
+			{
+				"name": "MaxUpload",
+				"label": "默认帐号最大上传带宽",
+				"description": "默认帐号最大上传带宽,上传和下载是相对于HUB进出数据",
+				"default": "3000000"
+			},
+			{
+				"name": "MaxDownload",
+				"label": "默认帐号最大下载带宽",
+				"description": "默认帐号最大下载带宽,上传和下载是相对于HUB进出数据",
+				"default": "3000000"
+			},
+			{
+				"name": "MultiLogins",
+				"label": "默认帐号同时可连接数",
+				"description": "默认帐号同时可连接数,可以限制帐号多拨",
+				"default": "3"
+			}]
+		},
+		{
+			"type": 3,
+			"title": "softether-client-vpn",
+			"name": "softether-500-4500-1194-1701",
+			"description": "构建VPNGATE VPN服务器",
+			"note": "部署VPNGATE VPN服务器, 管理密码: softether .默认帐号和密码为:vpnhua,然后通过宿主机vpn桥接更多信息 <a href=\"https://hub.docker.com/r/lihaixin/softether\" target=\"_blank\">点击这里</a> ",
+			"categories": ["vpn"],
+			"platform": "linux",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/softether.png",			
+			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/softether/softether.client.server.yml"
+			}
+		},
+		{
+			"type": 3,
+			"title": "softether-client-s5",
+			"name": "softether-10801",
+			"description": "构建VPNGATE S5服务器",
+			"note": "部署VPNGATE S5服务器, 管理密码: softether .默认帐号和密码为:vpnhua,然后通过宿主机vpn桥接更多信息 <a href=\"https://hub.docker.com/r/lihaixin/softether\" target=\"_blank\">点击这里</a> ",
+			"categories": ["vpn"],
+			"platform": "linux",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/softether.png",			
+			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/softether/softether.client.s5.yml"
+			}
+		},
+		{
+			"type": 3,
+			"title": "openvpn-s5",
+			"name": "openvpn-s5",
+			"description": "构建OPENVPN S5服务器,记得改名,使用项目名称,这样方便排序",
+			"note": "部署OPENVPN S5服务器,然后通过宿主机vpn桥接,更多信息 <a href=\"https://github.com/lihaixin/openvpn\" target=\"_blank\">点击这里</a> ",
+			"categories": ["vpn"],
+			"platform": "linux",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/openvpn.png",			
+			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/openvpn/docker-compose.yml"
+			}
+		},
+		{
+			"type": 1,
+			"title": "n2n-7654",
+			"name": "n2n-7654",
+			"description": "点对点VPN服务器",
+			"note": "部署点对点VPN服务器 更多信息 <a href=\"https://hub.docker.com/r/supermock/supernode\" target=\"_blank\">点击这里</a> ",
+			"categories": ["vpn"],
+			"platform": "linux",
+			"network": "host",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/n2n.png",
+			"image": "supermock/supernode:latest-x86_64"
+		},
+		{
+			"type": 1,
+			"title": "zerotier-9993",
+			"name": "zerotier-9993",
+			"description": "点对点VPN服务器",
+			"note": "部署点对点VPN服务器 更多信息 <a href=\"https://hub.docker.com/r/lihaixin/zerotier\" target=\"_blank\">点击这里</a> ",
+			"categories": ["vpn"],
+			"platform": "linux",
+			"network": "host",
+			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/zerotier.png",
+			"image": "lihaixin/zerotier:debian",
+			"privileged": true,
+			"volumes": [{
+      				"container": "/var/lib/zerotier-one",
+				"bind": "/var/lib/zerotier-one"
+    				}],
+			"env": [{
+      				"name": "ID",
+      				"label": "你要加入的网络ID",
+				"description": "可以是全球公开的，也可以是私有的",
+      				"default": "8056c2e21c000001"
+    				}]
+		},
+		{
+    			"type": 1,
+    			"title": "acme ",
+			"name": "acme",
+    			"description": "域名数字证书申请",
+			"note": "单独域名数字证书申请, 需要用到80端口，同时域名指向云主机 更多<a href=\"https://hub.docker.com/r/lihaixin/acme\" target=\"_blank\">点击这里</a> 了接更多",
+    			"hostname": "acme",
+			"categories": ["cert"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/acme.png",
+    			"image": "lihaixin/acme",
+			"volumes": [
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+				"name": "QQ",
+				"label": "QQ *",
+				"description": "用于终端展示QQ",
+				"default": ""
+				},
+				{
+      				"name": "TYPE",
+      				"label": "证书提供商 *",
+				"select": [
+        			   		{
+          					"text": "zerossl",
+          					"value": "zerossl",
+          					"default": "zerossl"
+        			   		},
+        			   		{
+          					"text": "letsencrypt",
+          					"value": "letsencrypt"
+        			   		}
+      				          ],
+      				"description": "选择证书提供商"
+    				},
+				{
+      				"name": "DNS",
+      				"label": "域名管理商",
+				"select": [
+        			   		{
+          					"text": "dns_cf",
+          					"value": "dns_cf",
+          					"default": "dns_cf"
+        			   		},
+        			   		{
+          					"text": "dns_namecom",
+          					"value": "dns_namecom"
+        			   		},
+        			   		{
+          					"text": "dns_gd",
+          					"value": "dns_gd"
+        			   		},
+        			   		{
+          					"text": "dns_namesilo",
+          					"value": "dns_namesilo"
+        			   		},
+        			   		{
+          					"text": "dns_dp",
+          					"value": "dns_dp"
+        			   		},
+        			   		{
+          					"text": "dns_ali",
+          					"value": "dns_ali"
+        			   		},
+        			   		{
+          					"text": "dns_other",
+          					"value": ""
+        			   		}
+      				          ],
+				"description": "选择域名管理提供商"
+    				},
+				{
+      				"name": "DOMAIN",
+      				"label": "你的域名",
+				"description": "申请证书的域名",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "aliasDOMAIN",
+      				"label": "利用别名验证的域名",
+				"description": "这个域名托管在cloudflare,不能直接使用api申请证书，只能通过别名，使用别名下面的ID和KEY来申请证书的信息",
+      				"default": ""
+    				},
+			        {
+      				"name": "ID",
+      				"label": "ID",
+				"description": "域名提供商的ID | CF_Email | Namecom_Username | GD_Key | DP_Id | Ali_Key",
+      				"default": "info@domain.com"
+    				},
+		     		{
+      				"name": "KEY",
+      				"label": "KEY",
+				"description": "域名提供商的接口密钥 KEY | CF_Key | Namecom_Token | GD_Secret | Namesilo_Key | DP_Key | Ali_Secret ",
+      				"default": "558ef6820cea14627f986548c96fcb6cb××××"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "acme-cf.letsencrypt ",
+			"name": "acme-cf.letsencrypt",
+    			"description": "Cloudflare接口泛域名数字证书申请,使用letsencrypt提供商",
+			"note": "泛域名数字证书申请, 更多<a href=\"https://hub.docker.com/r/lihaixin/acme\" target=\"_blank\">点击这里</a> 了接更多",
+    			"hostname": "acme-cf",
+			"categories": ["cert"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/acme.png",
+    			"image": "lihaixin/acme:cf.letsencrypt",
+  			"network": "host",
+			"volumes": [
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+      				"name": "DOMAIN",
+      				"label": "你的域名",
+				"description": "把域名A记录指向云主机IP",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "CF_Email",
+      				"label": "CF_Email",
+				"description": "你在Cloudflare邮箱",
+      				"default": "info@domain.com"
+    				},
+		     		{
+      				"name": "CF_Key",
+      				"label": "CF_Key",
+				"description": "Cloudflare接口密钥",
+      				"default": "558ef6820cea14627f986548c96fcb6cb××××"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "acme-cf.zerossl",
+			"name": "acme-cf.zerossl",
+    			"description": "Cloudflare接口泛域名数字证书申请,使用zerossl提供商",
+			"note": "泛域名数字证书申请, 更多<a href=\"https://hub.docker.com/r/lihaixin/acme\" target=\"_blank\">点击这里</a> 了接更多",
+    			"hostname": "acme-cf",
+			"categories": ["cert"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/acme.png",
+    			"image": "lihaixin/acme:cf.zerossl",
+  			"network": "host",
+			"volumes": [
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+      				"name": "DOMAIN",
+      				"label": "你的域名",
+				"description": "把域名A记录指向云主机IP",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "CF_Email",
+      				"label": "CF_Email",
+				"description": "你在Cloudflare邮箱",
+      				"default": "info@domain.com"
+    				},
+		     		{
+      				"name": "CF_Key",
+      				"label": "CF_Key",
+				"description": "Cloudflare接口密钥",
+      				"default": "558ef6820cea14627f986548c96fcb6cb××××"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "acme-cf ",
+			"name": "acme-cf",
+    			"description": "Cloudflare接口泛域名数字证书申请,使用别名验证申请,用于.cf .ga .gq .ml .tk这些免费域名,Cloudflare已经不支持通过API设置申请泛域名",
+			"note": "泛域名数字证书申请, 更多<a href=\"https://hub.docker.com/r/lihaixin/acme\" target=\"_blank\">点击这里</a> 了接更多",
+    			"hostname": "acme-cf-alias",
+			"categories": ["cert"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/acme.png",
+    			"image": "lihaixin/acme:cf.alias",
+  			"network": "host",
+			"volumes": [
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+      				"name": "DOMAIN",
+      				"label": "你需要申请证书的域名",
+				"description": "把域名A记录指向云主机IP,同时做好_acme-challenge.DOMAIN别名指向_acme-challenge.aliasDOMAIN",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "aliasDOMAIN",
+      				"label": "利用别名验证的域名",
+				"description": "这个域名托管在cloudflare,下面的CF_Email和CF_Key都是使用这个证书的信息",
+      				"default": "aliasyoudomain.com"
+    				},
+				{
+      				"name": "CF_Email",
+      				"label": "CF_Email",
+				"description": "你在Cloudflare邮箱",
+      				"default": "info@domain.com"
+    				},
+		     		{
+      				"name": "CF_Key",
+      				"label": "CF_Key",
+				"description": "Cloudflare接口密钥",
+      				"default": "558ef6820cea14627f986548c96fcb6cb××××"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "acme-namesilo",
+			"name": "acme-namesilo",
+    			"description": "namesilo接口泛域名数字证书申请",
+			"note": "泛域名数字证书申请, 更多<a href=\"https://hub.docker.com/r/lihaixin/acme\" target=\"_blank\">点击这里</a> 了接更多",
+    			"hostname": "acme-namesilo",
+			"categories": ["cert"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/acme.png",
+    			"image": "lihaixin/acme:namesilo",
+  			"network": "host",
+			"volumes": [
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+      				"name": "DOMAIN",
+      				"label": "你的域名",
+				"description": "把域名A记录指向云主机IP",
+      				"default": "youdomain.com"
+    				},
+		     		{
+      				"name": "Namesilo_Key",
+      				"label": "Namesilo_Key",
+				"description": "Namesilo接口密钥",
+      				"default": "558ef6820cea14627f986548c96fcb6cb××××"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "acme-dp",
+			"name": "acme-dp",
+    			"description": "DNSPod接口泛域名数字证书申请",
+			"note": "泛域名数字证书申请, 更多<a href=\"https://hub.docker.com/r/lihaixin/acme\" target=\"_blank\">点击这里</a> 了接更多",
+    			"hostname": "acme-dp",
+			"categories": ["cert"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/acme.png",
+    			"image": "lihaixin/acme:dp",
+  			"network": "host",
+			"volumes": [
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+      				"name": "DOMAIN",
+      				"label": "你的域名",
+				"description": "把域名A记录指向云主机IP",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "DP_Id",
+      				"label": "DP_Id",
+				"description": "你在DNSPod上的ID",
+      				"default": "12669×"
+    				},
+		     		{
+      				"name": "DP_Key",
+      				"label": "DP_Key",
+				"description": "DNSPod接口密钥",
+      				"default": "558ef6820cea14627f986548c96fcb6cb××××"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "acme-ali",
+			"name": "acme-ali",
+    			"description": "Aliyun接口泛域名数字证书申请",
+			"note": "泛域名数字证书申请, 更多<a href=\"https://hub.docker.com/r/lihaixin/acme\" target=\"_blank\">点击这里</a> 了接更多",
+    			"hostname": "acme-ali",
+			"categories": ["cert"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/acme.png",
+    			"image": "lihaixin/acme:ali",
+  			"network": "host",
+			"volumes": [
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+      				"name": "DOMAIN",
+      				"label": "你的域名",
+				"description": "把域名A记录指向云主机IP",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "Ali_Key",
+      				"label": "Ali_Key",
+				"description": "你在Aliyun上的Key",
+      				"default": "sdfsdfsdfljlbjkljlkjsdfoiwje"
+    				},
+		     		{
+      				"name": "Ali_Secret",
+      				"label": "Ali_Secret",
+				"description": "Aliyun接口密钥",
+      				"default": "558ef6820cea14627f986548c96fcb6cb××××"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "xray-443-88",
+			"name": "xray-443-88",
+    			"description": "一键部署十三合一代理,,TYPE= vless.tcp.xtls | vless.ws.tls | trojan.tcp.tls | vless.quic.tls | vmess.tcp | shadowsocks.tcp |  socks | http | https",
+			"note": "一键部署十三合一代理, 更多参考 <a href=\"https://hub.docker.com/r/lihaixin/xray\" target=\"_blank\">xray doc</a> 了解",
+    			"hostname": "xray",
+			"categories": ["xray"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/xray.png",
+    			"image": "lihaixin/xray",
+  			"network": "host",
+			"volumes": [{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式 *",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "DOMAIN",
+      				"label": "你的域名",
+				"description": "子域名已做好A指向到云主机,同时主机80端口未被占用",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "HOSTNAME",
+      				"label": "主机名称",
+				"description": "主机名称,识别是那个子域名",
+      				"default": "hk8"
+    				},
+				{
+      				"name": "BACKURL",
+      				"label": "回落地址",
+				"description": "回落地址,可以自定,不支持http开通",
+      				"default": "127.0.0.1:88"
+    				},
+				{
+      				"name": "PORT",
+      				"label": "XRAY & VLESS & TROJAN 端口",
+				"description": "XRAY & Trojan 端口,保持默认443",
+      				"default": "443"
+    				},
+				{
+      				"name": "USERNAME",
+      				"label": "用户名",
+				"description": "账户 用户名称",
+      				"default": "username"
+    				},
+		     		{
+      				"name": "PASSWORD",
+      				"label": "账户 密码",
+				"description": "密码,同时使用是UUID",
+      				"default": "password"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "x-ui-54321",
+			"name": "x-ui-54321",
+    			"description": "Support multi-protocol multi-user Xray panel",
+			"note": "Deploys an x-ui server, please refer to <a href=\"https://hub.docker.com/r/lihaixin/x-ui\" target=\"_blank\">x-ui doc</a> for production deployments.",
+    			"hostname": "x-ui",
+			"categories": ["xray"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/v2ui.png",
+    			"image": "lihaixin/x-ui",
+  			"network": "host",
+			"volumes": [
+				{
+      				"container": "/etc/x-ui",
+				"bind": "/etc/x-ui"
+    				},
+				{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式 *",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "DOMAIN",
+      				"label": "Your Domain",
+				"description": "利用lihaixin/acme容器申请域名通用证书",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "HOSTNAME",
+      				"label": "Your HOSTNAME",
+				"description": "同一域名下不同主机名",
+      				"default": "hostname"
+    				},
+				{
+      				"name": "WEBPORT",
+      				"label": "X-UI WEB PORT",
+				"description": "The X-UI Server WEB PORT.",
+      				"default": "54321"
+    				},
+			        {
+      				"name": "PASSWD",
+      				"label": "X-UI WEB 密码",
+				"description": "修改The X-UI Server 管理密码,默认帐号为:admin",
+      				"default": "admin"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "gost_https_58338",
+			"name": "gost_https_58338",
+    			"description": "利用gost打造https代理，实现外贸简单科学上网",
+			"note": "部署https代理服务器, 更多参考点击 <a href=\"https://hub.docker.com/r/lihaixin/gost\" target=\"_blank\">gost doc</a> 了接",
+    			"hostname": "gosthttps",
+			"categories": ["gost"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/gost.png",
+    			"image": "lihaixin/gost:https",
+  			"network": "host",
+			"volumes": [{
+      				"container": "/etc/cert",
+				"bind": "/etc/cert"
+    				}],
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式 *",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "DOMAIN",
+      				"label": "顶级域名",
+				"description": "你的顶级域名,申请泛证书用",
+      				"default": "youdomain.com"
+    				},
+				{
+      				"name": "HOSTNAME",
+      				"label": "主机名",
+				"description": "主机名称,顶级域名下面的一个主机名",
+      				"default": "h8"
+    				},
+				{
+      				"name": "TYPE",
+      				"label": "本地还是中转",
+				"description": "提供local socks5 http https,local为本地运行https代理,其他为转发上游代理",
+      				"default": "local"
+    				},
+				{
+      				"name": "PORT",
+      				"label": "HTTPS 端口",
+				"description": "本机 HTTPS Server 端口",
+      				"default": "58338"
+    				},
+		     		{
+      				"name": "USER",
+      				"label": "HTTPS 用户名",
+				"description": "本机 Https 用户名",
+      				"default": "88888888"
+    				},
+		     		{
+      				"name": "PASSWD",
+      				"label": "HTTPS 密码",
+				"description": "本机 Https 密码",
+      				"default": "88888888"
+    				},
+			        {
+      				"name": "RURL",
+      				"label": "中转上游地址",
+				"description": "输入转发上游代理地址",
+      				"default": "8.8.8.8"
+    				},
+				{
+      				"name": "RPORT",
+      				"label": "中转上游端口",
+				"description": "中转上游代理端口",
+      				"default": "22225"
+    				},
+				{
+      				"name": "RUSER",
+      				"label": "中转上游用户名",
+				"description": "中转上游代理验证用户名",
+      				"default": "ruser"
+    				},
+		     		{
+      				"name": "RPASSWD",
+      				"label": "中转上游密码",
+				"description": "中转上游代理验证密码",
+      				"default": "rpass"
+    				}]
+  		},
+		{
+    			"type": 3,
+    			"title": "gost_mult *",
+			"name": "gost_mult",
+    			"description": "利用gost打造动态IP代理（私有专用） ",
+			"note": "部署动态IP代理服务器, 更多参考点击 <a href=\"https://github.com/lihaixin/gost/blob/main/mult/README.md\" target=\"_blank\">gost doc</a> 了接",
+    			"hostname": "gostmult",
+			"categories": ["gost"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/gost.png",
+			"repository": {
+				"url": "https://github.com/lihaixin/dockerfile",
+				"stackfile": "stacks/gost/docker-compose.yml"
+			}
+  		},
+		{
+    			"type": 1,
+    			"title": "gost_vpn_server_4096-8421",
+			"name": "gost_vpn_server_4096-8421",
+    			"description": "gost vpn游戏加速隧道服务器端",
+			"note": "部署gostvpn游戏加速隧道, 有<*>选项需要调整 更多点击<a href=\"https://hub.docker.com/r/lihaixin/gost\" target=\"_blank\">gost doc</a> 了接更多信息",
+    			"hostname": "gostvpnserver",
+			"categories": ["gost"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/gost.png",
+    			"image": "lihaixin/gost:vpn.s",
+			"privileged": true,
+  			"network": "host",
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式 *",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "LANRANGE",
+      				"label": "LANRANGE 本地局域网网段",
+				"description": "用于直接路由本地局域网网段,根据本地局域网网段,进行调整,如果用在机房里,保持默认,不需要调整",
+      				"default": "192.168.2.0/24"
+    				},
+				{
+      				"name": "GOST_PORT",
+      				"label": "GOST UDP 隧道端口",
+				"description": "用于GOST端口,默认为8421,不需要调整,除非8421被其他程序占用",
+      				"default": "8421"
+    				},
+				{
+      				"name": "GOSTSERVERIP",
+      				"label": "GOSTSERVERIP 隧道服务端IP",
+				"description": "GOSTSERVERIP 隧道服务端IP,默认192.168.123.1,不需要调整,除非本机有这个内部网段",
+      				"default": "192.168.123.1"
+    				},
+				{
+      				"name": "SPEEDERV2_PORT",
+      				"label": "SPEEDERV2 UDP加速端口",
+				"description": "用于SPEEDERV2 UDP加速端口,默认为4096,不需要调整,除非4096被其他程序占用",
+      				"default": "4096"
+    				},
+		     		{
+      				"name": "MODE",
+      				"label": "SPEEDERV2 MODE",
+				"description": "SPEEDERV2 模式,默认1,不需要调整",
+      				"default": "1"
+    				},
+		     		{
+      				"name": "FEC_OPTIONS",
+      				"label": "SPEEDERV2 FEC_OPTIONS 参数",
+				"description": "SPEEDERV2 FEC_OPTIONS 参数,根据网络质量进行调整,两边可以不一样,调整发包率,服务器带宽足,可以调整为2:2(2倍)发包",
+      				"default": "1:2,2:4,8:6,20:10"
+    				},
+		     		{
+      				"name": "PASSWORD",
+      				"label": "SPEEDERV2 PASSWORD *",
+				"description": "SPEEDERV2 密码,服务器和客户端一致,需要调整",
+      				"default": "pasSw0rd"
+    				},
+		     		{
+      				"name": "TIMEOUT",
+      				"label": "SPEEDERV2 TIMEOUT",
+				"description": "SPEEDERV2 TIMEOUT,游戏用户保持默认为1就好,一般不需要调整",
+      				"default": "4"
+    				},
+		     		{
+      				"name": "INTERVAL",
+      				"label": "SPEEDERV2 INTERVAL",
+				"description": "SPEEDERV2 INTERVAL,将每个 fec 组分散到 <INTERVAL> ms 的间隔内，以防止突发丢包,默认值：0 保持默认,不需要调整",
+      				"default": "1:4"
+    				},
+		     		{
+      				"name": "OPTION",
+      				"label": "SPEEDERV2 OPTION",
+				"description": "SPEEDERV2 OPTION,这里添加额外的SPEEDERV2 参数",
+      				"default": "--disable-obscure"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "gost_vpn_client_4096-8421",
+			"name": "gost_vpn_client_4096-8421",
+    			"description": "gost vpn游戏加速隧道客户端",
+			"note": "部署gostvpn游戏加速隧道, 有<*>选项需要调整更多点击<a href=\"https://hub.docker.com/r/lihaixin/gost\" target=\"_blank\">gost doc</a> 了接更多信息",
+    			"hostname": "gostvpnclient",
+			"categories": ["gost"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/gost.png",
+    			"image": "lihaixin/gost:vpn.c",
+			"privileged": true,
+  			"network": "host",
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式 *",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "FORWARD",
+      				"label": "是否开启批量转发",
+				"description": "设置1启用，设置0关闭",
+      				"default": "0"
+    				},
+				{
+      				"name": "fPorts",
+      				"label": "fPorts 转发起始端口",
+				"description": "fPorts 转发起始端口，用于把连接本机起始端口通过隧道转发到服务器端",
+      				"default": "10001"
+    				},
+				{
+      				"name": "ePorts",
+      				"label": "ePorts 转发结束端口",
+				"description": "ePorts 转发结束端口，用于把连接本机起始端口通过隧道转发到服务器端",
+      				"default": "20000"
+    				},
+				{
+      				"name": "VPNPORT",
+      				"label": "是否开启VPN端口转发",
+				"description": "设置1启用，设置0关闭",
+      				"default": "0"
+    				},
+				{
+      				"name": "OPorts",
+      				"label": "OPorts 其他转发端口",
+				"description": "把常用的VPN端口转发到服务器端,SSTP用443,OPENVPN用1194,PPTP用1723,L2TP用 500 4500 1701,SSVPN 用992 5555",
+      				"default": "5555 4500 1723 1701 1194 992 500"
+    				},
+				{
+      				"name": "GOST_PORT",
+      				"label": "GOST UDP 隧道端口",
+				"description": "用于GOST端口,默认为8421,不需要调整,除非8421被其他程序占用",
+      				"default": "8421"
+    				},
+				{
+      				"name": "GOSTCLIENTIP",
+      				"label": "GOSTCLIENTIP 隧道客户端IP *",
+				"description": "GOSTCLIENTIP 隧道客户端IP,默认192.168.123.2,不需要调整,除非本机有这个内部网段,如有多个客户端,只需要修改IP最后一位数字",
+      				"default": "192.168.123.11"
+    				},
+				{
+      				"name": "GOSTNAME",
+      				"label": "GOSTNAME 隧道接口名称",
+				"description": "GOSTNAME 隧道接口名称,默认tun0,不需要调整",
+      				"default": "tun0"
+    				},
+				{
+      				"name": "SPEEDERV2_IP",
+      				"label": "SPEEDERV2 UDP加速IP *",
+				"description": "用于SPEEDERV2 UDP加速IP,需要调整,改为服务端IP",
+      				"default": "8.8.8.8"
+    				},
+				{
+      				"name": "SPEEDERV2_PORT",
+      				"label": "SPEEDERV2 UDP加速端口",
+				"description": "用于SPEEDERV2 UDP加速端口,默认为4096,不需要调整,除非4096被其他程序占用",
+      				"default": "4096"
+    				},
+		     		{
+      				"name": "MODE",
+      				"label": "SPEEDERV2 MODE",
+				"description": "SPEEDERV2 模式,默认1,不需要调整",
+      				"default": "1"
+    				},
+		     		{
+      				"name": "FEC_OPTIONS",
+      				"label": "SPEEDERV2 FEC_OPTIONS 参数",
+				"description": "SPEEDERV2 FEC_OPTIONS 参数,根据网络质量进行调整,两边可以不一样,调整发包率,客户端带宽一般比较小,可以调整4:2(1.5倍)发包,或者4:1(1.25倍)发包",
+      				"default": "1:2,2:4,8:6,20:10"
+    				},
+		     		{
+      				"name": "PASSWORD",
+      				"label": "SPEEDERV2 PASSWORD *",
+				"description": "SPEEDERV2 密码,服务器和客户端一致,需要调整",
+      				"default": "pasSw0rd"
+    				},
+		     		{
+      				"name": "TIMEOUT",
+      				"label": "SPEEDERV2 TIMEOUT",
+				"description": "SPEEDERV2 TIMEOUT,游戏用户保持默认为1就好,一般不需要调整",
+      				"default": "4"
+    				},
+		     		{
+      				"name": "INTERVAL",
+      				"label": "SPEEDERV2 INTERVAL",
+				"description": "SPEEDERV2 INTERVAL,将每个 fec 组分散到 <INTERVAL> ms 的间隔内，以防止突发丢包,默认值：0 保持默认,不需要调整",
+      				"default": "1:4"
+    				},
+		     		{
+      				"name": "OPTION",
+      				"label": "SPEEDERV2 OPTION",
+				"description": "SPEEDERV2 OPTION,这里添加额外的SPEEDERV2 参数",
+      				"default": "--disable-obscure"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "wireguard-server-82",
+			"name": "wireguard-server-82",
+    			"description": "wireguard vpn游戏加速隧道服务器端",
+			"note": "部署wireguard vpn游戏加速隧道, 有<*>选项需要调整  更多点击<a href=\"https://hub.docker.com/r/lihaixin/wireguard\" target=\"_blank\">wireguard doc</a> 了接更多信息",
+    			"hostname": "wgvpnserver",
+			"categories": ["vpn"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/wireguard.png",
+    			"image": "lihaixin/wireguard:server",
+			"privileged": true,
+  			"network": "host",
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式 *",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "SERVER_PORT",
+      				"label": "服务器Wireguard监听端口",
+				"description": "Wireguard监听端口,使用UDP 端口",
+      				"default": "82"
+    				},
+				{
+      				"name": "LANRANGE",
+      				"label": "本地局域网网段",
+				"description": "用于直接路由本地局域网网段",
+      				"default": "192.168.2.0/24"
+    				},
+				{
+      				"name": "WGNAME",
+      				"label": "服务器Wireguard接口名称",
+				"description": "服务器Wireguard接口名称,也就是隧道名称",
+      				"default": "wg2"
+    				},
+		     		{
+      				"name": "WGSERVERIP",
+      				"label": "Wireguard SERVERIP",
+				"description": "Wireguard SERVERIP 服务器端隧道IP",
+      				"default": "10.1.2.1"
+    				},
+		     		{
+      				"name": "WGCLIENTIP",
+      				"label": "Wireguard CLIENTIP",
+				"description": "保持默认就可以Wireguard CLIENTIP 客户端隧道IP,这个是带预共享密钥的客户端,同时会生成IP第四位为10.1.2.11-20 十个没有预共享密钥的客户端配置文件",
+      				"default": "10.1.2.2"
+    				},
+				{
+      				"name": "WGRANGE",
+      				"label": "WGRANGE",
+				"description": "Wireguard WGRANGE 隧道网段",
+      				"default": "10.1.2.0/24"
+    				},
+				{
+      				"name": "WGMTU",
+      				"label": "WGMTU",
+				"description": "Wireguard MTU",
+      				"default": "1320"
+    				},
+		     		{
+      				"name": "MODE",
+      				"label": "SPEEDERV2 MODE",
+				"description": "speederv2 模式",
+      				"default": "1"
+    				},
+		     		{
+      				"name": "FEC_OPTIONS",
+      				"label": "SPEEDERV2 FEC_OPTIONS",
+				"description": "FEC_OPTIONS 参数",
+      				"default": "1:2,2:4,8:6,20:10"
+    				},
+		     		{
+      				"name": "TIMEOUT",
+      				"label": "SPEEDERV2 TIMEOUT",
+				"description": "SPEEDERV2 TIMEOUT 超时时间,游戏调整为0秒",
+      				"default": "1"
+    				},
+		     		{
+      				"name": "UDPMTU",
+      				"label": "SPEEDERV2 UDPMTU",
+				"description": "speederv2 MTU",
+      				"default": "1360"
+    				},
+		     		{
+      				"name": "OPTION",
+      				"label": "SPEEDERV2 OPTION",
+				"description": "SPEEDERV2 OPTION 可以额外添加参数",
+      				"default": "--disable-obscure"
+    				},
+				{
+      				"name": "PASSWORD",
+      				"label": "UDP2RAW PASSWORD *",
+				"description": "UDP2RAW 密码,服务器和客户端要一致",
+      				"default": "password"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "wireguard-client-82",
+			"name": "wireguard-client-82",
+    			"description": "wireguard vpn游戏加速隧道客户端",
+			"note": "部署wireguard vpn游戏加速隧道, 更多点击<a href=\"https://hub.docker.com/r/lihaixin/wireguard\" target=\"_blank\">wireguard doc</a> 了接更多信息",
+    			"hostname": "wgvpnclient",
+			"categories": ["vpn"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/wireguard.png",
+    			"image": "lihaixin/wireguard:client",
+			"privileged": true,
+  			"network": "host",
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式 *",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "SERVER_IP",
+      				"label": "服务器宿主机IP *",
+				"description": "服务器端IP",
+      				"default": " "
+    				},
+				{
+      				"name": "SERVER_PORT",
+      				"label": "服务器WG监听端口 *",
+				"description": "WG监听端口,使用UDP协议",
+      				"default": "82"
+    				},
+				{
+      				"name": "FORWARD",
+      				"label": "是否开启端口转发",
+				"description": "开启连续端口转发,设置为0关闭转发",
+      				"default": "0" 
+    				},
+				{
+      				"name": "fPorts",
+      				"label": "fPorts 转发起始端口",
+				"description": "fPorts 转发起始端口，用于把连接本机起始端口通过隧道转发到服务器端",
+      				"default": "30001"
+    				},
+				{
+      				"name": "ePorts",
+      				"label": "ePorts 转发结束端口",
+				"description": "ePorts 转发结束端口，用于把连接本机起始端口通过隧道转发到服务器端",
+      				"default": "40000" 
+    				},
+				{
+      				"name": "VPNPORT",
+      				"label": "是否开启VPN转发",
+				"description": "开启L2TP,PPTP,OPENVPN 端口转发,设置为0关闭转发",
+      				"default": "0" 
+    				},
+				{
+      				"name": "WGNAME",
+      				"label": "Wireguard 本地接口名称",
+				"description": "Wireguard 本地接口名称 ",
+      				"default": "wg2"
+    				},
+		     		{
+      				"name": "WGSERVERIP",
+      				"label": "Wireguard SERVERIP",
+				"description": "Wireguard SERVERIP 服务器端隧道IP ",
+      				"default": "10.1.2.1"
+    				},
+		     		{
+      				"name": "WGCLIENTIP",
+      				"label": "Wireguard 客户端IP *",
+				"description": "WGCLIENTIP 客户端端隧道IP,需要修改,支持10.1.2.11-20 十个客户端,每个客户端公钥和密钥不一样,请到服务器端查看",
+      				"default": "10.1.2.11"
+    				},
+				{
+      				"name": "WGRANGE",
+      				"label": "Wireguard RANGE",
+				"description": "WGRANGE  隧道网段",
+      				"default": "10.1.2.0/24"
+    				},
+				{
+      				"name": "Cprivatekey",
+      				"label": "客户端密钥 *",
+				"description": "服务器端生成的客户端密钥",
+      				"default": "your_client_privatekey"
+    				},
+		     		{
+      				"name": "Spublickey",
+      				"label": "服务端公钥 *",
+				"description": "服务器端生成的服务器端公钥",
+      				"default": "your_server_publickey"
+    				},
+				{
+      				"name": "WGMTU",
+      				"label": "Wireguard MTU",
+				"description": "Wireguard MTU 最大传输单元",
+      				"default": "1320"
+    				},
+		     		{
+      				"name": "MODE",
+      				"label": "SPEEDERV2 MODE",
+				"description": "speederv2 模式",
+      				"default": "1"
+    				},
+		     		{
+      				"name": "FEC_OPTIONS",
+      				"label": "SPEEDERV2 FEC_OPTIONS",
+				"description": "FEC_OPTIONS 参数",
+      				"default": "40:1"
+    				},
+		     		{
+      				"name": "TIMEOUT",
+      				"label": "SPEEDERV2 TIMEOUT",
+				"description": "SPEEDERV2 TIMEOUT 超时时间,游戏调整为0秒",
+      				"default": "1"
+    				},
+		     		{
+      				"name": "UDPMTU",
+      				"label": "SPEEDERV2 UDPMTU",
+				"description": "SPEEDERV2 MTU 最大传输单元",
+      				"default": "1360"
+    				},
+		     		{
+      				"name": "OPTION",
+      				"label": "SPEEDERV2 OPTION",
+				"description": "SPEEDERV2 OPTION 可以额外添加参数",
+      				"default": "--disable-obscure"
+    				},
+				{
+      				"name": "PASSWORD",
+      				"label": "UDP2RAW PASSWORD *",
+				"description": "UDP2RAW 密码,服务器和客户端要一致",
+      				"default": "password"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "gost.s5.http_10021",
+			"name": "gost.s5.http_10021",
+    			"description": "利用gost打造s5 http 代理和转发",
+			"note": "一键部署socks5 http 代理和转发, please refer to <a href=\"https://hub.docker.com/r/lihaixin/gost\" target=\"_blank\">gost doc</a> for production deployments.",
+    			"hostname": "gosts5",
+			"categories": ["gost"],
+    			"platform": "linux",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/gost.png",
+    			"image": "lihaixin/gost:s5",
+  			"network": "host",
+			"env": [{
+				"name": "QQ",
+				"label": "QQ联系方式 *",
+				"description": "终端显示你的QQ联系方式."
+				},
+				{
+      				"name": "TYPE",
+      				"label": "本地还是中转",
+				"description": "提供local socks5 http https,local为本地运行代理,其他为转发上游代理",
+      				"default": "local"
+    				},
+				{
+      				"name": "PORT",
+      				"label": "HTTP & SOCKS5 端口",
+				"description": "The HTTP AND SOCKS5 Server Port",
+      				"default": "10021"
+    				},
+				{
+      				"name": "USER",
+      				"label": "HTTP & SOCKS5用户名",
+				"description": "The HTTP AND SOCKS5 Server USER",
+      				"default": "test"
+    				},
+		     		{
+      				"name": "PASSWD",
+      				"label": "HTTP & SOCKS5 密码",
+				"description": "Password is used for Http & SOCKS5 verification",
+      				"default": "test"
+    				},
+			        {
+      				"name": "RURL",
+      				"label": "中转上游地址",
+				"description": "输入转发上游代理",
+      				"default": "8.8.8.8"
+    				},
+				{
+      				"name": "RPORT",
+      				"label": "中转上游端口",
+				"description": "中转上游代理端口",
+      				"default": "22225"
+    				},
+				{
+      				"name": "RUSER",
+      				"label": "中转上游用户名",
+				"description": "中转上游代理验证用户名",
+      				"default": "ruser"
+    				},
+		     		{
+      				"name": "RPASSWD",
+      				"label": "中转上游密码",
+				"description": "中转上游代理验证密码",
+      				"default": "rpass"
+    				},
+		     		{
+      				"name": "OPTIONS",
+      				"label": "中间代理链",
+				"description": "中间代理链,可以用来做速度提升.默认为空,格式: socks5://a13:a13@150.158.7.77:33114",
+      				"default": ""
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "ghproxy",
+			"name": "ghproxy-84",
+    			"description": "github proxy",
+			"note": "Deploys an github proxy, please refer to <a href=\"https://github.com/hunshcn/gh-proxy\" target=\"_blank\">gost doc</a> for production deployments.",
+    			"hostname": "ghproxy",
+			"categories": ["Reverse Proxy"],
+    			"platform": "linux",
+			"restart_policy": "always",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/github.png",
+    			"image": "hunsh/gh-proxy-py:latest",
+  			"ports": ["80/tcp"]
+  		},
+		{
+    			"type": 1,
+    			"title": "through-cache-docker-hub",
+			"name": "through-cache-5000",
+    			"description": "through-cache-docker-hub",
+			"note": "Deploys an docker hub through-cache, please refer to <a href=\"https://github.com/hunshcn/gh-proxy\" target=\"_blank\">gost doc</a> for production deployments.",
+    			"hostname": "through-cache",
+			"categories": ["docker"],
+    			"platform": "linux",
+			"restart_policy": "always",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/registry.png",
+    			"image": "registry",
+  			"ports": ["5000/tcp"],
+			"env": [{
+      				"name": "DOCKER_HUB_USERNAME",
+      				"label": "DOCKER_HUB_USERNAME",
+				"description": "DOCKER_HUB_USERNAME",
+      				"default": "your hub name"
+    				},
+		     		{
+      				"name": "DOCKER_HUB_ACCESS_TOKEN",
+      				"label": "DOCKER_HUB_ACCESS_TOKEN",
+				"description": "DOCKER_HUB_ACCESS_TOKEN",
+      				"default": "you hub token"
+    				}]
+  		},
+		{
+    			"type": 1,
+    			"title": "dnsmasq自定义域名解析",
+			"name": "dnsmasq-53-5380",
+    			"description": "带网页管理面板的DNS管理系统",
+			"note": "dnsmasq自定义域名解析, 请参考 <a href=\"https://hub.docker.com/r/jpillora/dnsmasq\" target=\"_blank\">dnsmasq doc</a> 了接更多",
+    			"hostname": "dnsmasq",
+			"categories": ["dns"],
+    			"platform": "linux",
+			"restart_policy": "always",
+    			"logo": "https://raw.githubusercontent.com/lihaixin/dockerfile/master/logo/dnsmasq.png",
+    			"image": "jpillora/dnsmasq",
+			"restart_policy": "always",
+  			"ports": ["53/udp","5380/tcp"],
+			"env": [{
+      				"name": "HTTP_USER",
+      				"label": "HTTP_USER",
+				"description": "HTTP管理登录用户名",
+      				"default": "foo"
+    				},
+		     		{
+      				"name": "HTTP_PASS",
+      				"label": "HTTP_PASS",
+				"description": "HTTP管理登录密码",
+      				"default": "bar"
+    				},
+		     		{
+      				"name": "PORT",
+      				"label": "PORT",
+				"description": "HTTP管理端口",
+      				"default": "5380"
+    				}]
+  		}
+	]
+}
+                

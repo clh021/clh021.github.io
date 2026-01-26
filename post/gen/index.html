@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="gen study proj wuyi-holiday\nhttps://github.com/go-nunu/nunu/blob/main/README_zh.md https://github.com/rubenv/sql-migrate https://github.com/go-eyas/toolkit https://github.com/tsg/gotpl https://github.com/steinbacher/goose https://github.com/xo/xo https://github.com/c4milo/github-release https://github.com/Shpota/goxygen https://github.com/widaT/webssh https://github.com/TeaWeb/build https://github.com/daoshenzzg/go-web-demo https://github.com/gocopper/copper https://github.com/rainycape/gondola https://github.com/andeya/faygo/blob/master/README_ZH.md https://github.com/1321928757/go-web-wire-starter https://github.com/qifengzhang007/GinSkeleton https://www.yuque.com/xiaofensinixidaouxiang/qmanaq/qmucb4 https://github.com/mix-go/mix https://github.com/hypebeast/sqliteweb https://github.com/inhere/go-web-skeleton https://github.com/710leo/Toruk https://github.com/shautzin/biligo https://github.com/Benny66/ginServer https://github.com/adhocteam/GolangAppSkeleton https://github.com/Bose/go-gin-opentracing https://github.com/openware/sonic https://github.com/enricofoltran/simple-go-server https://github.com/eddycjy/go-gin-example https://github.com/FlowerWrong/awesome-gin https://github.com/gourouting/singo https://github.com/mojocn/ginbro https://github.com/GoAdminGroup/go-admin https://github.com/gin-admin/gin-admin-cli https://github.com/18211167516/Go-Gin-Api https://github.com/fyonecon/ginlaravel https://github.com/gnimli/go-web-mini-ui https://github.com/colinrs/ffly-plus https://github.com/itcloudy/base-framework https://github.com/pilinux/gorest https://github.com/sezzle/generator-gin-api https://github.com/yanmiao99/vue3-go-crud-project https://github.com/skygp/go-ginn https://github.com/pitchinnate/gin-n-juice https://github.com/MasterJoyHunan/go-admin-cms https://github.com/freeshineit/gin_router_web https://github.com/cyhhao/gin-frame https://github.com/quarkcloudio/quark-go https://github.com/pddzl/td27-admin https://github.com/AnizOoalGown/Gobang-Online https://github.com/MasterJoyHunan/gengin https://github.com/zhufuyi/sponge https://github.com/hwangseonu/gin-restful https://github.com/libragen/ginbro-son https://github.com/go-touch/regin https://github.com/anerg2046/go-admin-server https://github.com/go-ego/ego https://github.com/henvo/golang-gin-gorm-starter https://github.com/codingcn/go-web-demo https://github.com/red-robe/ginger https://github.com/linclin/go-gin-rest-api https://github.com/dreamlu/gt-crud https://github.com/LazySkills/lin-cms-gin https://github.com/heyangguang/gobrief https://github.com/go-gorm/gen https://github.com/wangbjun/gen https://github.com/ElegantSoft/go-restful-generator https://github.com/wei-yg/code-generator-go https://github.com/BigKuCha/model-generator https://github.com/ziyeziye/framework-gen https://github.com/MasterJoyHunan/gengin 使用gorm和生成好的model来生成sqlite数据库\n">
+<title></title>
+
+<link rel='canonical' href='/post/gen/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="">
+<meta property='og:description' content="gen study proj wuyi-holiday\nhttps://github.com/go-nunu/nunu/blob/main/README_zh.md https://github.com/rubenv/sql-migrate https://github.com/go-eyas/toolkit https://github.com/tsg/gotpl https://github.com/steinbacher/goose https://github.com/xo/xo https://github.com/c4milo/github-release https://github.com/Shpota/goxygen https://github.com/widaT/webssh https://github.com/TeaWeb/build https://github.com/daoshenzzg/go-web-demo https://github.com/gocopper/copper https://github.com/rainycape/gondola https://github.com/andeya/faygo/blob/master/README_ZH.md https://github.com/1321928757/go-web-wire-starter https://github.com/qifengzhang007/GinSkeleton https://www.yuque.com/xiaofensinixidaouxiang/qmanaq/qmucb4 https://github.com/mix-go/mix https://github.com/hypebeast/sqliteweb https://github.com/inhere/go-web-skeleton https://github.com/710leo/Toruk https://github.com/shautzin/biligo https://github.com/Benny66/ginServer https://github.com/adhocteam/GolangAppSkeleton https://github.com/Bose/go-gin-opentracing https://github.com/openware/sonic https://github.com/enricofoltran/simple-go-server https://github.com/eddycjy/go-gin-example https://github.com/FlowerWrong/awesome-gin https://github.com/gourouting/singo https://github.com/mojocn/ginbro https://github.com/GoAdminGroup/go-admin https://github.com/gin-admin/gin-admin-cli https://github.com/18211167516/Go-Gin-Api https://github.com/fyonecon/ginlaravel https://github.com/gnimli/go-web-mini-ui https://github.com/colinrs/ffly-plus https://github.com/itcloudy/base-framework https://github.com/pilinux/gorest https://github.com/sezzle/generator-gin-api https://github.com/yanmiao99/vue3-go-crud-project https://github.com/skygp/go-ginn https://github.com/pitchinnate/gin-n-juice https://github.com/MasterJoyHunan/go-admin-cms https://github.com/freeshineit/gin_router_web https://github.com/cyhhao/gin-frame https://github.com/quarkcloudio/quark-go https://github.com/pddzl/td27-admin https://github.com/AnizOoalGown/Gobang-Online https://github.com/MasterJoyHunan/gengin https://github.com/zhufuyi/sponge https://github.com/hwangseonu/gin-restful https://github.com/libragen/ginbro-son https://github.com/go-touch/regin https://github.com/anerg2046/go-admin-server https://github.com/go-ego/ego https://github.com/henvo/golang-gin-gorm-starter https://github.com/codingcn/go-web-demo https://github.com/red-robe/ginger https://github.com/linclin/go-gin-rest-api https://github.com/dreamlu/gt-crud https://github.com/LazySkills/lin-cms-gin https://github.com/heyangguang/gobrief https://github.com/go-gorm/gen https://github.com/wangbjun/gen https://github.com/ElegantSoft/go-restful-generator https://github.com/wei-yg/code-generator-go https://github.com/BigKuCha/model-generator https://github.com/ziyeziye/framework-gen https://github.com/MasterJoyHunan/gengin 使用gorm和生成好的model来生成sqlite数据库\n">
+<meta property='og:url' content='/post/gen/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="gen study proj wuyi-holiday\nhttps://github.com/go-nunu/nunu/blob/main/README_zh.md https://github.com/rubenv/sql-migrate https://github.com/go-eyas/toolkit https://github.com/tsg/gotpl https://github.com/steinbacher/goose https://github.com/xo/xo https://github.com/c4milo/github-release https://github.com/Shpota/goxygen https://github.com/widaT/webssh https://github.com/TeaWeb/build https://github.com/daoshenzzg/go-web-demo https://github.com/gocopper/copper https://github.com/rainycape/gondola https://github.com/andeya/faygo/blob/master/README_ZH.md https://github.com/1321928757/go-web-wire-starter https://github.com/qifengzhang007/GinSkeleton https://www.yuque.com/xiaofensinixidaouxiang/qmanaq/qmucb4 https://github.com/mix-go/mix https://github.com/hypebeast/sqliteweb https://github.com/inhere/go-web-skeleton https://github.com/710leo/Toruk https://github.com/shautzin/biligo https://github.com/Benny66/ginServer https://github.com/adhocteam/GolangAppSkeleton https://github.com/Bose/go-gin-opentracing https://github.com/openware/sonic https://github.com/enricofoltran/simple-go-server https://github.com/eddycjy/go-gin-example https://github.com/FlowerWrong/awesome-gin https://github.com/gourouting/singo https://github.com/mojocn/ginbro https://github.com/GoAdminGroup/go-admin https://github.com/gin-admin/gin-admin-cli https://github.com/18211167516/Go-Gin-Api https://github.com/fyonecon/ginlaravel https://github.com/gnimli/go-web-mini-ui https://github.com/colinrs/ffly-plus https://github.com/itcloudy/base-framework https://github.com/pilinux/gorest https://github.com/sezzle/generator-gin-api https://github.com/yanmiao99/vue3-go-crud-project https://github.com/skygp/go-ginn https://github.com/pitchinnate/gin-n-juice https://github.com/MasterJoyHunan/go-admin-cms https://github.com/freeshineit/gin_router_web https://github.com/cyhhao/gin-frame https://github.com/quarkcloudio/quark-go https://github.com/pddzl/td27-admin https://github.com/AnizOoalGown/Gobang-Online https://github.com/MasterJoyHunan/gengin https://github.com/zhufuyi/sponge https://github.com/hwangseonu/gin-restful https://github.com/libragen/ginbro-son https://github.com/go-touch/regin https://github.com/anerg2046/go-admin-server https://github.com/go-ego/ego https://github.com/henvo/golang-gin-gorm-starter https://github.com/codingcn/go-web-demo https://github.com/red-robe/ginger https://github.com/linclin/go-gin-rest-api https://github.com/dreamlu/gt-crud https://github.com/LazySkills/lin-cms-gin https://github.com/heyangguang/gobrief https://github.com/go-gorm/gen https://github.com/wangbjun/gen https://github.com/ElegantSoft/go-restful-generator https://github.com/wei-yg/code-generator-go https://github.com/BigKuCha/model-generator https://github.com/ziyeziye/framework-gen https://github.com/MasterJoyHunan/gengin 使用gorm和生成好的model来生成sqlite数据库\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/gen/"></a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>gen study proj wuyi-holiday</p>
+<p><a class="link" href="https://github.com/go-nunu/nunu/blob/main/README_zh.md"  target="_blank" rel="noopener"
+    >https://github.com/go-nunu/nunu/blob/main/README_zh.md</a>
+<a class="link" href="https://github.com/rubenv/sql-migrate"  target="_blank" rel="noopener"
+    >https://github.com/rubenv/sql-migrate</a>
+<a class="link" href="https://github.com/go-eyas/toolkit"  target="_blank" rel="noopener"
+    >https://github.com/go-eyas/toolkit</a>
+<a class="link" href="https://github.com/tsg/gotpl"  target="_blank" rel="noopener"
+    >https://github.com/tsg/gotpl</a>
+<a class="link" href="https://github.com/steinbacher/goose"  target="_blank" rel="noopener"
+    >https://github.com/steinbacher/goose</a>
+<a class="link" href="https://github.com/xo/xo"  target="_blank" rel="noopener"
+    >https://github.com/xo/xo</a>
+<a class="link" href="https://github.com/c4milo/github-release"  target="_blank" rel="noopener"
+    >https://github.com/c4milo/github-release</a>
+<a class="link" href="https://github.com/Shpota/goxygen"  target="_blank" rel="noopener"
+    >https://github.com/Shpota/goxygen</a>
+<a class="link" href="https://github.com/widaT/webssh"  target="_blank" rel="noopener"
+    >https://github.com/widaT/webssh</a>
+<a class="link" href="https://github.com/TeaWeb/build"  target="_blank" rel="noopener"
+    >https://github.com/TeaWeb/build</a>
+<a class="link" href="https://github.com/daoshenzzg/go-web-demo"  target="_blank" rel="noopener"
+    >https://github.com/daoshenzzg/go-web-demo</a>
+<a class="link" href="https://github.com/gocopper/copper"  target="_blank" rel="noopener"
+    >https://github.com/gocopper/copper</a>
+<a class="link" href="https://github.com/rainycape/gondola"  target="_blank" rel="noopener"
+    >https://github.com/rainycape/gondola</a>
+<a class="link" href="https://github.com/andeya/faygo/blob/master/README_ZH.md"  target="_blank" rel="noopener"
+    >https://github.com/andeya/faygo/blob/master/README_ZH.md</a>
+<a class="link" href="https://github.com/1321928757/go-web-wire-starter"  target="_blank" rel="noopener"
+    >https://github.com/1321928757/go-web-wire-starter</a>
+<a class="link" href="https://github.com/qifengzhang007/GinSkeleton"  target="_blank" rel="noopener"
+    >https://github.com/qifengzhang007/GinSkeleton</a>
+<a class="link" href="https://www.yuque.com/xiaofensinixidaouxiang/qmanaq/qmucb4"  target="_blank" rel="noopener"
+    >https://www.yuque.com/xiaofensinixidaouxiang/qmanaq/qmucb4</a>
+<a class="link" href="https://github.com/mix-go/mix"  target="_blank" rel="noopener"
+    >https://github.com/mix-go/mix</a>
+<a class="link" href="https://github.com/hypebeast/sqliteweb"  target="_blank" rel="noopener"
+    >https://github.com/hypebeast/sqliteweb</a>
+<a class="link" href="https://github.com/inhere/go-web-skeleton"  target="_blank" rel="noopener"
+    >https://github.com/inhere/go-web-skeleton</a>
+<a class="link" href="https://github.com/710leo/Toruk"  target="_blank" rel="noopener"
+    >https://github.com/710leo/Toruk</a>
+<a class="link" href="https://github.com/shautzin/biligo"  target="_blank" rel="noopener"
+    >https://github.com/shautzin/biligo</a>
+<a class="link" href="https://github.com/Benny66/ginServer"  target="_blank" rel="noopener"
+    >https://github.com/Benny66/ginServer</a>
+<a class="link" href="https://github.com/adhocteam/GolangAppSkeleton"  target="_blank" rel="noopener"
+    >https://github.com/adhocteam/GolangAppSkeleton</a>
+<a class="link" href="https://github.com/Bose/go-gin-opentracing"  target="_blank" rel="noopener"
+    >https://github.com/Bose/go-gin-opentracing</a>
+<a class="link" href="https://github.com/openware/sonic"  target="_blank" rel="noopener"
+    >https://github.com/openware/sonic</a>
+<a class="link" href="https://github.com/enricofoltran/simple-go-server"  target="_blank" rel="noopener"
+    >https://github.com/enricofoltran/simple-go-server</a>
+<a class="link" href="https://github.com/eddycjy/go-gin-example"  target="_blank" rel="noopener"
+    >https://github.com/eddycjy/go-gin-example</a>
+<a class="link" href="https://github.com/FlowerWrong/awesome-gin"  target="_blank" rel="noopener"
+    >https://github.com/FlowerWrong/awesome-gin</a>
+<a class="link" href="https://github.com/gourouting/singo"  target="_blank" rel="noopener"
+    >https://github.com/gourouting/singo</a>
+<a class="link" href="https://github.com/mojocn/ginbro"  target="_blank" rel="noopener"
+    >https://github.com/mojocn/ginbro</a>
+<a class="link" href="https://github.com/GoAdminGroup/go-admin"  target="_blank" rel="noopener"
+    >https://github.com/GoAdminGroup/go-admin</a>
+<a class="link" href="https://github.com/gin-admin/gin-admin-cli"  target="_blank" rel="noopener"
+    >https://github.com/gin-admin/gin-admin-cli</a>
+<a class="link" href="https://github.com/18211167516/Go-Gin-Api"  target="_blank" rel="noopener"
+    >https://github.com/18211167516/Go-Gin-Api</a>
+<a class="link" href="https://github.com/fyonecon/ginlaravel"  target="_blank" rel="noopener"
+    >https://github.com/fyonecon/ginlaravel</a>
+<a class="link" href="https://github.com/gnimli/go-web-mini-ui"  target="_blank" rel="noopener"
+    >https://github.com/gnimli/go-web-mini-ui</a>
+<a class="link" href="https://github.com/colinrs/ffly-plus"  target="_blank" rel="noopener"
+    >https://github.com/colinrs/ffly-plus</a>
+<a class="link" href="https://github.com/itcloudy/base-framework"  target="_blank" rel="noopener"
+    >https://github.com/itcloudy/base-framework</a>
+<a class="link" href="https://github.com/pilinux/gorest"  target="_blank" rel="noopener"
+    >https://github.com/pilinux/gorest</a>
+<a class="link" href="https://github.com/sezzle/generator-gin-api"  target="_blank" rel="noopener"
+    >https://github.com/sezzle/generator-gin-api</a>
+<a class="link" href="https://github.com/yanmiao99/vue3-go-crud-project"  target="_blank" rel="noopener"
+    >https://github.com/yanmiao99/vue3-go-crud-project</a>
+<a class="link" href="https://github.com/skygp/go-ginn"  target="_blank" rel="noopener"
+    >https://github.com/skygp/go-ginn</a>
+<a class="link" href="https://github.com/pitchinnate/gin-n-juice"  target="_blank" rel="noopener"
+    >https://github.com/pitchinnate/gin-n-juice</a>
+<a class="link" href="https://github.com/MasterJoyHunan/go-admin-cms"  target="_blank" rel="noopener"
+    >https://github.com/MasterJoyHunan/go-admin-cms</a>
+<a class="link" href="https://github.com/freeshineit/gin_router_web"  target="_blank" rel="noopener"
+    >https://github.com/freeshineit/gin_router_web</a>
+<a class="link" href="https://github.com/cyhhao/gin-frame"  target="_blank" rel="noopener"
+    >https://github.com/cyhhao/gin-frame</a>
+<a class="link" href="https://github.com/quarkcloudio/quark-go"  target="_blank" rel="noopener"
+    >https://github.com/quarkcloudio/quark-go</a>
+<a class="link" href="https://github.com/pddzl/td27-admin"  target="_blank" rel="noopener"
+    >https://github.com/pddzl/td27-admin</a>
+<a class="link" href="https://github.com/AnizOoalGown/Gobang-Online"  target="_blank" rel="noopener"
+    >https://github.com/AnizOoalGown/Gobang-Online</a>
+<a class="link" href="https://github.com/MasterJoyHunan/gengin"  target="_blank" rel="noopener"
+    >https://github.com/MasterJoyHunan/gengin</a>
+<a class="link" href="https://github.com/zhufuyi/sponge"  target="_blank" rel="noopener"
+    >https://github.com/zhufuyi/sponge</a>
+<a class="link" href="https://github.com/hwangseonu/gin-restful"  target="_blank" rel="noopener"
+    >https://github.com/hwangseonu/gin-restful</a>
+<a class="link" href="https://github.com/libragen/ginbro-son"  target="_blank" rel="noopener"
+    >https://github.com/libragen/ginbro-son</a>
+<a class="link" href="https://github.com/go-touch/regin"  target="_blank" rel="noopener"
+    >https://github.com/go-touch/regin</a>
+<a class="link" href="https://github.com/anerg2046/go-admin-server"  target="_blank" rel="noopener"
+    >https://github.com/anerg2046/go-admin-server</a>
+<a class="link" href="https://github.com/go-ego/ego"  target="_blank" rel="noopener"
+    >https://github.com/go-ego/ego</a>
+<a class="link" href="https://github.com/henvo/golang-gin-gorm-starter"  target="_blank" rel="noopener"
+    >https://github.com/henvo/golang-gin-gorm-starter</a>
+<a class="link" href="https://github.com/codingcn/go-web-demo"  target="_blank" rel="noopener"
+    >https://github.com/codingcn/go-web-demo</a>
+<a class="link" href="https://github.com/red-robe/ginger"  target="_blank" rel="noopener"
+    >https://github.com/red-robe/ginger</a>
+<a class="link" href="https://github.com/linclin/go-gin-rest-api"  target="_blank" rel="noopener"
+    >https://github.com/linclin/go-gin-rest-api</a>
+<a class="link" href="https://github.com/dreamlu/gt-crud"  target="_blank" rel="noopener"
+    >https://github.com/dreamlu/gt-crud</a>
+<a class="link" href="https://github.com/LazySkills/lin-cms-gin"  target="_blank" rel="noopener"
+    >https://github.com/LazySkills/lin-cms-gin</a>
+<a class="link" href="https://github.com/heyangguang/gobrief"  target="_blank" rel="noopener"
+    >https://github.com/heyangguang/gobrief</a>
+<a class="link" href="https://github.com/go-gorm/gen"  target="_blank" rel="noopener"
+    >https://github.com/go-gorm/gen</a>
+<a class="link" href="https://github.com/wangbjun/gen"  target="_blank" rel="noopener"
+    >https://github.com/wangbjun/gen</a>
+<a class="link" href="https://github.com/ElegantSoft/go-restful-generator"  target="_blank" rel="noopener"
+    >https://github.com/ElegantSoft/go-restful-generator</a>
+<a class="link" href="https://github.com/wei-yg/code-generator-go"  target="_blank" rel="noopener"
+    >https://github.com/wei-yg/code-generator-go</a>
+<a class="link" href="https://github.com/BigKuCha/model-generator"  target="_blank" rel="noopener"
+    >https://github.com/BigKuCha/model-generator</a>
+<a class="link" href="https://github.com/ziyeziye/framework-gen"  target="_blank" rel="noopener"
+    >https://github.com/ziyeziye/framework-gen</a>
+<a class="link" href="https://github.com/MasterJoyHunan/gengin"  target="_blank" rel="noopener"
+    >https://github.com/MasterJoyHunan/gengin</a>
+使用gorm和生成好的model来生成sqlite数据库</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

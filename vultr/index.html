@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="介绍 Vultr提供的CLI命令行工具采用Golang语言编写，提供的命令行可以完成绝大部分操作，包括：vps的创建、删除、重装等，甚至你可以修改修改账号的用户名、密码等。\n">
+<title>vultr</title>
+
+<link rel='canonical' href='/vultr/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="vultr">
+<meta property='og:description' content="介绍 Vultr提供的CLI命令行工具采用Golang语言编写，提供的命令行可以完成绝大部分操作，包括：vps的创建、删除、重装等，甚至你可以修改修改账号的用户名、密码等。\n">
+<meta property='og:url' content='/vultr/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='' /><meta property='article:tag' content='vultr' /><meta property='article:published_time' content='2022-09-20T19:54:47&#43;08:00'/><meta property='article:modified_time' content='2022-09-20T19:54:47&#43;08:00'/>
+<meta name="twitter:title" content="vultr">
+<meta name="twitter:description" content="介绍 Vultr提供的CLI命令行工具采用Golang语言编写，提供的命令行可以完成绝大部分操作，包括：vps的创建、删除、重装等，甚至你可以修改修改账号的用户名、密码等。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/vultr/">vultr</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2022-09-20T19:54:47&#43;08:00'>2022-09-20 19:54:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="介绍">介绍
+</h2><p>Vultr提供的CLI命令行工具采用Golang语言编写，提供的命令行可以完成绝大部分操作，包括：vps的创建、删除、重装等，甚至你可以修改修改账号的用户名、密码等。</p>
+<h2 id="安装命令行">安装命令行
+</h2><p>安装 Vultr-CLI 命令行有多种方法：</p>
+<h3 id="github安装">github安装
+</h3><p>前往 <a class="link" href="https://github.com/vultr/vultr-cli/releases"  target="_blank" rel="noopener"
+    >github releases</a> 下载安装对应操作系统的文件。</p>
+<h3 id="源码安装">源码安装
+</h3><p>安装前确保你已经安装好了Golang。</p>
+<pre tabindex="0"><code>go get -u github.com/vultr/vultr-cli
+</code></pre><h2 id="配置api-key">配置api key
+</h2><p>首先登陆 Vultr 后台，右上角获取你的 api key，然后在下方白名单允许所有 ipv4, ipv6 可以访问。</p>
+<p>将 api key 添加到系统环境变量里，vultr-cli 工具在使用时会自动查找 VULTR_API_KEY 变量并使用。</p>
+<pre tabindex="0"><code>export VULTR_API_KEY=your_api_key
+</code></pre><p>export只对当前 bash 环境有效，下次使用再重新导入比较麻烦。我们可以变量添加到 /etc/profile 文件里，或者使用 Vultr-CLI 提供的配置文件里。默认的配置文件路径 <code>~/.vultr-cli.yaml</code>。</p>
+<pre tabindex="0"><code>api-key: your-api-key
+</code></pre><h2 id="创建sshkey">创建sshkey
+</h2><p>现在最新版的 Vultr CLI 创建 vps 不再返回root密码，也不能使用参数添加root密码，官方的意思很明确，就是推荐使用sshkey，所以我们需要先创建 sshkey。如果不创建sshkey，那么创建 vps 后的root密码只能登陆 Vultr 后台查看了。</p>
+<pre tabindex="0"><code>vultr-cli ssh create --name ssh-cli --key SSH public key
+</code></pre><ul>
+<li>name：ssh名，自定义</li>
+<li>key：公钥内容，非路径</li>
+</ul>
+<p>返回示例：</p>
+<pre tabindex="0"><code>{
+    &#34;ssh_key&#34;: {
+    &#34;id&#34;: &#34;cb676a46-66fd-4dfb-b839-443f2e6c0b60&#34;,
+    &#34;date_created&#34;: &#34;2020-10-10T01:56:20+00:00&#34;,
+    &#34;name&#34;: &#34;ssh-cli&#34;,
+    &#34;ssh_key&#34;: &#34;ssh-rsa AA... user@example.com&#34;
+    }
+}
+</code></pre><p>创建 ssh 后，记住此 ssh 的 id，之后创建 vps 需要通过 id 来指定 ssh。</p>
+<h2 id="创建密码">创建密码
+</h2><p>官方虽然明确表示 password 无法查看，相比较而言密钥登陆是安全的更多，但他们是不是忽略了一个问题：Windows系统。当你创建 Windows系统 就知道有多难受，password看不到、密钥还没用！密码要去控制台查看是不是“有悖” CLI？这里提供一个“绕过”它的方法。
+Vultr 提供 Startup Scripts 方法，一段创建后运行的脚本，通过修改密码来达到获取密码。</p>
+<pre tabindex="0"><code>vultr-cli script -n script-name -s script-string -t script-type
+</code></pre><ul>
+<li>参数n：脚本名</li>
+<li>参数s：脚本内容以base64加密</li>
+<li>参数t：可选值 pxe 和 boot，默认boot</li>
+</ul>
+<p>如果我们要修改 root 密码为 Abcd1234，那么我们的shell脚本可以这么写：</p>
+<pre tabindex="0"><code>echo root:Abcd1234 | chpasswd root
+</code></pre><p>然后我们将其转换成base64加密</p>
+<pre tabindex="0"><code>echo &#34;echo root:Abcd1234 | chpasswd root&#34; | base64
+</code></pre><p>得到结果：</p>
+<pre tabindex="0"><code>ZWNobyByb290OkFiY2QxMjM0Cg==
+</code></pre><p>那么这段 Startup Script 可以写成：</p>
+<pre tabindex="0"><code>vultr-cli script -n setpasswd -s ZWNobyByb290OkFiY2QxMjM0Cg== -t boot
+</code></pre><p>创建后返回这条脚本的一些基本信息，记住脚本的 id。现在添加 script-id 参数通过添加脚本来创建一台实例</p>
+<pre tabindex="0"><code>vultr-cli instance create --region region-id --plan plan-id --os os-id --ssh-keys ssh-id --script-id script-id --label label
+</code></pre><p>上面命令的各项参数参考下方介绍。创建后我们使用 ssh 命令快速验证一下 root 密码是否生效。</p>
+<pre tabindex="0"><code>ssh -p 22 root@ip
+</code></pre><h2 id="创建vps">创建vps
+</h2><p>基本命令如下：</p>
+<pre tabindex="0"><code>vultr-cli instance create --region region-id --plan plan-id --os os-id --ssh-keys ssh-id --label label
+</code></pre><ul>
+<li>region：指定地区</li>
+<li>plan：指定套餐，套餐对应配置</li>
+<li>os：操作系统</li>
+<li>ssh-keys：ssh的id</li>
+<li>label：标签</li>
+</ul>
+<p>通过如上参数，我们就可以正常创建一台 vps 了，非常方便。创建vps后的返回里不带 ip 地址，我们需要下面的命令查看：</p>
+<pre tabindex="0"><code>vultr-cli instance list
+</code></pre><p>如果我们创建了比较多的 vps，那么我们指定 label 就可以派上用场了，通过 label 即可快速找到刚创建的 vps。</p>
+<h3 id="地区">地区
+</h3><p>Vultr 一共有17个数据中心，美国数据中心就占了8个。地区及其对应的 id 只能通过 api 获取，这里我获取整理了一下，方便使用（地址：id）：</p>
+<ul>
+<li>荷兰阿姆斯特丹：ams</li>
+<li>法国巴黎：cdg</li>
+<li>德国法兰克福：fra</li>
+<li>韩国首尔：icn</li>
+<li>英国伦敦：lhr</li>
+<li>日本东京：nrt</li>
+<li>美国硅谷：sjc</li>
+<li>美国芝加哥：ord</li>
+<li>美国迈亚密：mia</li>
+<li>美国洛杉矶：lax</li>
+<li>美国达拉斯：dfw</li>
+<li>美国新泽西：ewr</li>
+<li>美国亚特兰大：atl</li>
+<li>美国西雅图：Seattle</li>
+<li>新加坡：sgp</li>
+<li>澳洲悉尼：syd</li>
+<li>加拿大多伦多：yto</li>
+</ul>
+<h3 id="套餐">套餐
+</h3><p>plan 指的是价格，在这里它更多意味“配置”，因为不同套餐价格对应不同配置。整理如下（id：配置）：</p>
+<ul>
+<li>vc2-1c-1gb：1G内存、1vCPU、25G SSD、1T流量，价格 $5</li>
+<li>vc2-1c-2gb：2G内存、1vCPU、55G SSD、2T流量，价格 $10</li>
+<li>vc2-2c-4gb：4G内存、2vCPU、80G SSD、3T流量，价格 $20</li>
+<li>vc2-4c-8gb：8G内存、4vCPU、160G SSD、4T流量，价格 $40</li>
+<li>vc2-8c-32gb：32G内存、8vCPU、640G SSD、6T流量，价格 $160</li>
+<li>……</li>
+<li>……</li>
+<li>……</li>
+</ul>
+<h3 id="操作系统">操作系统
+</h3><p>os参数指定的操作系统，跟 os 相近的是 iso 参数，它指定的是镜像。下面是我整理的操作系统及其对应id（id：操作系统）：</p>
+<ul>
+<li>124：Windows 2012 R2 x64</li>
+<li>240：Windows 2016 x64</li>
+<li>371：Windows 2019 x64</li>
+<li>167：CentOS 7 x64</li>
+<li>381：CentOS 7 SELinux x64</li>
+<li>194：Debian 8 i386 (jessie)</li>
+<li>352：Debian 10 x64 (buster)</li>
+<li>244：Debian 9 x64 (stretch)</li>
+<li>216：Ubuntu 16.04 i386</li>
+<li>270：Ubuntu 18.04 x64</li>
+<li>387：Ubuntu 20.04 x64</li>
+<li>413：Ubuntu 20.10 x64</li>
+<li>445：Ubuntu 21.04 x64</li>
+<li>230：FreeBSD 11 x6</li>
+<li>327：FreeBSD 12 x64</li>
+<li>401：CentOS 8 Stream x64</li>
+<li>362：CentOS 8 x64</li>
+<li>389：Fedora 32 x6</li>
+<li>391：Fedora CoreOS</li>
+<li>415：Fedora 33 x64</li>
+<li>446：Fedora 34 x64</li>
+<li>412：OpenBSD 6.8 x64</li>
+<li>450：OpenBSD 6.9 x64</li>
+</ul>
+<h2 id="更换ip地址">更换ip地址
+</h2><p>Vultr 提供一项名为 保留ip（Reserved IP）的功能。当我们销毁一台 vps ，跟随这台 vps 的 ip 地址也将一同“丢失”，保留 ip 可以允许我们销毁 vps 而保留 ip。借助 保留ip 和 备份 功能，我们可以实现同地区 vps 的迁移而不丢失数据（备份）和ip（保留ip）。
+除了它常规的用法，保留ip 其实也可以充当动态ip的功能，实现更换 ip地址 目的。接触过 aws 和阿里云 的用户应该对 动态IP 不陌生，动态ip 并不是完全意义上的 “更换ip”。
+举个例子：现在创建一台 vps A，创建的同时会自带一个 ip地址，我们将其自带的ip地址称为固定ip。创建一个 保留ip，因为它没有依附任何实例，那么保留ip可以看作是动态ip。我们可以将动态ip绑定到 vps A上作为其第二个ip地址，也可以解绑然后删除。虽然 vps A 自带的固定ip可以转换成动态ip，但是它还是属于 vps A，只有当 vps A 被销毁后，这种 “隐形绑定” 关系才被解除。</p>
+<h3 id="创建一个新的保留ip">创建一个新的保留ip
+</h3><pre tabindex="0"><code>vultr-cli reserved-ip create -r region-id -l label -t v4
+</code></pre><ul>
+<li>参数r：地区id</li>
+<li>参数l：标签</li>
+<li>参数t：ip类型，只能是v4或者v6</li>
+</ul>
+<p>需要注意的是ip地址有 “区域限制”，你必需指定要创建哪个地址的ip，ip也只能绑定在同地区的vps上。创建之后返回保留ip的信息，包括id、地区、ip地址等。</p>
+<h3 id="绑定到实例">绑定到实例
+</h3><pre tabindex="0"><code>vultr-cli reserved-id attach &lt;reservedIPID&gt; -i instance-id
+</code></pre><ul>
+<li>reservedIPID：保留ip的id</li>
+<li>instance-id：实例id</li>
+</ul>
+<p>绑定之后我们需要重启这台实例。必需要用 Vultr-CLI 命令行工具重启，在实例里 <code>reboot</code> 是无效的。</p>
+<h3 id="配置多ip">配置多ip
+</h3><p>重启后还需要手动配置网卡，才能使绑定的ip可用。不同的系统配置方式不同，具体方法参见 单网卡多ip 的配置方式，或者参考 Vultr 给出的教程：
+<a class="link" href="https://www.mebi.me/go/aHR0cHM6Ly93d3cudnVsdHIuY29tL2RvY3MvYWRkLXNlY29uZGFyeS1pcHY0LWFkZHJlc3M"  target="_blank" rel="noopener"
+    >/docs/add-secondary-ipv4-address</a></p>
+<p>下面是我写的，仅供参考。系统是 debian 10，默认的网卡配置：</p>
+<pre tabindex="0"><code>auto lo
+iface lo inet loopback
+
+allow-hotplug ens3
+iface ens3 inet dhcp
+iface ens3 inet6 auto
+</code></pre><p>可以看到 Vultr 默认使用 DHCP 自动配置网络，我们要将其改成手动配置。先将网卡配置文件备份，备份是个好习惯。</p>
+<pre tabindex="0"><code>cp /etc/network/interfaces /etc/network/interfaces.bak
+</code></pre><p>修改 <code>/etc/network/interfaces</code> 配置文件：</p>
+<pre tabindex="0"><code>auto lo
+iface lo inet loopback
+
+auto ens3
+iface ens3 inet static
+address ipv4
+netmask xx.xx.xx.xx
+gateway xx.xx.xx.xx
+dns-nameservers 108.61.10.10
+post-up ip route add 169.254.0.0/16 dev ens3
+
+auto ens3:1
+iface ens3:1 inet static
+address 保留ip
+netmask 255.255.255.255
+</code></pre><p>上面的 ipv4 就是 vps A 的固定ip，使用 <code>instance get</code> 命令不仅可以看到 ipv4，还能看到子网掩码（netmask）和网关（gateway）信息。</p>
+<pre tabindex="0"><code>vultr-cli instance get instance-id
+</code></pre><p>然后重启网络。</p>
+<pre tabindex="0"><code>systemctl restart networking.service
+</code></pre><p>使用 <code>ip a</code> 命令，可以看到 ens3 网卡下面两个ip都在了，现在 ping 绑定到保留地址，发现通了。</p>
+<h3 id="解绑">解绑
+</h3><pre tabindex="0"><code>vultr-cli reserved-id detach &lt;reservedIPID&gt;
+</code></pre><p>解绑之后 保留ip 可以绑定到任何其他同地区实例上，实例需要恢复网卡配置文件然后使用命令行重启。</p>
+<pre tabindex="0"><code>mv /etc/network/interfaces.bak /etc/network/interfaces
+</code></pre><h3 id="价格">价格
+</h3><p>保留ip 的价格为每小时$0.0003，或者每月$2，现在很多博客说是$3/月的该更新了。如果不想要，解绑后删除就可以停止收费。</p>
+<pre tabindex="0"><code>vultr-cli reserved-ip delete &lt;reservedIPID&gt;
+</code></pre><h2 id="其他操作">其他操作
+</h2><p><strong>列出所有创建的vps</strong></p>
+<pre tabindex="0"><code>vultr-cli instance list
+</code></pre><p>这里可以看到 vps 的一些重要信息，除了 ip 外，我们还可以看到 id，这个 id 就是 instance-id。如果要对某个 vps 进行操作，就要用到这个 id。</p>
+<p><strong>删除vps</strong></p>
+<pre tabindex="0"><code>vultr-cli instance delete instance-id
+</code></pre><p><strong>重启vps</strong></p>
+<pre tabindex="0"><code>vultr-cli instance restart instance-id
+</code></pre><p><strong>开机</strong></p>
+<pre tabindex="0"><code>vultr-cli instance start instance-id
+</code></pre><p><strong>关机</strong></p>
+<pre tabindex="0"><code>vultr-cli instance stop instance-id
+</code></pre><p><strong>重装</strong></p>
+<pre tabindex="0"><code>vultr-cli instance reinstall instance-id
+</code></pre><p><strong>获取具体信息</strong></p>
+<pre tabindex="0"><code>vultr-cli instance get instance-id
+</code></pre><p><strong>添加标签</strong></p>
+<pre tabindex="0"><code>vultr-cli instance label instance-id -l label-name
+</code></pre><p><strong>升级套餐</strong></p>
+<pre tabindex="0"><code>vultr-cli instance plan upgrade instance-id -p plan-id
+</code></pre><p><strong>更改操作系统</strong></p>
+<pre tabindex="0"><code>vultr-cli instance os change instance-id -o os-id
+</code></pre><p>通过 CLI 命令行无法更换 ip 地址，还是需要先创建一个 vps，再删除原来的 vps 来达到目的。</p>
+<h2 id="install">Install
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get install apache2-utils
+</span></span></code></pre></div><h2 id="use">Use
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./ab -c <span style="color:#ae81ff">100</span> -n <span style="color:#ae81ff">10000</span> http://127.0.0.1/index.php
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#-c 100 即：每次并发100个</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#-n 10000 即： 共发送10000个请求</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#用ab测试时，最大并发不能超过1024，其实ab本身没有做这个限制，而是系统限制每个进程打开的最大的文件数为1024</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ulimit -a</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ulimit -n 1020</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#-n 可以指定最大请求数，但是也不能超过50000</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#-v n   当n&gt;=2 时，可以显示发送的http请求头，和响应的http头及内容； 压力测试时不要这么做</span>
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vultr/">Vultr</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

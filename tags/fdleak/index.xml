@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Fdleak on 良宏</title>
+        <link>/tags/fdleak/</link>
+        <description>Recent content in Fdleak on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 23 Mar 2022 12:47:18 +0000</lastBuildDate><atom:link href="/tags/fdleak/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>fdleak</title>
+        <link>/post/pipe/</link>
+        <pubDate>Wed, 06 Jul 2022 00:00:00 +0000</pubDate>
+        
+        <guid>/post/pipe/</guid>
+        <description>&lt;blockquote&gt;
+&lt;p&gt;在进行网络编程时，正确关闭资源是一件很重要的事。在高并发场景下，未正常关闭的资源数逐渐积累会导致系统资源耗尽，影响系统整体服务能力，但是这件重要的事情往往又容易被忽视。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;fd&#34;&gt;fd
+&lt;/h1&gt;&lt;p&gt;在linux系统中有“一切皆文件”的概念。打开和创建普通文件、Socket（套接字）、Pipeline（管道）等，在linux内核层面都需要新建一个文件描述符来进行状态跟踪和使用。我们使用HttpClient发起请求，其底层需要首先通过系统内核创建一个Socket连接，相应地就需要打开一个fd。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;为什么我们的应用最多只能创建655350个fd呢？这个值是如何控制的，能否调整呢？
+linux系统对打开文件数有多个层面的限制:
+1)限制单个Shell进程以及其派生子进程能打开的&lt;code&gt;fd&lt;/code&gt;数量。用&lt;code&gt;ulimit&lt;/code&gt;命令能查看到这个值。
+2）限制每个user能打开的文件总数。具体调整方法是修改&lt;code&gt;/etc/security/limits.conf&lt;/code&gt;文件，比如下图中的红框部分就是限制了&lt;code&gt;userA&lt;/code&gt;用户只能打开&lt;code&gt;65535&lt;/code&gt;个文件，&lt;code&gt;userB&lt;/code&gt;用户只能打开&lt;code&gt;655350&lt;/code&gt;个文件。由于我们的应用在服务器上是以&lt;code&gt;userB&lt;/code&gt;身份运行的，自然就受到这里的限制，不允许打开多于&lt;code&gt;655350&lt;/code&gt;个文件。
+3）系统层面允许打开的最大文件数限制，可以通过 &lt;code&gt;cat /proc/sys/fs/file-max&lt;/code&gt; 查看。
+错误的管理方式导致连接使用完成后没有成功断开，连接长时间保持CLOSE_WAIT状态，则fd需要继续指向这个套接字信息，无法被回收，进而出现了故障。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;管道&#34;&gt;管道
+&lt;/h1&gt;&lt;p&gt;无名管道（一般说的管道就是指无名管道）
+无名管道是一种特殊类型的文件，在内核空间中对应的资源是一段内存空间，内核在这段空间中以循环队列的方式临时存入一个进程发送给另一个进程的信息，这段内核空间完全由操作系统管理和维护，应用程序只需要也只能通过系统调用来访问它。
+无名管道和普通文件有很大的差异：无名管道的内核资源在通信的两个进程退出后会自动释放。而普通文件如果不显示的删除会一直存在&lt;/p&gt;
+&lt;p&gt;特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;仅用于亲缘关系进程中&lt;/li&gt;
+&lt;li&gt;单向数据流：单向指的是，只能读端读，写端写&lt;/li&gt;
+&lt;li&gt;大小有限制（一般是65536）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;关于管道的读写
+（1）读管道：&lt;/p&gt;
+&lt;p&gt;管道中有数据，read返回实际读到的字节数。
+管道中无数据：
+①管道写端被全部关闭，read返回0
+② 写端没有全部被关闭，read阻塞等待(不久的将来可能有数据抵达，此时会让出cpu资源)
+（2）写管道：&lt;/p&gt;
+&lt;p&gt;管道读端全部被关闭， 进程异常终止 (操作系统发出SIGPIPE信号)
+管道读端没有全部关闭：
+①管道已满，write阻塞。无名管道的大小为64K
+②管道未满，write将数据写入，并返回实际写入的字节数。&lt;/p&gt;
+&lt;h2 id=&#34;创建和关闭-pipeclose&#34;&gt;创建和关闭 pipe/close
+&lt;/h2&gt;&lt;p&gt;pipe 最常见的地方是shell中，比如：&lt;code&gt;ls | wc -l&lt;/code&gt;。该命令，shell创建了两个进程来分别执行ls和ws(通过fork()和exec()完成)，如下：&lt;/p&gt;
+&lt;p&gt;使用管道连接两个进程&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;                                管道
+    ls    stdout    ==&amp;gt;     字节流   单向    ==&amp;gt;    stdin   wc
+          (fd 1)                                    (fd 0)
+                管道写入端               管道读取端
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以将管道看成是一组水管，它允许数据从一个进程流向另一个进程(这也是管道名称的由来)
+两个进程连接到了管道上，这样写入进程(ls)就将其标准输出(文件描述符为1)连接到来管道的写入段，读取进程(wc)就将其标准输入(文件描述符为0)连接到管道的读取端。实际上，这两个进程并不知道管道的存在，它们只是从标准文件描述符中读取和写入数据。shell必须要完成相关的工作。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;一个管道是一个字节流&lt;/p&gt;
+&lt;p&gt;管道是一个字节流&amp;mdash;&amp;mdash;即使用管道时没有消息或者消息边界的概念&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;管道中读取数据的进程可以读取任意大小的数据块，而不管写入进程写入管道的数据块的大小是什么&lt;/li&gt;
+&lt;li&gt;通过管道传递的数据是顺序的，读取出来的字节顺序和写入时完全一致&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在管道中无法使用lseek()来随机的访问数据&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;从管道中读取数据&lt;/p&gt;
+&lt;p&gt;为空的管道中读取数据会被阻塞直至有至少一字节被写入到管道中
+如果管道写入端被关闭，那么从管道中读取数据的进程在读完管道中剩余的所有数据之后将会看到文件结束（即 read()返回 0）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;管道是单向的&lt;/p&gt;
+&lt;p&gt;传递方向是单向的，只能一端写入，另一端读取
+在其他一些 UNIX 实现上——特别是那些从 System V Release 4 演化而来的系统——管道是双向的（所谓的流管道）。双向管道并没有在任何 UNIX 标准中进行规定，因此即使在提供了双向管道的实现上最好也避免依赖这种语义。作为替代方案，可以使用 UNIX domain 流socket 对（通过socketpair()系统调用来创建），它提供了一种标准的双向通信机制，并且其语义与流管道是等价的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;可以确保写入不超过 &lt;code&gt;pipe_buf&lt;/code&gt; 字节的操作是原子的&lt;/p&gt;
+&lt;p&gt;如果多个进程写入同一个管道，那么如果它们在一个时刻写入的数据量不超过PIPE_BUF字节，那么久可以确保写入的数据不会发生相互混合的情况。
+SUSv3 要求 PIPE_BUF 至少为_POSIX_PIPE_BUF（512）。一个实现应该定义 PIPE_BUF（在&amp;lt;limits.h&amp;gt;中）并/或允许调用fpathconf(fd,_PC_PIPE_BUF)来返回原子写入操作的实际上限。
+不同 UNIX 实现上的 PIPE_BUF 不同，如在 FreeBSD 6.0 其值为 512 字节，在 Tru64 5.1 上其值为 4096 字节，在 Solaris 8 上其值为 5120 字节。在 Linux 上，PIPE_BUF 的值为 4096。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;写入管道的数据块的大小超过了PIPE_BUF字节，则内核可能会将数据分割成几个较小的片段来传输，在读者从管道中消耗数据时再附加上后继的数据(write()调用会阻塞直到所有数据被写入到管道为止)。&lt;/li&gt;
+&lt;li&gt;当只有一个进程向管道写入数据时（通常的情况），PIPE_BUF的取值就没有关系了。&lt;/li&gt;
+&lt;li&gt;但如果有多个写入进程，那么大数据块的写入可能会被分解成任意大小的段（可能会小于 PIPE_BUF 字节），并且可能会出现与其他进程写入的数据交叉的现象。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;只有在数据被传输到管道的时候PIPE_BUF限制才会起作用。当写入的数据达到PIPE_BUF字节时，write()会在必要的时候阻塞知道管道中的可用空间足以院子的完成此操作。如果写入的数据大于PIPE_BUF字节，那么write()会尽可能的多传输数据以充满整个管道，然后阻塞直到一些读取进程从管道中移除了数据。如果此类阻塞的write()被一个信号处理器中断了，那么这个调用会被解除阻塞并返回成功传输到管道中的字节数，这个字节数会少于请求写入的字节数（所谓的部分写入）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在 Linux 2.2 上，向管道写入任意数量的数据都是原子的，除非写入操作被一个信号处理器中断了。在 Linux 2.4 以及后续的版本上，写入数据量大于 PIPE_BUF 字节的所有操作都可能会与其他进程的写入操作发生交叉&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;管道的容量是有限的&lt;/p&gt;
+&lt;p&gt;管道其实是一个在内核内存中维护的缓冲器，这个缓冲器的存储能力是有限的。一旦管道被填满之后，后继向管道的写入操作就会被阻塞直到读者从管道中移除了一些数据为止。&lt;/p&gt;
+&lt;p&gt;SUSv3 并没有规定管道的存储能力。在早于 2.6.11 的 Linux 内核中，管道的存储能力与系统页面的大小是一致的（如在 x86-32 上是 4096 字节），而从 Linux 2.6.11 起，管道的存储能力是 65,536 字节。其他 UNIX 实现上的管道的存储能力可能是不同的。&lt;/p&gt;
+&lt;p&gt;一般来讲，一个应用程序无需知道管道的实际存储能力。如果需要防止写者进程阻塞，那么从管道中读取数据的进程应该被设计成以尽可能快的速度从管道中读取数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;关于-pipe-的通信&#34;&gt;关于 pipe 的通信
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;管道可以用于进程内部自己通信(用的不多)&lt;/li&gt;
+&lt;li&gt;管道可以用于亲缘关系(子进程会继承父进程中的文件描述符的副本)进程中通信&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;管道与shell通信popen和pclose&#34;&gt;管道与shell通信—popen和pclose
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;管道的一个常见用途是执行 shell 命令并读取其输出或向其发送一些输入。popen()和pclose()函数简化了这个任务。
+pipe和close是最底层的系统调用，它的进一步封装是popen和pclose&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/*
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;* 功能：创建一个管道并启动另外一个进程，该进程要么从管道读出标准输入，要么往管道写入标准输出
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;* 参数：
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;* 	 __command： shell命令行
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;* 	 __modes：  popen会在调用进程与所指定的命令之间创建一个管道，这个管道是用于读还是写取决于 __modes
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;*            __modes为r，那么调用从__command读出
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;* 			 __modes为r， 那么调用往__command写
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;* 返回： 如果成功返回文件指针，如果出错为null
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;* */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;FILE &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;popen&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;__command, &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;__modes) 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/*
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;* 功能： 关闭由popen创建的标准IO流，等待其中的命令终止 ，然后返回shell的终止状态
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;**/&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; pclose ( FILE &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; stream );
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;popen()&lt;/code&gt;函数创建了一个管道，然后创建了一个子进程来执行 &lt;code&gt;shell&lt;/code&gt;，而 &lt;code&gt;shell&lt;/code&gt; 又创建了一个子进程来执行&lt;code&gt;command&lt;/code&gt; 字符串。
+&lt;code&gt;mode&lt;/code&gt; 参数是一个字符串:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;它确定调用进程是从管道中读取数据（&lt;code&gt;mode&lt;/code&gt; 是 &lt;code&gt;r&lt;/code&gt;）还是将数据写入到管道中（&lt;code&gt;mode&lt;/code&gt; 是 &lt;code&gt;w&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;（由于管道是单向的，因此无法在执行的 &lt;code&gt;command&lt;/code&gt; 中进行双向通信。）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;mode&lt;/code&gt; 的取值确定了所执行的命令的标准输出是连接到管道的写入端还是将其标准输入连接到管道的读取端&lt;/strong&gt;
+&lt;code&gt;popen()&lt;/code&gt;在成功时会返回可供 &lt;code&gt;stdio&lt;/code&gt; 库函数使用的文件流指针。当发生错误时，&lt;code&gt;popen()&lt;/code&gt;会返回 &lt;code&gt;NULL&lt;/code&gt; 并设置 &lt;code&gt;errno&lt;/code&gt;以标示出发生错误的原因&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在&lt;code&gt;popen()&lt;/code&gt;调用之后，&lt;strong&gt;调用进程使用管道来读取command的输出或使用管道向其发送输入&lt;/strong&gt;。与使用pipe()创建的管道一样，当从管道中读取数据时，调用进程在command关闭管道的写入端之后会看到文件结束；当&lt;strong&gt;向管道写入数据时，如果command已经关闭了管道的读取端，那么调用进程就会收到SIGPIPE信号并得到EPIPE错误&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;一旦IO结束之后可以使用&lt;code&gt;pclose()&lt;/code&gt;函数关闭管道并等待子进程中的&lt;code&gt;shell&lt;/code&gt;终止（不应该使用 &lt;code&gt;fclose()&lt;/code&gt;函数，因为它不会等待子进程。）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pclose()&lt;/code&gt;在成功时会返回子进程中 &lt;code&gt;shell&lt;/code&gt; 的终止状态（即 &lt;code&gt;shell&lt;/code&gt; 所执行的最后一条命令的终止状态，除非 shell 是被信号杀死的）&lt;/li&gt;
+&lt;li&gt;和&lt;code&gt;system()&lt;/code&gt;一样，如果无法执行&lt;code&gt;shell&lt;/code&gt;，那么&lt;code&gt;pclose()&lt;/code&gt;会返回一个值就像子进程中的&lt;code&gt;shell&lt;/code&gt;通过调用&lt;code&gt;_exit(127)&lt;/code&gt;来终止一样。&lt;/li&gt;
+&lt;li&gt;如果发生了其他错误，那么 &lt;code&gt;pclose()&lt;/code&gt;返回&lt;code&gt;−1&lt;/code&gt;。其中可能发生的一个错误是无法取得终止状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当执行等待以获取子进程中 &lt;code&gt;shell&lt;/code&gt; 的状态时，&lt;code&gt;SUSv3&lt;/code&gt; 要求 &lt;code&gt;pclose()&lt;/code&gt;与 &lt;code&gt;system()&lt;/code&gt;一样，即在内部的&lt;code&gt;waitpid()&lt;/code&gt;调用被一个信号处理器中断之后自动重启该调用。&lt;/p&gt;
+&lt;p&gt;与 &lt;code&gt;system()&lt;/code&gt; 一样，在特权进程中永远都不应该使用 &lt;code&gt;popen()&lt;/code&gt; ， 因为 参数来源可能非法或参数被恶意构建(&lt;code&gt;...;sh trojan&lt;/code&gt;)，不会像 &lt;code&gt;exec(familyFunc)&lt;/code&gt; 一样整体一起被识别为 一个参数，任何字符(&lt;code&gt;;&lt;/code&gt;)都被识别为参数的一部分。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;popen&lt;/code&gt;优缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优点： 在&lt;code&gt;Linux&lt;/code&gt;中所有的参数扩展都是由&lt;code&gt;shell&lt;/code&gt;来完成的。所以在启动&lt;code&gt;command&lt;/code&gt;命令之前程序先启动&lt;code&gt;shell&lt;/code&gt;来分析&lt;code&gt;command&lt;/code&gt;字符串，就可以使用各种&lt;code&gt;shell&lt;/code&gt;扩展(比如通配符)，这样我们可以通过&lt;code&gt;popen&lt;/code&gt;调用非常复杂的&lt;code&gt;shell&lt;/code&gt;命令&lt;/li&gt;
+&lt;li&gt;缺点： 对于每个&lt;code&gt;popen&lt;/code&gt;调用，不仅要启动一个被请求的程序，还需要启动一个&lt;code&gt;shell&lt;/code&gt;。即每一个&lt;code&gt;popen&lt;/code&gt;将启动两个进程。从效率和资源的角度看，&lt;code&gt;popen()&lt;/code&gt;函数的调用比正常方式要慢一些&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;pipe&lt;/code&gt; VS &lt;code&gt;popen&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pipe&lt;/code&gt;是一个底层调用，&lt;code&gt;popen&lt;/code&gt;是一个高级的函数&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pipe&lt;/code&gt;单纯的创建管道，而&lt;code&gt;popen&lt;/code&gt;创建管道的同时&lt;code&gt;fork&lt;/code&gt;子进程&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;popen&lt;/code&gt;在两个进程中传递数据时需要调用&lt;code&gt;shell&lt;/code&gt;来解释请求命令；&lt;code&gt;pipe&lt;/code&gt;在两个进程中传递数据不需要启动&lt;code&gt;shell&lt;/code&gt;来解释请求命令，同时提供了对读写数据的更多控制(&lt;code&gt;popen&lt;/code&gt;必须时&lt;code&gt;shell&lt;/code&gt;命令，&lt;code&gt;pipe&lt;/code&gt;无硬性要求)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;popen()&lt;/code&gt;函数是基于文件流（&lt;code&gt;FILE&lt;/code&gt;）工作的，而&lt;code&gt;pipe&lt;/code&gt;是基于文件描述符工作的，所以在使用&lt;code&gt;pipe&lt;/code&gt;后，数据必须要用底层的&lt;code&gt;read()&lt;/code&gt;和&lt;code&gt;write()&lt;/code&gt;调用来读取和发送。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上述管道虽然实现了进程间通信，但是它具有一定的局限性：&lt;/p&gt;
+&lt;p&gt;匿名管道只能是具有血缘关系的进程之间通信；
+它只能实现一个进程写另一个进程读，而如果需要两者同时进行时，就得重新打开一个管道。&lt;/p&gt;
+&lt;p&gt;为了使任意两个进程之间能够通信，就提出了命名管道（named pipe 或 FIFO）。&lt;/p&gt;
+&lt;h1 id=&#34;命名管道fifo&#34;&gt;命名管道(FIFO)
+&lt;/h1&gt;&lt;p&gt;有名管道:有自己的名字，但是&lt;strong&gt;有名管道名称保存在磁盘上&lt;/strong&gt;，但是&lt;strong&gt;内容保存在内核中&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;进程间通信必须通过内核提供的通道，而且必须由一种方法在进程中标识提供的某个通道，上面说到的匿名管道是通过打开的文件描述符标识的，只要互相通信的进程们可以访问到这个文件标识符，就可以使用它通信。 那如果相互通信的线程没有从公共祖先那么继承文件描述符，它们该如何通信呢？&lt;/li&gt;
+&lt;li&gt;这个时候我们可以使用命名管道。命名管道是使用文件系统的某个路径名来标记的，而文件系统中的路径名是全局的，各个进程都可以访问&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在linux系统调用中,标准输入描述字用&lt;code&gt;stdin&lt;/code&gt;,标准输出用&lt;code&gt;stdout&lt;/code&gt;,标准出错用&lt;code&gt;stderr&lt;/code&gt;表示,但在一些调用函数,引用了&lt;code&gt;STDIN_FILENO&lt;/code&gt;表示标准输入才,同样,标准出入用&lt;code&gt;STDOUT_FILENO&lt;/code&gt;,标准出错用&lt;code&gt;STDERR_FILENO.&lt;/code&gt;&lt;br&gt;
+请问,他们有什么区别吗?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;stdin&lt;/code&gt;等是FILE *类型，属于标准I/O，在&amp;lt;stdio.h&amp;gt;。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;STDIN_FILENO&lt;/code&gt;等是文件描述符，是非负整数，一般定义为0, 1, 2，属于没有buffer的I/O，直接调用系统调用，在&amp;lt;unistd.h&amp;gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;shell中的有名管道&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ls
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;src.log
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ cat src.log 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;111111111111111&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ mkfifo -m &lt;span style=&#34;color:#ae81ff&#34;&gt;664&lt;/span&gt; myfifo
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ls
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;myfifo  src.log
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ tee dst.log &amp;lt; myfifo &amp;amp;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;2&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;39437&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ls
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;myfifo  src.log
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ cat src.log &amp;gt; myfifo 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ &lt;span style=&#34;color:#ae81ff&#34;&gt;111111111111111&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;2&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;+  完成                  tee dst.log &amp;lt; myfifo
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ls
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dst.log  myfifo  src.log
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ cat dst.log 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;111111111111111&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;一次调试的记录&#34;&gt;一次调试的记录
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;watch cat /proc/sys/fs/file-nr
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 数据有上升有下降&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 12416/12384/12448/12416/12448&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#        /12512/12768&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;watch cat /proc/sys/fs/nr-open
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 1048576/ 一直没有变化&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo lsof | wc -l
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 287603&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pidof lithium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 29973 29564&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ls /proc/29973
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat cmdline
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# /opt/lithium/lithium ...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ls /proc/29973/fd
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ls /proc/29973/fd | wc -l
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 352&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ps aux | grep &lt;span style=&#34;color:#ae81ff&#34;&gt;29492&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo ls of -p &lt;span style=&#34;color:#ae81ff&#34;&gt;29492&lt;/span&gt; | wc -l
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i in &lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;ls&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt; ls $i/fd | wc -l;&lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i in &lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;ls&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt; echo pid $i; ls $i/fd | wc -l;&lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;LITHIUM_ENABLE_XPC_URLS&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;http://localhost:8000 valgrind --leak-check&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;full ./build/dist/lithium/lithium http://localhost:8000/apps/pipe.html &amp;gt; valgrind.log 2&amp;gt;&amp;amp;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

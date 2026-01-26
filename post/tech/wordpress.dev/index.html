@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="WordPress 笔记 函数列表 勾子 全局变量\nWordPress用钩子将插件“勾进”WordPress系统中，让插件与WordPress相连接。也就是说，通过钩子，WordPress能够在特定时间内调用插件中的函数，让插件开始运行。下面是钩子的两种形式：\n">
+<title>WordPress开发笔记</title>
+
+<link rel='canonical' href='/post/tech/wordpress.dev/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="WordPress开发笔记">
+<meta property='og:description' content="WordPress 笔记 函数列表 勾子 全局变量\nWordPress用钩子将插件“勾进”WordPress系统中，让插件与WordPress相连接。也就是说，通过钩子，WordPress能够在特定时间内调用插件中的函数，让插件开始运行。下面是钩子的两种形式：\n">
+<meta property='og:url' content='/post/tech/wordpress.dev/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='PHP' /><meta property='article:tag' content='WordPress' /><meta property='article:published_time' content='2017-02-24T21:57:25&#43;00:00'/><meta property='article:modified_time' content='2017-02-24T21:57:25&#43;00:00'/>
+<meta name="twitter:title" content="WordPress开发笔记">
+<meta name="twitter:description" content="WordPress 笔记 函数列表 勾子 全局变量\nWordPress用钩子将插件“勾进”WordPress系统中，让插件与WordPress相连接。也就是说，通过钩子，WordPress能够在特定时间内调用插件中的函数，让插件开始运行。下面是钩子的两种形式：\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/wordpress.dev/">WordPress开发笔记</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2017-02-24T21:57:25Z'>2017-02-24 21:57:25</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="wordpress-笔记">WordPress 笔记
+</h1><p><a class="link" href="http://codex.wordpress.org/zh-cn:%E5%87%BD%E6%95%B0%E5%8F%82%E8%80%83"  target="_blank" rel="noopener"
+    >函数列表</a>
+<a class="link" href="http://codex.wordpress.org/Plugin_API/Action_Reference"  target="_blank" rel="noopener"
+    >勾子</a>
+<a class="link" href="https://codex.wordpress.org/User:CharlesClarkson/Global_Variables"  target="_blank" rel="noopener"
+    >全局变量</a></p>
+<p>WordPress用钩子将插件“勾进”WordPress系统中，让插件与WordPress相连接。也就是说，通过钩子，WordPress能够在特定时间内调用插件中的函数，让插件开始运行。下面是钩子的两种形式：</p>
+<ol>
+<li>
+<p>动作（Actions）：在系统运行的某些特定时间点或发生特定事件时，WordPress核心程序会调用一些钩子。这里WordPress所调用的钩子被称为“动作”。插件用动作API来指定在上述特定时间点内需要执行的PHP函数。</p>
+</li>
+<li>
+<p>过滤器（Filters）：WordPress将不同类型文本添加到数据库或发送给浏览器窗口前，需要调用一些钩子来修改上述不同类型文本。这里WordPress所调用的钩子被称为“过滤器”。通过使用滤器API，插件可以执行一个或多个PHP函数以修改上述不同类型文本。</p>
+</li>
+</ol>
+<p>有时我们可以直接通过动作或过滤器实现以上效果。例如，如果我们希望用插件来改变某篇日志内容，可以为publish_post添加一个动作函数（保存到数据库时修改日志），也可以为the_content添加一个过滤器函数（显示到浏览器窗口时修改日志）。</p>
+<h2 id="过滤器函数">过滤器函数
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">has_filters</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">has_filter</span>(<span style="color:#a6e22e">string</span> $tag, <span style="color:#a6e22e">callback</span> $function_to_check );<span style="color:#75715e">//检查是否已经注册过滤器钩子。https://codex.wordpress.org/Function_Reference/has_filters
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">add_filter</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">add_filter</span>(<span style="color:#a6e22e">string</span> $tag, <span style="color:#a6e22e">callable</span> $function_to_add, <span style="color:#a6e22e">int</span> $priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>, <span style="color:#a6e22e">int</span> $accepted_args <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> );<span style="color:#75715e">//将功能或方法挂钩到特定的过滤器操作。https://developer.wordpress.org/reference/functions/add_filter/
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">apply_filters</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">apply_filters</span>( <span style="color:#a6e22e">string</span> $tag, <span style="color:#a6e22e">mixed</span> $value );<span style="color:#75715e">//调用添加到过滤器钩子的功能。https://developer.wordpress.org/reference/functions/apply_filters/
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">current_filter</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">current_filter</span>();<span style="color:#75715e">//检索当前过滤器或操作的名称。https://codex.wordpress.org/Function_Reference/current_filter
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">remove_filter</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">remove_filter</span>( $tag, $function_to_remove, $priority );<span style="color:#75715e">//删除附加到特定过滤器钩子的默认函数。https://codex.wordpress.org/Function_Reference/remove_filter
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">remove_all_filters</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">remove_all_filters</span>( $tag, $priority );<span style="color:#75715e">//从过滤器中取出所有的钩子。https://codex.wordpress.org/Function_Reference/remove_all_filters
+</span></span></span></code></pre></div><h2 id="动作函数">动作函数
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#a6e22e">has_action</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">has_action</span>( $tag, $function_to_check );<span style="color:#75715e">//检查挂钩是否已经注册了指定动作。https://codex.wordpress.org/Function_Reference/has_action
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">add_action</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">add_action</span>(<span style="color:#e6db74">&#39;hook_name&#39;</span>,<span style="color:#e6db74">&#39;自定义函数名&#39;</span>,[<span style="color:#e6db74">&#39;执行次序数，越小越后&#39;</span>],[<span style="color:#e6db74">&#39;接收函数的协议&#39;</span>] );<span style="color:#75715e">//挂钩一个特定动作的功能//将自定义的动作函数勾入WordPress//hook_name动作钩子的名称。https://developer.wordpress.org/reference/functions/add_action/
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">do_action</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">do_action</span>(<span style="color:#a6e22e">string</span> $tag，$arg<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>);<span style="color:#75715e">//执行挂钩在特定钩子上的功能。https://developer.wordpress.org/reference/functions/do_action/
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">do_action_ref_array</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">do_action_ref_array</span>( $tag, $args );<span style="color:#75715e">//此函数与do_action相同，但传递给挂钩到$tag的函数的参数是使用数组提供的。https://codex.wordpress.org/Function_Reference/do_action_ref_array
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">did_action</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">did_action</span>(<span style="color:#e6db74">&#39;动作挂钩的名称&#39;</span>);<span style="color:#75715e">//检索触发动作的次数。https://codex.wordpress.org/Function_Reference/did_action
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">remove_action</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">remove_action</span>($tag,$function_to_remove,$priority);<span style="color:#75715e">//删除附加到指定动作钩子的函数。https://codex.wordpress.org/Function_Reference/remove_action
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">remove_all_actions</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">remove_all_actions</span>($tag,$priority);<span style="color:#75715e">//从动作中删除所有的钩子。https://codex.wordpress.org/Function_Reference/remove_all_actions
+</span></span></span></code></pre></div><h1 id="wpjam-笔记">wpjam 笔记
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#75715e">//菜单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">wpjam_admin_menu</span>() <span style="color:#75715e">//构建菜单//位于 basic/include/admin/admin-menus.php 中
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">add_action</span>( <span style="color:#e6db74">&#39;admin_menu&#39;</span>, <span style="color:#e6db74">&#39;wpjam_basic_admin_menu&#39;</span>,<span style="color:#ae81ff">9</span> );
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">wpjam_list_table</span>() <span style="color:#75715e">//构建表格
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">wpjam_field_html</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">add_filter</span>(<span style="color:#e6db74">&#39;wpjam_pages&#39;</span>, <span style="color:#e6db74">&#39;wpjam_debug_admin_pages&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">add_filter</span>(<span style="color:#e6db74">&#39;wpjam_network_pages&#39;</span>, <span style="color:#e6db74">&#39;wpjam_debug_admin_pages&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">wpjam_debug_admin_pages</span>($wpjam_pages){
+</span></span><span style="display:flex;"><span>	$capability	<span style="color:#f92672">=</span> (<span style="color:#a6e22e">is_multisite</span>())<span style="color:#f92672">?</span><span style="color:#e6db74">&#39;manage_site&#39;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;manage_options&#39;</span>;
+</span></span><span style="display:flex;"><span>	$wpjam_pages[<span style="color:#e6db74">&#39;wpjam-debug&#39;</span>]	<span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;menu_title&#39;</span>	<span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Debug&#39;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;capability&#39;</span>	<span style="color:#f92672">=&gt;</span> $capability,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;icon&#39;</span>			<span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;dashicons-carrot&#39;</span>,<span style="color:#75715e">//参考：https://developer.wordpress.org/resource/dashicons/#translation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#e6db74">&#39;position&#39;</span>		<span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;25.1&#39;</span>
+</span></span><span style="display:flex;"><span>	);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> $wpjam_pages;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 在插件页面添加快速设置链接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">add_filter</span>(<span style="color:#e6db74">&#39;plugin_action_links_&#39;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">plugin_basename</span>(<span style="color:#a6e22e">WEIXIN_ROBOT_PLUGIN_FILE</span>), <span style="color:#e6db74">&#39;weixin_robot_plugin_action_links&#39;</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">weixin_robot_plugin_action_links</span>($links, $file)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    $links[<span style="color:#e6db74">&#39;setting&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&lt;a href=&#34;&#39;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">admin_url</span>(<span style="color:#e6db74">&#39;admin.php?page=weixin-robot&#39;</span>) <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39;&#34;&gt;设置&lt;/a&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">strpos</span>(<span style="color:#a6e22e">WEIXIN_ROBOT_PLUGIN_FILE</span>, <span style="color:#e6db74">&#39;weixin-robot-test&#39;</span>)) {
+</span></span><span style="display:flex;"><span>        $links[<span style="color:#e6db74">&#39;info&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&lt;span style=&#34;color:red; font-weight:bold;&#34;&gt;测试版&lt;/span&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        $links[<span style="color:#e6db74">&#39;info&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&lt;span style=&#34;color:green; font-weight:bold;&#34;&gt;正式版&lt;/span&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">array_reverse</span>($links);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="研究项">研究项
+</h1><pre tabindex="0"><code>weixin_robot_include_extends()  //通过get_option(&#39;weixin-robot-extends&#39;)加载了plugins/weixin-robot-advanced/extends/或其下admin/各项文件(每次只加载一个目录下的文件)
+register_activation_hook
+wp_parse_args  似乎替代了  array_merge
+shortcode_atts
+extract 使用数组键名作为变量名，使用数组键值作为变量值，数组中的每个元素，将在当前符号表中创建对应的一个变量
+add_filter(&#39;manage_users_columns&#39;)
+add_filter(&#39;manage_users_custom_column&#39;)
+add_filter user_search_columns
+opcache_reset
+opcache_get_status
+maybe_serialize
+</code></pre><h1 id="插件积累">插件积累
+</h1><ul>
+<li>
+<p>当插件被禁用时，希望会有为用户保护数据以方便下次启用时候继续使用，未清理数据库的消息（提供SQL指令），插件被禁用时，发送消息无效。尝试插件启用时发送消息，也无效。解决这种提示的</p>
+</li>
+<li>
+<p>仪表盘中，增加简单的统计数字小工具</p>
+</li>
+<li>
+<p>选项卡下的各项操作</p>
+</li>
+<li>
+<p><a class="link" href="https://wpackagist.org/search?q=woocommerce&amp;type=any&amp;search="  target="_blank" rel="noopener"
+    >有关 woo电商的众多插件 一</a></p>
+</li>
+<li>
+<p><a class="link" href="https://wpackagist.org/search?q=woo&amp;type=any&amp;search=&amp;page=2"  target="_blank" rel="noopener"
+    >有关 woo电商的众多插件 二</a></p>
+</li>
+<li>
+<p>github page builder some better <a class="link" href="https://github.com/search?o=desc&amp;q=page&#43;builder&amp;s=stars&amp;type=Repositories&amp;utf8=%E2%9C%93"  target="_blank" rel="noopener"
+    >eg</a></p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#f92672">&#34;usabilitydynamics/lib-ui&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/advanced-custom-fields&#34;</span> <span style="color:#75715e">#高级自定义字段，十分强大的自定义字段</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/acf-to-rest-api&#34;</span> <span style="color:#75715e">#高级自定义字段插件的增强插件，管理接口字段</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/rest-api-filter-fields&#34;</span> <span style="color:#75715e">#可以通过参数定义只传递什么字段的插件</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/shortcodes-ultimate&#34;</span> <span style="color:#75715e">#终极简码 非常全面还能附加一些组件扩展功能</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/debug-bar&#34;</span> <span style="color:#75715e">#一个方便的调试工具面板</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/blackbox-debug-bar&#34;</span> <span style="color:#75715e">#一个方便的调试工具面板</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/piklist&#34;</span> <span style="color:#75715e">#一个基于代码的插件主题开发框架</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/wp-helpers&#34;</span> <span style="color:#75715e">#基于piklist开发的工具插件能进行有系列定制</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/wp-log-viewer&#34;</span> <span style="color:#75715e">#一个方便的自带搜索功能体验友好的Error日志插件工具</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/wpjam-basic&#34;</span> <span style="color:#75715e">#我爱水煮鱼基础优化插件</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/woocommerce&#34;</span> <span style="color:#75715e">#电子商务插件</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/contact-form-7&#34;</span> <span style="color:#75715e">#非常强大的联系表单插件，目前是发送邮件也许可扩展至保存到数据库</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/my-custom-functions&#34;</span> <span style="color:#75715e">#一个可以添加自定义函数的插件，还未试用</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/smtp-mailer&#34;</span> <span style="color:#75715e">#发送邮件的插件</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/the-events-calendar&#34;</span> <span style="color:#75715e">#行事历</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/wp-redis&#34;</span> <span style="color:#75715e">#缓存插件，基于redis技术</span>
+</span></span><span style="display:flex;"><span>composer require <span style="color:#e6db74">&#34;wpackagist-plugin/wp-super-cache&#34;</span> <span style="color:#75715e">#缓存插件，基于文件存储的技术</span>
+</span></span></code></pre></div><h1 id="项目经验教训">项目经验教训
+</h1><p>你不知道老板说的要求到底到什么程度，你专注与功能细节时，她考虑的是好不好看。
+后面慢慢完善的是BUG，而不是提出来的功能。</p>
+<h1 id="框架搜集和经验总结">框架搜集和经验总结
+</h1><p><a class="link" href="https://github.com/wpbones/WPBones"  target="_blank" rel="noopener"
+    >https://github.com/wpbones/WPBones</a>
+是一个通过改变自身形成新插件的开发框架
+参考laravel使用，还不错的思路，但是没有彻底完成，多个参考此框架的插件可能会有冲突。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/php/">PHP</a>
+        
+            <a href="/tags/wordpress/">WordPress</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/wordpress.env/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WordPress环境及资料整理</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/discuz-add-internationalization/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">给Discuz加上国际化功能</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/easy.api.doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">API DOC</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

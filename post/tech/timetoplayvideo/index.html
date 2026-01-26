@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="原因 希望可以让电脑每天早上电脑上打开的网页定时播放音乐或者英语口语视频，像闹钟一样叫我起床。\n实现 // ==UserScript== // @name 定时唤醒播放器 // @namespace http://tampermonkey.net/ // @version 0.2 // @description 在指定时间自动播放当前页面的视频，带有可设置的控制界面和倒计时。 // @author Your Name // @match *://*/* // @grant GM_setValue // @grant GM_getValue // @grant GM_addStyle // ==/UserScript== (function() { &#39;use strict&#39;; console.log(&#39;脚本开始运行&#39;); function init() { console.log(&#39;DOM 加载完成，开始初始化&#39;); try { // --- 样式部分 --- GM_addStyle(` #wakeup-float-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; background-color: #4CAF50; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: grab; z-index: 999999; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: background-color 0.3s; user-select: none; } #wakeup-float-btn:hover { background-color: #45a049; } #wakeup-float-btn:active { cursor: grabbing; } #wakeup-control-panel { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid #ccc; border-radius: 8px; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); z-index: 1000000; display: none; font-family: Arial, sans-serif; min-width: 300px; } #wakeup-control-panel h3 { margin-top: 0; margin-bottom: 20px; color: #333; text-align: center; } #wakeup-control-panel label { display: block; margin-bottom: 8px; color: #555; } #wakeup-control-panel input[type=&#34;time&#34;] { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; } #wakeup-control-panel button { background-color: #007BFF; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; } #wakeup-control-panel button:hover { background-color: #0056b3; } #wakeup-time-display { margin-top: 15px; } #wakeup-time-display p { margin: 5px 0; color: #666; } #wakeup-close-btn { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; background-color: #f0f0f0; border: none; border-radius: 50%; font-size: 16px; line-height: 24px; text-align: center; cursor: pointer; color: #666; transition: all 0.3s ease; padding: 0; display: flex; justify-content: center; align-items: center; } #wakeup-close-btn:hover { background-color: #ff4444; color: white; } `); // 创建浮动按钮 const floatButton = document.createElement(&#39;div&#39;); floatButton.id = &#39;wakeup-float-btn&#39;; floatButton.textContent = &#39;🎶&#39;; document.body.appendChild(floatButton); console.log(&#39;浮动按钮已创建&#39;); // 创建控制面板 const controlPanel = document.createElement(&#39;div&#39;); controlPanel.id = &#39;wakeup-control-panel&#39;; controlPanel.innerHTML = ` &lt;button id=&#34;wakeup-close-btn&#34;&gt;×&lt;/button&gt; &lt;h3&gt;定时播放设置&lt;/h3&gt; &lt;label for=&#34;set-play-time&#34;&gt;设置播放时间:&lt;/label&gt; &lt;input type=&#34;time&#34; id=&#34;set-play-time&#34;&gt; &lt;button id=&#34;save-play-time&#34;&gt;保存设置&lt;/button&gt; &lt;div id=&#34;wakeup-time-display&#34;&gt; &lt;p&gt;当前时间: &lt;span id=&#34;current-time&#34;&gt;&lt;/span&gt;&lt;/p&gt; &lt;p&gt;目标时间: &lt;span id=&#34;target-time&#34;&gt;未设置&lt;/span&gt;&lt;/p&gt; &lt;p&gt;剩余时间: &lt;span id=&#34;countdown-time&#34;&gt;未设置&lt;/span&gt;&lt;/p&gt; &lt;/div&gt; `; document.body.appendChild(controlPanel); console.log(&#39;控制面板已创建&#39;); // 添加拖动功能 let isDragging = false; let currentX; let currentY; let initialX; let initialY; floatButton.addEventListener(&#39;mousedown&#39;, function(e) { isDragging = true; initialX = e.clientX - floatButton.offsetLeft; initialY = e.clientY - floatButton.offsetTop; floatButton.style.cursor = &#39;grabbing&#39;; }); document.addEventListener(&#39;mousemove&#39;, function(e) { if (!isDragging) return; e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; // 确保按钮不会被拖出视窗 currentX = Math.max(0, Math.min(currentX, window.innerWidth - floatButton.offsetWidth)); currentY = Math.max(0, Math.min(currentY, window.innerHeight - floatButton.offsetHeight)); floatButton.style.left = currentX + &#39;px&#39;; floatButton.style.top = currentY + &#39;px&#39;; floatButton.style.right = &#39;auto&#39;; }); document.addEventListener(&#39;mouseup&#39;, function() { isDragging = false; floatButton.style.cursor = &#39;grab&#39;; }); // 获取保存的时间 const savedTime = GM_getValue(&#39;targetTime&#39;, &#39;&#39;); if (savedTime) { document.getElementById(&#39;set-play-time&#39;).value = savedTime; document.getElementById(&#39;target-time&#39;).textContent = savedTime; } // 计算并更新剩余时间 function updateCountdown() { const targetTimeStr = GM_getValue(&#39;targetTime&#39;, &#39;&#39;); if (!targetTimeStr) return; const now = new Date(); const [targetHour, targetMinute] = targetTimeStr.split(&#39;:&#39;).map(Number); let targetTime = new Date(); targetTime.setHours(targetHour, targetMinute, 0, 0); // 如果目标时间已过，设置为明天 if (targetTime &lt; now) { targetTime.setDate(targetTime.getDate() + 1); } const diff = targetTime - now; const hours = Math.floor(diff / (1000 * 60 * 60)); const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)); const seconds = Math.floor((diff % (1000 * 60)) / 1000); document.getElementById(&#39;countdown-time&#39;).textContent = `${hours}小时${minutes}分钟${seconds}秒`; } // 更新当前时间显示 function updateCurrentTime() { const now = new Date(); document.getElementById(&#39;current-time&#39;).textContent = now.toLocaleTimeString(&#39;zh-CN&#39;, { hour12: false }); updateCountdown(); // 同时更新倒计时 } // 检查并播放视频的函数 function checkAndPlay() { const targetTimeStr = GM_getValue(&#39;targetTime&#39;, &#39;&#39;); if (!targetTimeStr) return; const now = new Date(); const [targetHour, targetMinute] = targetTimeStr.split(&#39;:&#39;).map(Number); const currentHour = now.getHours(); const currentMinute = now.getMinutes(); if (currentHour === targetHour &amp;&amp; currentMinute === targetMinute) { console.log(&#39;时间到，尝试播放视频...&#39;); const videos = document.querySelectorAll(&#39;video&#39;); if (videos.length &gt; 0) { videos.forEach(video =&gt; { video.muted = false; video.volume = 1; const playPromise = video.play(); if (playPromise !== undefined) { playPromise .then(() =&gt; console.log(&#39;视频开始播放&#39;)) .catch(err =&gt; { console.error(&#39;播放失败:&#39;, err); // 尝试静音播放 video.muted = true; video.play().catch(e =&gt; console.error(&#39;静音播放也失败:&#39;, e)); }); } }); } else { console.log(&#39;页面上没有找到视频元素&#39;); } } } // 事件监听器 floatButton.addEventListener(&#39;click&#39;, function(e) { if (!isDragging) { // 只在非拖动状态下响应点击 controlPanel.style.display = &#39;block&#39;; } }); // 关闭按钮事件 document.getElementById(&#39;wakeup-close-btn&#39;).addEventListener(&#39;click&#39;, () =&gt; { controlPanel.style.display = &#39;none&#39;; }); document.getElementById(&#39;save-play-time&#39;).addEventListener(&#39;click&#39;, () =&gt; { const timeInput = document.getElementById(&#39;set-play-time&#39;).value; if (timeInput) { GM_setValue(&#39;targetTime&#39;, timeInput); document.getElementById(&#39;target-time&#39;).textContent = timeInput; alert(&#39;时间设置已保存！&#39;); controlPanel.style.display = &#39;none&#39;; // 保存后自动关闭面板 } else { alert(&#39;请选择有效的时间！&#39;); } }); // 启动定时更新 setInterval(updateCurrentTime, 1000); // 每秒更新时间显示 setInterval(checkAndPlay, 30000); // 每30秒检查一次是否需要播放 // 立即执行一次更新 updateCurrentTime(); checkAndPlay(); } catch (error) { console.error(&#39;脚本初始化失败:&#39;, error); } } // 确保在页面加载完成后运行 if (document.readyState === &#39;loading&#39;) { document.addEventListener(&#39;DOMContentLoaded&#39;, init); } else { init(); } })(); ">
+<title>Time To Play Video</title>
+
+<link rel='canonical' href='/post/tech/timetoplayvideo/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Time To Play Video">
+<meta property='og:description' content="原因 希望可以让电脑每天早上电脑上打开的网页定时播放音乐或者英语口语视频，像闹钟一样叫我起床。\n实现 // ==UserScript== // @name 定时唤醒播放器 // @namespace http://tampermonkey.net/ // @version 0.2 // @description 在指定时间自动播放当前页面的视频，带有可设置的控制界面和倒计时。 // @author Your Name // @match *://*/* // @grant GM_setValue // @grant GM_getValue // @grant GM_addStyle // ==/UserScript== (function() { &#39;use strict&#39;; console.log(&#39;脚本开始运行&#39;); function init() { console.log(&#39;DOM 加载完成，开始初始化&#39;); try { // --- 样式部分 --- GM_addStyle(` #wakeup-float-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; background-color: #4CAF50; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: grab; z-index: 999999; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: background-color 0.3s; user-select: none; } #wakeup-float-btn:hover { background-color: #45a049; } #wakeup-float-btn:active { cursor: grabbing; } #wakeup-control-panel { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid #ccc; border-radius: 8px; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); z-index: 1000000; display: none; font-family: Arial, sans-serif; min-width: 300px; } #wakeup-control-panel h3 { margin-top: 0; margin-bottom: 20px; color: #333; text-align: center; } #wakeup-control-panel label { display: block; margin-bottom: 8px; color: #555; } #wakeup-control-panel input[type=&#34;time&#34;] { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; } #wakeup-control-panel button { background-color: #007BFF; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; } #wakeup-control-panel button:hover { background-color: #0056b3; } #wakeup-time-display { margin-top: 15px; } #wakeup-time-display p { margin: 5px 0; color: #666; } #wakeup-close-btn { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; background-color: #f0f0f0; border: none; border-radius: 50%; font-size: 16px; line-height: 24px; text-align: center; cursor: pointer; color: #666; transition: all 0.3s ease; padding: 0; display: flex; justify-content: center; align-items: center; } #wakeup-close-btn:hover { background-color: #ff4444; color: white; } `); // 创建浮动按钮 const floatButton = document.createElement(&#39;div&#39;); floatButton.id = &#39;wakeup-float-btn&#39;; floatButton.textContent = &#39;🎶&#39;; document.body.appendChild(floatButton); console.log(&#39;浮动按钮已创建&#39;); // 创建控制面板 const controlPanel = document.createElement(&#39;div&#39;); controlPanel.id = &#39;wakeup-control-panel&#39;; controlPanel.innerHTML = ` &lt;button id=&#34;wakeup-close-btn&#34;&gt;×&lt;/button&gt; &lt;h3&gt;定时播放设置&lt;/h3&gt; &lt;label for=&#34;set-play-time&#34;&gt;设置播放时间:&lt;/label&gt; &lt;input type=&#34;time&#34; id=&#34;set-play-time&#34;&gt; &lt;button id=&#34;save-play-time&#34;&gt;保存设置&lt;/button&gt; &lt;div id=&#34;wakeup-time-display&#34;&gt; &lt;p&gt;当前时间: &lt;span id=&#34;current-time&#34;&gt;&lt;/span&gt;&lt;/p&gt; &lt;p&gt;目标时间: &lt;span id=&#34;target-time&#34;&gt;未设置&lt;/span&gt;&lt;/p&gt; &lt;p&gt;剩余时间: &lt;span id=&#34;countdown-time&#34;&gt;未设置&lt;/span&gt;&lt;/p&gt; &lt;/div&gt; `; document.body.appendChild(controlPanel); console.log(&#39;控制面板已创建&#39;); // 添加拖动功能 let isDragging = false; let currentX; let currentY; let initialX; let initialY; floatButton.addEventListener(&#39;mousedown&#39;, function(e) { isDragging = true; initialX = e.clientX - floatButton.offsetLeft; initialY = e.clientY - floatButton.offsetTop; floatButton.style.cursor = &#39;grabbing&#39;; }); document.addEventListener(&#39;mousemove&#39;, function(e) { if (!isDragging) return; e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; // 确保按钮不会被拖出视窗 currentX = Math.max(0, Math.min(currentX, window.innerWidth - floatButton.offsetWidth)); currentY = Math.max(0, Math.min(currentY, window.innerHeight - floatButton.offsetHeight)); floatButton.style.left = currentX + &#39;px&#39;; floatButton.style.top = currentY + &#39;px&#39;; floatButton.style.right = &#39;auto&#39;; }); document.addEventListener(&#39;mouseup&#39;, function() { isDragging = false; floatButton.style.cursor = &#39;grab&#39;; }); // 获取保存的时间 const savedTime = GM_getValue(&#39;targetTime&#39;, &#39;&#39;); if (savedTime) { document.getElementById(&#39;set-play-time&#39;).value = savedTime; document.getElementById(&#39;target-time&#39;).textContent = savedTime; } // 计算并更新剩余时间 function updateCountdown() { const targetTimeStr = GM_getValue(&#39;targetTime&#39;, &#39;&#39;); if (!targetTimeStr) return; const now = new Date(); const [targetHour, targetMinute] = targetTimeStr.split(&#39;:&#39;).map(Number); let targetTime = new Date(); targetTime.setHours(targetHour, targetMinute, 0, 0); // 如果目标时间已过，设置为明天 if (targetTime &lt; now) { targetTime.setDate(targetTime.getDate() + 1); } const diff = targetTime - now; const hours = Math.floor(diff / (1000 * 60 * 60)); const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)); const seconds = Math.floor((diff % (1000 * 60)) / 1000); document.getElementById(&#39;countdown-time&#39;).textContent = `${hours}小时${minutes}分钟${seconds}秒`; } // 更新当前时间显示 function updateCurrentTime() { const now = new Date(); document.getElementById(&#39;current-time&#39;).textContent = now.toLocaleTimeString(&#39;zh-CN&#39;, { hour12: false }); updateCountdown(); // 同时更新倒计时 } // 检查并播放视频的函数 function checkAndPlay() { const targetTimeStr = GM_getValue(&#39;targetTime&#39;, &#39;&#39;); if (!targetTimeStr) return; const now = new Date(); const [targetHour, targetMinute] = targetTimeStr.split(&#39;:&#39;).map(Number); const currentHour = now.getHours(); const currentMinute = now.getMinutes(); if (currentHour === targetHour &amp;&amp; currentMinute === targetMinute) { console.log(&#39;时间到，尝试播放视频...&#39;); const videos = document.querySelectorAll(&#39;video&#39;); if (videos.length &gt; 0) { videos.forEach(video =&gt; { video.muted = false; video.volume = 1; const playPromise = video.play(); if (playPromise !== undefined) { playPromise .then(() =&gt; console.log(&#39;视频开始播放&#39;)) .catch(err =&gt; { console.error(&#39;播放失败:&#39;, err); // 尝试静音播放 video.muted = true; video.play().catch(e =&gt; console.error(&#39;静音播放也失败:&#39;, e)); }); } }); } else { console.log(&#39;页面上没有找到视频元素&#39;); } } } // 事件监听器 floatButton.addEventListener(&#39;click&#39;, function(e) { if (!isDragging) { // 只在非拖动状态下响应点击 controlPanel.style.display = &#39;block&#39;; } }); // 关闭按钮事件 document.getElementById(&#39;wakeup-close-btn&#39;).addEventListener(&#39;click&#39;, () =&gt; { controlPanel.style.display = &#39;none&#39;; }); document.getElementById(&#39;save-play-time&#39;).addEventListener(&#39;click&#39;, () =&gt; { const timeInput = document.getElementById(&#39;set-play-time&#39;).value; if (timeInput) { GM_setValue(&#39;targetTime&#39;, timeInput); document.getElementById(&#39;target-time&#39;).textContent = timeInput; alert(&#39;时间设置已保存！&#39;); controlPanel.style.display = &#39;none&#39;; // 保存后自动关闭面板 } else { alert(&#39;请选择有效的时间！&#39;); } }); // 启动定时更新 setInterval(updateCurrentTime, 1000); // 每秒更新时间显示 setInterval(checkAndPlay, 30000); // 每30秒检查一次是否需要播放 // 立即执行一次更新 updateCurrentTime(); checkAndPlay(); } catch (error) { console.error(&#39;脚本初始化失败:&#39;, error); } } // 确保在页面加载完成后运行 if (document.readyState === &#39;loading&#39;) { document.addEventListener(&#39;DOMContentLoaded&#39;, init); } else { init(); } })(); ">
+<meta property='og:url' content='/post/tech/timetoplayvideo/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2025-06-27T18:24:47&#43;08:00'/><meta property='article:modified_time' content='2025-06-27T18:24:47&#43;08:00'/>
+<meta name="twitter:title" content="Time To Play Video">
+<meta name="twitter:description" content="原因 希望可以让电脑每天早上电脑上打开的网页定时播放音乐或者英语口语视频，像闹钟一样叫我起床。\n实现 // ==UserScript== // @name 定时唤醒播放器 // @namespace http://tampermonkey.net/ // @version 0.2 // @description 在指定时间自动播放当前页面的视频，带有可设置的控制界面和倒计时。 // @author Your Name // @match *://*/* // @grant GM_setValue // @grant GM_getValue // @grant GM_addStyle // ==/UserScript== (function() { &#39;use strict&#39;; console.log(&#39;脚本开始运行&#39;); function init() { console.log(&#39;DOM 加载完成，开始初始化&#39;); try { // --- 样式部分 --- GM_addStyle(` #wakeup-float-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; background-color: #4CAF50; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: grab; z-index: 999999; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: background-color 0.3s; user-select: none; } #wakeup-float-btn:hover { background-color: #45a049; } #wakeup-float-btn:active { cursor: grabbing; } #wakeup-control-panel { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid #ccc; border-radius: 8px; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); z-index: 1000000; display: none; font-family: Arial, sans-serif; min-width: 300px; } #wakeup-control-panel h3 { margin-top: 0; margin-bottom: 20px; color: #333; text-align: center; } #wakeup-control-panel label { display: block; margin-bottom: 8px; color: #555; } #wakeup-control-panel input[type=&#34;time&#34;] { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; } #wakeup-control-panel button { background-color: #007BFF; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; } #wakeup-control-panel button:hover { background-color: #0056b3; } #wakeup-time-display { margin-top: 15px; } #wakeup-time-display p { margin: 5px 0; color: #666; } #wakeup-close-btn { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; background-color: #f0f0f0; border: none; border-radius: 50%; font-size: 16px; line-height: 24px; text-align: center; cursor: pointer; color: #666; transition: all 0.3s ease; padding: 0; display: flex; justify-content: center; align-items: center; } #wakeup-close-btn:hover { background-color: #ff4444; color: white; } `); // 创建浮动按钮 const floatButton = document.createElement(&#39;div&#39;); floatButton.id = &#39;wakeup-float-btn&#39;; floatButton.textContent = &#39;🎶&#39;; document.body.appendChild(floatButton); console.log(&#39;浮动按钮已创建&#39;); // 创建控制面板 const controlPanel = document.createElement(&#39;div&#39;); controlPanel.id = &#39;wakeup-control-panel&#39;; controlPanel.innerHTML = ` &lt;button id=&#34;wakeup-close-btn&#34;&gt;×&lt;/button&gt; &lt;h3&gt;定时播放设置&lt;/h3&gt; &lt;label for=&#34;set-play-time&#34;&gt;设置播放时间:&lt;/label&gt; &lt;input type=&#34;time&#34; id=&#34;set-play-time&#34;&gt; &lt;button id=&#34;save-play-time&#34;&gt;保存设置&lt;/button&gt; &lt;div id=&#34;wakeup-time-display&#34;&gt; &lt;p&gt;当前时间: &lt;span id=&#34;current-time&#34;&gt;&lt;/span&gt;&lt;/p&gt; &lt;p&gt;目标时间: &lt;span id=&#34;target-time&#34;&gt;未设置&lt;/span&gt;&lt;/p&gt; &lt;p&gt;剩余时间: &lt;span id=&#34;countdown-time&#34;&gt;未设置&lt;/span&gt;&lt;/p&gt; &lt;/div&gt; `; document.body.appendChild(controlPanel); console.log(&#39;控制面板已创建&#39;); // 添加拖动功能 let isDragging = false; let currentX; let currentY; let initialX; let initialY; floatButton.addEventListener(&#39;mousedown&#39;, function(e) { isDragging = true; initialX = e.clientX - floatButton.offsetLeft; initialY = e.clientY - floatButton.offsetTop; floatButton.style.cursor = &#39;grabbing&#39;; }); document.addEventListener(&#39;mousemove&#39;, function(e) { if (!isDragging) return; e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; // 确保按钮不会被拖出视窗 currentX = Math.max(0, Math.min(currentX, window.innerWidth - floatButton.offsetWidth)); currentY = Math.max(0, Math.min(currentY, window.innerHeight - floatButton.offsetHeight)); floatButton.style.left = currentX + &#39;px&#39;; floatButton.style.top = currentY + &#39;px&#39;; floatButton.style.right = &#39;auto&#39;; }); document.addEventListener(&#39;mouseup&#39;, function() { isDragging = false; floatButton.style.cursor = &#39;grab&#39;; }); // 获取保存的时间 const savedTime = GM_getValue(&#39;targetTime&#39;, &#39;&#39;); if (savedTime) { document.getElementById(&#39;set-play-time&#39;).value = savedTime; document.getElementById(&#39;target-time&#39;).textContent = savedTime; } // 计算并更新剩余时间 function updateCountdown() { const targetTimeStr = GM_getValue(&#39;targetTime&#39;, &#39;&#39;); if (!targetTimeStr) return; const now = new Date(); const [targetHour, targetMinute] = targetTimeStr.split(&#39;:&#39;).map(Number); let targetTime = new Date(); targetTime.setHours(targetHour, targetMinute, 0, 0); // 如果目标时间已过，设置为明天 if (targetTime &lt; now) { targetTime.setDate(targetTime.getDate() + 1); } const diff = targetTime - now; const hours = Math.floor(diff / (1000 * 60 * 60)); const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)); const seconds = Math.floor((diff % (1000 * 60)) / 1000); document.getElementById(&#39;countdown-time&#39;).textContent = `${hours}小时${minutes}分钟${seconds}秒`; } // 更新当前时间显示 function updateCurrentTime() { const now = new Date(); document.getElementById(&#39;current-time&#39;).textContent = now.toLocaleTimeString(&#39;zh-CN&#39;, { hour12: false }); updateCountdown(); // 同时更新倒计时 } // 检查并播放视频的函数 function checkAndPlay() { const targetTimeStr = GM_getValue(&#39;targetTime&#39;, &#39;&#39;); if (!targetTimeStr) return; const now = new Date(); const [targetHour, targetMinute] = targetTimeStr.split(&#39;:&#39;).map(Number); const currentHour = now.getHours(); const currentMinute = now.getMinutes(); if (currentHour === targetHour &amp;&amp; currentMinute === targetMinute) { console.log(&#39;时间到，尝试播放视频...&#39;); const videos = document.querySelectorAll(&#39;video&#39;); if (videos.length &gt; 0) { videos.forEach(video =&gt; { video.muted = false; video.volume = 1; const playPromise = video.play(); if (playPromise !== undefined) { playPromise .then(() =&gt; console.log(&#39;视频开始播放&#39;)) .catch(err =&gt; { console.error(&#39;播放失败:&#39;, err); // 尝试静音播放 video.muted = true; video.play().catch(e =&gt; console.error(&#39;静音播放也失败:&#39;, e)); }); } }); } else { console.log(&#39;页面上没有找到视频元素&#39;); } } } // 事件监听器 floatButton.addEventListener(&#39;click&#39;, function(e) { if (!isDragging) { // 只在非拖动状态下响应点击 controlPanel.style.display = &#39;block&#39;; } }); // 关闭按钮事件 document.getElementById(&#39;wakeup-close-btn&#39;).addEventListener(&#39;click&#39;, () =&gt; { controlPanel.style.display = &#39;none&#39;; }); document.getElementById(&#39;save-play-time&#39;).addEventListener(&#39;click&#39;, () =&gt; { const timeInput = document.getElementById(&#39;set-play-time&#39;).value; if (timeInput) { GM_setValue(&#39;targetTime&#39;, timeInput); document.getElementById(&#39;target-time&#39;).textContent = timeInput; alert(&#39;时间设置已保存！&#39;); controlPanel.style.display = &#39;none&#39;; // 保存后自动关闭面板 } else { alert(&#39;请选择有效的时间！&#39;); } }); // 启动定时更新 setInterval(updateCurrentTime, 1000); // 每秒更新时间显示 setInterval(checkAndPlay, 30000); // 每30秒检查一次是否需要播放 // 立即执行一次更新 updateCurrentTime(); checkAndPlay(); } catch (error) { console.error(&#39;脚本初始化失败:&#39;, error); } } // 确保在页面加载完成后运行 if (document.readyState === &#39;loading&#39;) { document.addEventListener(&#39;DOMContentLoaded&#39;, init); } else { init(); } })(); ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/timetoplayvideo/">Time To Play Video</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-06-27T18:24:47&#43;08:00'>2025-06-27 18:24:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="原因">原因
+</h2><p>希望可以让电脑每天早上电脑上打开的网页定时播放音乐或者英语口语视频，像闹钟一样叫我起床。</p>
+<h2 id="实现">实现
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">// ==UserScript==
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// @name         定时唤醒播放器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// @namespace    http://tampermonkey.net/
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// @version      0.2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// @description  在指定时间自动播放当前页面的视频，带有可设置的控制界面和倒计时。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// @author       Your Name
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// @match        *://*/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// @grant        GM_setValue
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// @grant        GM_getValue
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// @grant        GM_addStyle
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// ==/UserScript==
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>(<span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;use strict&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;脚本开始运行&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">init</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;DOM 加载完成，开始初始化&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// --- 样式部分 ---
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">GM_addStyle</span>(<span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-float-btn {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    position: fixed;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    top: 20px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    right: 20px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    width: 50px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    height: 50px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    background-color: #4CAF50;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    color: white;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    border-radius: 50%;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    display: flex;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    justify-content: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    align-items: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    font-size: 18px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    cursor: grab;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    z-index: 999999;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    transition: background-color 0.3s;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    user-select: none;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-float-btn:hover {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    background-color: #45a049;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-float-btn:active {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    cursor: grabbing;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-control-panel {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    position: fixed;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    top: 50%;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    left: 50%;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    transform: translate(-50%, -50%);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    background-color: white;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    border: 1px solid #ccc;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    border-radius: 8px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    padding: 20px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    z-index: 1000000;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    display: none;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    font-family: Arial, sans-serif;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    min-width: 300px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-control-panel h3 {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    margin-top: 0;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    margin-bottom: 20px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    color: #333;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    text-align: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-control-panel label {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    display: block;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    margin-bottom: 8px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    color: #555;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-control-panel input[type=&#34;time&#34;] {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    width: calc(100% - 20px);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    padding: 10px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    margin-bottom: 15px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    border: 1px solid #ddd;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    border-radius: 4px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    font-size: 16px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-control-panel button {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    background-color: #007BFF;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    color: white;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    padding: 10px 15px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    border: none;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    border-radius: 4px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    cursor: pointer;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    font-size: 16px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    margin-top: 10px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-control-panel button:hover {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    background-color: #0056b3;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-time-display {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    margin-top: 15px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-time-display p {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    margin: 5px 0;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    color: #666;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-close-btn {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    position: absolute;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    top: 10px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    right: 10px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    width: 24px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    height: 24px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    background-color: #f0f0f0;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    border: none;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    border-radius: 50%;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    font-size: 16px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    line-height: 24px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    text-align: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    cursor: pointer;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    color: #666;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    transition: all 0.3s ease;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    padding: 0;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    display: flex;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    justify-content: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    align-items: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                #wakeup-close-btn:hover {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    background-color: #ff4444;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    color: white;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            `</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 创建浮动按钮
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">floatButton</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;div&#39;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;wakeup-float-btn&#39;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">textContent</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;🎶&#39;</span>;
+</span></span><span style="display:flex;"><span>            document.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">floatButton</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;浮动按钮已创建&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 创建控制面板
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">controlPanel</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;div&#39;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">controlPanel</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;wakeup-control-panel&#39;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">controlPanel</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;button id=&#34;wakeup-close-btn&#34;&gt;×&lt;/button&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;h3&gt;定时播放设置&lt;/h3&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;label for=&#34;set-play-time&#34;&gt;设置播放时间:&lt;/label&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;input type=&#34;time&#34; id=&#34;set-play-time&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;button id=&#34;save-play-time&#34;&gt;保存设置&lt;/button&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;div id=&#34;wakeup-time-display&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &lt;p&gt;当前时间: &lt;span id=&#34;current-time&#34;&gt;&lt;/span&gt;&lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &lt;p&gt;目标时间: &lt;span id=&#34;target-time&#34;&gt;未设置&lt;/span&gt;&lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &lt;p&gt;剩余时间: &lt;span id=&#34;countdown-time&#34;&gt;未设置&lt;/span&gt;&lt;/p&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            `</span>;
+</span></span><span style="display:flex;"><span>            document.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">controlPanel</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;控制面板已创建&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 添加拖动功能
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">isDragging</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">currentX</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">currentY</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">initialX</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">initialY</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;mousedown&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">isDragging</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">initialX</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">clientX</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">offsetLeft</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">initialY</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">clientY</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">offsetTop</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">cursor</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;grabbing&#39;</span>;
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            document.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;mousemove&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">isDragging</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">preventDefault</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">currentX</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">clientX</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">initialX</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">currentY</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">clientY</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">initialY</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 确保按钮不会被拖出视窗
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#a6e22e">currentX</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">max</span>(<span style="color:#ae81ff">0</span>, Math.<span style="color:#a6e22e">min</span>(<span style="color:#a6e22e">currentX</span>, window.<span style="color:#a6e22e">innerWidth</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">offsetWidth</span>));
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">currentY</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">max</span>(<span style="color:#ae81ff">0</span>, Math.<span style="color:#a6e22e">min</span>(<span style="color:#a6e22e">currentY</span>, window.<span style="color:#a6e22e">innerHeight</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">offsetHeight</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">left</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">currentX</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;px&#39;</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">top</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">currentY</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;px&#39;</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">right</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;auto&#39;</span>;
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            document.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;mouseup&#39;</span>, <span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">isDragging</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">cursor</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;grab&#39;</span>;
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 获取保存的时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">savedTime</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">GM_getValue</span>(<span style="color:#e6db74">&#39;targetTime&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">savedTime</span>) {
+</span></span><span style="display:flex;"><span>                document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;set-play-time&#39;</span>).<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">savedTime</span>;
+</span></span><span style="display:flex;"><span>                document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;target-time&#39;</span>).<span style="color:#a6e22e">textContent</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">savedTime</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 计算并更新剩余时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">updateCountdown</span>() {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">targetTimeStr</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">GM_getValue</span>(<span style="color:#e6db74">&#39;targetTime&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">targetTimeStr</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">now</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Date();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">targetHour</span>, <span style="color:#a6e22e">targetMinute</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">targetTimeStr</span>.<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#39;:&#39;</span>).<span style="color:#a6e22e">map</span>(Number);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">targetTime</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Date();
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">targetTime</span>.<span style="color:#a6e22e">setHours</span>(<span style="color:#a6e22e">targetHour</span>, <span style="color:#a6e22e">targetMinute</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 如果目标时间已过，设置为明天
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">targetTime</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">now</span>) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">targetTime</span>.<span style="color:#a6e22e">setDate</span>(<span style="color:#a6e22e">targetTime</span>.<span style="color:#a6e22e">getDate</span>() <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">diff</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">targetTime</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">now</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">hours</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">floor</span>(<span style="color:#a6e22e">diff</span> <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1000</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span>));
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">minutes</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">floor</span>((<span style="color:#a6e22e">diff</span> <span style="color:#f92672">%</span> (<span style="color:#ae81ff">1000</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span>)) <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1000</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span>));
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">seconds</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">floor</span>((<span style="color:#a6e22e">diff</span> <span style="color:#f92672">%</span> (<span style="color:#ae81ff">1000</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;countdown-time&#39;</span>).<span style="color:#a6e22e">textContent</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">hours</span><span style="color:#e6db74">}</span><span style="color:#e6db74">小时</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">minutes</span><span style="color:#e6db74">}</span><span style="color:#e6db74">分钟</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">seconds</span><span style="color:#e6db74">}</span><span style="color:#e6db74">秒`</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 更新当前时间显示
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">updateCurrentTime</span>() {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">now</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Date();
+</span></span><span style="display:flex;"><span>                document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;current-time&#39;</span>).<span style="color:#a6e22e">textContent</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">now</span>.<span style="color:#a6e22e">toLocaleTimeString</span>(<span style="color:#e6db74">&#39;zh-CN&#39;</span>, { <span style="color:#a6e22e">hour12</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span> });
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">updateCountdown</span>(); <span style="color:#75715e">// 同时更新倒计时
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 检查并播放视频的函数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">checkAndPlay</span>() {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">targetTimeStr</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">GM_getValue</span>(<span style="color:#e6db74">&#39;targetTime&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">targetTimeStr</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">now</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Date();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">targetHour</span>, <span style="color:#a6e22e">targetMinute</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">targetTimeStr</span>.<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#39;:&#39;</span>).<span style="color:#a6e22e">map</span>(Number);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">currentHour</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">now</span>.<span style="color:#a6e22e">getHours</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">currentMinute</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">now</span>.<span style="color:#a6e22e">getMinutes</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">currentHour</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">targetHour</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">currentMinute</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">targetMinute</span>) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;时间到，尝试播放视频...&#39;</span>);
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">videos</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelectorAll</span>(<span style="color:#e6db74">&#39;video&#39;</span>);
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">videos</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>                        <span style="color:#a6e22e">videos</span>.<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">video</span> =&gt; {
+</span></span><span style="display:flex;"><span>                            <span style="color:#a6e22e">video</span>.<span style="color:#a6e22e">muted</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>                            <span style="color:#a6e22e">video</span>.<span style="color:#a6e22e">volume</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>                            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">playPromise</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">video</span>.<span style="color:#a6e22e">play</span>();
+</span></span><span style="display:flex;"><span>                            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">playPromise</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">undefined</span>) {
+</span></span><span style="display:flex;"><span>                                <span style="color:#a6e22e">playPromise</span>
+</span></span><span style="display:flex;"><span>                                    .<span style="color:#a6e22e">then</span>(() =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;视频开始播放&#39;</span>))
+</span></span><span style="display:flex;"><span>                                    .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; {
+</span></span><span style="display:flex;"><span>                                        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#39;播放失败:&#39;</span>, <span style="color:#a6e22e">err</span>);
+</span></span><span style="display:flex;"><span>                                        <span style="color:#75715e">// 尝试静音播放
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                                        <span style="color:#a6e22e">video</span>.<span style="color:#a6e22e">muted</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>                                        <span style="color:#a6e22e">video</span>.<span style="color:#a6e22e">play</span>().<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">e</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#39;静音播放也失败:&#39;</span>, <span style="color:#a6e22e">e</span>));
+</span></span><span style="display:flex;"><span>                                    });
+</span></span><span style="display:flex;"><span>                            }
+</span></span><span style="display:flex;"><span>                        });
+</span></span><span style="display:flex;"><span>                    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>                        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;页面上没有找到视频元素&#39;</span>);
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 事件监听器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">floatButton</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;click&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">isDragging</span>) { <span style="color:#75715e">// 只在非拖动状态下响应点击
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#a6e22e">controlPanel</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">display</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;block&#39;</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 关闭按钮事件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;wakeup-close-btn&#39;</span>).<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;click&#39;</span>, () =&gt; {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">controlPanel</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">display</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;none&#39;</span>;
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;save-play-time&#39;</span>).<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;click&#39;</span>, () =&gt; {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">timeInput</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;set-play-time&#39;</span>).<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">timeInput</span>) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">GM_setValue</span>(<span style="color:#e6db74">&#39;targetTime&#39;</span>, <span style="color:#a6e22e">timeInput</span>);
+</span></span><span style="display:flex;"><span>                    document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;target-time&#39;</span>).<span style="color:#a6e22e">textContent</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">timeInput</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#39;时间设置已保存！&#39;</span>);
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">controlPanel</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">display</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;none&#39;</span>; <span style="color:#75715e">// 保存后自动关闭面板
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#39;请选择有效的时间！&#39;</span>);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 启动定时更新
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">setInterval</span>(<span style="color:#a6e22e">updateCurrentTime</span>, <span style="color:#ae81ff">1000</span>); <span style="color:#75715e">// 每秒更新时间显示
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">setInterval</span>(<span style="color:#a6e22e">checkAndPlay</span>, <span style="color:#ae81ff">30000</span>); <span style="color:#75715e">// 每30秒检查一次是否需要播放
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 立即执行一次更新
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">updateCurrentTime</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">checkAndPlay</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">error</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#39;脚本初始化失败:&#39;</span>, <span style="color:#a6e22e">error</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 确保在页面加载完成后运行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (document.<span style="color:#a6e22e">readyState</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;loading&#39;</span>) {
+</span></span><span style="display:flex;"><span>        document.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;DOMContentLoaded&#39;</span>, <span style="color:#a6e22e">init</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">init</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>})();
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/git/">Git</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/updatefork/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Update Fork</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

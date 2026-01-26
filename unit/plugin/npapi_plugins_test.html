@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插件测试</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .system-title {
+        background-color: cornflowerblue;
+        width: 100%;
+        float: left;
+        cursor: move;
+        line-height: 21px;
+        border-bottom: #666 solid 1px;
+    }
+    .system-btn {
+        line-height: 21px;
+        background-color: #555;
+        cursor: pointer;
+        top: 0px;
+        position: absolute;
+        width: 30px;
+        text-align: center;
+        color: white;
+        border-left: #666 solid 1px;
+    }
+    .contain, fieldset {
+        padding: 8px;
+    }
+    .warning {
+        color: white;
+        background-color: black;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
+<body style="background-color: #eee;">
+    <div class="system-title" onmousedown="begin_move(event)"> 插件测试</div><br>
+    <a onclick="showHelp()" class="system-btn" style="right: 90px;"> ? </a>
+    <a onclick="win.minimize()" class="system-btn" style="right: 60px;"> - </a>
+    <a onclick="win.maximize()" class="system-btn" style="right: 30px;"> □ </a>
+    <a onclick="window.close()" class="system-btn" style="right: 0px;background-color: rgb(248, 53, 53);"> X </a>
+    <!-- 通过多开页面登录，独立页面测试 -->
+    <div class="contain">
+        <button onclick="window.open('./plugins_installed.html', 'child', 'width=900,height=600,left=200,top=200')">查看正常安装的所有插件</button>
+        <div class="contain warning hidden">
+            <strong>注意事项</strong>：<br />
+            目前中宏(zh)系统在 win7 中测试火狐安装插件时是直接放在火狐安装目录的<br />
+            <code>C:\Program Files (x86)\Mozilla Firefox\browser\plugins</code><br />
+            需要放置在隶属于用户的插件公共目录中，才能让所有浏览器都能读取<br />
+            <code>C:\Users\(cetc15)\AppData\Roaming\Mozilla\plugins</code>
+        </div>
+        <fieldset>
+            <legend>打印机</legend>
+            <button onclick="window.open('./plugins_printer.html', 'child', 'width=900,height=600,left=200,top=200')">zh.打印机</button>
+            <button onclick="window.open('./plugins_qr_printer.html', 'child', 'width=900,height=600,left=200,top=200')">zh.条码打印机</button> <br>
+            <div class="contain warning hidden">中宏系统在 win7 中测试火狐支持条码打印机时，需要拷贝 <code>icudt.dll,TWAINDSM.dll</code> 两个文件至火狐安装目录，则lithium也需要此操作</div><br>
+            
+            <div class="contain warning hidden">为了方便测试打印机，demo支持了自定义 pdf 的网络地址，需要注意，不可以填写本地地址(file:///)，必须是http(s)://开头的地址</div>
+        </fieldset>
+        <fieldset>
+            <legend>扫描仪</legend>
+            <button onclick="window.open('./plugins_scanner.html', 'child', 'width=900,height=600,left=200,top=200')">zh.扫描仪</button>
+        </fieldset>
+    </div>
+</body>
+<script>
+    function showHelp() {
+        document.querySelectorAll("div.hidden").forEach(function(e){
+            var obj_class = ' ' + e.className + ' ';
+            obj_class = obj_class.replace(/(\s)/gi, ' '),
+            removed = obj_class.replace(' hidden ', ' ');
+            removed = removed.replace(/(^\s+)|(\s+$)/g, '');
+            e.className = removed;
+        });
+    }
+    function begin_move(e) {
+        //避免titlebar上的按钮点击事件被吃掉
+        if (e.currentTarget != e.target) return false;
+        this.win.begin_move(e, this);
+    }
+    function prepareFullScreen() {
+        // this.win.setSize(screen.availWidth, screen.availHeight);
+        // this.win.setPosition(0,0);
+        let width=800,height=600;
+        this.win.setSize(width, height);
+        this.win.setPosition((screen.availWidth - width) / 2, (screen.availHeight - height) / 2); // 为测试最大化，及托盘菜单界面
+        // this.win.fullscreen(); // 客户需求留出任务栏
+        // this.win.maximize(); // TODO: win7 会盖住任务栏
+    }
+    // 设置全屏
+    // 两次设置是因为计算机资源环境不一样导致的，window初始化消耗时间不一致，为了尽可能优化体验，所做的兼容处理。
+    function InitFullScreen() {
+        setTimeout(function(){
+                prepareFullScreen()
+                // setTimeout(prepareFullScreen, 500)
+        }, 10)
+    }
+
+    // 全局变量准备
+    window.onload = function () {
+        // if (window.navigator.userAgent.indexOf("lithium") != -1) {
+        if (window.lnks) {
+            this.win = new window.lnks.MainWindow(window);
+            InitFullScreen(); // 设置全屏
+        } else {
+            alert("您使用的浏览器部分操作不支持")
+        }
+    }
+    
+</script>
+</html>

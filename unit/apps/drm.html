@@ -1,0 +1,216 @@
+<html manifest="test.manifest">
+<meta charset="utf-8" />
+
+<body contextmenu="test_menu" style="background-color: white;font-size: 12px;">
+    <menu type="context" id="test_menu">
+        <menuitem label="调试器" onclick="lnks.DevTools.toggle(window)">
+        </menuitem>
+        <menuitem label="刷新" onclick="location.reload()">
+        </menuitem>
+    </menu>
+    <pre id="info"></pre>
+    <script>
+        let ctypes = lnks.ctypes;
+
+        //定义drm相关的数据类型，需要保证和/usr/include/xf86XX.h中保持一致。
+        const drmVersion = lnks.StructType("drmVersion", [
+            { version_major: "ctypes.int" },
+            { version_minor: "ctypes.int" },
+            { version_patchlevel: "ctypes.int" },
+
+            { name_len: "ctypes.int" },
+            { name: "ctypes.char.ptr" },
+
+            { date_len: "ctypes.int" },
+            { date: "ctypes.char.ptr" },
+
+            { desc_len: "ctypes.int" },
+            { desc: "ctypes.char.ptr" }
+        ]);
+
+        const drmModeModeInfo = lnks.StructType("drmModeModeInfo", [
+            { clock: "ctypes.uint32_t" },
+
+            { hdisplay: "ctypes.uint16_t" },
+            { hsync_start: "ctypes.uint16_t" },
+            { hsync_end: "ctypes.uint16_t" },
+            { htotal: "ctypes.uint16_t" },
+            { hskew: "ctypes.uint16_t" },
+
+            { vdisplay: "ctypes.uint16_t" },
+            { vsync_start: "ctypes.uint16_t" },
+            { vsync_end: "ctypes.uint16_t" },
+            { vtotal: "ctypes.uint16_t" },
+            { vscan: "ctypes.uint16_t" },
+
+            { vrefresh: "ctypes.uint32_t" },
+
+            { flags: "ctypes.uint32_t" },
+            { type: "ctypes.uint32_t" },
+
+            { name: "ctypes.char.ptr" }
+        ]);
+
+        const drmModeConnector = lnks.StructType("drmModeConnector", [
+            { connector_id: "ctypes.uint32_t" },
+            { encoder_id: "ctypes.uint32_t" },
+            { connector_type: "ctypes.uint32_t" },
+            { connector_type_id: "ctypes.uint32_t" },
+
+            { connection: "ctypes.int" },
+
+            { mmWidth: "ctypes.uint32_t" },
+            { mmHeight: "ctypes.uint32_t" },
+
+            { drmModeSubPixel: "ctypes.int" },
+
+            { count_modes: "ctypes.int" },
+            { modes: "ctypes.void_t.ptr" },
+
+            { count_props: "ctypes.int" },
+            { props: "ctypes.uint32_t.ptr" },
+            { props_values: "ctypes.uint64_t.ptr" },
+
+            { count_encoders: "ctypes.int" },
+            { encoders: "ctypes.uint32_t.ptr" }
+        ]);
+
+        const drmModeRes = lnks.StructType("drmModeRes", [
+            { count_fbs: "ctypes.int" },
+            { fbs: "ctypes.PointerType(ctypes.uint32_t)" },
+
+            { count_crtcs: "ctypes.int" },
+            { crtcs: "ctypes.PointerType(ctypes.uint32_t)" },
+
+            { count_connectors: "ctypes.int" },
+            { connectors: "ctypes.PointerType(ctypes.uint32_t)" },
+
+            { count_encoders: "ctypes.int" },
+            { encoders: "ctypes.PointerType(ctypes.uint32_t)" },
+
+            { min_width: "ctypes.uint32_t" },
+            { max_width: "ctypes.uint32_t" },
+            { min_height: "ctypes.uint32_t" },
+            { max_height: "ctypes.uint32_t" }
+        ]);
+
+        //打开libc.so
+        var libc = ctypes.open("libc.so.6");
+
+        //打开libdrm.so
+        var libdrm = ctypes.open("libdrm.so");
+
+        // 申明需要使用到的函数列表
+        let libc_open = libc.declare(
+            "open",
+            ctypes.default_abi,
+            ctypes.int,
+            ctypes.char.ptr,
+            ctypes.int
+        );
+
+        let drmGetRenderDeviceNameFromFd = libdrm.declare(
+            "drmGetRenderDeviceNameFromFd",
+            ctypes.default_abi,
+            ctypes.char.ptr,
+            ctypes.int
+        );
+        let drmModeGetResources = libdrm.declare(
+            "drmModeGetResources",
+            ctypes.default_abi,
+            drmModeRes.ptr,
+            ctypes.int
+        );
+        let drmGetVersion = libdrm.declare(
+            "drmGetVersion",
+            ctypes.default_abi,
+            drmVersion.ptr,
+            ctypes.int
+        );
+        let drmModeGetConnector = libdrm.declare(
+            "drmModeGetConnector",
+            ctypes.default_abi,
+            drmModeConnector.ptr,
+            ctypes.int,
+            ctypes.int
+        );
+
+        let INFO = {};
+
+        //打开DRM设备，若有多张显卡需要调整路径。
+        let fd = libc_open("/dev/dri/card0", 2); //O_RDWR
+
+        function readString(v) {
+            let stringVal = "";
+            if (v && v.contents) {
+                stringVal = v.readString();
+            }
+            return stringVal;
+        }
+
+        INFO["DRM_FD"] = fd;
+        INFO["渲染设备名称"] = readString(drmGetRenderDeviceNameFromFd(fd));
+
+        let ver = drmGetVersion(fd).contents;
+        INFO["DRM版本名称"] = readString(ver.name);
+        INFO["DRM版本日期"] = readString(ver.date);
+        INFO["DRM厂商"] = readString(ver.desc);
+
+        //获取mode相关信息
+        let allRes = drmModeGetResources(fd).contents;
+
+        function toIntArray(v, len) {
+            let r = [];
+            let tmp = ctypes.cast(v, ctypes.uint32_t.array(len).ptr).contents;
+            for (let i = 0; i < len; i++) {
+                r.push(tmp[i]);
+            }
+            return r;
+        }
+        let connectors = toIntArray(allRes.connectors, allRes.count_connectors);
+        let crtcs = toIntArray(allRes.crtcs, allRes.count_crtcs);
+        let encoders = toIntArray(allRes.encoders, allRes.count_encoders);
+        INFO["连接器"] = connectors;
+        INFO["控制器"] = crtcs;
+        INFO["编码器"] = encoders;
+
+        //输出connector的详细信息。
+        function dump_connector_info(conn) {
+            INFO["当前使用的连接器ID:"] = conn.connector_id;
+            INFO["编码器ID"] = conn.encoder_id;
+
+            let mode = ctypes.cast(conn.modes, drmModeModeInfo.ptr).contents;
+            INFO["物理分辨率"] = {
+                宽: mode.hdisplay,
+                高: mode.vdisplay
+            };
+            INFO["物理尺寸"] = {
+                宽: conn.mmWidth,
+                高: conn.mmHeight
+            };
+        }
+
+        for (let i = 0; i < allRes.count_connectors; i++) {
+            let conn = drmModeGetConnector(fd, connectors[i]).contents;
+
+            //当前连接上的connector且mode数量大于0。(也就是当前正在使用的显示器)
+            if (conn.connection == 1 && conn.count_modes > 0) {
+                dump_connector_info(conn);
+            }
+        }
+
+        document.getElementById("info").innerText = JSON.stringify(
+            INFO,
+            null,
+            " "
+        );
+        if (window.lnks) {
+            win = new window.lnks.MainWindow(window);
+            let width = 600;
+            let height = 700;
+            win.setSize(width, height);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 在进行网络编程时，正确关闭资源是一件很重要的事。在高并发场景下，未正常关闭的资源数逐渐积累会导致系统资源耗尽，影响系统整体服务能力，但是这件重要的事情往往又容易被忽视。\n">
+<title>fdleak</title>
+
+<link rel='canonical' href='/post/pipe/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="fdleak">
+<meta property='og:description' content=" 在进行网络编程时，正确关闭资源是一件很重要的事。在高并发场景下，未正常关闭的资源数逐渐积累会导致系统资源耗尽，影响系统整体服务能力，但是这件重要的事情往往又容易被忽视。\n">
+<meta property='og:url' content='/post/pipe/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='fdleak' /><meta property='article:published_time' content='2022-07-06T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-03-23T12:47:18&#43;00:00'/>
+<meta name="twitter:title" content="fdleak">
+<meta name="twitter:description" content=" 在进行网络编程时，正确关闭资源是一件很重要的事。在高并发场景下，未正常关闭的资源数逐渐积累会导致系统资源耗尽，影响系统整体服务能力，但是这件重要的事情往往又容易被忽视。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/pipe/">fdleak</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2022-07-06T00:00:00Z'>2022-07-06 00:00:00</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 11 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>在进行网络编程时，正确关闭资源是一件很重要的事。在高并发场景下，未正常关闭的资源数逐渐积累会导致系统资源耗尽，影响系统整体服务能力，但是这件重要的事情往往又容易被忽视。</p>
+</blockquote>
+<h1 id="fd">fd
+</h1><p>在linux系统中有“一切皆文件”的概念。打开和创建普通文件、Socket（套接字）、Pipeline（管道）等，在linux内核层面都需要新建一个文件描述符来进行状态跟踪和使用。我们使用HttpClient发起请求，其底层需要首先通过系统内核创建一个Socket连接，相应地就需要打开一个fd。</p>
+<blockquote>
+<p>为什么我们的应用最多只能创建655350个fd呢？这个值是如何控制的，能否调整呢？
+linux系统对打开文件数有多个层面的限制:
+1)限制单个Shell进程以及其派生子进程能打开的<code>fd</code>数量。用<code>ulimit</code>命令能查看到这个值。
+2）限制每个user能打开的文件总数。具体调整方法是修改<code>/etc/security/limits.conf</code>文件，比如下图中的红框部分就是限制了<code>userA</code>用户只能打开<code>65535</code>个文件，<code>userB</code>用户只能打开<code>655350</code>个文件。由于我们的应用在服务器上是以<code>userB</code>身份运行的，自然就受到这里的限制，不允许打开多于<code>655350</code>个文件。
+3）系统层面允许打开的最大文件数限制，可以通过 <code>cat /proc/sys/fs/file-max</code> 查看。
+错误的管理方式导致连接使用完成后没有成功断开，连接长时间保持CLOSE_WAIT状态，则fd需要继续指向这个套接字信息，无法被回收，进而出现了故障。</p>
+</blockquote>
+<h1 id="管道">管道
+</h1><p>无名管道（一般说的管道就是指无名管道）
+无名管道是一种特殊类型的文件，在内核空间中对应的资源是一段内存空间，内核在这段空间中以循环队列的方式临时存入一个进程发送给另一个进程的信息，这段内核空间完全由操作系统管理和维护，应用程序只需要也只能通过系统调用来访问它。
+无名管道和普通文件有很大的差异：无名管道的内核资源在通信的两个进程退出后会自动释放。而普通文件如果不显示的删除会一直存在</p>
+<p>特点：</p>
+<ul>
+<li>仅用于亲缘关系进程中</li>
+<li>单向数据流：单向指的是，只能读端读，写端写</li>
+<li>大小有限制（一般是65536）</li>
+</ul>
+<p>关于管道的读写
+（1）读管道：</p>
+<p>管道中有数据，read返回实际读到的字节数。
+管道中无数据：
+①管道写端被全部关闭，read返回0
+② 写端没有全部被关闭，read阻塞等待(不久的将来可能有数据抵达，此时会让出cpu资源)
+（2）写管道：</p>
+<p>管道读端全部被关闭， 进程异常终止 (操作系统发出SIGPIPE信号)
+管道读端没有全部关闭：
+①管道已满，write阻塞。无名管道的大小为64K
+②管道未满，write将数据写入，并返回实际写入的字节数。</p>
+<h2 id="创建和关闭-pipeclose">创建和关闭 pipe/close
+</h2><p>pipe 最常见的地方是shell中，比如：<code>ls | wc -l</code>。该命令，shell创建了两个进程来分别执行ls和ws(通过fork()和exec()完成)，如下：</p>
+<p>使用管道连接两个进程</p>
+<pre tabindex="0"><code>                                管道
+    ls    stdout    ==&gt;     字节流   单向    ==&gt;    stdin   wc
+          (fd 1)                                    (fd 0)
+                管道写入端               管道读取端
+</code></pre><p>可以将管道看成是一组水管，它允许数据从一个进程流向另一个进程(这也是管道名称的由来)
+两个进程连接到了管道上，这样写入进程(ls)就将其标准输出(文件描述符为1)连接到来管道的写入段，读取进程(wc)就将其标准输入(文件描述符为0)连接到管道的读取端。实际上，这两个进程并不知道管道的存在，它们只是从标准文件描述符中读取和写入数据。shell必须要完成相关的工作。</p>
+<ul>
+<li>
+<p>一个管道是一个字节流</p>
+<p>管道是一个字节流&mdash;&mdash;即使用管道时没有消息或者消息边界的概念</p>
+<ul>
+<li>管道中读取数据的进程可以读取任意大小的数据块，而不管写入进程写入管道的数据块的大小是什么</li>
+<li>通过管道传递的数据是顺序的，读取出来的字节顺序和写入时完全一致</li>
+</ul>
+<blockquote>
+<p>在管道中无法使用lseek()来随机的访问数据</p>
+</blockquote>
+</li>
+<li>
+<p>从管道中读取数据</p>
+<p>为空的管道中读取数据会被阻塞直至有至少一字节被写入到管道中
+如果管道写入端被关闭，那么从管道中读取数据的进程在读完管道中剩余的所有数据之后将会看到文件结束（即 read()返回 0）</p>
+</li>
+<li>
+<p>管道是单向的</p>
+<p>传递方向是单向的，只能一端写入，另一端读取
+在其他一些 UNIX 实现上——特别是那些从 System V Release 4 演化而来的系统——管道是双向的（所谓的流管道）。双向管道并没有在任何 UNIX 标准中进行规定，因此即使在提供了双向管道的实现上最好也避免依赖这种语义。作为替代方案，可以使用 UNIX domain 流socket 对（通过socketpair()系统调用来创建），它提供了一种标准的双向通信机制，并且其语义与流管道是等价的</p>
+</li>
+<li>
+<p>可以确保写入不超过 <code>pipe_buf</code> 字节的操作是原子的</p>
+<p>如果多个进程写入同一个管道，那么如果它们在一个时刻写入的数据量不超过PIPE_BUF字节，那么久可以确保写入的数据不会发生相互混合的情况。
+SUSv3 要求 PIPE_BUF 至少为_POSIX_PIPE_BUF（512）。一个实现应该定义 PIPE_BUF（在&lt;limits.h&gt;中）并/或允许调用fpathconf(fd,_PC_PIPE_BUF)来返回原子写入操作的实际上限。
+不同 UNIX 实现上的 PIPE_BUF 不同，如在 FreeBSD 6.0 其值为 512 字节，在 Tru64 5.1 上其值为 4096 字节，在 Solaris 8 上其值为 5120 字节。在 Linux 上，PIPE_BUF 的值为 4096。</p>
+<ul>
+<li>写入管道的数据块的大小超过了PIPE_BUF字节，则内核可能会将数据分割成几个较小的片段来传输，在读者从管道中消耗数据时再附加上后继的数据(write()调用会阻塞直到所有数据被写入到管道为止)。</li>
+<li>当只有一个进程向管道写入数据时（通常的情况），PIPE_BUF的取值就没有关系了。</li>
+<li>但如果有多个写入进程，那么大数据块的写入可能会被分解成任意大小的段（可能会小于 PIPE_BUF 字节），并且可能会出现与其他进程写入的数据交叉的现象。</li>
+</ul>
+<p>只有在数据被传输到管道的时候PIPE_BUF限制才会起作用。当写入的数据达到PIPE_BUF字节时，write()会在必要的时候阻塞知道管道中的可用空间足以院子的完成此操作。如果写入的数据大于PIPE_BUF字节，那么write()会尽可能的多传输数据以充满整个管道，然后阻塞直到一些读取进程从管道中移除了数据。如果此类阻塞的write()被一个信号处理器中断了，那么这个调用会被解除阻塞并返回成功传输到管道中的字节数，这个字节数会少于请求写入的字节数（所谓的部分写入）</p>
+<blockquote>
+<p>在 Linux 2.2 上，向管道写入任意数量的数据都是原子的，除非写入操作被一个信号处理器中断了。在 Linux 2.4 以及后续的版本上，写入数据量大于 PIPE_BUF 字节的所有操作都可能会与其他进程的写入操作发生交叉</p>
+</blockquote>
+</li>
+<li>
+<p>管道的容量是有限的</p>
+<p>管道其实是一个在内核内存中维护的缓冲器，这个缓冲器的存储能力是有限的。一旦管道被填满之后，后继向管道的写入操作就会被阻塞直到读者从管道中移除了一些数据为止。</p>
+<p>SUSv3 并没有规定管道的存储能力。在早于 2.6.11 的 Linux 内核中，管道的存储能力与系统页面的大小是一致的（如在 x86-32 上是 4096 字节），而从 Linux 2.6.11 起，管道的存储能力是 65,536 字节。其他 UNIX 实现上的管道的存储能力可能是不同的。</p>
+<p>一般来讲，一个应用程序无需知道管道的实际存储能力。如果需要防止写者进程阻塞，那么从管道中读取数据的进程应该被设计成以尽可能快的速度从管道中读取数据。</p>
+</li>
+</ul>
+<h1 id="关于-pipe-的通信">关于 pipe 的通信
+</h1><ul>
+<li>管道可以用于进程内部自己通信(用的不多)</li>
+<li>管道可以用于亲缘关系(子进程会继承父进程中的文件描述符的副本)进程中通信</li>
+</ul>
+<h2 id="管道与shell通信popen和pclose">管道与shell通信—popen和pclose
+</h2><blockquote>
+<p>管道的一个常见用途是执行 shell 命令并读取其输出或向其发送一些输入。popen()和pclose()函数简化了这个任务。
+pipe和close是最底层的系统调用，它的进一步封装是popen和pclose</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* 功能：创建一个管道并启动另外一个进程，该进程要么从管道读出标准输入，要么往管道写入标准输出
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* 参数：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* 	 __command： shell命令行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* 	 __modes：  popen会在调用进程与所指定的命令之间创建一个管道，这个管道是用于读还是写取决于 __modes
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*            __modes为r，那么调用从__command读出
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* 			 __modes为r， 那么调用往__command写
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* 返回： 如果成功返回文件指针，如果出错为null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* */</span>
+</span></span><span style="display:flex;"><span>FILE <span style="color:#f92672">*</span><span style="color:#a6e22e">popen</span> (<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>__command, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>__modes) 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* 功能： 关闭由popen创建的标准IO流，等待其中的命令终止 ，然后返回shell的终止状态
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">**/</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> pclose ( FILE <span style="color:#f92672">*</span> stream );
+</span></span></code></pre></div><p><code>popen()</code>函数创建了一个管道，然后创建了一个子进程来执行 <code>shell</code>，而 <code>shell</code> 又创建了一个子进程来执行<code>command</code> 字符串。
+<code>mode</code> 参数是一个字符串:</p>
+<ul>
+<li>它确定调用进程是从管道中读取数据（<code>mode</code> 是 <code>r</code>）还是将数据写入到管道中（<code>mode</code> 是 <code>w</code>）。</li>
+<li>（由于管道是单向的，因此无法在执行的 <code>command</code> 中进行双向通信。）</li>
+<li><strong><code>mode</code> 的取值确定了所执行的命令的标准输出是连接到管道的写入端还是将其标准输入连接到管道的读取端</strong>
+<code>popen()</code>在成功时会返回可供 <code>stdio</code> 库函数使用的文件流指针。当发生错误时，<code>popen()</code>会返回 <code>NULL</code> 并设置 <code>errno</code>以标示出发生错误的原因</li>
+</ul>
+<p>在<code>popen()</code>调用之后，<strong>调用进程使用管道来读取command的输出或使用管道向其发送输入</strong>。与使用pipe()创建的管道一样，当从管道中读取数据时，调用进程在command关闭管道的写入端之后会看到文件结束；当<strong>向管道写入数据时，如果command已经关闭了管道的读取端，那么调用进程就会收到SIGPIPE信号并得到EPIPE错误</strong>。</p>
+<p>一旦IO结束之后可以使用<code>pclose()</code>函数关闭管道并等待子进程中的<code>shell</code>终止（不应该使用 <code>fclose()</code>函数，因为它不会等待子进程。）</p>
+<ul>
+<li><code>pclose()</code>在成功时会返回子进程中 <code>shell</code> 的终止状态（即 <code>shell</code> 所执行的最后一条命令的终止状态，除非 shell 是被信号杀死的）</li>
+<li>和<code>system()</code>一样，如果无法执行<code>shell</code>，那么<code>pclose()</code>会返回一个值就像子进程中的<code>shell</code>通过调用<code>_exit(127)</code>来终止一样。</li>
+<li>如果发生了其他错误，那么 <code>pclose()</code>返回<code>−1</code>。其中可能发生的一个错误是无法取得终止状态</li>
+</ul>
+<p>当执行等待以获取子进程中 <code>shell</code> 的状态时，<code>SUSv3</code> 要求 <code>pclose()</code>与 <code>system()</code>一样，即在内部的<code>waitpid()</code>调用被一个信号处理器中断之后自动重启该调用。</p>
+<p>与 <code>system()</code> 一样，在特权进程中永远都不应该使用 <code>popen()</code> ， 因为 参数来源可能非法或参数被恶意构建(<code>...;sh trojan</code>)，不会像 <code>exec(familyFunc)</code> 一样整体一起被识别为 一个参数，任何字符(<code>;</code>)都被识别为参数的一部分。</p>
+<p><code>popen</code>优缺点：</p>
+<ul>
+<li>优点： 在<code>Linux</code>中所有的参数扩展都是由<code>shell</code>来完成的。所以在启动<code>command</code>命令之前程序先启动<code>shell</code>来分析<code>command</code>字符串，就可以使用各种<code>shell</code>扩展(比如通配符)，这样我们可以通过<code>popen</code>调用非常复杂的<code>shell</code>命令</li>
+<li>缺点： 对于每个<code>popen</code>调用，不仅要启动一个被请求的程序，还需要启动一个<code>shell</code>。即每一个<code>popen</code>将启动两个进程。从效率和资源的角度看，<code>popen()</code>函数的调用比正常方式要慢一些</li>
+</ul>
+<p><code>pipe</code> VS <code>popen</code></p>
+<ul>
+<li><code>pipe</code>是一个底层调用，<code>popen</code>是一个高级的函数</li>
+<li><code>pipe</code>单纯的创建管道，而<code>popen</code>创建管道的同时<code>fork</code>子进程</li>
+<li><code>popen</code>在两个进程中传递数据时需要调用<code>shell</code>来解释请求命令；<code>pipe</code>在两个进程中传递数据不需要启动<code>shell</code>来解释请求命令，同时提供了对读写数据的更多控制(<code>popen</code>必须时<code>shell</code>命令，<code>pipe</code>无硬性要求)</li>
+<li><code>popen()</code>函数是基于文件流（<code>FILE</code>）工作的，而<code>pipe</code>是基于文件描述符工作的，所以在使用<code>pipe</code>后，数据必须要用底层的<code>read()</code>和<code>write()</code>调用来读取和发送。</li>
+</ul>
+<p>上述管道虽然实现了进程间通信，但是它具有一定的局限性：</p>
+<p>匿名管道只能是具有血缘关系的进程之间通信；
+它只能实现一个进程写另一个进程读，而如果需要两者同时进行时，就得重新打开一个管道。</p>
+<p>为了使任意两个进程之间能够通信，就提出了命名管道（named pipe 或 FIFO）。</p>
+<h1 id="命名管道fifo">命名管道(FIFO)
+</h1><p>有名管道:有自己的名字，但是<strong>有名管道名称保存在磁盘上</strong>，但是<strong>内容保存在内核中</strong></p>
+<blockquote>
+<ul>
+<li>进程间通信必须通过内核提供的通道，而且必须由一种方法在进程中标识提供的某个通道，上面说到的匿名管道是通过打开的文件描述符标识的，只要互相通信的进程们可以访问到这个文件标识符，就可以使用它通信。 那如果相互通信的线程没有从公共祖先那么继承文件描述符，它们该如何通信呢？</li>
+<li>这个时候我们可以使用命名管道。命名管道是使用文件系统的某个路径名来标记的，而文件系统中的路径名是全局的，各个进程都可以访问</li>
+</ul>
+</blockquote>
+<p>在linux系统调用中,标准输入描述字用<code>stdin</code>,标准输出用<code>stdout</code>,标准出错用<code>stderr</code>表示,但在一些调用函数,引用了<code>STDIN_FILENO</code>表示标准输入才,同样,标准出入用<code>STDOUT_FILENO</code>,标准出错用<code>STDERR_FILENO.</code><br>
+请问,他们有什么区别吗?</p>
+<ul>
+<li><code>stdin</code>等是FILE *类型，属于标准I/O，在&lt;stdio.h&gt;。</li>
+<li><code>STDIN_FILENO</code>等是文件描述符，是非负整数，一般定义为0, 1, 2，属于没有buffer的I/O，直接调用系统调用，在&lt;unistd.h&gt;</li>
+</ul>
+<p>shell中的有名管道</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>src.log
+</span></span><span style="display:flex;"><span>$ cat src.log 
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">111111111111111</span>
+</span></span><span style="display:flex;"><span>$ mkfifo -m <span style="color:#ae81ff">664</span> myfifo
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>myfifo  src.log
+</span></span><span style="display:flex;"><span>$ tee dst.log &lt; myfifo &amp;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2<span style="color:#f92672">]</span> <span style="color:#ae81ff">39437</span>
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>myfifo  src.log
+</span></span><span style="display:flex;"><span>$ cat src.log &gt; myfifo 
+</span></span><span style="display:flex;"><span>$ <span style="color:#ae81ff">111111111111111</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>2<span style="color:#f92672">]</span>+  完成                  tee dst.log &lt; myfifo
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>dst.log  myfifo  src.log
+</span></span><span style="display:flex;"><span>$ cat dst.log 
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">111111111111111</span>
+</span></span></code></pre></div><h1 id="一次调试的记录">一次调试的记录
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>watch cat /proc/sys/fs/file-nr
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 数据有上升有下降</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 12416/12384/12448/12416/12448</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#        /12512/12768</span>
+</span></span><span style="display:flex;"><span>watch cat /proc/sys/fs/nr-open
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1048576/ 一直没有变化</span>
+</span></span><span style="display:flex;"><span>sudo lsof | wc -l
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 287603</span>
+</span></span><span style="display:flex;"><span>pidof lithium
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 29973 29564</span>
+</span></span><span style="display:flex;"><span>ls /proc/29973
+</span></span><span style="display:flex;"><span>cat cmdline
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># /opt/lithium/lithium ...</span>
+</span></span><span style="display:flex;"><span>ls /proc/29973/fd
+</span></span><span style="display:flex;"><span>ls /proc/29973/fd | wc -l
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 352</span>
+</span></span><span style="display:flex;"><span>ps aux | grep <span style="color:#ae81ff">29492</span>
+</span></span><span style="display:flex;"><span>sudo ls of -p <span style="color:#ae81ff">29492</span> | wc -l
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo <span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>ls<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span> ls $i/fd | wc -l;<span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>sudo <span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>ls<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span> echo pid $i; ls $i/fd | wc -l;<span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>LITHIUM_ENABLE_XPC_URLS<span style="color:#f92672">=</span>http://localhost:8000 valgrind --leak-check<span style="color:#f92672">=</span>full ./build/dist/lithium/lithium http://localhost:8000/apps/pipe.html &gt; valgrind.log 2&gt;&amp;<span style="color:#ae81ff">1</span> 
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/fdleak/">Fdleak</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2022-03-23 12:47:18
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

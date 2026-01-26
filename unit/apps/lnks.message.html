@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lnks.message.test</title>
+  <script src="./index/global.js"></script>
+</head>
+
+<body style="background-color: azure;">
+  <fieldset class="test1_pass">
+    <legend>演示消息接口 lnksWin.sendHttpMsg()</legend>
+    <button onclick="lnksWinMsgSendHttp()">消息发送</button>
+    <button onclick="openMsgReceiveWindow()">打开消息接收页</button> <br />
+    消息内容：<input id="lnksWinMsgContentHttp" type="text" style="width:50%"
+      value="Try to send message content success!" /><br />
+    <div id="lnksWinMsgResultHttp" style="display: none;"></div>
+    <script language="javascript">
+      function lnksWinMsgSendHttp () {
+        let msgResEle = document.getElementById("lnksWinMsgResultHttp");
+        let msg = document.getElementById("lnksWinMsgContentHttp").value;
+        win.sendHttpMsg(msg);
+        msgResEle.innerHTML = '消息发送完毕！';
+        msgResEle.style.display = "block";
+      }
+    </script>
+  </fieldset>
+
+  <fieldset class="test1_pass">
+    <legend>生产消息接口 lnksWin.sendMessage()</legend>
+    <button onclick="lnksWinMsgSend()">消息发送</button>
+    <button onclick="lnksCmdMsgSend()">命令行消息发送</button>
+    <button onclick="openMsgReceiveWindow()">打开消息接收页</button> <br />
+    消息内容：<input id="lnksMsgContent" type="text" style="width:50%" value="Try to write Msg content success!" /><br />
+    <div id="lnksMsgResult" style="display: none;"></div>
+    <script language="javascript">
+      function lnksWinMsgSend () {
+        let msgResEle = document.getElementById("lnksMsgResult");
+        let msg = document.getElementById("lnksMsgContent").value;
+
+        let msgWin = getLnksWin({appId:receiveAppId}, true);
+        if (msgWin) {
+          msgWin.sendMessage(msg);
+        } else {
+          console.log("收消息的窗口不存在")
+        }
+        msgResEle.innerHTML = '消息发送完毕！';
+        msgResEle.style.display = "block";
+      }
+      function lnksCmdMsgSend () {
+        let command = `${lnks.env.get("LITHIUM_PATH")}/lithium --app-id=${receiveAppId} --send-message="我是来自命令行的消息"`;
+        window.lnks.$(command, console.info, console.error);
+      }
+    </script>
+  </fieldset>
+  <script>
+    let receiveAppId = "MsgReceive";
+    function openMsgReceiveWindow () {
+      lnks.openWindow2({
+        "url": "/apps/lnks.message.receive.html",
+        "appId": receiveAppId,
+      });
+    }
+    // 全局变量准备
+    window.onload = function () {
+      if (window.lnks) {
+        window.win = new window.lnks.MainWindow(window);
+      }
+    }
+  </script>
+</body>
+
+</html>

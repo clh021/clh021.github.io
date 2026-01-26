@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Webchat on 良宏</title>
+        <link>/tags/webchat/</link>
+        <description>Recent content in Webchat on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sun, 25 Jun 2023 08:06:15 +0800</lastBuildDate><atom:link href="/tags/webchat/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>在 Chrome 中模拟微信内置浏览器</title>
+        <link>/post/tech/wechat.agent/</link>
+        <pubDate>Sun, 25 Jun 2023 08:06:15 +0800</pubDate>
+        
+        <guid>/post/tech/wechat.agent/</guid>
+        <description>&lt;p&gt;微信和 QQ 内置浏览器 UA
+安卓 QQ 内置浏览器 UA:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Mozilla/5.0 (Linux; Android 5.0; SM-N9100 Build/LRX21V) &amp;gt; AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 &amp;gt; Chrome/37.0.0.0 Mobile Safari/537.36 V1_AND_SQ_5.3.1_196_YYB_D &amp;gt; QQ/5.3.1.2335 NetType/WIFI
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安卓微信内置浏览器 UA:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Mozilla/5.0 (Linux; Android 5.0; SM-N9100 Build/LRX21V) &amp;gt; AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 &amp;gt; Chrome/37.0.0.0 Mobile Safari/537.36 &amp;gt; MicroMessenger/6.0.2.56_r958800.520 NetType/WIFI
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;IOSQQ 内置浏览器 UA:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) &amp;gt; AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 &amp;gt; QQ/5.2.1.302 NetType/WIFI Mem/28
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;IOS 微信内置浏览器 UA:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) &amp;gt; AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 &amp;gt; MicroMessenger/6.0.1 NetType/WIFI
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

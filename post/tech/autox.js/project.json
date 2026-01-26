@@ -1,0 +1,10 @@
+{
+    "name": "懒猫云自动测试",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "packageName": "autotest.lazycat",
+    "versionName": "1.0.0",
+    "versionCode": 1
+}

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="应用商店 需求:\n不使用 google play 最大限度自主可控 不使用任何手机制造商自带的系统 不纵容任何自称小而美的App 解决方案：\n商店: https://f-droid.org/ 更新: App一般有自更新检查 PlayStore 和其他来源的更新 备用~ 不用太考虑更新问题 应用使用 核心需求:\n">
+<title>3ROM apps</title>
+
+<link rel='canonical' href='/post/live/3rom.app/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="3ROM apps">
+<meta property='og:description' content="应用商店 需求:\n不使用 google play 最大限度自主可控 不使用任何手机制造商自带的系统 不纵容任何自称小而美的App 解决方案：\n商店: https://f-droid.org/ 更新: App一般有自更新检查 PlayStore 和其他来源的更新 备用~ 不用太考虑更新问题 应用使用 核心需求:\n">
+<meta property='og:url' content='/post/live/3rom.app/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='3ROM' /><meta property='article:published_time' content='2023-01-27T12:01:20&#43;08:00'/><meta property='article:modified_time' content='2023-01-27T12:01:20&#43;08:00'/>
+<meta name="twitter:title" content="3ROM apps">
+<meta name="twitter:description" content="应用商店 需求:\n不使用 google play 最大限度自主可控 不使用任何手机制造商自带的系统 不纵容任何自称小而美的App 解决方案：\n商店: https://f-droid.org/ 更新: App一般有自更新检查 PlayStore 和其他来源的更新 备用~ 不用太考虑更新问题 应用使用 核心需求:\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/live/" style="background-color: #2a9d8f; color: #fff;">
+                Live
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/live/3rom.app/">3ROM apps</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2023-01-27T12:01:20&#43;08:00'>2023-01-27 12:01:20</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="应用商店">应用商店
+</h1><p>需求:</p>
+<ul>
+<li>不使用 google play 最大限度自主可控</li>
+<li>不使用任何手机制造商自带的系统</li>
+<li>不纵容任何自称小而美的App</li>
+</ul>
+<p>解决方案：</p>
+<ul>
+<li>商店: <a class="link" href="https://f-droid.org/"  target="_blank" rel="noopener"
+    >https://f-droid.org/</a></li>
+<li>更新: App一般有自更新检查 PlayStore 和其他来源的更新 备用~ 不用太考虑更新问题</li>
+</ul>
+<h1 id="应用使用">应用使用
+</h1><p>核心需求:</p>
+<ul>
+<li>可以冻结和自动冻结 指定的应用</li>
+<li>可以隔离各个应用到独立空间或某个隔离空间</li>
+</ul>
+<h2 id="应用列表">应用列表
+</h2><h3 id="adb-install">adb Install
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>adb devices
+</span></span><span style="display:flex;"><span>List of devices attached
+</span></span><span style="display:flex;"><span>68f2e7a9        no permissions <span style="color:#f92672">(</span>missing udev rules? user is in the plugdev group<span style="color:#f92672">)</span>; see <span style="color:#f92672">[</span>http://developer.android.com/tools/device.html<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lsusb | grep OnePlus
+</span></span><span style="display:flex;"><span>Bus <span style="color:#ae81ff">001</span> Device 070: ID 22d9:2769 OPPO Electronics Corp. OnePlus <span style="color:#ae81ff">9</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;SUBSYSTEM==&#34;usb&#34;, ATTR{idVendor}==&#34;22d9&#34;, ATTR{idProduct}==&#34;2769&#34;, MODE=&#34;0666&#34;, GROUP=&#34;plugdev&#34;&#39;</span> &gt; 51-android.rules
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo cp 51-android.rules /etc/udev/rules.d/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo udevadm control --reload-rules
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># unplug/replug the device.</span>
+</span></span><span style="display:flex;"><span>adb devices
+</span></span><span style="display:flex;"><span>List of devices attached
+</span></span><span style="display:flex;"><span>68f2e7a9        unauthorized
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If it still doesn&#39;t work, restart your OS.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 授权主机调试，以解决 unauthorized</span>
+</span></span><span style="display:flex;"><span>adb devices
+</span></span><span style="display:flex;"><span>List of devices attached
+</span></span><span style="display:flex;"><span>68f2e7a9        device
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>adb install org.kde.kdeconnect_tp_12101.apk
+</span></span></code></pre></div><h3 id="初始化">初始化
+</h3><ul>
+<li>安装好zerotier,github,Kiwi</li>
+<li>安装好浏览器扩展和数据恢复文件</li>
+<li>安装好neostore配置好镜像</li>
+<li>安装好fcitx,shelter,kde connect</li>
+</ul>
+<h3 id="工作应用">工作应用
+</h3><ul>
+<li>
+<p><a class="link" href="https://mirrors.tuna.tsinghua.edu.cn/fdroid/repo/?fingerprint=43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB"  target="_blank" rel="noopener"
+    >F-droid镜像</a></p>
+</li>
+<li>
+<p><code>Obtainium</code> 开源应用更新追踪工具，帮助用户从 GitHub、GitLab、Bitbucket 等代码托管平台获取开源应用程序的发行版，并且在新版本发布时发送通知提醒用户更新。添加不同的应用程序源，并在应用程序源中搜索他们感兴趣的应用程序。当新版本发布时，Obtainium 会自动提醒用户进行更新，并帮助用户快速安装最新版本的应用程序。这种方式使得用户不再需要依赖应用商店或第三方的下载网站，同时也保证了应用程序的来源可靠性，从而提高了用户的安全性和可信度。</p>
+</li>
+<li>
+<p><a class="link" href="https://f-droid.org/zh_Hant/packages/com.machiav3lli.fdroid/"  target="_blank" rel="noopener"
+    >Neo Store</a> 直接添加 F-droid 仓库即可使用</p>
+</li>
+<li>
+<p><a class="link" href="https://f-droid.org/zh_Hant/packages/com.aurora.store/"  target="_blank" rel="noopener"
+    >Aurora Store</a> 可免登陆代为下載Google Play上的免費APP。</p>
+</li>
+</ul>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>应用</th>
+          <th>来源</th>
+          <th>作用</th>
+          <th>冻结</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Shelter</td>
+          <td>F-Droid</td>
+          <td>隔离空间</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>PlainApp</td>
+          <td>F-Droid</td>
+          <td>电脑链接</td>
+          <td>笔记备份</td>
+      </tr>
+      <tr>
+          <td>Bodhi Timer</td>
+          <td>F-Droid</td>
+          <td>冥想放松</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>Simpletask</td>
+          <td>F-Droid</td>
+          <td>任务清单(todo on webdav)</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>fcitx</td>
+          <td>F-Droid</td>
+          <td>输入法</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>Kiwi</td>
+          <td>FFUpdater</td>
+          <td>chrome</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>Github</td>
+          <td>aurora</td>
+          <td></td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>Zerotier one</td>
+          <td>aurora</td>
+          <td></td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>Cast to TV-XCast</td>
+          <td>aurora</td>
+          <td>电视投屏(Xcast)</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>FFUpdater</td>
+          <td>F-Droid</td>
+          <td>浏览器安装与更新</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>Gotify</td>
+          <td>F-Droid</td>
+          <td>通知</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>7ziper</td>
+          <td>aurora</td>
+          <td></td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>MuPDF mini</td>
+          <td>F-Droid</td>
+          <td>PDF阅读</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>Nocie</td>
+          <td>F-Droid</td>
+          <td>自然平静的噪音</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>FreshRSS</td>
+          <td>F-Droid</td>
+          <td>阅读订阅</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>APKShare</td>
+          <td>F-Droid</td>
+          <td>导出与备份</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>Syncopoli</td>
+          <td>F-Droid</td>
+          <td>同步与备份</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>ntfy</td>
+          <td>F-Droid</td>
+          <td>通知服务</td>
+          <td>冻结</td>
+      </tr>
+      <tr>
+          <td>KDEConnect</td>
+          <td>F-Droid</td>
+          <td>电脑链接</td>
+          <td>崩溃</td>
+      </tr>
+      <tr>
+          <td>Termux</td>
+          <td>F-Droid</td>
+          <td>linux命令行工具</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table></div>
+<blockquote>
+<p>fcitx <a class="link" href="https://github.com/clh021/CustomPinyinDictionary"  target="_blank" rel="noopener"
+    >词库</a> ,还可以自定义词库</p>
+</blockquote>
+<h3 id="国产小而美应用">国产小而美应用
+</h3><ul>
+<li>微信</li>
+<li><a class="link" href="https://www.miwifi.com/miwifi_download.html"  target="_blank" rel="noopener"
+    >小米WiFi</a></li>
+<li><a class="link" href="https://sj.qq.com"  target="_blank" rel="noopener"
+    >应用宝</a></li>
+<li><a class="link" href="https://lestore.lenovo.com"  target="_blank" rel="noopener"
+    >联想软件商店</a></li>
+<li><a class="link" href="https://3g.lenovomm.com"  target="_blank" rel="noopener"
+    >联想应用商店</a></li>
+</ul>
+<h3 id="网页应用">网页应用
+</h3><p>天气
+直接找到一个预报靠谱的网页搜索区级地址的天气，添加链接到桌面即可(百度,bing,MSN)</p>
+<p>节假日
+直接找到一个体验好一点的网页显示日历，添加链接到桌面即可(百度,bing,MSN)</p>
+<h1 id="数据">数据
+</h1><h2 id="通讯录">通讯录
+</h2><p>通过自带<code>通讯录</code>应用导入导出的方式备份和恢复</p>
+<h2 id="wifi记录">Wifi记录
+</h2><p>有一个 wifi password recovery 需要 root 所以决定自己记录下，几年下来常用的只有几个</p>
+<h2 id="浏览器书签">浏览器书签
+</h2><p>使用导入导出的方式</p>
+<h1 id="设置">设置
+</h1><ul>
+<li><input disabled="" type="checkbox"> <em>禁止使用5G网络</em> 网络和互联网-&gt;SIM卡-&gt;首选网络类型-&gt;(5G改为LTE)</li>
+<li><input disabled="" type="checkbox"> <em>关闭运营商视频通话</em> 网络和互联网-&gt;SIM卡-&gt;运营商视频通话-&gt;(取消勾选)</li>
+<li><input disabled="" type="checkbox"> <em>触摸亮屏(点按唤醒)</em> 显示-&gt;点按唤醒(屏幕上点按两次唤醒设备)-&gt;(勾选)</li>
+<li><input disabled="" type="checkbox"> <em>触摸息屏(点按锁屏)</em> 显示-&gt;双击关屏(状态栏或锁屏)-&gt;(勾选)</li>
+<li><input disabled="" type="checkbox"> <em>显示流量速度</em> 系统-&gt;状态栏-&gt;网络流量监视-&gt;显示模式(上传下载)-&gt;自动隐藏(无速度隐藏)-&gt;网络流量单位(自动)-&gt;显示单位</li>
+<li><input checked="" disabled="" type="checkbox"> <em>关闭双行时钟</em> 显示-&gt;双行时钟-&gt;关闭</li>
+<li><input disabled="" type="checkbox"> <em>控制状态栏图表</em> 系统 -&gt; 状态栏 -&gt; 系统图标-&gt;(关闭不想显示的图标)</li>
+<li><input disabled="" type="checkbox"> <em>状态栏电量显示</em> 系统-&gt;状态栏-&gt;电量指示器(环形，图标内)</li>
+<li><input disabled="" type="checkbox"> <em>禁止应用自动到桌面</em> 长按桌面 -&gt; 主屏幕设置 -&gt; 将应用图标添加到主屏幕(取消勾选)</li>
+<li><input disabled="" type="checkbox"> <em>隐藏和保护应用</em> 长按桌面 -&gt; 主屏幕设置 -&gt; 隐藏和保护应用</li>
+<li><input disabled="" type="checkbox"> <em>省电.关闭流畅画面</em> 显示-&gt;流畅画面-&gt;(取消勾选) 会关闭 120Hz 刷新率</li>
+<li><input disabled="" type="checkbox"> <em>锁屏文字</em> 显示-&gt;锁定屏幕-&gt;在锁屏上添加文字 放松 自在 清新 明净</li>
+<li><input disabled="" type="checkbox"> <em>屏保时钟低亮度</em> 显示-&gt;屏保-&gt;启用时机(充电时)，选择屏保(时钟)-&gt;自定义-&gt;夜间模式(勾选)</li>
+<li><input disabled="" type="checkbox"> <em>锁屏键盘乱序</em> 安全-&gt;屏幕锁定-&gt;设置-&gt;乱序布局</li>
+<li><input disabled="" type="checkbox"> <em>触摸(高级)重启</em> 系统-&gt;按键-&gt;电源菜单-&gt;高级重启(可避免每次必须按实体按键，增加按键使用寿命，有启动到 fastboot,recovery 等选项)</li>
+<li><input disabled="" type="checkbox"> <em>设置设备管理应用</em> 安全和隐私 -&gt; 更多安全设置 -&gt; 设备管理应用(一般在应用都安装好后设置)</li>
+</ul>
+<h2 id="快捷按钮排布">快捷按钮排布
+</h2><pre tabindex="0"><code>Wifi, 移动数据, 蓝牙, 手电筒, 麦克风, 摄像头, 位置， 热点
+省电，流量节省，自动旋转，VP，屏幕录制，二维码扫描，剪贴板发送
+
+工作应用, 情景模式, 省电模式, 流量节省程序, 自动旋转屏幕, VP, 屏幕录制, 屏保
+二维码, 护眼模式, 飞行模式, 阅读模式, 闹钟, NFC, 主动显示, 勿扰
+保持亮屏, 屏幕投放, 深色主题, 设备控制器, 极暗, 互联网, 颜色反转, 息屏常亮
+单手模式, 色彩校正, 浮动通知, 同步, 无线反充, USB共享网络
+</code></pre><h2 id="桌面图标排布">桌面图标排布
+</h2><pre tabindex="0"><code>天气预报(江夏,汉南,武昌),日历,
+娱乐(淘宝,京东,阿里云,百度云,联通,移动,castToTV,bilibili,dyls.app)
+家电(米家,小米WIFI,万能遥控,米兔)
+工具(企业微信,支付宝,高德地图,wps,qq,onedrive,x浏览器,KDEConn)
+
+拨号,千问,微信,LZC,sleep
+</code></pre><h1 id="termux">termux
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>termux-change-repo <span style="color:#75715e"># 选择最快的镜像</span>
+</span></span><span style="display:flex;"><span>pkg update
+</span></span><span style="display:flex;"><span>pkg upgrade
+</span></span><span style="display:flex;"><span>pkg install openssh <span style="color:#75715e"># 安装 sshd</span>
+</span></span><span style="display:flex;"><span>ssh-keygen -A
+</span></span><span style="display:flex;"><span>passwd <span style="color:#75715e"># 设置 root 密码</span>
+</span></span><span style="display:flex;"><span>sshd <span style="color:#75715e"># 启动 sshd 服务</span>
+</span></span><span style="display:flex;"><span>ssh root@192.168.31.178 -p <span style="color:#ae81ff">8022</span>
+</span></span><span style="display:flex;"><span>pkg install zsh vim curl wget git tree htop xz-utils coreutils -y
+</span></span><span style="display:flex;"><span>pkg install golang nodejs python python-yt-dlp -y
+</span></span><span style="display:flex;"><span>termux-setup-storage <span style="color:#75715e"># 弹窗授权后会出现 ~/storage/download 等共享目录</span>
+</span></span><span style="display:flex;"><span>chsh -s zsh <span style="color:#75715e"># 使用 zsh</span>
+</span></span><span style="display:flex;"><span>pkg i git-lfs keychain
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pkg i termux-services
+</span></span><span style="display:flex;"><span>sv-enable ssh-agent
+</span></span><span style="display:flex;"><span>sv-enable sshd
+</span></span><span style="display:flex;"><span>pkg install termux-api <span style="color:#75715e"># 需要安装 Termux:API , 推荐装 termux:Tasker 等应用并都给予完整权限</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># https://search.f-droid.org/?q=termux&amp;lang=zh_Hans</span>
+</span></span><span style="display:flex;"><span>pkg install cronie <span style="color:#75715e"># 启动服务: cron &amp;（后台运行）</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置开机自启: 配合其他工具（如Termux:API的wakelock，Tasker），确保Termux和Cron服务在手机重启后能自动运行。</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 避免任务过于耗时，在夜间执行，并尽量让任务能“幂等”（重复执行无害）。</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Docker 的使用</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 以下一条命令安装整个 docker 套件，只留下 Tini 需要手动编译</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># pkg install root-repo &amp;&amp; pkg install docker</span>
+</span></span></code></pre></div><h1 id="termux-docker">termux docker
+</h1><p>以下操作建议在电脑上连接手机后操作，因为中途要编辑一个文件，否则需要借助网络</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>termux-change-repo <span style="color:#75715e"># 选择最快的镜像</span>
+</span></span><span style="display:flex;"><span>pkg update
+</span></span><span style="display:flex;"><span>pkg upgrade
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Install QEMU 安装 QEMU</span>
+</span></span><span style="display:flex;"><span>pkg install qemu-utils qemu-common qemu-system-x86_64-headless
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载 Alpine Linux 3.12 （virt optimized） ISO</span>
+</span></span><span style="display:flex;"><span>mkdir alpine <span style="color:#f92672">&amp;&amp;</span> cd $_
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># https://alpinelinux.org/downloads/ 从这里选择不同镜像下载，此处注意选择 virt 版本</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wget http://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-virt-3.12.3-x86_64.iso</span>
+</span></span><span style="display:flex;"><span>wget https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.12/releases/x86_64/alpine-virt-3.12.9-x86_64.iso
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wget https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-virt-3.18.4-x86_64.iso</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 镜像站点</span>
+</span></span><span style="display:flex;"><span>wget https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/releases/x86_64/alpine-virt-3.18.4-x86_64.iso
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建磁盘（请注意，它实际上不会占用4GB的空间，更像是500MB）</span>
+</span></span><span style="display:flex;"><span>qemu-img create -f qcow2 alpine.img 4G
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 启动它</span>
+</span></span><span style="display:flex;"><span>qemu-system-x86_64 -machine q35 -m <span style="color:#ae81ff">1024</span> -smp cpus<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span> -cpu qemu64 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -drive <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>pflash,format<span style="color:#f92672">=</span>raw,read-only<span style="color:#f92672">=</span>on,file<span style="color:#f92672">=</span>$PREFIX/share/qemu/edk2-x86_64-code.fd <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -netdev user,id<span style="color:#f92672">=</span>n1,hostfwd<span style="color:#f92672">=</span>tcp::2222-:22 -device virtio-net,netdev<span style="color:#f92672">=</span>n1 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -cdrom alpine-virt-3.18.4-x86_64.iso <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -nographic alpine.img
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># https://gist.github.com/oofnikj/e79aef095cd08756f7f26ed244355d62</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用用户 root 登录（无密码）</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置网络（按回车键使用默认值）：</span>
+</span></span><span style="display:flex;"><span>setup-interfaces
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Available interfaces are: eth0.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Enter &#39;?&#39; for help on bridges, bonding and vlans.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Which one do you want to initialize? (or &#39;?&#39; or &#39;done&#39;) [eth0]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ip address for eth0? (or &#39;dhcp&#39;, &#39;none&#39;, &#39;?&#39;) [dhcp]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Do you want to do any manual network configuration? [no]</span>
+</span></span><span style="display:flex;"><span>ifup -a
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;nameserver 223.5.5.5&#34;</span> &gt; /etc/resolv.conf
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 用于在启动时启用串行控制台输出的修补程序 setup-disk</span>
+</span></span><span style="display:flex;"><span>sed -i -E <span style="color:#e6db74">&#39;s/(local kernel_opts)=.*/\1=&#34;console=ttyS0&#34;/&#39;</span> /sbin/setup-disk
+</span></span></code></pre></div><p>编辑应答文件
+vi answerfile</p>
+<pre tabindex="0"><code>KEYMAPOPTS=&#34;us us&#34;
+HOSTNAMEOPTS=&#34;-n alpine&#34;
+INTERFACESOPTS=&#34;auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+    hostname alpine
+&#34;
+TIMEZONEOPTS=&#34;-z UTC&#34;
+PROXYOPTS=&#34;none&#34;
+APKREPOSOPTS=&#34;https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/main https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/community&#34;
+DNSOPTS=&#34;223.5.5.5&#34;
+SSHDOPTS=&#34;-c openssh&#34;
+NTPOPTS=&#34;-c busybox&#34;
+DISKOPTS=&#34;-v -m sys -s 0 /dev/sda&#34;
+</code></pre><p>使用应答文件快速设置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>setup-alpine -f answerfile
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 应该明显看到安装到硬盘，安装 efi 等信息，否则就是网络链接问题导致无法获取到包</span>
+</span></span></code></pre></div><p>安装完成后，关闭虚拟机（命令 poweroff ）的电源，然后再次启动，而无需 cdrom：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qemu-system-x86_64 -machine q35 -m <span style="color:#ae81ff">1024</span> -smp cpus<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span> -cpu qemu64 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -drive <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>pflash,format<span style="color:#f92672">=</span>raw,read-only,file<span style="color:#f92672">=</span>$PREFIX/share/qemu/edk2-x86_64-code.fd <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -netdev user,id<span style="color:#f92672">=</span>n1,hostfwd<span style="color:#f92672">=</span>tcp::2222-:22 -device virtio-net,netdev<span style="color:#f92672">=</span>n1 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -nographic alpine.img
+</span></span></code></pre></div><p>安装 docker 并在启动虚拟机时启用：</p>
+<pre tabindex="0"><code>apk update
+apk add docker
+service docker start
+rc-update add docker
+</code></pre><p>Useful keys: 有用的键：</p>
+<ul>
+<li>Ctrl+a x: quit emulation</li>
+<li>Ctrl+a x：退出仿真</li>
+<li>Ctrl+a h: toggle QEMU console</li>
+<li>Ctrl+a h：切换 QEMU 控制台</li>
+</ul>
+<h1 id="铃声设置">铃声设置
+</h1><p>起床闹钟 Rooster alarm</p>
+<ul>
+<li>默认铃声</li>
+<li>通知 merope</li>
+<li>闹钟 Beep-beep-beep alarm</li>
+<li>铃声渐强 打开</li>
+</ul>
+<h1 id="系统备份">系统备份
+</h1><p>设置 -&gt; 系统 -&gt; 备份(个人) -&gt; Seedvault备份</p>
+<blockquote>
+<p>保管好所有代码</p>
+</blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/3rom/">3ROM</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

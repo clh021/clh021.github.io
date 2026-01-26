@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" quick note\n命令行的艺术\n编码 所有参数都应该在接收处就需要处理好默认值(针对每个模块而言，因为单个模块可能随时被拆开来用) 所有 golang 中的结构体只要有可能处理成 json 都需要 注意 json:&quot;page&quot; 避免首字母大写 Docker Command docker rm $(docker ps -q -f status=exited) # 移除所有退出的容器 docker rmi -f $(docker images | grep &#34;^&lt;none&gt;&#34; | awk &#39;{print $3}&#39;) # 移除所有 &lt;none&gt; 的镜像 docker rmi -f $(docker images | grep &#39;search_term_here&#39; | awk &#39;{print $1}&#39;) # 比如 `2 days ago` docker volume rm $(docker volume ls -qf dangling=true) docker network rm $(docker network ls -q) docker save -o nginx.tar nginx:latest # 导出镜像 会保存该镜像的所有历史记录(commit) docker save &gt; nginx.tar nginx:latest # 导出镜像 会保存该镜像的所有历史记录(commit) docker load -i nginx.tar # 导入镜像，包含元数据,tag等 docker load &lt; nginx.tar # 导入镜像，包含元数据,tag等 docker export -o nginx-test.tar nginx-test # 导出容器，不会包含历史记录(commit) docker import nginx-test.tar nginx:imp # 导入为镜像, 可以指定新镜像名 cat nginx-test.tar | docker import - nginx:imp # 导入为镜像，可以指定新镜像名 # 推送多架构镜像 需要先将两个不同架构镜像推送上去，然后执行下面的命令进行关联即可 docker manifest create yourusername/yourimage:latest \\ --amend yourusername/yourimage:latest-arm64 \\ --amend yourusername/yourimage:latest-amd64 docker manifest push yourusername/yourimage:latest lzc-docker ps -a --format &#34;table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\t{{.Ports}}&#34; | (read -r; printf &#34;%s\\n&#34; &#34;$REPLY&#34;; sort -k 2 ) # 根据容器name排序,用于检查所有容器存在，所有容器状态 根目录磁盘空间太满了，清理磁盘空间 sudo journalctl --vacuum-time=3d # 清理3天前的日志（您可以根据实际情况调整时间） sudo pacman -Sc # 清理已安装包的冗余包文件 sudo ncdu / --exclude /home # 交互式查找并删除大体积文件 Discuz 打印出 mysql 查询语句 在 discuz_database 类中的 public static function query 方法 self::checkquery($sql); 在这后面加上 writelog(&quot;sqllog&quot;,$sql); 即可看到所有 SQL\n">
+<title>Quick Note</title>
+
+<link rel='canonical' href='/post/quick/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Quick Note">
+<meta property='og:description' content=" quick note\n命令行的艺术\n编码 所有参数都应该在接收处就需要处理好默认值(针对每个模块而言，因为单个模块可能随时被拆开来用) 所有 golang 中的结构体只要有可能处理成 json 都需要 注意 json:&quot;page&quot; 避免首字母大写 Docker Command docker rm $(docker ps -q -f status=exited) # 移除所有退出的容器 docker rmi -f $(docker images | grep &#34;^&lt;none&gt;&#34; | awk &#39;{print $3}&#39;) # 移除所有 &lt;none&gt; 的镜像 docker rmi -f $(docker images | grep &#39;search_term_here&#39; | awk &#39;{print $1}&#39;) # 比如 `2 days ago` docker volume rm $(docker volume ls -qf dangling=true) docker network rm $(docker network ls -q) docker save -o nginx.tar nginx:latest # 导出镜像 会保存该镜像的所有历史记录(commit) docker save &gt; nginx.tar nginx:latest # 导出镜像 会保存该镜像的所有历史记录(commit) docker load -i nginx.tar # 导入镜像，包含元数据,tag等 docker load &lt; nginx.tar # 导入镜像，包含元数据,tag等 docker export -o nginx-test.tar nginx-test # 导出容器，不会包含历史记录(commit) docker import nginx-test.tar nginx:imp # 导入为镜像, 可以指定新镜像名 cat nginx-test.tar | docker import - nginx:imp # 导入为镜像，可以指定新镜像名 # 推送多架构镜像 需要先将两个不同架构镜像推送上去，然后执行下面的命令进行关联即可 docker manifest create yourusername/yourimage:latest \\ --amend yourusername/yourimage:latest-arm64 \\ --amend yourusername/yourimage:latest-amd64 docker manifest push yourusername/yourimage:latest lzc-docker ps -a --format &#34;table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\t{{.Ports}}&#34; | (read -r; printf &#34;%s\\n&#34; &#34;$REPLY&#34;; sort -k 2 ) # 根据容器name排序,用于检查所有容器存在，所有容器状态 根目录磁盘空间太满了，清理磁盘空间 sudo journalctl --vacuum-time=3d # 清理3天前的日志（您可以根据实际情况调整时间） sudo pacman -Sc # 清理已安装包的冗余包文件 sudo ncdu / --exclude /home # 交互式查找并删除大体积文件 Discuz 打印出 mysql 查询语句 在 discuz_database 类中的 public static function query 方法 self::checkquery($sql); 在这后面加上 writelog(&quot;sqllog&quot;,$sql); 即可看到所有 SQL\n">
+<meta property='og:url' content='/post/quick/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2021-12-24T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2022-03-23T12:47:18&#43;00:00'/>
+<meta name="twitter:title" content="Quick Note">
+<meta name="twitter:description" content=" quick note\n命令行的艺术\n编码 所有参数都应该在接收处就需要处理好默认值(针对每个模块而言，因为单个模块可能随时被拆开来用) 所有 golang 中的结构体只要有可能处理成 json 都需要 注意 json:&quot;page&quot; 避免首字母大写 Docker Command docker rm $(docker ps -q -f status=exited) # 移除所有退出的容器 docker rmi -f $(docker images | grep &#34;^&lt;none&gt;&#34; | awk &#39;{print $3}&#39;) # 移除所有 &lt;none&gt; 的镜像 docker rmi -f $(docker images | grep &#39;search_term_here&#39; | awk &#39;{print $1}&#39;) # 比如 `2 days ago` docker volume rm $(docker volume ls -qf dangling=true) docker network rm $(docker network ls -q) docker save -o nginx.tar nginx:latest # 导出镜像 会保存该镜像的所有历史记录(commit) docker save &gt; nginx.tar nginx:latest # 导出镜像 会保存该镜像的所有历史记录(commit) docker load -i nginx.tar # 导入镜像，包含元数据,tag等 docker load &lt; nginx.tar # 导入镜像，包含元数据,tag等 docker export -o nginx-test.tar nginx-test # 导出容器，不会包含历史记录(commit) docker import nginx-test.tar nginx:imp # 导入为镜像, 可以指定新镜像名 cat nginx-test.tar | docker import - nginx:imp # 导入为镜像，可以指定新镜像名 # 推送多架构镜像 需要先将两个不同架构镜像推送上去，然后执行下面的命令进行关联即可 docker manifest create yourusername/yourimage:latest \\ --amend yourusername/yourimage:latest-arm64 \\ --amend yourusername/yourimage:latest-amd64 docker manifest push yourusername/yourimage:latest lzc-docker ps -a --format &#34;table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\t{{.Ports}}&#34; | (read -r; printf &#34;%s\\n&#34; &#34;$REPLY&#34;; sort -k 2 ) # 根据容器name排序,用于检查所有容器存在，所有容器状态 根目录磁盘空间太满了，清理磁盘空间 sudo journalctl --vacuum-time=3d # 清理3天前的日志（您可以根据实际情况调整时间） sudo pacman -Sc # 清理已安装包的冗余包文件 sudo ncdu / --exclude /home # 交互式查找并删除大体积文件 Discuz 打印出 mysql 查询语句 在 discuz_database 类中的 public static function query 方法 self::checkquery($sql); 在这后面加上 writelog(&quot;sqllog&quot;,$sql); 即可看到所有 SQL\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/quick/">Quick Note</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2021-12-24T00:00:00Z'>2021-12-24 00:00:00</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>quick note</p>
+</blockquote>
+<p><a class="link" href="https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md"  target="_blank" rel="noopener"
+    >命令行的艺术</a></p>
+<h1 id="编码">编码
+</h1><ul>
+<li>所有参数都应该在接收处就需要处理好默认值(针对每个模块而言，因为单个模块可能随时被拆开来用)</li>
+<li>所有 golang 中的结构体只要有可能处理成 json 都需要 注意 <code>json:&quot;page&quot;</code> 避免首字母大写</li>
+</ul>
+<h1 id="docker-command">Docker Command
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker rm <span style="color:#66d9ef">$(</span>docker ps -q -f status<span style="color:#f92672">=</span>exited<span style="color:#66d9ef">)</span> <span style="color:#75715e"># 移除所有退出的容器</span>
+</span></span><span style="display:flex;"><span>docker rmi -f <span style="color:#66d9ef">$(</span>docker images | grep <span style="color:#e6db74">&#34;^&lt;none&gt;&#34;</span> | awk <span style="color:#e6db74">&#39;{print $3}&#39;</span><span style="color:#66d9ef">)</span> <span style="color:#75715e"># 移除所有 &lt;none&gt; 的镜像</span>
+</span></span><span style="display:flex;"><span>docker rmi -f <span style="color:#66d9ef">$(</span>docker images | grep <span style="color:#e6db74">&#39;search_term_here&#39;</span> | awk <span style="color:#e6db74">&#39;{print $1}&#39;</span><span style="color:#66d9ef">)</span> <span style="color:#75715e"># 比如 `2 days ago`</span>
+</span></span><span style="display:flex;"><span>docker volume rm <span style="color:#66d9ef">$(</span>docker volume ls -qf dangling<span style="color:#f92672">=</span>true<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>docker network rm <span style="color:#66d9ef">$(</span>docker network ls -q<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>docker save -o nginx.tar nginx:latest <span style="color:#75715e"># 导出镜像 会保存该镜像的所有历史记录(commit)</span>
+</span></span><span style="display:flex;"><span>docker save &gt; nginx.tar nginx:latest <span style="color:#75715e"># 导出镜像 会保存该镜像的所有历史记录(commit)</span>
+</span></span><span style="display:flex;"><span>docker load -i nginx.tar <span style="color:#75715e"># 导入镜像，包含元数据,tag等</span>
+</span></span><span style="display:flex;"><span>docker load &lt; nginx.tar <span style="color:#75715e"># 导入镜像，包含元数据,tag等</span>
+</span></span><span style="display:flex;"><span>docker export -o nginx-test.tar nginx-test <span style="color:#75715e"># 导出容器，不会包含历史记录(commit)</span>
+</span></span><span style="display:flex;"><span>docker import nginx-test.tar nginx:imp <span style="color:#75715e"># 导入为镜像, 可以指定新镜像名</span>
+</span></span><span style="display:flex;"><span>cat nginx-test.tar | docker import - nginx:imp <span style="color:#75715e"># 导入为镜像，可以指定新镜像名</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 推送多架构镜像 需要先将两个不同架构镜像推送上去，然后执行下面的命令进行关联即可</span>
+</span></span><span style="display:flex;"><span>docker manifest create yourusername/yourimage:latest <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --amend yourusername/yourimage:latest-arm64 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --amend yourusername/yourimage:latest-amd64
+</span></span><span style="display:flex;"><span>docker manifest push yourusername/yourimage:latest
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lzc-docker ps -a --format <span style="color:#e6db74">&#34;table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}&#34;</span> | <span style="color:#f92672">(</span>read -r; printf <span style="color:#e6db74">&#34;%s\n&#34;</span> <span style="color:#e6db74">&#34;</span>$REPLY<span style="color:#e6db74">&#34;</span>; sort -k <span style="color:#ae81ff">2</span> <span style="color:#f92672">)</span> <span style="color:#75715e"># 根据容器name排序,用于检查所有容器存在，所有容器状态</span>
+</span></span></code></pre></div><h1 id="根目录磁盘空间太满了清理磁盘空间">根目录磁盘空间太满了，清理磁盘空间
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo journalctl --vacuum-time<span style="color:#f92672">=</span>3d <span style="color:#75715e"># 清理3天前的日志（您可以根据实际情况调整时间）</span>
+</span></span><span style="display:flex;"><span>sudo pacman -Sc <span style="color:#75715e"># 清理已安装包的冗余包文件</span>
+</span></span><span style="display:flex;"><span>sudo ncdu / --exclude /home <span style="color:#75715e"># 交互式查找并删除大体积文件</span>
+</span></span></code></pre></div><h1 id="discuz-打印出-mysql-查询语句">Discuz 打印出 mysql 查询语句
+</h1><p>在 <code>discuz_database</code> 类中的 <code>public static function query</code> 方法
+<code>self::checkquery($sql);</code> 在这后面加上 <code>writelog(&quot;sqllog&quot;,$sql);</code> 即可看到所有 SQL</p>
+<h1 id="docker-的-alpine-快速安装-sqlite">Docker 的 alpine 快速安装 sqlite
+</h1><p><code>sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories &amp;&amp; apk update &amp;&amp; apk add sqlite</code></p>
+<h1 id="快速-sqlite-查询">快速 sqlite 查询
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sqlite3 /usr/src/app/config/database.db
+</span></span><span style="display:flex;"><span>.databases // 查询出所有数据库
+</span></span><span style="display:flex;"><span>.show      // 列出所有数据库信息
+</span></span><span style="display:flex;"><span>.tables    // 列出所有表
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">select</span> * from user;
+</span></span><span style="display:flex;"><span>.exit
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 导入导出</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 获取脚本所在目录</span>
+</span></span><span style="display:flex;"><span>script_dir<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>dirname <span style="color:#e6db74">&#34;</span>$0<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>now_time<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date +%Y%m%d%H%M%S<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># SQLite数据库文件路径</span>
+</span></span><span style="display:flex;"><span>database_file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$script_dir<span style="color:#e6db74">/gorm.db&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 导出的SQL文件路径</span>
+</span></span><span style="display:flex;"><span>sql_file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$script_dir<span style="color:#e6db74">/export.</span>$now_time<span style="color:#e6db74">.sql&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 导出SQLite数据库为SQL文件</span>
+</span></span><span style="display:flex;"><span>sqlite3 <span style="color:#e6db74">&#34;</span>$database_file<span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;.dump&#34;</span> &gt; <span style="color:#e6db74">&#34;</span>$sql_file<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 还原SQL文件为SQLite数据库</span>
+</span></span><span style="display:flex;"><span>sqlite3 <span style="color:#e6db74">&#34;</span>$database_file<span style="color:#e6db74">&#34;</span> &lt; <span style="color:#e6db74">&#34;</span>$sql_file<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><h1 id="下载在线文档到本地">下载在线文档到本地
+</h1><p><code>wget -r -p -k -nc -o www.shouce.ren.log www.shouce.ren</code></p>
+<h1 id="递归查找包含指定字符忽略大小写的所有-markdown-文件并显示行号">递归查找包含指定字符(忽略大小写)的所有 markdown 文件并显示行号
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>grep -in <span style="color:#e6db74">&#34;searchWord&#34;</span> *.md
+</span></span><span style="display:flex;"><span>grep -rin <span style="color:#e6db74">&#34;searchWord&#34;</span> --include <span style="color:#e6db74">&#34;*.md&#34;</span> .
+</span></span><span style="display:flex;"><span>grep --color -rni XGetWindowAttributes
+</span></span></code></pre></div><h1 id="pdf-体积太大裁剪">pdf 体积太大裁剪
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pdftk ./linux内核编程.pdf cat 1-70 output linux内核编程.上.pdf
+</span></span></code></pre></div><h1 id="指定目录下的字符串批量替换">指定目录下的字符串批量替换
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#34;s/oldstring/newstring/g&#34;</span> grep oldstring -rl path
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#34;s/要查找的文本/替换后的文本/g&#34;</span> <span style="color:#e6db74">`</span>grep -rl <span style="color:#e6db74">&#34;要查找的文本&#34;</span> /任意目录<span style="color:#e6db74">`</span>
+</span></span></code></pre></div><h1 id="显示当前目录下所有文件夹大小从小到大排序">显示当前目录下所有文件夹大小,从小到大排序
+</h1><p><code>du -sh * | sort -n</code></p>
+<h1 id="新增用户及快速配置">新增用户及快速配置
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo useradd -s /bin/bash -m lianghong -G sudo,docker,netdev,users
+</span></span><span style="display:flex;"><span> -u <span style="color:#ae81ff">1500</span>
+</span></span><span style="display:flex;"><span> -s /bin/bash /usr/bin/zsh
+</span></span><span style="display:flex;"><span>sudo password lianghong
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sudo usermod -aG sudo,docker,netdev,users lianghong</span>
+</span></span><span style="display:flex;"><span>sudo userdel -r lianghong
+</span></span></code></pre></div><h1 id="临时-x11vnc-服务">临时 x11vnc 服务
+</h1><p><a class="link" href="https://wiki.archlinux.org/title/X11vnc_%28"  target="_blank" rel="noopener"
+    >https://wiki.archlinux.org/title/X11vnc_(</a>简体中文)</p>
+<pre tabindex="0"><code>x11vnc -display :0
+x11vnc -auth /var/lib/lightdm/.Xauthority -display :0 -forever
+x11vnc -display :0 -autho /home/USER/.Xauthority
+x11vnc -display :0 -auth /var/lib/gdm/:0.Xauth
+x11vnc -wait 50 -noxdamage -passwd PASSWORD -display :0 -forever -o /var/log/x11vnc.log -bg
+x11vnc -usepw # 设置密码
+x11vnc -find
+
+❯ ps -aux | grep auth # 留意 Xvfb
+root      251969  0.0  0.4 843784 68392 tty7     Ssl+ 3月14   3:49 /usr/lib/xorg/Xorg -nolisten tcp -auth /var/run/sddm/{7f719f8e-fea0-4375-9e08-f62c4f00b5d9} -background none -noreset -displayfd 18 -seat seat0 vt7
+root      251984  0.0  0.0  61868 15236 ?        S    3月14   0:00 /usr/lib/x86_64-linux-gnu/sddm/sddm-helper --socket /tmp/sddm-auth94af223c-bed9-4d33-bf86-4da3b2e94382 --id 8 --start /usr/bin/sddm-greeter --socket /tmp/sddm-:0-hQxQPR --theme /usr/share/sddm/themes/debian-theme --user sddm --greeter
+chenlia+  337277  0.8  1.6 1380336 266304 ?      Sl   14:46   0:28 Xvfb :20 -auth /home/chenlianghong/.Xauthority -nolisten tcp -noreset -screen 0 3840x2560x24
+chenlia+  337306  0.0  0.4 17231584 77216 ?      Sl   14:46   0:00 /opt/google/chrome-remote-desktop/chrome-remote-desktop-host --host-config=- --audio-pipe-name=/home/chenlianghong/.config/chrome-remote-desktop/pulseaudio#b60643d23f/fifo_output --server-supports-exact-resize --ssh-auth-sockname=/tmp/chromoting.chenlianghong.ssh_auth_sock --signal-parent
+chenlia+  337693  0.0  0.1 192556 16944 ?        Sl   14:54   0:00 /usr/lib/x86_64-linux-gnu/polkit-mate/polkit-mate-authentication-agent-1
+chenlia+  339403  0.8  0.2  56452 34264 pts/5    S+   15:08   0:16 x11vnc -auth /home/chenlianghong/.Xauthority -display :20 -forever
+chenlia+  340041  0.0  0.0   9392   728 pts/0    S+   15:41   0:00 grep --color=auto auth
+</code></pre><h1 id="日志输出">日志输出
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./test.sh &gt; log.txt 2&gt;&amp;<span style="color:#ae81ff">1</span> <span style="color:#75715e"># 将 ./test.sh 的输出重定向到 log.txt 中，同事将标准错误也重定向到 log.txt 文件中</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 类型	                   文件描述符	默认情况	            对应文件句柄位置</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 标准输入（standard input）	0	      从键盘获得输入	       /proc/self/fd/0</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 标准输出（standard output）	1	      输出到屏幕（即控制台）	/proc/self/fd/1</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 错误输出（error output）	  2	      输出到屏幕（即控制台）	/proc/self/fd/2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 命令	                   介绍</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># command &lt;filename	  以filename文件作为标准输入</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># command 0&lt;filename	同上</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># command &lt;&lt;delimiter	从标准输入中读入，直到遇到delimiter分隔符</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>nohup java -jar xxxx.jar &gt;/dev/null 2&gt;&amp;<span style="color:#ae81ff">1</span> &amp; <span style="color:#75715e"># &gt;/dev/null 2&gt;&amp;1命令来丢弃所有的输出</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./test.sh &amp;&gt; log.txt
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># &amp;&gt; file 和 &gt;&amp; file 意思是把标准输出和标准错误输出都重定向到文件file中</span>
+</span></span></code></pre></div><h1 id="ssh临时跳转使用">ssh临时跳转使用
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>scp -J user@host.com:2222 1.js user@192.168.1.68:~ <span style="color:#75715e"># 临时拷贝文件</span>
+</span></span><span style="display:flex;"><span>ssh -J user@host.com:2222 -X user@192.168.1.68 <span style="color:#75715e"># 临时连接(withX11)</span>
+</span></span></code></pre></div><h1 id="ssh临时授权">ssh临时授权
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 解决部分网络下需要对虚拟机(无桌面)进行网络扫码授权的问题</span>
+</span></span><span style="display:flex;"><span>ssh -D <span style="color:#ae81ff">1080</span> user@192.168.1.68
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 然后在浏览器中使用插件连接上本地 socks5 的 1080 端口，即可进行网络访问扫码授权的操作了。</span>
+</span></span></code></pre></div><h1 id="how-to-push-all">How to push all?
+</h1><p>case 1:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git remote add gitee git@gitee.com:clh21/vim.git
+</span></span><span style="display:flex;"><span>git remote remove gitee
+</span></span><span style="display:flex;"><span>git remote add all git@gitee.com:clh21/vim.git
+</span></span><span style="display:flex;"><span>git remote set-url --add all git@github.com:clh021/vim.git
+</span></span><span style="display:flex;"><span>git push all --all
+</span></span><span style="display:flex;"><span>git fetch --all
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tip: To no need typing all whenever you send a commit, just use &#34;origin&#34; instead of &#34;all&#34;:</span>
+</span></span><span style="display:flex;"><span>git remote set-url --add origin nodester-host:path/proj.git
+</span></span></code></pre></div><p>case 2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># To push all branches to all remotes:</span>
+</span></span><span style="display:flex;"><span>git remote | xargs -L1 git push --all
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># To push a specific branch to all remotes</span>
+</span></span><span style="display:flex;"><span>git remote | xargs -L1 -I R git push R master
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># To make a git alias for the command</span>
+</span></span><span style="display:flex;"><span>git config --global alias.pushall <span style="color:#e6db74">&#39;!git remote | xargs -L1 git push --all&#39;</span>
+</span></span></code></pre></div><h1 id="md5sum">Md5sum
+</h1><pre tabindex="0"><code>$ md5sum file1 file2 file3 &gt; mysum
+$ md5sum --check mysum
+file1: OK
+file2: OK
+file3: OK
+</code></pre><h1 id="study">study
+</h1><pre tabindex="0"><code>pkg-config --cflags --libs gtk+-3.0
+pkg-config --cflags --libs wayland-protocols
+cmake --build build
+cd /usr/include/aarch64-linux-gnu/
+cd /usr/lib/aarch64-linux-gnu/pkgconfig/
+ls |grep wayland
+dpkg -L wayland-protocols
+cd /usr/share/pkgconfig/
+cd /usr
+find -name wayland-protocols.pc
+vim ./local/share/pkgconfig/wayland-protocols.pc
+cd local/share
+ls
+cd pkgconfig/
+ls
+sudo rm wayland-protocols.pc
+dpkg -l |grep gtk
+dpkg -L libgtk-3-dev
+vim /usr/lib/aarch64-linux-gnu/pkgconfig/gtk+-3.0.pc
+pkg-config --cflags --libs gtk+-3.0
+dpkg -l |grep
+aptitude search wayland-protocols
+dpkg -l |grep wayland-protocols
+apt-cache search wayland-protocols
+apt-cache policy wayland-protocols
+pkg-config --cflags --libs wayland-protocols
+pkg-config --cflags --libs wayland-client
+cmake -B build .
+ls
+cmake -G Ninja -B build
+ls build
+ninja -C build
+cmake -G Ninja -B build
+ls
+cd build
+ls
+cmake --build .
+</code></pre><h2 id="查看一个正在运行的命令细节">查看一个正在运行的命令细节
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pgrep -fa lithium
+</span></span></code></pre></div><h2 id="查看文件名或路径中包含了-download-的">查看文件名或路径中包含了 download 的
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>fdfind download | grep idl
+</span></span></code></pre></div><h2 id="命令行界面如何获取二次开发浏览器qax的内核版本号">命令行界面如何获取二次开发浏览器(qax)的内核版本号
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;HTTP/1.0 200 OK\r\n\r\n&#34;</span> | nc -l <span style="color:#ae81ff">8080</span> -q <span style="color:#ae81ff">1</span> | grep User-Agent <span style="color:#75715e"># 得到一次请求时就输出 200状态 并截取 User-Agent 内容</span>
+</span></span><span style="display:flex;"><span>DISPLAY<span style="color:#f92672">=</span>:0 qaxbrowser-safe http://127.0.0.1:8080
+</span></span></code></pre></div><h2 id="npm-resolve-alias-">npm resolve alias @
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">resolve</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;node:path&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">defineConfig</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">plugins</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">resolve</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">alias</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;@&#34;</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;src&#39;</span>), <span style="color:#75715e">// 路径别名
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><h2 id="操作系统语言统一针对中英文混合">操作系统语言统一(针对中英文混合)
+</h2><pre tabindex="0"><code># 当前系统 locale 支持的语言
+# 如果不具备你需要的语言，可以通过 `sudo vim /etc/locale.gen` 开启 对应语言
+# 今天因此解决了微信发送文件时，识别中文文件文件名的问题。
+$ sudo locale-gen
+Generating locales...
+  en_US.UTF-8... done
+  zh_CN.UTF-8... done
+Generation complete.
+</code></pre><h2 id="wps365-在英文系统下使用中文语言">WPS365 在英文系统下使用中文语言
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 每次升级该软件时都会被覆盖 所以写成脚本</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># leehom Chen clh021@gmail.com</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 定义要修改的文件列表</span>
+</span></span><span style="display:flex;"><span>files<span style="color:#f92672">=(</span><span style="color:#e6db74">&#34;/usr/bin/wps&#34;</span> <span style="color:#e6db74">&#34;/usr/bin/wpp&#34;</span> <span style="color:#e6db74">&#34;/usr/bin/et&#34;</span> <span style="color:#e6db74">&#34;/usr/bin/wpspdf&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 定义要添加的环境变量</span>
+</span></span><span style="display:flex;"><span>env_var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;export LANG=zh_CN.UTF-8&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 遍历文件列表，为每个文件添加环境变量</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> file in <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>files[@]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;----------------- </span>$file<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 检查文件是否存在</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -f <span style="color:#e6db74">&#34;</span>$file<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    bat -r :3 $file
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 使用sed命令在第二行插入环境变量</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># -i 选项表示直接修改文件</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2i 表示在第二行插入</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># \n 用于添加新行</span>
+</span></span><span style="display:flex;"><span>    sudo sed -i <span style="color:#e6db74">&#39;2i &#39;</span><span style="color:#e6db74">&#34;</span>$env_var<span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;</span>$file<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    bat -r :4 $file
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;File </span>$file<span style="color:#e6db74"> does not exist.&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><h2 id="包管理常用命令">包管理常用命令
+</h2><p>参考 <a class="link" href="https://www.cnblogs.com/sztom/p/10652624.html"  target="_blank" rel="noopener"
+    >Arch Linux 软件包的查询及清理</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#查询 lib 被谁依赖</span>
+</span></span><span style="display:flex;"><span>pacman -Qi libname | grep <span style="color:#e6db74">&#34;Required By&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#查询包依赖谁</span>
+</span></span><span style="display:flex;"><span>pacman -Qi packagename | grep <span style="color:#e6db74">&#34;Depends On&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#列出孤立的包（-t不再被依赖的&#34;作为依赖项安装的包&#34;）</span>
+</span></span><span style="display:flex;"><span>pacman -Qqdt <span style="color:#75715e">#通常这些是可以妥妥的删除的</span>
+</span></span><span style="display:flex;"><span>sudo pacman -Qqdt | sudo pacman -Rs -
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#列出包所拥有的文件</span>
+</span></span><span style="display:flex;"><span>sudo pacman -Ql packagename
+</span></span></code></pre></div><h2 id="音频和蓝牙">音频和蓝牙
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo pacman -S easyeffects pipewire-pulse
+</span></span><span style="display:flex;"><span>sudo pacman -S pavucontrol
+</span></span><span style="display:flex;"><span>sudo pacman -S bluez bluez-utils bluedevil
+</span></span><span style="display:flex;"><span>pactl load-module module-bluetooth-discover
+</span></span><span style="display:flex;"><span>sudo vim /etc/bluetooth/main.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FastConnectable<span style="color:#f92672">=</span>true
+</span></span><span style="display:flex;"><span>AutoEnable<span style="color:#f92672">=</span>true
+</span></span></code></pre></div><h1 id="录屏没声音">录屏没声音
+</h1><p>录屏软件内录没有声音(pulseaudio)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#(注意:录屏过程中插拔耳机会导致录屏无声)</span>
+</span></span><span style="display:flex;"><span>pactl list | grep <span style="color:#e6db74">&#34;Monitor Source&#34;</span> | awk <span style="color:#e6db74">&#39;{print $3}&#39;</span> | xargs -I <span style="color:#f92672">{}</span> pacmd set-source-mute <span style="color:#f92672">{}</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#快捷键开启/关闭麦克风(pulseaudio):</span>
+</span></span><span style="display:flex;"><span>pactl list sources | grep Name | grep input | awk <span style="color:#e6db74">&#39;{print $2}&#39;</span> | xargs -I <span style="color:#f92672">{}</span> pactl set-source-mute <span style="color:#f92672">{}</span> toggle
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#音频捕获还是不动弹的话重启下obs就可以了</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#麦克风降噪(pulseaudio换pipewire):</span>
+</span></span><span style="display:flex;"><span>sudo pacman -S pipewire pipewire-pulse pipewire-jack pipewire-alsa
+</span></span><span style="display:flex;"><span>sudo pacman -S easyeffects calf
+</span></span><span style="display:flex;"><span>sudo pacman -S lsp-plugins zam-plugins <span style="color:#75715e"># 慎重, 会生成很多图标</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#https://blog.ryey.icu/zhs/replace-pulseaudio-with-pipewire.html</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#https://zhuanlan.zhihu.com/p/439611615</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#https://wiki.archlinuxcn.org/wiki/PipeWire</span>
+</span></span></code></pre></div><h1 id="修复引导">修复引导
+</h1><p>启动 live cd, 打开终端</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># passwd # sudo 要密码时执行</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 列出磁盘和分区, 我的系统所在硬盘是 `nvme0n1`,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 根分区是 `nvme0n1p2`, efi(esp) 分区是 `nvme0n1p1`</span>
+</span></span><span style="display:flex;"><span>sudo lsblk
+</span></span><span style="display:flex;"><span>sudo mount /dev/nvme0n1p2 /mnt          <span style="color:#75715e"># 挂载根分区</span>
+</span></span><span style="display:flex;"><span>sudo mount /dev/nvme0n1p1 /mnt/boot/efi <span style="color:#75715e"># 挂载 efi 分区</span>
+</span></span><span style="display:flex;"><span>sudo arch-chroot /mnt <span style="color:#75715e"># 切换根目录</span>
+</span></span><span style="display:flex;"><span>sudo grub-install --recheck /dev/nvme0n1 <span style="color:#75715e"># 安装 grub</span>
+</span></span><span style="display:flex;"><span>sudo grub-mkconfig -o /boot/grub/grub.cfg <span style="color:#75715e"># 生成配置</span>
+</span></span><span style="display:flex;"><span>exit <span style="color:#75715e"># 退出 chroot 环境并关机</span>
+</span></span><span style="display:flex;"><span>shutdown now
+</span></span></code></pre></div><h1 id="u盘权限">u盘权限
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo groupadd usbfs
+</span></span><span style="display:flex;"><span>sudo usermod -a -G usbfs $USER
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#sudo reboot now</span>
+</span></span></code></pre></div><h1 id="远程uos时总是显示your-system-is-not-activated-please-activate-as-soon-as-possible-for-normal-use提示">远程UOS时总是显示Your system is not activated. Please activate as soon as possible for normal use提示
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>//查询license.service是否启动
+</span></span><span style="display:flex;"><span>lsystemctl lgrep license
+</span></span><span style="display:flex;"><span>//关闭license.service
+</span></span><span style="display:flex;"><span>lsystemctl stop license.service
+</span></span><span style="display:flex;"><span>//关闭开机启动license.service
+</span></span><span style="display:flex;"><span>1systemctl disable license.service
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2022-03-23 12:47:18
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

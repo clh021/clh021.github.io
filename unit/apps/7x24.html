@@ -1,0 +1,209 @@
+<!-- 文件命名为 7x24.html 时 打开页面明显变慢并输出如下错误： -->
+<!-- ERROR:ssl_client_socket_impl.cc(924)] handshake failed; returned -1, SSL error code 1, net_error -100 -->
+<!-- 上述记录于 2022.06.23 17:47 但，2022.06.24 10:15 同一台电脑环境无法重现(电脑重启过) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> check leak </title>
+    <script src="./index/global.js"></script>
+    <script src="./index/jquery-3.6.0.min.js"></script>
+</head>
+<body style="background-color: azure;">
+    根据使用接口进行压力测试。以观察运行时系统进程的资源占用和浏览器错误输出为主。<br/>
+    <select id="leak">
+        <option value="eng.get*">eng.get*</option>
+        <option value="setIcon*">setIcon*</option>
+        <option value="set_title">set_title</option>
+        <option value="maximize">maximize</option>
+        <option value="minimize">minimize</option>
+        <option value="setSize">setSize</option>
+        <option value="setPosition">setPosition</option>
+        <option value="skip_bar">skip_bar</option>
+        <option value="keep_above">keep_above</option>
+        <option value="setFocus">setFocus</option>
+        <option value="visibility=">visibility=</option>
+        <option value="windowState">windowState</option>
+        <option value="has_toplevel_focus">has_toplevel_focus</option>
+        <option value="trayIconDestroy">trayIconDestroy</option>
+        <option value="sendMessage">sendMessage</option>
+        <option value="lnks.$|cmdId">lnks.$|cmdId</option>
+        <option value="lnks.$.callback">lnks.$.callback</option>
+        <option value="lnks.$.then.catch">lnks.$.then.catch</option>
+        <option value="openWindow2">openWindow2</option>
+        <option value="MainWindow.all">MainWindow.all</option>
+    </select>
+    每<select id="cycleTime">
+        <option value="3">3</option>
+        <option value="10">10</option>
+        <option value="50">50</option>
+        <option value="100" selected>100</option>
+        <option value="500">500</option>
+        <option value="1000">1000</option>
+    </select>毫秒运行一次，
+    总共运行<select id="duration">
+        <option value="10">10</option>
+        <option value="30">30</option>
+        <option value="60">60</option>
+        <option value="300">300</option>
+        <option value="600">600</option>
+        <option value="1200">1200</option>
+    </select>秒
+    <button onclick="startTest()">开始测试</button>
+    <button onclick="stopTest()">停止测试</button><br/>
+    <pre id="pidResult"></pre>
+    <pre id="currentTip"></pre>
+    <pre id="pipeResult"></pre>
+
+    <script>
+    function output(str, Id) {
+        $(`#${Id}`).prepend(`${str}\r\n`);
+    }
+    function outputResult(str) {
+        $(`#pipeResult`).prepend(`${getDateString()} ${str}\r\n`);
+    }
+    window.lithiumPid = [];
+    window.usedFuncs = {
+        'close': () => {},
+        'onclose': () => {},
+        'exit': () => {},
+        'begin_move': () => {},// 只能手动操作
+        'eng.get*': () => {
+            let envVal = lnks.env.get("HOME");
+            outputResult(envVal)
+        },
+        'setIcon*': () => {
+            window.win.setIcon("https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico")
+            outputResult('has set icon')
+        },
+        'set_title': () => {
+            let newTitle = `title_${getDateString()}`
+            window.win.setTitle(newTitle);
+            outputResult(newTitle)
+        },
+        'maximize': () => {
+            if (getRandomInt(2) == 0) {
+                window.win.maximize()
+                outputResult("maximize")
+            } else {
+                window.win.normal()
+                outputResult("normal")
+            }
+        },
+        'minimize': () => {
+            if (getRandomInt(2) == 0) {
+                window.win.minimize()
+                outputResult("minimize")
+            } else {
+                window.win.normal()
+                outputResult("normal")
+            }
+        },
+        'setSize': () => {
+            window.win.setSize(20 + getRandomInt(800) , 20 + getRandomInt(600));
+            outputResult(JSON.stringify(window.win.size));
+        },
+        'setPosition': () => {
+            window.win.setPosition(20 + getRandomInt(800) , 20 + getRandomInt(600));
+            outputResult(JSON.stringify(window.win.position));
+        },
+        'skip_bar': () => {
+            let stat = getRandomInt(2) == 0 ? true : false; 
+            window.win.skipBar(stat);
+            outputResult(JSON.stringify(stat));
+        },
+        'keep_above': () => {
+            let stat = getRandomInt(2) == 0 ? true : false; 
+            window.win.keep_above(stat);
+            outputResult(JSON.stringify(stat));
+        },
+        'setFocus': () => {
+            window.win.setFocus();
+            outputResult('has set focus');
+            // window.win.focus();// 用户应清理的函数，使用 setFocus
+        },
+        'visibility=': () => {
+            let stat = getRandomInt(2) == 0 ? true : false; 
+            window.win.visibility = stat;
+            outputResult(JSON.stringify(stat));
+        },
+        'windowState': () => {
+            outputResult(window.win.windowState)
+        },
+        'has_toplevel_focus': () => {
+            outputResult(window.win.has_toplevel_focus())
+        },
+        'trayIconDestroy': () => {
+            // gtk-3-24 内存泄漏导致的, 目前已将补丁提交到上游:
+            // https://gitlab.gnome.org/GNOME/gtk/-/merge_requests/4830
+            let trayIcon = new lnks.TrayIcon(window)
+            trayIcon.geometry;
+            trayIcon.destroy();
+            outputResult('has create&destroy trayIcon');
+        },
+        'sendMessage': () => {
+            window.win.sendMessage(`一个新消息${getDateString()}`);
+        },
+        'lnks.$|cmdId': () => {
+            lnks.$("id", outputResult, console.error)
+        },
+        'lnks.$.callback': () => {
+            let cmd = `cat /proc/${window.lithiumPids[0]}/status | grep Threads; ls /proc/${window.lithiumPids[0]}/task | wc`;
+            lnks.$(cmd, outputResult, console.error)
+        },
+        'lnks.$.then.catch': () => {
+            // lnks.$(`id`)
+            //     .then(outputResult)
+            //     .catch(console.error);
+            outputResult("not support lnks.$.then.catch now !")
+        },
+        'openWindow2': () => { //内存泄漏
+            let loc = document.location;
+            let urlPrefix = loc.protocol +'//'+ loc.host;// + loc.pathname
+            let url = `${urlPrefix}/tabs/autoTest/auto.close.html?time=1&msg=${encodeURIComponent("压力测试页面")}`;
+            outputResult(url);
+            window.lnks.openWindow2({
+                url,
+                title: `title: ${getDateString()}`,
+                width: 400,
+                height: 400,
+                winMode: 'normal'
+            },{
+                userArgs: getDateString()
+            })
+        },
+        'MainWindow.all': () => {
+            let allWins = window.lnks.MainWindow.all();
+            allWins.forEach(w => {
+              outputResult(`win: title:"${w.title}" focus:"${w.has_toplevel_focus()}"`);
+            });
+        },
+    };
+    function startTest() {
+        let funcName = $("#leak").val();
+        let cycleTime = $("#cycleTime").val();
+        let duration = $("#duration").val();
+        window.task = setInterval(() => {
+            window.usedFuncs[funcName]()
+        }, cycleTime);
+        setTimeout(stopTest, duration * 1000);
+    }
+    function stopTest() {
+        clearInterval(window.task);
+    }
+    // 全局变量准备
+    window.onload = function () {
+        if (window.lnks) {
+            window.lnks.$(`pidof lithium`,(resp) => {
+                window.lithiumPids = resp.split(" ");
+            })
+            window.win = new window.lnks.MainWindow(window);
+            window.win.normal();
+            window.win.setSize(800,600)
+            window.win.onmessage = outputResult;
+        }
+    }
+    </script>
+</body>
+</html>

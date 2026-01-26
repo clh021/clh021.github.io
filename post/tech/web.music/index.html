@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="简易在线音乐播放器\n&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;meta charset=&#34;utf-8&#34; /&gt; &lt;title&gt;音乐播放器&lt;/title&gt; &lt;link rel=&#34;stylesheet&#34; type=&#34;text/css&#34; href=&#34;./index.css&#34;/&gt; &lt;/head&gt; &lt;body&gt; &lt;header&gt;音乐播放器&lt;/header&gt; &lt;section&gt; &lt;ul&gt; &lt;li&gt;Here We Are Again&lt;/li&gt; &lt;li&gt;不谓侠&lt;/li&gt; &lt;li&gt;多想在平庸的生活拥抱你&lt;/li&gt; &lt;li&gt;浪子回头&lt;/li&gt; &lt;li&gt;那个女孩&lt;/li&gt; &lt;li&gt;那女孩对我说&lt;/li&gt; &lt;li&gt;平胸女子&lt;/li&gt; &lt;li&gt;情深深雨濛濛&lt;/li&gt; &lt;li&gt;雅俗共赏&lt;/li&gt; &lt;li&gt;野狼disco&lt;/li&gt; &lt;li&gt;这一生关于你的风景&lt;/li&gt; &lt;/ul&gt; &lt;/section&gt; &lt;audio src=&#34;&#34; id=&#34;ado&#34; controls=&#34;controls&#34;&gt;&lt;/audio&gt; &lt;footer&gt; 当前播放的是：&lt;span id=&#34;con&#34;&gt;&lt;/span&gt; &lt;/footer&gt; &lt;/body&gt; &lt;script src=&#34;./index.js&#34; type=&#34;text/javascript&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt; &lt;/html&gt; /* 写样式通常首先-清空所有标签的内外边距 */ *{ margin: 0; padding: 0; } /* */ body{ width: 31.25rem; overflow: auto;\t/* overflow 属性规定当内容溢出元素框时发生的事情 */ margin: 20px auto; /* 外边距 上下20 水平居中 */ } /* 设置头部和底部样式 */ header,footer{ height: 40px; line-height: 40px; /* 与模块同高 可以字体上下居中显示 */ background: #808080; text-align: center; /* 文本居中 */ } /* 给音乐列表写样式 */ li{ height: 50px; line-height: 50px; border: 1px solid red; /* 添加边框属性 */ border-top: none; /* 上下线条重合 so清空上线条 */ font-size: 15px;\t/* 字体大小设置 */ text-indent: 20px;\t/* text-indent 属性规定文本块中首行文本的缩进。 */ /* 注释：允许使用负值。如果使用负值，那么首行会被缩进到左边 */ list-style: none;\t/* 清空一下列表的样式-列表前方的点或数字 */ } /* 音频文件的样式设置 */ #ado{ width: 100%; height: 20px; margin-top: 10px; } /* 设置控制列表的类名样式 */ .sty{ background: #FF0000; } var lis = document.getElementsByTagName(&#39;li&#39;); //获取dom元素 var ado = document.getElementById(&#39;ado&#39;); var con = document.getElementById(&#39;con&#39;); //创建数组存放音乐文件路径，通过下标找到相应文件 var arr = [ &#39;audio/Here We Are Again.mp3&#39;, &#39;audio/不谓侠.mp3&#39;, &#39;audio/多想在平庸的生活拥抱你.mp3&#39;, &#39;audio/浪子回头.mp3&#39;, &#39;audio/那个女孩.mp3&#39;, &#39;audio/那女孩对我说.mp3&#39;, &#39;audio/平胸女子.mp3&#39;, &#39;audio/情深深雨濛濛.mp3&#39;, &#39;audio/雅俗共赏.mp3&#39;, &#39;audio/野狼disco.mp3&#39;, &#39;audio/这一生关于你的风景.mp3&#39;] //通过循环遍历的方式添加点击事件 for (var i = 0; i &lt; lis.length; i++) { lis[i].onclick = function(){ for (var i = 0; i &lt; lis.length; i++) { if (this === lis[i]) { lis[i].className = &#39;sty&#39;; ado.src = arr[i]; ado.play(); con.innerHTML = lis[i].innerHTML; var a = i; //通过ended事件监听是否播放完毕 ado.onended = function(){ a++; if(a&gt;lis.length-1){ a = 0; } //通过for循环清空所有样式列表 for (var j = 0; j &lt; lis.length; j++) { lis[j].className = &#39;&#39;; } //通过下标a给相应的列表进行样式的修饰和音乐的播放 con.innerHTML = lis[a].innerHTML; ado.src = arr[a]; ado.play(); lis[a].className = &#39;sty&#39;; } } else{ lis[i].className = &#39;&#39;; } } } } ">
+<title>简易在线音乐播放器</title>
+
+<link rel='canonical' href='/post/tech/web.music/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="简易在线音乐播放器">
+<meta property='og:description' content="简易在线音乐播放器\n&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;meta charset=&#34;utf-8&#34; /&gt; &lt;title&gt;音乐播放器&lt;/title&gt; &lt;link rel=&#34;stylesheet&#34; type=&#34;text/css&#34; href=&#34;./index.css&#34;/&gt; &lt;/head&gt; &lt;body&gt; &lt;header&gt;音乐播放器&lt;/header&gt; &lt;section&gt; &lt;ul&gt; &lt;li&gt;Here We Are Again&lt;/li&gt; &lt;li&gt;不谓侠&lt;/li&gt; &lt;li&gt;多想在平庸的生活拥抱你&lt;/li&gt; &lt;li&gt;浪子回头&lt;/li&gt; &lt;li&gt;那个女孩&lt;/li&gt; &lt;li&gt;那女孩对我说&lt;/li&gt; &lt;li&gt;平胸女子&lt;/li&gt; &lt;li&gt;情深深雨濛濛&lt;/li&gt; &lt;li&gt;雅俗共赏&lt;/li&gt; &lt;li&gt;野狼disco&lt;/li&gt; &lt;li&gt;这一生关于你的风景&lt;/li&gt; &lt;/ul&gt; &lt;/section&gt; &lt;audio src=&#34;&#34; id=&#34;ado&#34; controls=&#34;controls&#34;&gt;&lt;/audio&gt; &lt;footer&gt; 当前播放的是：&lt;span id=&#34;con&#34;&gt;&lt;/span&gt; &lt;/footer&gt; &lt;/body&gt; &lt;script src=&#34;./index.js&#34; type=&#34;text/javascript&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt; &lt;/html&gt; /* 写样式通常首先-清空所有标签的内外边距 */ *{ margin: 0; padding: 0; } /* */ body{ width: 31.25rem; overflow: auto;\t/* overflow 属性规定当内容溢出元素框时发生的事情 */ margin: 20px auto; /* 外边距 上下20 水平居中 */ } /* 设置头部和底部样式 */ header,footer{ height: 40px; line-height: 40px; /* 与模块同高 可以字体上下居中显示 */ background: #808080; text-align: center; /* 文本居中 */ } /* 给音乐列表写样式 */ li{ height: 50px; line-height: 50px; border: 1px solid red; /* 添加边框属性 */ border-top: none; /* 上下线条重合 so清空上线条 */ font-size: 15px;\t/* 字体大小设置 */ text-indent: 20px;\t/* text-indent 属性规定文本块中首行文本的缩进。 */ /* 注释：允许使用负值。如果使用负值，那么首行会被缩进到左边 */ list-style: none;\t/* 清空一下列表的样式-列表前方的点或数字 */ } /* 音频文件的样式设置 */ #ado{ width: 100%; height: 20px; margin-top: 10px; } /* 设置控制列表的类名样式 */ .sty{ background: #FF0000; } var lis = document.getElementsByTagName(&#39;li&#39;); //获取dom元素 var ado = document.getElementById(&#39;ado&#39;); var con = document.getElementById(&#39;con&#39;); //创建数组存放音乐文件路径，通过下标找到相应文件 var arr = [ &#39;audio/Here We Are Again.mp3&#39;, &#39;audio/不谓侠.mp3&#39;, &#39;audio/多想在平庸的生活拥抱你.mp3&#39;, &#39;audio/浪子回头.mp3&#39;, &#39;audio/那个女孩.mp3&#39;, &#39;audio/那女孩对我说.mp3&#39;, &#39;audio/平胸女子.mp3&#39;, &#39;audio/情深深雨濛濛.mp3&#39;, &#39;audio/雅俗共赏.mp3&#39;, &#39;audio/野狼disco.mp3&#39;, &#39;audio/这一生关于你的风景.mp3&#39;] //通过循环遍历的方式添加点击事件 for (var i = 0; i &lt; lis.length; i++) { lis[i].onclick = function(){ for (var i = 0; i &lt; lis.length; i++) { if (this === lis[i]) { lis[i].className = &#39;sty&#39;; ado.src = arr[i]; ado.play(); con.innerHTML = lis[i].innerHTML; var a = i; //通过ended事件监听是否播放完毕 ado.onended = function(){ a++; if(a&gt;lis.length-1){ a = 0; } //通过for循环清空所有样式列表 for (var j = 0; j &lt; lis.length; j++) { lis[j].className = &#39;&#39;; } //通过下标a给相应的列表进行样式的修饰和音乐的播放 con.innerHTML = lis[a].innerHTML; ado.src = arr[a]; ado.play(); lis[a].className = &#39;sty&#39;; } } else{ lis[i].className = &#39;&#39;; } } } } ">
+<meta property='og:url' content='/post/tech/web.music/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='music' /><meta property='article:tag' content='web' /><meta property='article:tag' content='online' /><meta property='article:published_time' content='2022-04-19T08:06:15&#43;08:00'/><meta property='article:modified_time' content='2022-04-19T08:06:15&#43;08:00'/>
+<meta name="twitter:title" content="简易在线音乐播放器">
+<meta name="twitter:description" content="简易在线音乐播放器\n&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;meta charset=&#34;utf-8&#34; /&gt; &lt;title&gt;音乐播放器&lt;/title&gt; &lt;link rel=&#34;stylesheet&#34; type=&#34;text/css&#34; href=&#34;./index.css&#34;/&gt; &lt;/head&gt; &lt;body&gt; &lt;header&gt;音乐播放器&lt;/header&gt; &lt;section&gt; &lt;ul&gt; &lt;li&gt;Here We Are Again&lt;/li&gt; &lt;li&gt;不谓侠&lt;/li&gt; &lt;li&gt;多想在平庸的生活拥抱你&lt;/li&gt; &lt;li&gt;浪子回头&lt;/li&gt; &lt;li&gt;那个女孩&lt;/li&gt; &lt;li&gt;那女孩对我说&lt;/li&gt; &lt;li&gt;平胸女子&lt;/li&gt; &lt;li&gt;情深深雨濛濛&lt;/li&gt; &lt;li&gt;雅俗共赏&lt;/li&gt; &lt;li&gt;野狼disco&lt;/li&gt; &lt;li&gt;这一生关于你的风景&lt;/li&gt; &lt;/ul&gt; &lt;/section&gt; &lt;audio src=&#34;&#34; id=&#34;ado&#34; controls=&#34;controls&#34;&gt;&lt;/audio&gt; &lt;footer&gt; 当前播放的是：&lt;span id=&#34;con&#34;&gt;&lt;/span&gt; &lt;/footer&gt; &lt;/body&gt; &lt;script src=&#34;./index.js&#34; type=&#34;text/javascript&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt; &lt;/html&gt; /* 写样式通常首先-清空所有标签的内外边距 */ *{ margin: 0; padding: 0; } /* */ body{ width: 31.25rem; overflow: auto;\t/* overflow 属性规定当内容溢出元素框时发生的事情 */ margin: 20px auto; /* 外边距 上下20 水平居中 */ } /* 设置头部和底部样式 */ header,footer{ height: 40px; line-height: 40px; /* 与模块同高 可以字体上下居中显示 */ background: #808080; text-align: center; /* 文本居中 */ } /* 给音乐列表写样式 */ li{ height: 50px; line-height: 50px; border: 1px solid red; /* 添加边框属性 */ border-top: none; /* 上下线条重合 so清空上线条 */ font-size: 15px;\t/* 字体大小设置 */ text-indent: 20px;\t/* text-indent 属性规定文本块中首行文本的缩进。 */ /* 注释：允许使用负值。如果使用负值，那么首行会被缩进到左边 */ list-style: none;\t/* 清空一下列表的样式-列表前方的点或数字 */ } /* 音频文件的样式设置 */ #ado{ width: 100%; height: 20px; margin-top: 10px; } /* 设置控制列表的类名样式 */ .sty{ background: #FF0000; } var lis = document.getElementsByTagName(&#39;li&#39;); //获取dom元素 var ado = document.getElementById(&#39;ado&#39;); var con = document.getElementById(&#39;con&#39;); //创建数组存放音乐文件路径，通过下标找到相应文件 var arr = [ &#39;audio/Here We Are Again.mp3&#39;, &#39;audio/不谓侠.mp3&#39;, &#39;audio/多想在平庸的生活拥抱你.mp3&#39;, &#39;audio/浪子回头.mp3&#39;, &#39;audio/那个女孩.mp3&#39;, &#39;audio/那女孩对我说.mp3&#39;, &#39;audio/平胸女子.mp3&#39;, &#39;audio/情深深雨濛濛.mp3&#39;, &#39;audio/雅俗共赏.mp3&#39;, &#39;audio/野狼disco.mp3&#39;, &#39;audio/这一生关于你的风景.mp3&#39;] //通过循环遍历的方式添加点击事件 for (var i = 0; i &lt; lis.length; i++) { lis[i].onclick = function(){ for (var i = 0; i &lt; lis.length; i++) { if (this === lis[i]) { lis[i].className = &#39;sty&#39;; ado.src = arr[i]; ado.play(); con.innerHTML = lis[i].innerHTML; var a = i; //通过ended事件监听是否播放完毕 ado.onended = function(){ a++; if(a&gt;lis.length-1){ a = 0; } //通过for循环清空所有样式列表 for (var j = 0; j &lt; lis.length; j++) { lis[j].className = &#39;&#39;; } //通过下标a给相应的列表进行样式的修饰和音乐的播放 con.innerHTML = lis[a].innerHTML; ado.src = arr[a]; ado.play(); lis[a].className = &#39;sty&#39;; } } else{ lis[i].className = &#39;&#39;; } } } } ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/software/" style="background-color: #6b69d6; color: #fff;">
+                Software
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/web.music/">简易在线音乐播放器</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2022-04-19T08:06:15&#43;08:00'>2022-04-19 08:06:15</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>简易在线音乐播放器</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">title</span>&gt;音乐播放器&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/css&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./index.css&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>	&lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">header</span>&gt;音乐播放器&lt;/<span style="color:#f92672">header</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">section</span>&gt;
+</span></span><span style="display:flex;"><span>			&lt;<span style="color:#f92672">ul</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;Here We Are Again&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;不谓侠&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;多想在平庸的生活拥抱你&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;浪子回头&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;那个女孩&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;那女孩对我说&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;平胸女子&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;情深深雨濛濛&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;雅俗共赏&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;野狼disco&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>				&lt;<span style="color:#f92672">li</span>&gt;这一生关于你的风景&lt;/<span style="color:#f92672">li</span>&gt;
+</span></span><span style="display:flex;"><span>			&lt;/<span style="color:#f92672">ul</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;/<span style="color:#f92672">section</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">audio</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ado&#34;</span> <span style="color:#a6e22e">controls</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;controls&#34;</span>&gt;&lt;/<span style="color:#f92672">audio</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">footer</span>&gt;
+</span></span><span style="display:flex;"><span>			当前播放的是：&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;con&#34;</span>&gt;&lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;/<span style="color:#f92672">footer</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./index.js&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-css" data-lang="css"><span style="display:flex;"><span><span style="color:#75715e">/* 写样式通常首先-清空所有标签的内外边距 */</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">*</span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">margin</span>: <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*  */</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">body</span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">width</span>: <span style="color:#ae81ff">31.25</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">overflow</span>: <span style="color:#66d9ef">auto</span>;		<span style="color:#75715e">/* overflow 属性规定当内容溢出元素框时发生的事情 */</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">margin</span>: <span style="color:#ae81ff">20</span><span style="color:#66d9ef">px</span> <span style="color:#66d9ef">auto</span>;  <span style="color:#75715e">/* 外边距 上下20 水平居中 */</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 设置头部和底部样式 */</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">header</span><span style="color:#f92672">,</span><span style="color:#f92672">footer</span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">height</span>: <span style="color:#ae81ff">40</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">line-height</span>: <span style="color:#ae81ff">40</span><span style="color:#66d9ef">px</span>;  <span style="color:#75715e">/* 与模块同高 可以字体上下居中显示 */</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">background</span>: <span style="color:#ae81ff">#808080</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">text-align</span>: <span style="color:#66d9ef">center</span>; <span style="color:#75715e">/* 文本居中 */</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 给音乐列表写样式 */</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">li</span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">height</span>: <span style="color:#ae81ff">50</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">line-height</span>: <span style="color:#ae81ff">50</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">border</span>: <span style="color:#ae81ff">1</span><span style="color:#66d9ef">px</span> <span style="color:#66d9ef">solid</span> <span style="color:#66d9ef">red</span>;  <span style="color:#75715e">/* 添加边框属性 */</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">border-top</span>: <span style="color:#66d9ef">none</span>;  		<span style="color:#75715e">/* 上下线条重合 so清空上线条 */</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">15</span><span style="color:#66d9ef">px</span>;		<span style="color:#75715e">/* 字体大小设置 */</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">text-indent</span>: <span style="color:#ae81ff">20</span><span style="color:#66d9ef">px</span>;		<span style="color:#75715e">/* text-indent 属性规定文本块中首行文本的缩进。 */</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#75715e">/* 注释：允许使用负值。如果使用负值，那么首行会被缩进到左边 */</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">list-style</span>: <span style="color:#66d9ef">none</span>;		<span style="color:#75715e">/* 清空一下列表的样式-列表前方的点或数字 */</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 音频文件的样式设置 */</span>
+</span></span><span style="display:flex;"><span>#ado{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">width</span>: <span style="color:#ae81ff">100</span><span style="color:#66d9ef">%</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">height</span>: <span style="color:#ae81ff">20</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">margin-top</span>: <span style="color:#ae81ff">10</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 设置控制列表的类名样式 */</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">sty</span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">background</span>: <span style="color:#ae81ff">#FF0000</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">lis</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementsByTagName</span>(<span style="color:#e6db74">&#39;li&#39;</span>);   <span style="color:#75715e">//获取dom元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">ado</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;ado&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">con</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;con&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//创建数组存放音乐文件路径，通过下标找到相应文件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">arr</span> <span style="color:#f92672">=</span> [ <span style="color:#e6db74">&#39;audio/Here We Are Again.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/不谓侠.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/多想在平庸的生活拥抱你.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/浪子回头.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/那个女孩.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/那女孩对我说.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/平胸女子.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/情深深雨濛濛.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/雅俗共赏.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/野狼disco.mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;audio/这一生关于你的风景.mp3&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//通过循环遍历的方式添加点击事件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">lis</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">lis</span>[<span style="color:#a6e22e">i</span>].<span style="color:#a6e22e">onclick</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">lis</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">lis</span>[<span style="color:#a6e22e">i</span>]) {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">lis</span>[<span style="color:#a6e22e">i</span>].<span style="color:#a6e22e">className</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sty&#39;</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">ado</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>];
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">ado</span>.<span style="color:#a6e22e">play</span>();
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">con</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">lis</span>[<span style="color:#a6e22e">i</span>].<span style="color:#a6e22e">innerHTML</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">i</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">//通过ended事件监听是否播放完毕
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#a6e22e">ado</span>.<span style="color:#a6e22e">onended</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>					<span style="color:#a6e22e">a</span><span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">a</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">lis</span>.<span style="color:#a6e22e">length</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>){
+</span></span><span style="display:flex;"><span>						<span style="color:#a6e22e">a</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>					}
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">//通过for循环清空所有样式列表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">lis</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>						<span style="color:#a6e22e">lis</span>[<span style="color:#a6e22e">j</span>].<span style="color:#a6e22e">className</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>					}
+</span></span><span style="display:flex;"><span>					<span style="color:#75715e">//通过下标a给相应的列表进行样式的修饰和音乐的播放
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#a6e22e">con</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">lis</span>[<span style="color:#a6e22e">a</span>].<span style="color:#a6e22e">innerHTML</span>;
+</span></span><span style="display:flex;"><span>					<span style="color:#a6e22e">ado</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">a</span>];
+</span></span><span style="display:flex;"><span>					<span style="color:#a6e22e">ado</span>.<span style="color:#a6e22e">play</span>();
+</span></span><span style="display:flex;"><span>					<span style="color:#a6e22e">lis</span>[<span style="color:#a6e22e">a</span>].<span style="color:#a6e22e">className</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sty&#39;</span>;
+</span></span><span style="display:flex;"><span>				}
+</span></span><span style="display:flex;"><span>			} <span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">lis</span>[<span style="color:#a6e22e">i</span>].<span style="color:#a6e22e">className</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/music/">Music</a>
+        
+            <a href="/tags/web/">Web</a>
+        
+            <a href="/tags/online/">Online</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/web.message/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">网页间传递消息的几种方法</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

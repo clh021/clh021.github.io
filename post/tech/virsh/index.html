@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="snap [lnks@kp920 ~]$ virsh list --all Id Name State ------------------------------------------ 1 kylin-v10 running - chenlianghong shut off [lnks@kp920 ~]$ virsh dumpxml chenlianghong | grep &#34;source file&#34; &lt;source file=&#39;/var/lib/libvirt/filesystems/chenglianghong.qcow2&#39;/&gt; &lt;source file=&#39;/tmp/alpine-virt-3.22.2-aarch64.iso&#39;/&gt; [lnks@kp920 ~]$ ls -lah /var/lib/libvirt/filesystems/chenglianghong.qcow2 -rw-r--r-- 1 root root 157M Jan 14 10:56 /var/lib/libvirt/filesystems/chenglianghong.qcow2 [lnks@kp920 ~]$ sudo qemu-img snapshot -c &#34;afterInstall&#34; /var/lib/libvirt/filesystems/chenglianghong.qcow2 [sudo] password for lnks: [lnks@kp920 ~]$ qemu-img snapshot -l /var/lib/libvirt/filesystems/chenglianghong.qcow2 Snapshot list: ID TAG VM SIZE DATE VM CLOCK ICOUNT 1 afterInstall 0 B 2026-01-14 11:04:57 00:00:00.000 0 Use snap # 以后想回滚（危险！会覆盖当前状态） qemu-img snapshot -a &#34;afterInstall&#34; /var/lib/libvirt/filesystems/chenglianghong.qcow2 # 回滚后重新启动虚拟机即可 # 优点：快照速度极快，空间效率高，不会损坏 UEFI 变量 # 缺点：必须关机 + 手动管理（建议自己建个小脚本或别名） # 连快照一起备份 qemu-img convert -O qcow2 -c chenglianghong.qcow2 chenlianghong-back-compressed.qcow2 # 验证备份文件的快照是否正常 qemu-img snapshot -l chenlianghong-back-compressed.qcow2 # 查看备份文件的快照详细信息 qemu-img info --output=json backup.qcow2 | grep -A 10 snapshots Backup virsh machine # virsh dumpxml --inactive chenlianghong &gt; ~/vm-backups/chenlianghong.virsh-$(date +%Y%m%d).xml [lnks@kp920 virsh]$ virsh dumpxml --inactive chenlianghong &gt; chenlianghong.virsh-$(date +%Y%m%d%H).xml [lnks@kp920 virsh]$ virsh domblklist chenlianghong Target Source ------------------------------------------------------------- sda /var/lib/libvirt/filesystems/chenglianghong.qcow2 sdb /tmp/alpine-virt-3.22.2-aarch64.iso [lnks@kp920 virsh]$ cp --sparse=always /var/lib/libvirt/filesystems/chenglianghong.qcow2 chenlianghong.virsh-$(date +%Y%m%d%H).qcow2 [lnks@kp920 virsh]$ ls -lah total 139M drwxr-xr-x 2 lnks lnks 4.0K Jan 14 11:21 . drwxr-xr-x. 8 lnks lnks 4.0K Jan 14 11:17 .. -rw-r--r-- 1 lnks lnks 157M Jan 14 11:21 chenlianghong.virsh-20260114.qcow2 -rw-r--r-- 1 lnks lnks 4.8K Jan 14 11:18 chenlianghong.virsh-20260114.xml [lnks@kp920 virsh]$ ReStore virsh machine [lnks@kp920 sda]$ sudo mv chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/chenlianghong.qcow2 [lnks@kp920 sda]$ sudo ls -lah /var/lib/libvirt/filesystems/ total 230G drwx--x--x. 2 root root 4.0K Jan 14 13:04 . drwxr-xr-x. 9 root root 4.0K Dec 9 19:36 .. -rw-r--r-- 1 root root 66G Jan 14 13:02 chenglianghong.qcow2 -rw-r--r-- 1 root root 157M Jan 14 13:02 chenlianghong.qcow2 [lnks@kp920 sda]$ virsh edit chenlianghong Domain chenlianghong XML configuration edited. sudo cp --sparse=always /sda/lianghong/virsh/chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/ # 如果磁盘路径变了，先编辑 XML 文件，把 &lt;source file=&#39;...&#39;&gt; 改成新路径 # virsh define ~/vm-backups/某个备份.xml # 把指定的 XML 文件注册/定义到 libvirt 系统中，成为一个新的（或覆盖现有的）持久化虚拟机 virsh define /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml virsh start myvm # 最可靠的做法 # virsh dumpxml --inactive 你的虚拟机名 &gt; ~/vm-backups/你的虚拟机名-$(date +%Y%m%d).xml virsh dumpxml --inactive chenlianghong &gt; /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml Other [lnks@kp920 sda]$ virsh shutdown chenlianghong Domain chenlianghong is being shutdown [lnks@kp920 sda]$ virsh list --all --persistent Id Name State ------------------------------------------ 1 kylin-v10 running - chenlianghong shut off [lnks@kp920 sda]$ sudo ls -lah /etc/libvirt/qemu/ [sudo] password for lnks: total 152K drwx------. 4 root root 4.0K Jan 14 10:45 . drwx------. 6 root root 4.0K Jan 7 17:37 .. drwxr-xr-x. 2 root root 4.0K Jul 25 22:53 autostart -rw------- 1 root root 5.0K Jan 14 10:45 chenlianghong.xml -rw------- 1 root root 4.1K Jan 13 20:46 kylin-v10.xml [lnks@kp920 sda]$ virsh edit chenlianghong Domain chenlianghong XML configuration edited. [lnks@kp920 sda]$ virsh start chenlianghong Domain chenlianghong started [lnks@kp920 sda]$ virsh list --all --persistent Id Name State ------------------------------------------ 1 kylin-v10 running 42 chenlianghong running [lnks@kp920 sda]$ virsh shutdown chenlianghong Domain chenlianghong is being shutdown [lnks@kp920 lianghong]$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2 Snapshot list: ID TAG VM SIZE DATE VM CLOCK ICOUNT 1 afterInstall 0 B 2026-01-14 11:04:57 00:00:00.000 0 [lnks@kp920 lianghong]$ sudo qemu-img snapshot -c &#34;add-user-docker&#34; /var/lib/libvirt/filesystems/chenlianghong.qcow2 [lnks@kp920 lianghong]$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2 Snapshot list: ID TAG VM SIZE DATE VM CLOCK ICOUNT 1 afterInstall 0 B 2026-01-14 11:04:57 00:00:00.000 0 2 add-user-docker 0 B 2026-01-14 13:22:30 00:00:00.000 0 [lnks@kp920 lianghong]$ virsh domblklist chenlianghong Target Source ------------------------------------------------------------ sda /var/lib/libvirt/filesystems/chenlianghong.qcow2 sdb - [lnks@kp920 lianghong]$ virsh dumpxml --inactive chenlianghong &gt; chenlianghong.virsh-$(date +%Y%m%d%H).xml [lnks@kp920 lianghong]$ cp --sparse=always /var/lib/libvirt/filesystems/chenlianghong.qcow2 chenlianghong.virsh-$(date +%Y%m%d%H).qcow2 [lnks@kp920 lianghong]$ ls -lah total 386M drwxr-xr-x 2 lnks lnks 4.0K Jan 14 13:24 . drwxr-xr-x 13 lnks lnks 4.0K Jan 14 13:17 .. -rw-r--r-- 1 lnks lnks 419M Jan 14 13:24 chenlianghong.virsh-2026011413.qcow2 -rw-r--r-- 1 lnks lnks 4.7K Jan 14 13:24 chenlianghong.virsh-2026011413.xml Just Quick virsh shutdown chenlianghong virsh list --all --persistent sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2 # 创建快照 sudo qemu-img snapshot -c &#34;deploy sync customer&#34; /var/lib/libvirt/filesystems/chenlianghong.qcow2 # 使用ID恢复快照（例如恢复ID为1的快照） sudo qemu-img snapshot -a 1 /var/lib/libvirt/filesystems/chenlianghong.qcow2 # 使用快照名称恢复（例如恢复&#34;afterInstall&#34;快照） sudo qemu-img snapshot -a afterInstall /var/lib/libvirt/filesystems/chenlianghong.qcow2 virsh start chenlianghong ">
+<title>virsh</title>
+
+<link rel='canonical' href='/post/tech/virsh/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="virsh">
+<meta property='og:description' content="snap [lnks@kp920 ~]$ virsh list --all Id Name State ------------------------------------------ 1 kylin-v10 running - chenlianghong shut off [lnks@kp920 ~]$ virsh dumpxml chenlianghong | grep &#34;source file&#34; &lt;source file=&#39;/var/lib/libvirt/filesystems/chenglianghong.qcow2&#39;/&gt; &lt;source file=&#39;/tmp/alpine-virt-3.22.2-aarch64.iso&#39;/&gt; [lnks@kp920 ~]$ ls -lah /var/lib/libvirt/filesystems/chenglianghong.qcow2 -rw-r--r-- 1 root root 157M Jan 14 10:56 /var/lib/libvirt/filesystems/chenglianghong.qcow2 [lnks@kp920 ~]$ sudo qemu-img snapshot -c &#34;afterInstall&#34; /var/lib/libvirt/filesystems/chenglianghong.qcow2 [sudo] password for lnks: [lnks@kp920 ~]$ qemu-img snapshot -l /var/lib/libvirt/filesystems/chenglianghong.qcow2 Snapshot list: ID TAG VM SIZE DATE VM CLOCK ICOUNT 1 afterInstall 0 B 2026-01-14 11:04:57 00:00:00.000 0 Use snap # 以后想回滚（危险！会覆盖当前状态） qemu-img snapshot -a &#34;afterInstall&#34; /var/lib/libvirt/filesystems/chenglianghong.qcow2 # 回滚后重新启动虚拟机即可 # 优点：快照速度极快，空间效率高，不会损坏 UEFI 变量 # 缺点：必须关机 + 手动管理（建议自己建个小脚本或别名） # 连快照一起备份 qemu-img convert -O qcow2 -c chenglianghong.qcow2 chenlianghong-back-compressed.qcow2 # 验证备份文件的快照是否正常 qemu-img snapshot -l chenlianghong-back-compressed.qcow2 # 查看备份文件的快照详细信息 qemu-img info --output=json backup.qcow2 | grep -A 10 snapshots Backup virsh machine # virsh dumpxml --inactive chenlianghong &gt; ~/vm-backups/chenlianghong.virsh-$(date +%Y%m%d).xml [lnks@kp920 virsh]$ virsh dumpxml --inactive chenlianghong &gt; chenlianghong.virsh-$(date +%Y%m%d%H).xml [lnks@kp920 virsh]$ virsh domblklist chenlianghong Target Source ------------------------------------------------------------- sda /var/lib/libvirt/filesystems/chenglianghong.qcow2 sdb /tmp/alpine-virt-3.22.2-aarch64.iso [lnks@kp920 virsh]$ cp --sparse=always /var/lib/libvirt/filesystems/chenglianghong.qcow2 chenlianghong.virsh-$(date +%Y%m%d%H).qcow2 [lnks@kp920 virsh]$ ls -lah total 139M drwxr-xr-x 2 lnks lnks 4.0K Jan 14 11:21 . drwxr-xr-x. 8 lnks lnks 4.0K Jan 14 11:17 .. -rw-r--r-- 1 lnks lnks 157M Jan 14 11:21 chenlianghong.virsh-20260114.qcow2 -rw-r--r-- 1 lnks lnks 4.8K Jan 14 11:18 chenlianghong.virsh-20260114.xml [lnks@kp920 virsh]$ ReStore virsh machine [lnks@kp920 sda]$ sudo mv chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/chenlianghong.qcow2 [lnks@kp920 sda]$ sudo ls -lah /var/lib/libvirt/filesystems/ total 230G drwx--x--x. 2 root root 4.0K Jan 14 13:04 . drwxr-xr-x. 9 root root 4.0K Dec 9 19:36 .. -rw-r--r-- 1 root root 66G Jan 14 13:02 chenglianghong.qcow2 -rw-r--r-- 1 root root 157M Jan 14 13:02 chenlianghong.qcow2 [lnks@kp920 sda]$ virsh edit chenlianghong Domain chenlianghong XML configuration edited. sudo cp --sparse=always /sda/lianghong/virsh/chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/ # 如果磁盘路径变了，先编辑 XML 文件，把 &lt;source file=&#39;...&#39;&gt; 改成新路径 # virsh define ~/vm-backups/某个备份.xml # 把指定的 XML 文件注册/定义到 libvirt 系统中，成为一个新的（或覆盖现有的）持久化虚拟机 virsh define /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml virsh start myvm # 最可靠的做法 # virsh dumpxml --inactive 你的虚拟机名 &gt; ~/vm-backups/你的虚拟机名-$(date +%Y%m%d).xml virsh dumpxml --inactive chenlianghong &gt; /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml Other [lnks@kp920 sda]$ virsh shutdown chenlianghong Domain chenlianghong is being shutdown [lnks@kp920 sda]$ virsh list --all --persistent Id Name State ------------------------------------------ 1 kylin-v10 running - chenlianghong shut off [lnks@kp920 sda]$ sudo ls -lah /etc/libvirt/qemu/ [sudo] password for lnks: total 152K drwx------. 4 root root 4.0K Jan 14 10:45 . drwx------. 6 root root 4.0K Jan 7 17:37 .. drwxr-xr-x. 2 root root 4.0K Jul 25 22:53 autostart -rw------- 1 root root 5.0K Jan 14 10:45 chenlianghong.xml -rw------- 1 root root 4.1K Jan 13 20:46 kylin-v10.xml [lnks@kp920 sda]$ virsh edit chenlianghong Domain chenlianghong XML configuration edited. [lnks@kp920 sda]$ virsh start chenlianghong Domain chenlianghong started [lnks@kp920 sda]$ virsh list --all --persistent Id Name State ------------------------------------------ 1 kylin-v10 running 42 chenlianghong running [lnks@kp920 sda]$ virsh shutdown chenlianghong Domain chenlianghong is being shutdown [lnks@kp920 lianghong]$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2 Snapshot list: ID TAG VM SIZE DATE VM CLOCK ICOUNT 1 afterInstall 0 B 2026-01-14 11:04:57 00:00:00.000 0 [lnks@kp920 lianghong]$ sudo qemu-img snapshot -c &#34;add-user-docker&#34; /var/lib/libvirt/filesystems/chenlianghong.qcow2 [lnks@kp920 lianghong]$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2 Snapshot list: ID TAG VM SIZE DATE VM CLOCK ICOUNT 1 afterInstall 0 B 2026-01-14 11:04:57 00:00:00.000 0 2 add-user-docker 0 B 2026-01-14 13:22:30 00:00:00.000 0 [lnks@kp920 lianghong]$ virsh domblklist chenlianghong Target Source ------------------------------------------------------------ sda /var/lib/libvirt/filesystems/chenlianghong.qcow2 sdb - [lnks@kp920 lianghong]$ virsh dumpxml --inactive chenlianghong &gt; chenlianghong.virsh-$(date +%Y%m%d%H).xml [lnks@kp920 lianghong]$ cp --sparse=always /var/lib/libvirt/filesystems/chenlianghong.qcow2 chenlianghong.virsh-$(date +%Y%m%d%H).qcow2 [lnks@kp920 lianghong]$ ls -lah total 386M drwxr-xr-x 2 lnks lnks 4.0K Jan 14 13:24 . drwxr-xr-x 13 lnks lnks 4.0K Jan 14 13:17 .. -rw-r--r-- 1 lnks lnks 419M Jan 14 13:24 chenlianghong.virsh-2026011413.qcow2 -rw-r--r-- 1 lnks lnks 4.7K Jan 14 13:24 chenlianghong.virsh-2026011413.xml Just Quick virsh shutdown chenlianghong virsh list --all --persistent sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2 # 创建快照 sudo qemu-img snapshot -c &#34;deploy sync customer&#34; /var/lib/libvirt/filesystems/chenlianghong.qcow2 # 使用ID恢复快照（例如恢复ID为1的快照） sudo qemu-img snapshot -a 1 /var/lib/libvirt/filesystems/chenlianghong.qcow2 # 使用快照名称恢复（例如恢复&#34;afterInstall&#34;快照） sudo qemu-img snapshot -a afterInstall /var/lib/libvirt/filesystems/chenlianghong.qcow2 virsh start chenlianghong ">
+<meta property='og:url' content='/post/tech/virsh/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='virsh' /><meta property='article:published_time' content='2026-01-14T11:04:47&#43;08:00'/><meta property='article:modified_time' content='2026-01-14T11:04:47&#43;08:00'/>
+<meta name="twitter:title" content="virsh">
+<meta name="twitter:description" content="snap [lnks@kp920 ~]$ virsh list --all Id Name State ------------------------------------------ 1 kylin-v10 running - chenlianghong shut off [lnks@kp920 ~]$ virsh dumpxml chenlianghong | grep &#34;source file&#34; &lt;source file=&#39;/var/lib/libvirt/filesystems/chenglianghong.qcow2&#39;/&gt; &lt;source file=&#39;/tmp/alpine-virt-3.22.2-aarch64.iso&#39;/&gt; [lnks@kp920 ~]$ ls -lah /var/lib/libvirt/filesystems/chenglianghong.qcow2 -rw-r--r-- 1 root root 157M Jan 14 10:56 /var/lib/libvirt/filesystems/chenglianghong.qcow2 [lnks@kp920 ~]$ sudo qemu-img snapshot -c &#34;afterInstall&#34; /var/lib/libvirt/filesystems/chenglianghong.qcow2 [sudo] password for lnks: [lnks@kp920 ~]$ qemu-img snapshot -l /var/lib/libvirt/filesystems/chenglianghong.qcow2 Snapshot list: ID TAG VM SIZE DATE VM CLOCK ICOUNT 1 afterInstall 0 B 2026-01-14 11:04:57 00:00:00.000 0 Use snap # 以后想回滚（危险！会覆盖当前状态） qemu-img snapshot -a &#34;afterInstall&#34; /var/lib/libvirt/filesystems/chenglianghong.qcow2 # 回滚后重新启动虚拟机即可 # 优点：快照速度极快，空间效率高，不会损坏 UEFI 变量 # 缺点：必须关机 + 手动管理（建议自己建个小脚本或别名） # 连快照一起备份 qemu-img convert -O qcow2 -c chenglianghong.qcow2 chenlianghong-back-compressed.qcow2 # 验证备份文件的快照是否正常 qemu-img snapshot -l chenlianghong-back-compressed.qcow2 # 查看备份文件的快照详细信息 qemu-img info --output=json backup.qcow2 | grep -A 10 snapshots Backup virsh machine # virsh dumpxml --inactive chenlianghong &gt; ~/vm-backups/chenlianghong.virsh-$(date +%Y%m%d).xml [lnks@kp920 virsh]$ virsh dumpxml --inactive chenlianghong &gt; chenlianghong.virsh-$(date +%Y%m%d%H).xml [lnks@kp920 virsh]$ virsh domblklist chenlianghong Target Source ------------------------------------------------------------- sda /var/lib/libvirt/filesystems/chenglianghong.qcow2 sdb /tmp/alpine-virt-3.22.2-aarch64.iso [lnks@kp920 virsh]$ cp --sparse=always /var/lib/libvirt/filesystems/chenglianghong.qcow2 chenlianghong.virsh-$(date +%Y%m%d%H).qcow2 [lnks@kp920 virsh]$ ls -lah total 139M drwxr-xr-x 2 lnks lnks 4.0K Jan 14 11:21 . drwxr-xr-x. 8 lnks lnks 4.0K Jan 14 11:17 .. -rw-r--r-- 1 lnks lnks 157M Jan 14 11:21 chenlianghong.virsh-20260114.qcow2 -rw-r--r-- 1 lnks lnks 4.8K Jan 14 11:18 chenlianghong.virsh-20260114.xml [lnks@kp920 virsh]$ ReStore virsh machine [lnks@kp920 sda]$ sudo mv chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/chenlianghong.qcow2 [lnks@kp920 sda]$ sudo ls -lah /var/lib/libvirt/filesystems/ total 230G drwx--x--x. 2 root root 4.0K Jan 14 13:04 . drwxr-xr-x. 9 root root 4.0K Dec 9 19:36 .. -rw-r--r-- 1 root root 66G Jan 14 13:02 chenglianghong.qcow2 -rw-r--r-- 1 root root 157M Jan 14 13:02 chenlianghong.qcow2 [lnks@kp920 sda]$ virsh edit chenlianghong Domain chenlianghong XML configuration edited. sudo cp --sparse=always /sda/lianghong/virsh/chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/ # 如果磁盘路径变了，先编辑 XML 文件，把 &lt;source file=&#39;...&#39;&gt; 改成新路径 # virsh define ~/vm-backups/某个备份.xml # 把指定的 XML 文件注册/定义到 libvirt 系统中，成为一个新的（或覆盖现有的）持久化虚拟机 virsh define /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml virsh start myvm # 最可靠的做法 # virsh dumpxml --inactive 你的虚拟机名 &gt; ~/vm-backups/你的虚拟机名-$(date +%Y%m%d).xml virsh dumpxml --inactive chenlianghong &gt; /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml Other [lnks@kp920 sda]$ virsh shutdown chenlianghong Domain chenlianghong is being shutdown [lnks@kp920 sda]$ virsh list --all --persistent Id Name State ------------------------------------------ 1 kylin-v10 running - chenlianghong shut off [lnks@kp920 sda]$ sudo ls -lah /etc/libvirt/qemu/ [sudo] password for lnks: total 152K drwx------. 4 root root 4.0K Jan 14 10:45 . drwx------. 6 root root 4.0K Jan 7 17:37 .. drwxr-xr-x. 2 root root 4.0K Jul 25 22:53 autostart -rw------- 1 root root 5.0K Jan 14 10:45 chenlianghong.xml -rw------- 1 root root 4.1K Jan 13 20:46 kylin-v10.xml [lnks@kp920 sda]$ virsh edit chenlianghong Domain chenlianghong XML configuration edited. [lnks@kp920 sda]$ virsh start chenlianghong Domain chenlianghong started [lnks@kp920 sda]$ virsh list --all --persistent Id Name State ------------------------------------------ 1 kylin-v10 running 42 chenlianghong running [lnks@kp920 sda]$ virsh shutdown chenlianghong Domain chenlianghong is being shutdown [lnks@kp920 lianghong]$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2 Snapshot list: ID TAG VM SIZE DATE VM CLOCK ICOUNT 1 afterInstall 0 B 2026-01-14 11:04:57 00:00:00.000 0 [lnks@kp920 lianghong]$ sudo qemu-img snapshot -c &#34;add-user-docker&#34; /var/lib/libvirt/filesystems/chenlianghong.qcow2 [lnks@kp920 lianghong]$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2 Snapshot list: ID TAG VM SIZE DATE VM CLOCK ICOUNT 1 afterInstall 0 B 2026-01-14 11:04:57 00:00:00.000 0 2 add-user-docker 0 B 2026-01-14 13:22:30 00:00:00.000 0 [lnks@kp920 lianghong]$ virsh domblklist chenlianghong Target Source ------------------------------------------------------------ sda /var/lib/libvirt/filesystems/chenlianghong.qcow2 sdb - [lnks@kp920 lianghong]$ virsh dumpxml --inactive chenlianghong &gt; chenlianghong.virsh-$(date +%Y%m%d%H).xml [lnks@kp920 lianghong]$ cp --sparse=always /var/lib/libvirt/filesystems/chenlianghong.qcow2 chenlianghong.virsh-$(date +%Y%m%d%H).qcow2 [lnks@kp920 lianghong]$ ls -lah total 386M drwxr-xr-x 2 lnks lnks 4.0K Jan 14 13:24 . drwxr-xr-x 13 lnks lnks 4.0K Jan 14 13:17 .. -rw-r--r-- 1 lnks lnks 419M Jan 14 13:24 chenlianghong.virsh-2026011413.qcow2 -rw-r--r-- 1 lnks lnks 4.7K Jan 14 13:24 chenlianghong.virsh-2026011413.xml Just Quick virsh shutdown chenlianghong virsh list --all --persistent sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2 # 创建快照 sudo qemu-img snapshot -c &#34;deploy sync customer&#34; /var/lib/libvirt/filesystems/chenlianghong.qcow2 # 使用ID恢复快照（例如恢复ID为1的快照） sudo qemu-img snapshot -a 1 /var/lib/libvirt/filesystems/chenlianghong.qcow2 # 使用快照名称恢复（例如恢复&#34;afterInstall&#34;快照） sudo qemu-img snapshot -a afterInstall /var/lib/libvirt/filesystems/chenlianghong.qcow2 virsh start chenlianghong ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/virsh/">virsh</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2026-01-14T11:04:47&#43;08:00'>2026-01-14 11:04:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="snap">snap
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 ~<span style="color:#f92672">]</span>$ virsh list --all
+</span></span><span style="display:flex;"><span> Id   Name                      State
+</span></span><span style="display:flex;"><span>------------------------------------------
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span>    kylin-v10                 running
+</span></span><span style="display:flex;"><span> -    chenlianghong             shut off
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 ~<span style="color:#f92672">]</span>$ virsh dumpxml chenlianghong | grep <span style="color:#e6db74">&#34;source file&#34;</span>
+</span></span><span style="display:flex;"><span>      &lt;source file<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;/var/lib/libvirt/filesystems/chenglianghong.qcow2&#39;</span>/&gt;
+</span></span><span style="display:flex;"><span>      &lt;source file<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;/tmp/alpine-virt-3.22.2-aarch64.iso&#39;</span>/&gt;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 ~<span style="color:#f92672">]</span>$ ls -lah /var/lib/libvirt/filesystems/chenglianghong.qcow2
+</span></span><span style="display:flex;"><span>-rw-r--r-- <span style="color:#ae81ff">1</span> root root 157M Jan <span style="color:#ae81ff">14</span> 10:56 /var/lib/libvirt/filesystems/chenglianghong.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 ~<span style="color:#f92672">]</span>$ sudo qemu-img snapshot -c <span style="color:#e6db74">&#34;afterInstall&#34;</span> /var/lib/libvirt/filesystems/chenglianghong.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> lnks: 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 ~<span style="color:#f92672">]</span>$ qemu-img snapshot -l /var/lib/libvirt/filesystems/chenglianghong.qcow2
+</span></span><span style="display:flex;"><span>Snapshot list:
+</span></span><span style="display:flex;"><span>ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>         afterInstall          <span style="color:#ae81ff">0</span> B 2026-01-14 11:04:57 00:00:00.000          <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><h2 id="use-snap">Use snap
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 以后想回滚（危险！会覆盖当前状态）</span>
+</span></span><span style="display:flex;"><span>qemu-img snapshot -a <span style="color:#e6db74">&#34;afterInstall&#34;</span> /var/lib/libvirt/filesystems/chenglianghong.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 回滚后重新启动虚拟机即可</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 优点：快照速度极快，空间效率高，不会损坏 UEFI 变量</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 缺点：必须关机 + 手动管理（建议自己建个小脚本或别名）</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 连快照一起备份</span>
+</span></span><span style="display:flex;"><span>qemu-img convert -O qcow2 -c chenglianghong.qcow2 chenlianghong-back-compressed.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 验证备份文件的快照是否正常</span>
+</span></span><span style="display:flex;"><span>qemu-img snapshot -l chenlianghong-back-compressed.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看备份文件的快照详细信息</span>
+</span></span><span style="display:flex;"><span>qemu-img info --output<span style="color:#f92672">=</span>json backup.qcow2 | grep -A <span style="color:#ae81ff">10</span> snapshots
+</span></span></code></pre></div><h2 id="backup-virsh-machine">Backup virsh machine
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># virsh dumpxml --inactive chenlianghong &gt; ~/vm-backups/chenlianghong.virsh-$(date +%Y%m%d).xml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 virsh<span style="color:#f92672">]</span>$ virsh dumpxml --inactive chenlianghong &gt; chenlianghong.virsh-<span style="color:#66d9ef">$(</span>date +%Y%m%d%H<span style="color:#66d9ef">)</span>.xml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 virsh<span style="color:#f92672">]</span>$ virsh domblklist chenlianghong
+</span></span><span style="display:flex;"><span> Target   Source
+</span></span><span style="display:flex;"><span>-------------------------------------------------------------
+</span></span><span style="display:flex;"><span> sda      /var/lib/libvirt/filesystems/chenglianghong.qcow2
+</span></span><span style="display:flex;"><span> sdb      /tmp/alpine-virt-3.22.2-aarch64.iso
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 virsh<span style="color:#f92672">]</span>$ cp --sparse<span style="color:#f92672">=</span>always /var/lib/libvirt/filesystems/chenglianghong.qcow2 chenlianghong.virsh-<span style="color:#66d9ef">$(</span>date +%Y%m%d%H<span style="color:#66d9ef">)</span>.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 virsh<span style="color:#f92672">]</span>$ ls -lah
+</span></span><span style="display:flex;"><span>total 139M
+</span></span><span style="display:flex;"><span>drwxr-xr-x  <span style="color:#ae81ff">2</span> lnks lnks 4.0K Jan <span style="color:#ae81ff">14</span> 11:21 .
+</span></span><span style="display:flex;"><span>drwxr-xr-x. <span style="color:#ae81ff">8</span> lnks lnks 4.0K Jan <span style="color:#ae81ff">14</span> 11:17 ..
+</span></span><span style="display:flex;"><span>-rw-r--r--  <span style="color:#ae81ff">1</span> lnks lnks 157M Jan <span style="color:#ae81ff">14</span> 11:21 chenlianghong.virsh-20260114.qcow2
+</span></span><span style="display:flex;"><span>-rw-r--r--  <span style="color:#ae81ff">1</span> lnks lnks 4.8K Jan <span style="color:#ae81ff">14</span> 11:18 chenlianghong.virsh-20260114.xml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 virsh<span style="color:#f92672">]</span>$ 
+</span></span></code></pre></div><h2 id="restore-virsh-machine">ReStore virsh machine
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ sudo mv chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/chenlianghong.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ sudo ls -lah /var/lib/libvirt/filesystems/
+</span></span><span style="display:flex;"><span>total 230G
+</span></span><span style="display:flex;"><span>drwx--x--x. <span style="color:#ae81ff">2</span> root root 4.0K Jan <span style="color:#ae81ff">14</span> 13:04 .
+</span></span><span style="display:flex;"><span>drwxr-xr-x. <span style="color:#ae81ff">9</span> root root 4.0K Dec  <span style="color:#ae81ff">9</span> 19:36 ..
+</span></span><span style="display:flex;"><span>-rw-r--r--  <span style="color:#ae81ff">1</span> root root  66G Jan <span style="color:#ae81ff">14</span> 13:02 chenglianghong.qcow2
+</span></span><span style="display:flex;"><span>-rw-r--r--  <span style="color:#ae81ff">1</span> root root 157M Jan <span style="color:#ae81ff">14</span> 13:02 chenlianghong.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ virsh edit chenlianghong
+</span></span><span style="display:flex;"><span>Domain chenlianghong XML configuration edited.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo cp --sparse<span style="color:#f92672">=</span>always /sda/lianghong/virsh/chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果磁盘路径变了，先编辑 XML 文件，把 &lt;source file=&#39;...&#39;&gt; 改成新路径</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># virsh define ~/vm-backups/某个备份.xml</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 把指定的 XML 文件注册/定义到 libvirt 系统中，成为一个新的（或覆盖现有的）持久化虚拟机</span>
+</span></span><span style="display:flex;"><span>virsh define /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml
+</span></span><span style="display:flex;"><span>virsh start myvm
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 最可靠的做法</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># virsh dumpxml --inactive 你的虚拟机名 &gt; ~/vm-backups/你的虚拟机名-$(date +%Y%m%d).xml</span>
+</span></span><span style="display:flex;"><span>virsh dumpxml --inactive chenlianghong &gt; /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml
+</span></span></code></pre></div><h2 id="other">Other
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ virsh shutdown chenlianghong
+</span></span><span style="display:flex;"><span>Domain chenlianghong is being shutdown
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ virsh list --all --persistent
+</span></span><span style="display:flex;"><span> Id   Name                      State
+</span></span><span style="display:flex;"><span>------------------------------------------
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span>    kylin-v10                 running
+</span></span><span style="display:flex;"><span> -    chenlianghong             shut off
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ sudo ls -lah /etc/libvirt/qemu/
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> lnks: 
+</span></span><span style="display:flex;"><span>total 152K
+</span></span><span style="display:flex;"><span>drwx------. <span style="color:#ae81ff">4</span> root root 4.0K Jan <span style="color:#ae81ff">14</span> 10:45 .
+</span></span><span style="display:flex;"><span>drwx------. <span style="color:#ae81ff">6</span> root root 4.0K Jan  <span style="color:#ae81ff">7</span> 17:37 ..
+</span></span><span style="display:flex;"><span>drwxr-xr-x. <span style="color:#ae81ff">2</span> root root 4.0K Jul <span style="color:#ae81ff">25</span> 22:53 autostart
+</span></span><span style="display:flex;"><span>-rw-------  <span style="color:#ae81ff">1</span> root root 5.0K Jan <span style="color:#ae81ff">14</span> 10:45 chenlianghong.xml
+</span></span><span style="display:flex;"><span>-rw-------  <span style="color:#ae81ff">1</span> root root 4.1K Jan <span style="color:#ae81ff">13</span> 20:46 kylin-v10.xml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ virsh edit chenlianghong
+</span></span><span style="display:flex;"><span>Domain chenlianghong XML configuration edited.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ virsh start chenlianghong
+</span></span><span style="display:flex;"><span>Domain chenlianghong started
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ virsh list --all --persistent
+</span></span><span style="display:flex;"><span> Id   Name                      State
+</span></span><span style="display:flex;"><span>------------------------------------------
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span>    kylin-v10                 running
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">42</span>   chenlianghong             running
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 sda<span style="color:#f92672">]</span>$ virsh shutdown chenlianghong
+</span></span><span style="display:flex;"><span>Domain chenlianghong is being shutdown
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 lianghong<span style="color:#f92672">]</span>$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2
+</span></span><span style="display:flex;"><span>Snapshot list:
+</span></span><span style="display:flex;"><span>ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>         afterInstall          <span style="color:#ae81ff">0</span> B 2026-01-14 11:04:57 00:00:00.000          <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 lianghong<span style="color:#f92672">]</span>$ sudo qemu-img snapshot -c <span style="color:#e6db74">&#34;add-user-docker&#34;</span> /var/lib/libvirt/filesystems/chenlianghong.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 lianghong<span style="color:#f92672">]</span>$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2
+</span></span><span style="display:flex;"><span>Snapshot list:
+</span></span><span style="display:flex;"><span>ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>         afterInstall          <span style="color:#ae81ff">0</span> B 2026-01-14 11:04:57 00:00:00.000          <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>         add-user-docker       <span style="color:#ae81ff">0</span> B 2026-01-14 13:22:30 00:00:00.000          <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 lianghong<span style="color:#f92672">]</span>$ virsh domblklist chenlianghong
+</span></span><span style="display:flex;"><span> Target   Source
+</span></span><span style="display:flex;"><span>------------------------------------------------------------
+</span></span><span style="display:flex;"><span> sda      /var/lib/libvirt/filesystems/chenlianghong.qcow2
+</span></span><span style="display:flex;"><span> sdb      -
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 lianghong<span style="color:#f92672">]</span>$ virsh dumpxml --inactive chenlianghong &gt; chenlianghong.virsh-<span style="color:#66d9ef">$(</span>date +%Y%m%d%H<span style="color:#66d9ef">)</span>.xml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 lianghong<span style="color:#f92672">]</span>$ cp --sparse<span style="color:#f92672">=</span>always /var/lib/libvirt/filesystems/chenlianghong.qcow2 chenlianghong.virsh-<span style="color:#66d9ef">$(</span>date +%Y%m%d%H<span style="color:#66d9ef">)</span>.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>lnks@kp920 lianghong<span style="color:#f92672">]</span>$ ls -lah
+</span></span><span style="display:flex;"><span>total 386M
+</span></span><span style="display:flex;"><span>drwxr-xr-x  <span style="color:#ae81ff">2</span> lnks lnks 4.0K Jan <span style="color:#ae81ff">14</span> 13:24 .
+</span></span><span style="display:flex;"><span>drwxr-xr-x <span style="color:#ae81ff">13</span> lnks lnks 4.0K Jan <span style="color:#ae81ff">14</span> 13:17 ..
+</span></span><span style="display:flex;"><span>-rw-r--r--  <span style="color:#ae81ff">1</span> lnks lnks 419M Jan <span style="color:#ae81ff">14</span> 13:24 chenlianghong.virsh-2026011413.qcow2
+</span></span><span style="display:flex;"><span>-rw-r--r--  <span style="color:#ae81ff">1</span> lnks lnks 4.7K Jan <span style="color:#ae81ff">14</span> 13:24 chenlianghong.virsh-2026011413.xml
+</span></span></code></pre></div><h1 id="just-quick">Just Quick
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>virsh shutdown chenlianghong
+</span></span><span style="display:flex;"><span>virsh list --all --persistent
+</span></span><span style="display:flex;"><span>sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建快照</span>
+</span></span><span style="display:flex;"><span>sudo qemu-img snapshot -c <span style="color:#e6db74">&#34;deploy sync customer&#34;</span> /var/lib/libvirt/filesystems/chenlianghong.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用ID恢复快照（例如恢复ID为1的快照）</span>
+</span></span><span style="display:flex;"><span>sudo qemu-img snapshot -a <span style="color:#ae81ff">1</span> /var/lib/libvirt/filesystems/chenlianghong.qcow2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用快照名称恢复（例如恢复&#34;afterInstall&#34;快照）</span>
+</span></span><span style="display:flex;"><span>sudo qemu-img snapshot -a afterInstall /var/lib/libvirt/filesystems/chenlianghong.qcow2
+</span></span><span style="display:flex;"><span>virsh start chenlianghong
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/virsh/">Virsh</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

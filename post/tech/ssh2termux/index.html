@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="安装 termux 从这里下载 termux\nadb install ~/Downloads/termux-app_v0.118.0+github-debug_arm64-v8a.apk 安装 ssh 服务 请求权限时，总是选择默认选项，不让修改任何设置\npkg install root-repo pkg upgrade pkg install openssh passwd # 设置好密码 sshd # 启动服务 链接 ssh 服务 ssh &lt;ip of android device&gt; -p 8022 # 使用刚刚设置的密码 # scp 本地文件路径 远程主机用户名@远程主机名或IP:远程文件保存的位置路径 # scp local_file remote_username@remote_ip:remote_folder # scp -P 8022 .ssh.tar.gz 192.168.1.132:~/ # scp -r 本地文件夹路径 远程主机用户名@远程主机名或IP:远程文件夹保存的位置路径 # scp -r local_folder remote_username@remote_ip:remote_folder 扩展 Termux高级玩法 # 批量安装需要的包 pkg add git wget curl termux-change-repo # 更换源 pkg update # 发起手机存储的请求权限 termux-setup-storage # proot可以为手机没有root的设备模拟root环境，不是真正的 root pkg install proot termux-chroot # tsu 是su的 Termux 版本，是一个真正的 root 权限，root设备才能用，操作有风险 pkg install tsu tsu # 切换 root用户 # 备份 termux-setup-storage cd /data/data/com.termux/files tar -zcf /sdcard/termux-backup.tar.gz home usr # 不要将备份文件存储在 Termux 私有目录中，因为从设置中清除 Termux 数据后，这些目录也将被删除 # 恢复 termux-setup-storage cd /data/data/com.termux/files tar -zxf /sdcard/termux-backup.tar.gz --recursive-unlink --preserve-permissions # 操作完成重启 Termux 即可恢复数据。 termux-api 从这里下载并安装termux-api最新匹配版本的 app。安装后给出需要的所有权限。\n">
+<title>ssh into termux</title>
+
+<link rel='canonical' href='/post/tech/ssh2termux/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="ssh into termux">
+<meta property='og:description' content="安装 termux 从这里下载 termux\nadb install ~/Downloads/termux-app_v0.118.0+github-debug_arm64-v8a.apk 安装 ssh 服务 请求权限时，总是选择默认选项，不让修改任何设置\npkg install root-repo pkg upgrade pkg install openssh passwd # 设置好密码 sshd # 启动服务 链接 ssh 服务 ssh &lt;ip of android device&gt; -p 8022 # 使用刚刚设置的密码 # scp 本地文件路径 远程主机用户名@远程主机名或IP:远程文件保存的位置路径 # scp local_file remote_username@remote_ip:remote_folder # scp -P 8022 .ssh.tar.gz 192.168.1.132:~/ # scp -r 本地文件夹路径 远程主机用户名@远程主机名或IP:远程文件夹保存的位置路径 # scp -r local_folder remote_username@remote_ip:remote_folder 扩展 Termux高级玩法 # 批量安装需要的包 pkg add git wget curl termux-change-repo # 更换源 pkg update # 发起手机存储的请求权限 termux-setup-storage # proot可以为手机没有root的设备模拟root环境，不是真正的 root pkg install proot termux-chroot # tsu 是su的 Termux 版本，是一个真正的 root 权限，root设备才能用，操作有风险 pkg install tsu tsu # 切换 root用户 # 备份 termux-setup-storage cd /data/data/com.termux/files tar -zcf /sdcard/termux-backup.tar.gz home usr # 不要将备份文件存储在 Termux 私有目录中，因为从设置中清除 Termux 数据后，这些目录也将被删除 # 恢复 termux-setup-storage cd /data/data/com.termux/files tar -zxf /sdcard/termux-backup.tar.gz --recursive-unlink --preserve-permissions # 操作完成重启 Termux 即可恢复数据。 termux-api 从这里下载并安装termux-api最新匹配版本的 app。安装后给出需要的所有权限。\n">
+<meta property='og:url' content='/post/tech/ssh2termux/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssh' /><meta property='article:tag' content='termux' /><meta property='article:published_time' content='2022-05-10T12:14:17&#43;08:00'/><meta property='article:modified_time' content='2022-05-10T12:14:17&#43;08:00'/>
+<meta name="twitter:title" content="ssh into termux">
+<meta name="twitter:description" content="安装 termux 从这里下载 termux\nadb install ~/Downloads/termux-app_v0.118.0+github-debug_arm64-v8a.apk 安装 ssh 服务 请求权限时，总是选择默认选项，不让修改任何设置\npkg install root-repo pkg upgrade pkg install openssh passwd # 设置好密码 sshd # 启动服务 链接 ssh 服务 ssh &lt;ip of android device&gt; -p 8022 # 使用刚刚设置的密码 # scp 本地文件路径 远程主机用户名@远程主机名或IP:远程文件保存的位置路径 # scp local_file remote_username@remote_ip:remote_folder # scp -P 8022 .ssh.tar.gz 192.168.1.132:~/ # scp -r 本地文件夹路径 远程主机用户名@远程主机名或IP:远程文件夹保存的位置路径 # scp -r local_folder remote_username@remote_ip:remote_folder 扩展 Termux高级玩法 # 批量安装需要的包 pkg add git wget curl termux-change-repo # 更换源 pkg update # 发起手机存储的请求权限 termux-setup-storage # proot可以为手机没有root的设备模拟root环境，不是真正的 root pkg install proot termux-chroot # tsu 是su的 Termux 版本，是一个真正的 root 权限，root设备才能用，操作有风险 pkg install tsu tsu # 切换 root用户 # 备份 termux-setup-storage cd /data/data/com.termux/files tar -zcf /sdcard/termux-backup.tar.gz home usr # 不要将备份文件存储在 Termux 私有目录中，因为从设置中清除 Termux 数据后，这些目录也将被删除 # 恢复 termux-setup-storage cd /data/data/com.termux/files tar -zxf /sdcard/termux-backup.tar.gz --recursive-unlink --preserve-permissions # 操作完成重启 Termux 即可恢复数据。 termux-api 从这里下载并安装termux-api最新匹配版本的 app。安装后给出需要的所有权限。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/ssh2termux/">ssh into termux</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2022-05-10T12:14:17&#43;08:00'>2022-05-10 12:14:17</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 14 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="安装-termux">安装 termux
+</h1><p>从<a class="link" href="https://github.com/termux/termux-app/releases"  target="_blank" rel="noopener"
+    >这里</a>下载 termux</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>adb install ~/Downloads/termux-app_v0.118.0+github-debug_arm64-v8a.apk
+</span></span></code></pre></div><h1 id="安装-ssh-服务">安装 ssh 服务
+</h1><blockquote>
+<p>请求权限时，总是选择默认选项，不让修改任何设置</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pkg install root-repo
+</span></span><span style="display:flex;"><span>pkg upgrade
+</span></span><span style="display:flex;"><span>pkg install openssh
+</span></span><span style="display:flex;"><span>passwd <span style="color:#75715e"># 设置好密码</span>
+</span></span><span style="display:flex;"><span>sshd <span style="color:#75715e"># 启动服务</span>
+</span></span></code></pre></div><h1 id="链接-ssh-服务">链接 ssh 服务
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh &lt;ip of android device&gt; -p <span style="color:#ae81ff">8022</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用刚刚设置的密码</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># scp 本地文件路径 远程主机用户名@远程主机名或IP:远程文件保存的位置路径</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># scp local_file remote_username@remote_ip:remote_folder</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># scp -P 8022 .ssh.tar.gz 192.168.1.132:~/</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># scp -r 本地文件夹路径 远程主机用户名@远程主机名或IP:远程文件夹保存的位置路径</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># scp -r local_folder remote_username@remote_ip:remote_folder</span>
+</span></span></code></pre></div><h1 id="扩展">扩展
+</h1><ul>
+<li><a class="link" href="https://www.sqlsec.com/2018/05/termux.html"  target="_blank" rel="noopener"
+    >Termux高级玩法</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 批量安装需要的包</span>
+</span></span><span style="display:flex;"><span>pkg add git wget curl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>termux-change-repo <span style="color:#75715e"># 更换源</span>
+</span></span><span style="display:flex;"><span>pkg update
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 发起手机存储的请求权限</span>
+</span></span><span style="display:flex;"><span>termux-setup-storage
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># proot可以为手机没有root的设备模拟root环境，不是真正的 root</span>
+</span></span><span style="display:flex;"><span>pkg install proot
+</span></span><span style="display:flex;"><span>termux-chroot
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># tsu 是su的 Termux 版本，是一个真正的 root 权限，root设备才能用，操作有风险</span>
+</span></span><span style="display:flex;"><span>pkg install tsu
+</span></span><span style="display:flex;"><span>tsu <span style="color:#75715e"># 切换 root用户</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 备份</span>
+</span></span><span style="display:flex;"><span>termux-setup-storage
+</span></span><span style="display:flex;"><span>cd /data/data/com.termux/files
+</span></span><span style="display:flex;"><span>tar -zcf /sdcard/termux-backup.tar.gz home usr
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 不要将备份文件存储在 Termux 私有目录中，因为从设置中清除 Termux 数据后，这些目录也将被删除</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 恢复</span>
+</span></span><span style="display:flex;"><span>termux-setup-storage
+</span></span><span style="display:flex;"><span>cd /data/data/com.termux/files
+</span></span><span style="display:flex;"><span>tar -zxf /sdcard/termux-backup.tar.gz --recursive-unlink --preserve-permissions
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 操作完成重启 Termux 即可恢复数据。</span>
+</span></span></code></pre></div><h1 id="termux-api">termux-api
+</h1><p>从<a class="link" href="https://github.com/termux/termux-api/releases"  target="_blank" rel="noopener"
+    >这里</a>下载并安装termux-api最新匹配版本的 app。安装后给出需要的所有权限。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pkg install termux-api
+</span></span></code></pre></div><p><a class="link" href="https://www.sqlsec.com/2018/05/termuxapi.html"  target="_blank" rel="noopener"
+    >更多细节玩法</a></p>
+<h2 id="termux-media-player">termux-media-player
+</h2><pre tabindex="0"><code>~ $ termux-media-player help
+Usage: termux-media-player cmd [args]
+
+help        Shows this help
+info        Displays current playback information
+play        Resumes playback if paused
+play &lt;file&gt; Plays specified media file
+pause       Pauses playback
+stop        Quits playback
+</code></pre><h2 id="termux-battery-status">termux-battery-status
+</h2><pre tabindex="0"><code>~ $ termux-battery-status
+{
+  &#34;present&#34;: true,
+  &#34;technology&#34;: &#34;Li-ion&#34;,
+  &#34;health&#34;: &#34;GOOD&#34;,
+  &#34;plugged&#34;: &#34;PLUGGED_AC&#34;,
+  &#34;status&#34;: &#34;FULL&#34;,
+  &#34;temperature&#34;: 20.0,
+  &#34;voltage&#34;: 4372,
+  &#34;current&#34;: 734000,
+  &#34;percentage&#34;: 100,
+  &#34;level&#34;: 100,
+  &#34;scale&#34;: 100,
+  &#34;charge_counter&#34;: 2200000
+}
+</code></pre><h2 id="termux-call-log">termux-call-log
+</h2><pre tabindex="0"><code>~ $ termux-call-log
+[
+  {
+    &#34;name&#34;: &#34;&#34;,
+    &#34;phone_number&#34;: &#34;522&#34;,
+    &#34;type&#34;: &#34;OUTGOING&#34;,
+    &#34;date&#34;: &#34;2025-12-22 16:54:23&#34;,
+    &#34;duration&#34;: &#34;00:36&#34;,
+    &#34;sim_id&#34;: &#34;89860054177105383539&#34;
+  },
+]
+</code></pre><h2 id="termux-dialog"><code>termux-dialog</code>
+</h2><p>使用不同的小部件获取用户输入</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>支持的组件:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>confirm - 显示确认对话框
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-i 提示<span style="color:#f92672">]</span> 文字提示 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>checkbox - 使用复选框选择多个值
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-v <span style="color:#e6db74">&#34;,,,&#34;</span><span style="color:#f92672">]</span> 要使用的逗号分隔值 <span style="color:#f92672">(</span>必须<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>counter - 在指定范围内选择一个数字
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-r 最小,最大,初始值<span style="color:#f92672">]</span> 要使用的 <span style="color:#f92672">(</span>3<span style="color:#f92672">)</span> 个数字的逗号分隔符 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>date - Pick a date
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-d <span style="color:#e6db74">&#34;dd-MM-yyyy k:m:s&#34;</span><span style="color:#f92672">]</span> 日期小部件输出的 SimpleDateFormat 模式 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>radio - 从单选按钮中选择一个值
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-v <span style="color:#e6db74">&#34;,,,&#34;</span><span style="color:#f92672">]</span> 要使用的逗号分隔值 <span style="color:#f92672">(</span>必须<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sheet - 从滑动底部表中选择一个值
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-v <span style="color:#e6db74">&#34;,,,&#34;</span><span style="color:#f92672">]</span> 要使用的逗号分隔值 <span style="color:#f92672">(</span>必须<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>spinner - 从下拉微调器中选择一个值
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-v <span style="color:#e6db74">&#34;,,,&#34;</span><span style="color:#f92672">]</span> 要使用的逗号分隔值 <span style="color:#f92672">(</span>必须<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>speech - 录音
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-i hint<span style="color:#f92672">]</span> text hint <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>text - 输入文本（如果未指定小部件，则为默认值）
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-i hint<span style="color:#f92672">]</span> 文字提示 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-m<span style="color:#f92672">]</span> 多行而不是单行 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>*
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-n<span style="color:#f92672">]</span> 只能输入数字 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>*
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-p<span style="color:#f92672">]</span> 输入密码 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>       * <span style="color:#f92672">[</span>-m<span style="color:#f92672">]</span> 和 <span style="color:#f92672">[</span>-n<span style="color:#f92672">]</span> 不能一起使用！
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>time - 选择时间值
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>-t 标题<span style="color:#f92672">]</span> 设置标题 <span style="color:#f92672">(</span>可选<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="termux-download"><code>termux-download</code>
+</h2><p>他会调用安卓内置下载管理器下载</p>
+<p><code>termux-download -d [描述] -t [标题] -p [目标路径] URL</code></p>
+<h2 id="termux-job-scheduler"><code>termux-job-scheduler</code>
+</h2><p>安排脚本以指定的时间间隔运行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>用法: termux-job-scheduler <span style="color:#f92672">[</span>选项<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  -p/--pending               列出待处理的作业
+</span></span><span style="display:flex;"><span>  --cancel-all               取消所有挂起的作业
+</span></span><span style="display:flex;"><span>  --cancel                   取消指定的作业 ID 并退出
+</span></span><span style="display:flex;"><span>调度选项：
+</span></span><span style="display:flex;"><span>  -s/--script path           要调用的脚本的路径
+</span></span><span style="display:flex;"><span>  --job-id int               作业 ID（将覆盖任何以前具有相同 ID 的作业）
+</span></span><span style="display:flex;"><span>  --period-ms int            大约每周期毫秒安排一次作业（默认 <span style="color:#ae81ff">0</span> 表示一次）。
+</span></span><span style="display:flex;"><span>                             请注意，自 Android N 起，最短周期为 900,000 毫秒（15 分钟）。
+</span></span><span style="display:flex;"><span>  --network text             仅在此类网络可用时运行（默认为any）： any|unmetered|cellular|not_roaming|none
+</span></span><span style="display:flex;"><span>  --battery-not-low boolean  仅在电池电量不低时运行，默认为 true（至少 Android O）
+</span></span><span style="display:flex;"><span>  --storage-not-low boolean  仅在存储不低时运行，默认false（至少Android O）
+</span></span><span style="display:flex;"><span>  --charging boolean         只在充电时运行，默认false
+</span></span><span style="display:flex;"><span>  --persisted boolean        如果作业在重新启动后仍然存在，默认为 false
+</span></span><span style="display:flex;"><span>  --trigger-content-uri text （至少安卓 N）
+</span></span><span style="display:flex;"><span>  --trigger-content-flag int default 1, （至少安卓 N）
+</span></span></code></pre></div><h2 id="termux-keystore"><code>termux-keystore</code>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>支持这些命令:
+</span></span><span style="display:flex;"><span>  list <span style="color:#f92672">[</span>-d<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  delete &lt;别名&gt;
+</span></span><span style="display:flex;"><span>  generate &lt;别名&gt; <span style="color:#f92672">[</span>-a alg<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-s 大小<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-u 有效期<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  sign &lt;别名&gt; &lt;算法&gt;
+</span></span><span style="display:flex;"><span>  verify &lt;别名&gt; &lt;算法&gt; &lt;签名&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>list：列出存储在密钥库中的密钥。
+</span></span><span style="display:flex;"><span>  -d           详细结果（包括关键参数）。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>delete：从密钥库中永久删除指定的密钥。
+</span></span><span style="display:flex;"><span>  alias        要删除的密钥的别名。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>generate：在硬件密钥库中创建一个新密钥。
+</span></span><span style="display:flex;"><span>  alias       密钥别名
+</span></span><span style="display:flex;"><span>  -a alg       要使用的算法（“RSA”或“EC”）。 默认为 RSA。
+</span></span><span style="display:flex;"><span>  -s size      要使用的密钥大小。 对于 RSA，选项为 2048、3072
+</span></span><span style="display:flex;"><span>               和 4096。对于 EC，选项为 256、384 和 521。
+</span></span><span style="display:flex;"><span>  -u validity  用户有效期以秒为单位。 省略以禁用。
+</span></span><span style="display:flex;"><span>                启用后，密钥只能用于设备解锁后指定的持续时间。 后持续时间已过，用户需要重新锁定并再次解锁设备以使用此密钥。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sign：使用给定的密钥签名，数据从标准输入和签名输出到标准输出。
+</span></span><span style="display:flex;"><span>  alias        用于签名的密钥的别名
+</span></span><span style="display:flex;"><span>  algorithm    要使用的算法，例如 <span style="color:#e6db74">&#39;SHA256withRSA&#39;</span>。 这应该匹配密钥的算法。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>verify：验证签名。 从标准输入读取数据（原始文件）。
+</span></span><span style="display:flex;"><span>  alias        用于验证的密钥的别名
+</span></span><span style="display:flex;"><span>  algorithm    用于签署此数据的算法
+</span></span><span style="display:flex;"><span>  signature    用于验证的签名文件
+</span></span></code></pre></div><h2 id="termux-location"><code>termux-location</code>
+</h2><p>获取地理位置</p>
+<ul>
+<li>部分手机会显示：&ldquo;termux:api 无响应&rdquo;</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>usage: $SCRIPTNAME <span style="color:#f92672">[</span>-p 提供者<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-r 请求<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  -p provider  位置提供者 <span style="color:#f92672">[</span>gps/network/passive<span style="color:#f92672">]</span> <span style="color:#f92672">(</span>默认: gps<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  -r request   提出的要求 <span style="color:#f92672">[</span>once/last/updates<span style="color:#f92672">]</span> <span style="color:#f92672">(</span>默认: once<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h2 id="termux-media-player-1"><code>termux-media-player</code>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>info        显示当前播放信息
+</span></span><span style="display:flex;"><span>play        如果暂停则继续播放
+</span></span><span style="display:flex;"><span>play &lt;文件&gt; 播放指定的媒体文件
+</span></span><span style="display:flex;"><span>pause       暂停播放
+</span></span><span style="display:flex;"><span>stop        退出播放
+</span></span></code></pre></div><h2 id="termux-media-scan"><code>termux-media-scan</code>
+</h2><p>扫描指定文件并将其添加到“媒体内容提供商”</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-media-scan <span style="color:#f92672">[</span>-v<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-r<span style="color:#f92672">]</span> file <span style="color:#f92672">[</span>文件...<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>-r 递归扫描目录
+</span></span><span style="display:flex;"><span>-v 详细模式
+</span></span></code></pre></div><h2 id="termux-microphone-record"><code>termux-microphone-record</code>
+</h2><p>使用设备上的麦克风录制音频（<del>又名Termux牌录音机</del>）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>-d           使用默认值开始录音
+</span></span><span style="display:flex;"><span>-f &lt;文件&gt;     开始录音到特定文件
+</span></span><span style="display:flex;"><span>-l &lt;限制秒数&gt;  以指定的限制开始录音（以秒为单位，0 无限制）
+</span></span><span style="display:flex;"><span>-e &lt;编码器&gt;   使用指定的编码器开始录音（aac、amr_wb、amr_nb）
+</span></span><span style="display:flex;"><span>-b &lt;比特率&gt;   以指定的比特率开始录音（以 kbps 为单位）
+</span></span><span style="display:flex;"><span>-r &lt;采样率&gt;   以指定的采样率开始录音（以赫兹为单位）
+</span></span><span style="display:flex;"><span>-c &lt;数字&gt;     使用指定的通道数开始录音（1、2、...）
+</span></span><span style="display:flex;"><span>-i           获取有关当前录音的信息
+</span></span><span style="display:flex;"><span>-q           退出录音
+</span></span></code></pre></div><h2 id="termux-nfc"><code>termux-nfc</code>
+</h2><p>从/向 NDEF 标签读取/写入数据</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>-r, 读取 short，从NFC中读取短信息 full，从NFC中读取完整信息
+</span></span><span style="display:flex;"><span>-w, 在NFC上写信息
+</span></span><span style="display:flex;"><span>-t, NFC的文本
+</span></span></code></pre></div><h2 id="termux-notification-channel"><code>termux-notification-channel</code>
+</h2><p>创建或删除通知(<strong>仅支持Android 8.0+</strong>)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-notification-channel -d channel-id
+</span></span><span style="display:flex;"><span>termux-notification-channel channel-id channel-name
+</span></span><span style="display:flex;"><span>使用 -d 删除通知。
+</span></span><span style="display:flex;"><span>创建通知需要通知 ID 和通知名称。
+</span></span><span style="display:flex;"><span>该名称将在选项中可见，该 ID 用于在该特定通知上发送通知。
+</span></span><span style="display:flex;"><span>再次创建具有相同 id 的通知将更改名称。
+</span></span><span style="display:flex;"><span>创建与已删除通知具有相同 id 的通知将恢复已删除通知的用户设置。
+</span></span><span style="display:flex;"><span>使用 termux-notification --channel channel-id 在自定义通知上发送通知。
+</span></span></code></pre></div><h2 id="termux-notification-list"><code>termux-notification-list</code>
+</h2><p>显示当前显示的通知。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-notification-list
+</span></span></code></pre></div><h2 id="termux-notification-remove"><code>termux-notification-remove</code>
+</h2><p>删除使用 <code>termux-notification --id</code> 的通知。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-notification &lt;ID&gt;
+</span></span></code></pre></div><h2 id="termux-notification"><code>termux-notification</code>
+</h2><p>显示系统通知。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>  --action action          按下通知时执行的操作
+</span></span><span style="display:flex;"><span>  --alert-once             编辑通知时不提醒
+</span></span><span style="display:flex;"><span>  --button1 text           在第一个通知按钮上显示的文本
+</span></span><span style="display:flex;"><span>  --button1-action action  在第一个通知按钮上执行的操作
+</span></span><span style="display:flex;"><span>  --button2 text           在第二个通知按钮上显示的文本
+</span></span><span style="display:flex;"><span>  --button2-action action  在第二个通知按钮上执行的操作
+</span></span><span style="display:flex;"><span>  --button3 text           在第三个通知按钮上显示的文本
+</span></span><span style="display:flex;"><span>  --button3-action action  在第三个通知按钮上执行的操作
+</span></span><span style="display:flex;"><span>  -c/--content content     通知中显示的内容。 将优先于标准输入。 如果内容没有作为参数或标准输入传递，那么会有 <span style="color:#ae81ff">3</span> 秒的延迟。
+</span></span><span style="display:flex;"><span>  --channel channel-id     指定应发送此通知的通知通道 ID。在低于 8.0 的 Android 版本上，这是无操作的。 使用 termux-notification 频道创建自定义频道。如果频道 id 无效，则不会发送通知。
+</span></span><span style="display:flex;"><span>  --group group            通知组（同一组的通知一起显示）
+</span></span><span style="display:flex;"><span>  --help-actions           显示actions帮助
+</span></span><span style="display:flex;"><span>  -i/--id id               通知 id（将覆盖任何以前具有相同 id 的通知）
+</span></span><span style="display:flex;"><span>  --icon icon-name         设置状态栏中显示的图标。 在 https://material.io/resources/icons/ 上查看可用的图标（默认图标：event_note）
+</span></span><span style="display:flex;"><span>  --image-path path        将在通知中显示的图像的绝对路径
+</span></span><span style="display:flex;"><span>  --led-color rrggbb       闪烁 LED 的颜色为 RRGGBB（默认值：none）
+</span></span><span style="display:flex;"><span>  --led-off milliseconds   LED 在闪烁时关闭的毫秒数（默认值：800）
+</span></span><span style="display:flex;"><span>  --led-on milliseconds    LED 在闪烁时亮起的毫秒数（默认值：800）
+</span></span><span style="display:flex;"><span>  --on-delete action       清除通知时执行的操作
+</span></span><span style="display:flex;"><span>  --ongoing                固定通知
+</span></span><span style="display:flex;"><span>  --priority prio          通知优先级（高/低/最大/最小/默认）
+</span></span><span style="display:flex;"><span>  --sound                  用通知播放声音
+</span></span><span style="display:flex;"><span>  -t/--title title         要显示的通知标题
+</span></span><span style="display:flex;"><span>  --vibrate pattern        振动模式，逗号分隔，如 500,1000,200
+</span></span><span style="display:flex;"><span>  --type type              要使用的通知样式（默认/媒体）媒体操作（可与 --type <span style="color:#e6db74">&#34;media&#34;</span> 一起使用）
+</span></span><span style="display:flex;"><span>  --media-next             在 media-next 按钮上执行的操作
+</span></span><span style="display:flex;"><span>  --media-pause            在媒体暂停按钮上执行的操作
+</span></span><span style="display:flex;"><span>  --media-play             在媒体播放按钮上执行的操作
+</span></span><span style="display:flex;"><span>  --media-previous         在 media-previous 按钮上执行的操作
+</span></span></code></pre></div><p>actions 用法</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>此帮助指的是 --action、--on-delete、--button-1-action 和 --media-next 等选项的参数。
+</span></span><span style="display:flex;"><span>所有这些命令都将一个动作字符串作为它们的参数，它被馈送到<span style="color:#e6db74">`</span>dash -c<span style="color:#e6db74">`</span>。
+</span></span><span style="display:flex;"><span>使用动作时必须牢记一些重要的事情：
+</span></span><span style="display:flex;"><span>您应该使用在终端之外执行操作的操作，例如 --action <span style="color:#e6db74">&#34;termux-toast hello&#34;</span>。
+</span></span><span style="display:flex;"><span>任何输出到终端的东西都是无用的，所以输出应该被重定向（--action <span style="color:#e6db74">&#34;ls &gt; ~/ls.txt&#34;</span>）或以不同的方式显示给用户（--action <span style="color:#e6db74">&#34;ls|termux-toast&#34;</span> ）。
+</span></span><span style="display:flex;"><span>在单个操作中运行多个命令就像：
+</span></span><span style="display:flex;"><span>--action <span style="color:#e6db74">&#34;command1; command2; command3&#34;</span>
+</span></span><span style="display:flex;"><span>或者<span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">--action &#34;</span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -e file <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span> termux-toast yes; <span style="color:#66d9ef">else</span> termux-toast no; <span style="color:#66d9ef">fi</span><span style="color:#e6db74">&#34;.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">对于更复杂的事情，您应该将脚本放在一个文件中，使其可执行，并将其用作操作：
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">--action ~/bin/script
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">该操作在不同的环境（不是子shell）中运行。 因此，您的环境丢失了（最明显的是 </span>$PATH<span style="color:#e6db74">），并且 ~/.profile 也没有来源。 因此，如果您需要 </span>$PATH<span style="color:#e6db74">，您应该：
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> - 如果操作是脚本，请在脚本中明确设置 (例如： export PATH=&#34;</span>$HOME/bin:<span style="color:#ae81ff">\$</span>PATH<span style="color:#e6db74">&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> - 或使用类似的东西： --action &#34;</span>bash -l -c <span style="color:#e6db74">&#39;command1; command2&#39;</span><span style="color:#e6db74">&#34;).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">在 Android N 或更高版本上，您可以在您的操作中使用特殊变量 </span>$REPLY<span style="color:#e6db74"> 来使用 Android 的直接回复功能。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">这会提示用户直接在通知中输入一些文本，然后将其替换为您的操作。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> - termux-notification --button1 &#34;</span>答案<span style="color:#e6db74">&#34; --button1-action &#34;</span>termux-toast <span style="color:#ae81ff">\\</span>$REPLY<span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">将调用该操作：
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> - termux-toast &#34;</span>用户输入的文本<span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">小心为单引号或双引号正确转义 shell 命令，例如：
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  --button1-action &#39;something </span>$REPLY<span style="color:#e6db74">&#39; or --button1-action &#34;</span>something <span style="color:#ae81ff">\\</span>$REPLY<span style="color:#e6db74">&#34;
+</span></span></span></code></pre></div><h2 id="termux-saf-create"><code>termux-saf-create</code>
+</h2><p>在Termux:API管理的文件夹中创建文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>-t 指定文件的 mime 类型。 其他应用程序需要 MIME 类型来识别内容
+</span></span><span style="display:flex;"><span>例如 一段录像。 如果未指定，则假定为“application/octet-stream”，即原始二进制数据。返回您可以使用 termux-saf-read 和 termux-saf-write 读取和写入文件的 URI。您可以明确指定 mime 类型或根据文件扩展名猜测它。作为文件夹 URI，您可以使用 由 termux-saf-dirs 或 termux-saf-ls.Android 列出的目录的 URI 不允许创建具有相同名称的文件，因此如果具有该名称的文件或文件夹已经存在，则名称可能会更改。您 可以使用 termux-saf-stat 和返回的 URI 来获取它真正给出的名称。
+</span></span></code></pre></div><h2 id="termux-saf-dirs"><code>termux-saf-dirs</code>
+</h2><p>与 <code>termux-saf-ls</code> 相同的格式列出您提供给 Termux:API 的所有目录。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>这意味着这列出了包含您可以使用其他 termux-saf-*<span style="color:#e6db74">``</span> 命令访问的所有目录的“目录”。
+</span></span><span style="display:flex;"><span>URI 可以与其他 termux-saf-* 命令一起使用，以创建文件和文件夹并列出目录内容。
+</span></span><span style="display:flex;"><span>请参阅 termux-saf-managedir 以授予 Termux:API 对文件夹的访问权限。
+</span></span></code></pre></div><h2 id="termux-saf-ls"><code>termux-saf-ls</code>
+</h2><p>列出有URI 标识的文件夹中的文件和文件夹。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>您可以通过以下方式获取文件夹 URI：
+</span></span><span style="display:flex;"><span>- 使用 termux-saf-ls 列出文件夹
+</span></span><span style="display:flex;"><span>- 使用 termux-saf-managedir 授予 Termux:API 对文件夹的访问权限
+</span></span><span style="display:flex;"><span>- 使用 termux-saf-dirs 列出您授予 Termux:API 访问权限的文件夹
+</span></span><span style="display:flex;"><span>- 使用 termux-saf-mkdir 创建文件夹
+</span></span><span style="display:flex;"><span>该列表以 JSON 数组的形式返回，每个条目有一个 JSON 对象。
+</span></span><span style="display:flex;"><span>对象具有键：
+</span></span><span style="display:flex;"><span>- <span style="color:#e6db74">&#39;name&#39;</span> 用于人类可读的名称
+</span></span><span style="display:flex;"><span>- <span style="color:#e6db74">&#39;uri&#39;</span> 表示你可以与其他 termux-saf-* 命令一起使用的 URI
+</span></span><span style="display:flex;"><span>- <span style="color:#e6db74">&#39;type&#39;</span> 代表 mime 类型
+</span></span><span style="display:flex;"><span>- <span style="color:#e6db74">&#39;length&#39;</span> 表示大小（如果它是一个文件）
+</span></span><span style="display:flex;"><span>您可以通过特殊的 mime 类型“vnd.android.document/directory”识别文件夹。
+</span></span></code></pre></div><h2 id="termux-saf-managedir"><code>termux-saf-managedir</code>
+</h2><p>打开系统自带文件管理并让您指定 Termux:API 可以访问的文件夹。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>然后，您可以使用 termux-saf-* 实用程序来管理该文件夹中的内容。
+</span></span><span style="display:flex;"><span>返回标识目录的 URI，此 URI 可与其他 termux-saf-* 命令一起使用以创建文件和文件夹并列出目录内容。
+</span></span><span style="display:flex;"><span>如果您关闭文件管理器，则会返回一个空字符串。
+</span></span><span style="display:flex;"><span>您可以使用 termux-saf-dirs 列出您授予 Termux:API 访问权限的所有目录。
+</span></span></code></pre></div><h2 id="termux-saf-mkdir"><code>termux-saf-mkdir</code>
+</h2><p>通过 SAF 创建目录，这与 <code>termux-saf-create</code> 的行为类似，仅适用于目录。</p>
+<p><code>termux-saf-mkdir &lt;目录名&gt;</code></p>
+<h2 id="termux-saf-read"><code>termux-saf-read</code>
+</h2><p>从 URI 标识的文件中读取数据并将数据写入标准输出。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>您可以使用管道处理数据或将其重定向到文件中以制作本地副本。
+</span></span><span style="display:flex;"><span>请参阅 termux-saf-list 以获取文件的 URI。
+</span></span></code></pre></div><h2 id="termux-saf-rm"><code>termux-saf-rm</code>
+</h2><p>删除指定 URI 处的文件或文件夹。 有关详细信息，请参阅其他 <code>termux-saf-*</code> 命令。</p>
+<p>成功返回 0，如果无法删除文件或文件夹，则返回 1，如果发生另一个错误，则返回 2。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-saf-rm &lt;文件&amp;文件夹名字&gt;
+</span></span></code></pre></div><h2 id="termux-saf-stat"><code>termux-saf-stat</code>
+</h2><p>将文件或文件夹信息作为 JSON 对象返回，格式与 termux-saf-ls 中的条目相同。</p>
+<p><code>termux-saf-stat &lt;文件&amp;文件夹名字&gt;</code></p>
+<h2 id="termux-saf-write"><code>termux-saf-write</code>
+</h2><p>将标准输入写入由 URI 标识的现有文件。<strong>覆盖写入</strong></p>
+<p><code>termux-saf-write &lt;文件&gt;</code></p>
+<h2 id="termux-sensor"><code>termux-sensor</code>
+</h2><p>获取有关传感器类型以及实时数据</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>  -a, all            聆听所有传感器（警告！可能对电池有影响）
+</span></span><span style="display:flex;"><span>  -c, cleanup        清理（释放传感器资源）
+</span></span><span style="display:flex;"><span>  -l, list           显示可用传感器列表
+</span></span><span style="display:flex;"><span>  -s, sensors <span style="color:#f92672">[</span>,,,<span style="color:#f92672">]</span>  监听的传感器（可以只包含部分名称）
+</span></span><span style="display:flex;"><span>  -d, delay <span style="color:#f92672">[</span>毫秒<span style="color:#f92672">]</span>    接收新传感器更新前的延迟时间（以毫秒为单位）
+</span></span><span style="display:flex;"><span>  -n, limit <span style="color:#f92672">[</span>数字<span style="color:#f92672">]</span>    读取传感器的次数（默认：连续）（分钟：1）
+</span></span></code></pre></div><h2 id="termux-share"><code>termux-share</code>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>  -a action        对共享内容执行的操作：
+</span></span><span style="display:flex;"><span>                     edit<span style="color:#f92672">(</span>编辑<span style="color:#f92672">)</span>/send<span style="color:#f92672">(</span>发送<span style="color:#f92672">)</span>/view<span style="color:#f92672">(</span>查看<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>默认:view<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  -c content-type  要使用的内容类型（默认值：从文件扩展名中猜测，标准输入为 text/plain）
+</span></span><span style="display:flex;"><span>  -d               如果选择了一个而不是显示选择器，则共享给默认接收器
+</span></span><span style="display:flex;"><span>  -t title         用于共享内容的标题（默认值：shared file name）
+</span></span></code></pre></div><h2 id="termux-sms-list"><code>termux-sms-list</code>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>用法: termux-sms-list <span style="color:#f92672">[</span>-d<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-l 限制<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-n<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-o 抵消<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-t 输出<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-c<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-f 数字<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>-l 限制短信列表中的偏移量（默认值：$PARAM_LIMIT）
+</span></span><span style="display:flex;"><span>   -o 短信列表中的偏移量（默认值：$PARAM_OFFSET）
+</span></span><span style="display:flex;"><span>   -t 键入要列出的消息类型（默认值：$PARAM_TYPE）：$SUPPORTED_TYPES
+</span></span><span style="display:flex;"><span>   -c 对话列表（每个对话的唯一项目）
+</span></span><span style="display:flex;"><span>   -f number 定位消息的编号
+</span></span><span style="display:flex;"><span>   -n（过时）显示电话号码
+</span></span><span style="display:flex;"><span>   -d（过时）显示创建消息的日期
+</span></span></code></pre></div><h2 id="termux-sms-send"><code>termux-sms-send</code>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>用法: termux-sms-send -n 电话号码<span style="color:#f92672">[</span>,号码2,号码3,...<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-s 卡1/卡2<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>文字<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>向指定的收件人号码发送 SMS 消息。 要发送的文本要么作为参数提供，要么从标准输入中读取（如果没有给出参数）。
+</span></span><span style="display:flex;"><span>  -n number<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>  收件人号码 - 用逗号分隔多个号码
+</span></span><span style="display:flex;"><span>  -s slot       要使用的 sim 插槽 - 如果插槽号无效或缺少 READ_PHONE_STATE 权限，则失败
+</span></span></code></pre></div><h2 id="termux-speech-to-text"><code>termux-speech-to-text</code>
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-speech-to-text
+</span></span></code></pre></div><p>其实还能加个进度条：</p>
+<p><code>termux-speech-to-text -p</code></p>
+<h2 id="termux-storage-get"><code>termux-storage-get</code>
+</h2><p>向系统请求文件并输出到指定文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-storage-get &lt;文件&gt;
+</span></span></code></pre></div><h2 id="termux-telephony-call"><code>termux-telephony-call</code>
+</h2><p>用人话讲就是打电话<img src="https://alpha-q3.sourcegcdn.com/2022/06/28/fjId9OKu.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="doge"
+	
+	
+></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-telephony-call &lt;电话号码<span style="color:#f92672">(</span>例如：114514<span style="color:#f92672">)</span>&gt;
+</span></span></code></pre></div><h2 id="termux-toast"><code>termux-toast</code>
+</h2><p>在 <a class="link" href="https://baike.baidu.com/item/toast/13002938"  target="_blank" rel="noopener"
+    >Toast</a> 中显示文本（短暂弹出）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Toast 文本要么作为参数提供，要么从标准输入中读取
+</span></span><span style="display:flex;"><span>如果没有给出参数。 参数将优先于标准输入。
+</span></span><span style="display:flex;"><span>如果 toast 文本没有作为参数或标准输入传递，那么会有
+</span></span><span style="display:flex;"><span>延迟 <span style="color:#ae81ff">3</span> 秒。
+</span></span><span style="display:flex;"><span> -b  设置背景颜色~~（默认：gay）~~<span style="color:#f92672">(</span>默认：gray（灰色）<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> -c  设置文本颜色（默认：white<span style="color:#f92672">(</span>白色<span style="color:#f92672">)</span>）
+</span></span><span style="display:flex;"><span> -g  设置吐司的位置：<span style="color:#f92672">[</span>top<span style="color:#f92672">(</span>上<span style="color:#f92672">)</span>、middle<span style="color:#f92672">(</span>中<span style="color:#f92672">)</span>，bottom<span style="color:#f92672">(</span>下<span style="color:#f92672">)]</span>（默认值：middle）
+</span></span><span style="display:flex;"><span> -s  只展示亿会儿吐司
+</span></span><span style="display:flex;"><span>注意：颜色可以是标准名称（即红色）或 <span style="color:#ae81ff">6</span> / <span style="color:#ae81ff">8</span> 位十六进制值（即“#FF0000”或“#FFFF0000”），其中 order 为 <span style="color:#f92672">(</span>AA<span style="color:#f92672">)</span>RRGGBB。 无效颜色将恢复为默认值
+</span></span></code></pre></div><h2 id="termux-torch"><code>termux-torch</code>
+</h2><p>打开/关闭手电筒</p>
+<p><code>termux-torch [on(开)/off(关)]</code></p>
+<h2 id="termux-tts-engines"><code>termux-tts-engines</code>
+</h2><p>获取有关可用文本转语音 (TTS) 引擎的信息。 可以使用 -e 选项将引擎的名称提供给 <code>termux-tts-speak</code> 命令。</p>
+<h2 id="termux-tts-speak"><code>termux-tts-speak</code>
+</h2><p>用人话讲就是调用系统TTS引擎来语音转文字</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>用法: termux-tts-speak <span style="color:#f92672">[</span>-e engine<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-l language<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-n region<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-v variant<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-p pitch<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-r rate<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-s stream<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>text-to-speak<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>-e engine 要使用的 TTS 引擎（参见 termux-tts-engines）
+</span></span><span style="display:flex;"><span>   -l language 语言（部分引擎可能不支持）
+</span></span><span style="display:flex;"><span>   -n region 说话的语言区域
+</span></span><span style="display:flex;"><span>   -v 语言的变体变体
+</span></span><span style="display:flex;"><span>   -p 在语音中使用的音高。 1.0 是正常音高，较低的值会降低合成语音的音调，较大的值会增加它。
+</span></span><span style="display:flex;"><span>   -r 要使用的语速。 1.0 是正常语速，较低的值会减慢语音（0.5 是正常语速的一半），而较大的值会加速语音（2.0 是正常语速的两倍）。
+</span></span><span style="display:flex;"><span>   -s 要使用的流音频流（默认：NOTIFICATION），以下之一：ALARM、MUSIC、NOTIFICATION、RING、SYSTEM、VOICE_CALL
+</span></span></code></pre></div><h2 id="termux-usb"><code>termux-usb</code>
+</h2><p>列出或访问 USB 设备，<strong>无法直接访问USB设备</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>  -l           列出可用USB设备
+</span></span><span style="display:flex;"><span>  -r           如有必要，显示权限请求对话框
+</span></span><span style="display:flex;"><span>  -e command   使用引用设备的文件描述符作为参数执行指定的命令（除非给出 -E 参数）
+</span></span><span style="display:flex;"><span>  -E           将文件描述符作为 env var 而不是作为命令行参数传输
+</span></span></code></pre></div><h2 id="termux-vibrate"><code>termux-vibrate</code>
+</h2><p>用人话讲就是<del>移动版本的筋膜枪</del></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>-d duration 以毫秒为单位振动的持续时间（默认值：1000）
+</span></span><span style="display:flex;"><span>-f 即使在静音模式下也强制振动<span style="color:#f92672">(</span>社死<span style="color:#f92672">)</span>
+</span></span></code></pre></div><h3 id="termux-wallpaper"><code>termux-wallpaper</code>
+</h3><p>更改你的手机壁纸。 <strong>不是Termux背景</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>-f &lt;file&gt;  从文件设置壁纸
+</span></span><span style="display:flex;"><span>-u &lt;url&gt;   从URL资源设置壁纸
+</span></span><span style="display:flex;"><span>-l         为锁屏设置壁纸（Android 7及更高版本）
+</span></span></code></pre></div><h2 id="termux-wifi-connectioninfo"><code>termux-wifi-connectioninfo</code>
+</h2><p>获取有关当前 wifi 连接的信息。</p>
+<p><code>termux-wifi-connection-info</code></p>
+<p>你没看错，它什么参数都不用加<img src="https://alpha-q3.sourcegcdn.com/2022/06/28/fjId9OKu.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="doge"
+	
+	
+></p>
+<h2 id="termux-wifi-enable"><code>termux-wifi-enable</code>
+</h2><p>打开/关闭 WIFI</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-wifi-enable <span style="color:#f92672">[</span>true<span style="color:#f92672">(</span>打开<span style="color:#f92672">)</span>/false<span style="color:#f92672">(</span>关闭<span style="color:#f92672">)]</span>
+</span></span></code></pre></div><h2 id="termux-wifi-scaninfo"><code>termux-wifi-scaninfo</code>
+</h2><p>获取有关wifi 扫描的信息。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>termux-wifi-scaninfo
+</span></span></code></pre></div><h1 id="开发环境">开发环境
+</h1><p>Termux 可以完美的运行 C、Python、Java、PHP、Ruby等开发环境</p>
+<h2 id="编辑器">编辑器
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 汉字乱码</span>
+</span></span><span style="display:flex;"><span>vim .vimrc
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># set enc=utf8</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># set fencs=utf8,gbk,gb2312,gb18030</span>
+</span></span><span style="display:flex;"><span>source .vimrc
+</span></span></code></pre></div><h2 id="php">PHP
+</h2><pre tabindex="0"><code># apache
+pkg install apache2
+apachectl start
+# http://127.0.0.1:8080
+# $PREFIX/share/apache2/default-site/htdocs/index.html
+apachectl restart
+apachectl stop
+
+# 配置 PHP解析
+# pkg install php-apache
+# $PREFIX/etc/apache2/httpd.conf
+# 文件末尾添加以下行
+# LoadModule php7_module /data/data/com.termux/files/usr/libexec/apache2/libphp7.so
+# &lt;FilesMatch \.php$&gt;
+#   SetHandler application/x-httpd-php
+# &lt;/FilesMatch&gt;
+# 查找修改配置默认首页
+# &lt;IfModule dir_module&gt;
+#   DirectoryIndex index.php index.html
+# &lt;/IfModule&gt;
+# apachectl restart
+
+# Apache is running a threaded MPM, but your PHP Module is not compiled to be threadsafe.  You need to recompile PHP.
+# AH00013: Pre-configuration failed
+# 注释行 LoadModule mpm_worker_module libexec/apache2/mod_mpm_worker.so
+# 启用行 LoadModule mpm_worker_module libexec/apache2/mod_mpm_prefork.so
+
+# echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; $PREFIX/share/apache2/default-site/htdocs/index.php
+# http://127.0.0.1:8080
+
+# 数据库
+pkg install mariadb
+cd /data/data/com.termux/files/usr/etc/
+mkdir my.cnf.d
+mysql_install_db # 初始化 mysql.user 表
+nohup mysqld &amp;
+ps aux|grep mysql
+mysql -u $(whoami) # 登录 Termux 用户
+use mysql;
+set password for &#39;root&#39;@&#39;localhost&#39; = password(&#39;你设置的密码&#39;);# 修改 root 密码的 SQL语句
+grant all on *.* to root@&#39;%&#39; identified by &#39;P@ssw0rd&#39; with grant option; # 允许root远程访问
+flush privileges;
+quit;
+# mysql_secure_installation # 以后可以使用这个命令设置密码
+
+# nginx
+pkg install nginx
+nginx -t # 测试文件是否正常
+nginx # 启动 nginx 服务 http://127.0.0.1:8080
+pgrep nginx # 查看 nginx 进程PID号
+nginx -s reload # 重启服务
+nginx -s stop # 停止服务
+
+# 解析PHP
+pkg install php-fpm
+vim $PREFIX/etc/php-fpm.d/www.conf
+# 搜索 listen = /data/data/com.termux/files/usr/var/run/php-fpm.sock
+# 改为 listen = 127.0.0.1:9000
+vim $PREFIX/etc/nginx/nginx.conf
+# worker_processes  1;
+# events {
+#     worker_connections  1024;
+# }
+# http {
+#     include       mime.types;
+#     default_type  application/octet-stream;
+#     sendfile        on;
+#     keepalive_timeout  65;
+#     server {
+#         listen       8080;
+#         server_name  localhost;
+#         location / {
+#             root   /data/data/com.termux/files/usr/share/nginx/html;
+#             index  index.html index.htm index.php;
+#         }
+#         error_page   500 502 503 504  /50x.html;
+#         location = /50x.html {
+#             root   /data/data/com.termux/files/usr/share/nginx/html;
+#         }
+#         location ~ \.php$ {
+#             root           html;
+#             fastcgi_pass   127.0.0.1:9000;
+#             fastcgi_index  index.php;
+#             fastcgi_param  SCRIPT_FILENAME  /data/data/com.termux/files/usr/share/nginx/html$fastcgi_script_name;
+#             include        fastcgi_params;
+#         }
+#     }
+# }
+echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; $PREFIX/share/nginx/html/info.php
+php-fpm # 启动 php-fpm 服务
+nginx # 启动 nginx 服务
+
+# pkg install php
+# php -S 0.0.0.0:8888 -t www/
+</code></pre><h2 id="nodejs">nodejs
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pkg install nodejs-lts
+</span></span><span style="display:flex;"><span>npm install -g http-server
+</span></span><span style="display:flex;"><span>http-server <span style="color:#75715e"># 启动 http-server 服务</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Cannot read property &#39;length&#39; of undefined</span>
+</span></span><span style="display:flex;"><span>vim $PREFIX/lib/node_modules/npm/node_modules/worker-farm/lib/farm.js
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查找    , maxConcurrentWorkers : require(&#39;os&#39;).cpus().length</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 改为    , maxConcurrentWorkers : (require(&#39;os&#39;).cpus() || { length: 1}).length</span>
+</span></span></code></pre></div><h2 id="python3">python3
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pkg install python -y
+</span></span><span style="display:flex;"><span>python -m pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple some-package
+</span></span></code></pre></div><h2 id="安装其它linux发行版">安装其它linux发行版
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>https://github.com/sqlsec/termux-install-linux
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/ssh/">Ssh</a>
+        
+            <a href="/tags/termux/">Termux</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/ssh/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ssh</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Autox.js on 良宏</title>
+        <link>/tags/autox.js/</link>
+        <description>Recent content in Autox.js on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 11 Oct 2023 13:56:15 +0800</lastBuildDate><atom:link href="/tags/autox.js/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>autox.js</title>
+        <link>/post/tech/autox.js/</link>
+        <pubDate>Wed, 11 Oct 2023 13:56:15 +0800</pubDate>
+        
+        <guid>/post/tech/autox.js/</guid>
+        <description>&lt;p&gt;近期负责部分客户端程序的测试任务。包括桌面客户端和手机客户端。遂想到如何通过自动化测试，先整体扫一遍。&lt;/p&gt;
+&lt;p&gt;经过一些方案的摸索，最终采用 autox.js 方案。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

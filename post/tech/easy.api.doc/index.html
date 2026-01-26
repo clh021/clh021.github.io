@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="api.doc $wait=array(&#39;待更新&#39;=&gt; array(&#39;待更新&#39;,&#39;待更新&#39;,&#39;&#39;,&#39;&#39;,array(),),); $apis = array( &#39;nonce&#39; =&gt; array( &#39;title&#39; =&gt; &#39;安全验证&#39;, &#39;des&#39; =&gt; &#39;通过控制器和方法名获取令牌，令牌12小时会自动更新，24小时有效&lt;br /&gt; 获取格式：/api/?controller=控制器&amp;method=方法名&#39;, &#39;content&#39; =&gt; array( &#39;令牌 √3.11&#39; =&gt; array( &#39;获取与验证&#39; =&gt; array( &#39;/api/get_nonce/?controller=&amp;method=login&#39;, &#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;login&#34;,&#34;nonce&#34;:&#34;0bf680a229&#34;}&#39;, &#39;当提示nonce参数时，或提示nonce参数错误时，请重新获取该参数&lt;br /&gt;其它方法的使用/api/控制器/方法名/?cookie=cookie值&#39;, &#39;24小时内&lt;strong&gt;登录&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=login&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;, array ( &#39;输入参数&#39;=&gt;array( array (&#39;字段名&#39; =&gt; &#39;controller&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;控制器&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), array (&#39;字段名&#39; =&gt; &#39;method&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;方法名&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), ), &#39;输出参数&#39;=&gt;array( array (&#39;字段名&#39; =&gt; &#39;status&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;访问状态&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), array (&#39;字段名&#39; =&gt; &#39;controller&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;控制器&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), array (&#39;字段名&#39; =&gt; &#39;method&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;方法名&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), ), ), ) , ) , &#39;通用令牌 √3.10&#39; =&gt; array( &#39;获取与验证&#39; =&gt; array( &#39;/api/get_nonce/?controller=&amp;method=fastnonce&#39;, &#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;fastnonce&#34;,&#34;nonce&#34;:&#34;3bbcb111a8&#34;}&#39;, &#39;&lt;b&gt;本方法是考虑到第一版时间紧急，获取令牌后，可使用该令牌直接进行其它任何操作。该方法存在安全隐患，第二版或将取消。&lt;/b&gt;&#39;, &#39;24小时内&lt;strong&gt;所有&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=fastnonce&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;, ) , ) , ) , ) , ); function arr2table($data,$level=1,$opera=array()) { if(!isset($data[0])){$data=array($data);} $str=&#39;&#39;;//$level==1?&#39;这里原先是样式表&#39;:&#39;&#39;;$level++; $str.=&#39;&lt;table class=&#34;line&#34; border=&#34;0&#34; cellpadding=&#34;0&#34;&gt;&lt;tr&gt;&#39;; $fields=array_keys($data[0]); foreach($fields as $val) {$str.=&#39;&lt;th&gt;&#39;.$val.&#39;&lt;/th&gt;&#39;;} if (2==$level &amp;&amp; !empty($opera) &amp;&amp; !empty($data[0])) {$str.=&#39;&lt;th&gt;操作&lt;/th&gt;&#39;;} $str.=&#39;&lt;/tr&gt;&#39;; foreach($data as $v) { $str.=&#39;&lt;tr&gt;&#39;; foreach($fields as $val) { if(is_array($v[$val])) { $str.= empty($v[$val])?&#39;&lt;td&gt;&lt;/td&gt;&#39;:&#39;&lt;td&gt; &#39;.arr2table($v[$val],$level).&#39; &lt;/td&gt;&#39;; } else { $str.=empty($v[$val])?&#39;&lt;td&gt;&lt;/td&gt;&#39;:&#39;&lt;td&gt;&#39;.htmlspecialchars($v[$val]).&#39;&lt;/td&gt;&#39;; } } //增加一个操作列 if (2==$level &amp;&amp; !empty($opera) &amp;&amp; !empty($data[0])) { $str.=&#39;&lt;td&gt;&#39;; foreach ($opera as $opera_link =&gt; $opera_url) { $pk=isset($opera_url[&#39;pk&#39;])?$opera_url[&#39;pk&#39;]:&#39;id&#39;; $str.=&#39; &lt;a href=&#34;&#39;.$opera_url[&#39;url&#39;].$v[$pk].&#39;&#34; &#39;; unset($opera_url[&#39;url&#39;]); foreach ($opera_url as $key =&gt; $val) { $str.=$key.&#39;=&#34;&#39;.$val.&#39;&#34;&#39;; } $str.=&#39;&gt;&#39;.$opera_link.&#39;&lt;/a&gt;&#39;; } $str.=&#39;&lt;/td&gt;&#39;; } $str.=&#39;&lt;/tr&gt;&#39;; } $str.=&#39;&lt;/table&gt;&#39;; return $str; } ?&gt; &lt;html&gt; &lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;title&gt;API&lt;/title&gt;&lt;/head&gt; &lt;body&gt; &lt;div id=&#34;demo2&#34; class=&#34;demo&#34;&gt;&lt;span&gt;API目录&lt;/span&gt; &lt;ol class=&#34;mulu&#34;&gt; &lt;?php foreach($apis as $method=&gt;$m){ echo &#39;&lt;li&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$method.&#39;&#34;&gt; &#39;.$m[&#39;title&#39;].&#39; &lt;/a&gt;&#39;; $tmp=&#39;&lt;ol&gt;&#39;;//var_dump($m[&#39;content&#39;]); foreach($m[&#39;content&#39;] as $t =&gt; $c){$tmp.=&#39;&lt;li class=&#34;f&#34;&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$t.&#39;&#34;&gt; &#39;.$t.&#39;&lt;/a&gt;&lt;/li&gt;&#39;;} $tmp.=&#39;&lt;/ol&gt;&#39;; echo $tmp; echo &#39;&lt;/li&gt;&#39;; } // .f{float:left;padding-left:3px;display: inline;} ?&gt;&lt;/ol&gt; &lt;/div&gt; &lt;style&gt; *{font-family:arial,Helvetica,sans-serif;} BODY {margin:0;padding:0;border:0;} ol {font-size:12px;} .mulu {padding:0;margin:0;padding-left:20px;display:block;} ol ol { list-style-type: upper-alpha } ol ol ol{ list-style-type: lower-alpha } red{color:red;}b,h1{color:#003366;}h2{color:blue} .demo{width:180px; margin:10px;border:2px solid #003366;color:#fff; background:#003366; padding:10px;} #demo2{position:absolute; margin-top:66px; right:30px;} .demo a{text-decoration:underline; cursor:pointer;color:#fff; } .demo p{line-height:20px} .line{width:100%;font-size:12px;} .line td{border-style:solid; border-color:#003366; border-width:1px;text-align:center} .line th{background-color:#003366;color:#fff} &lt;/style&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;http://libs.baidu.com/jquery/1.4.2/jquery.min.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34;&gt;$(function(){$(&#34;#demo2&#34;).scrollFollow({speed:800,});});&lt;/script&gt; &lt;div style=&#34;background-color: #003366;color: #FFFFFF;font-size: 26px;width: 100%;&#34;&gt; &lt;div style=&#34;padding:3 40 0 60px;&#34;&gt;官方API接口&lt;font size=&#39;1&#39;&gt;更新：&lt;?php echo date(&#39;Y-m-d H:i:s&#39;,filemtime (__FILE__));?&gt;&lt;/font&gt;&lt;/div&gt; &lt;div style=&#34;padding:1 40 5 60px;;&#34;&gt;&lt;font size=&#39;1&#39;&gt;特别说明：本接口全部使用主流json格式进行数据传输，并提供友好错误提示。加上dev=1参数会显示友好格式。——clh021@gmail.com &lt;a href=&#34;/_sql.php&#34; target=&#34;_blank&#34; style=&#34;color:yellow&#34;&gt;数据库结构&lt;/a&gt;&lt;/font&gt;&lt;/div&gt; &lt;/div&gt; &lt;div style=&#34;font-size:12px;padding-left: 30px;padding-bottom: 2em;&#34;&gt; &lt;span&gt; &lt;ol&gt;&lt;?php foreach($apis as $method=&gt;$m){ echo &#39;&lt;li&gt;&lt;h1 id=&#34;&#39;.$method.&#39;&#34;&gt;&#39;.$m[&#39;title&#39;].&#39;&lt;/h1&gt;&#39;; echo $m[&#39;des&#39;]?&#39;&lt;span&gt;说明：&#39;.$m[&#39;des&#39;].&#39;&lt;/span&gt;&#39;:&#39;&#39;; echo &#39;&lt;ol&gt;&#39;; //var_dump($m[&#39;content&#39;]); foreach($m[&#39;content&#39;] as $tittle=&gt;$func){ echo &#39;&#39;; echo &#39;&lt;li&gt;&lt;h2 id=&#34;&#39;.$tittle.&#39;&#34;&gt;&#39;.$tittle.&#39;&lt;/h2&gt;&lt;ol&gt;&#39;; if(count($func)&gt;1){ foreach($func as $k=&gt;$v){ echo &#39;&lt;li&gt;&lt;h3&gt;&#39;.$k.&#39;&lt;/h3&gt;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;; echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;; echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;; if(!empty($v[4])){ foreach($v[4] as $title=&gt;$table){ if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;} } } echo &#39;&lt;/li&gt;&#39;; } }else{ foreach($func as $k=&gt;$v){ echo &#39;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;; echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;; echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;; if(!empty($v[4])){ foreach($v[4] as $title=&gt;$table){ if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;} } } } } echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;; } echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;; } ?&gt;&lt;/ol&gt; &lt;/span&gt; &lt;/div&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt; &lt;/body&gt; &lt;/html&gt; &lt;?php mysql.doc echo &#39;&lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;meta name=&#34;author&#34; content=&#34;clh021@gmail.com&#34;&gt;&lt;title&gt;数据库&lt;/title&gt;&lt;/head&gt;&lt;style&gt;*{font-family:arial,Helvetica,sans-serif;}BODY {margin:0;padding:0;border:0;font-size:12px;}div{margin-top:5px;margin:10px;padding:10px;border: 1px solid 666666; }&lt;/style&gt;&#39;; $sqlfile=dirname(__FILE__).&#39;/wp-sql.php&#39;; if($_REQUEST[&#39;dev&#39;]==1){ echo highlight_string(file_get_contents($sqlfile)); } else { echo &#39;&lt;h1 style=&#34;text-align:center;&#34;&gt;数据库&lt;font size=1&gt;更新：&#39;.date(&#39;m-d H:i:s&#39;,filemtime ($sqlfile)).&#39;&lt;/font&gt;&lt;/h1&gt;&#39;; $data=include($sqlfile);//array();// foreach($data as $k=&gt;$v){ //if(rand(0,1)){ if(! stristr($k,&#39;modify_&#39;)){ echo &#39;&lt;div&gt;&lt;font color=&#34;blue&#34;&gt;&lt;b&gt;&#39;.$k.&#39;&lt;/b&gt;&lt;/font&gt;&lt;hr /&gt;&lt;pre&gt;&#39;.str_replace(&#39;__PREFIX__&#39;,&#39;&#39;,$v).&#39;&lt;/pre&gt;&lt;/div&gt;&#39;; } } } ">
+<title>API DOC</title>
+
+<link rel='canonical' href='/post/tech/easy.api.doc/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="API DOC">
+<meta property='og:description' content="api.doc $wait=array(&#39;待更新&#39;=&gt; array(&#39;待更新&#39;,&#39;待更新&#39;,&#39;&#39;,&#39;&#39;,array(),),); $apis = array( &#39;nonce&#39; =&gt; array( &#39;title&#39; =&gt; &#39;安全验证&#39;, &#39;des&#39; =&gt; &#39;通过控制器和方法名获取令牌，令牌12小时会自动更新，24小时有效&lt;br /&gt; 获取格式：/api/?controller=控制器&amp;method=方法名&#39;, &#39;content&#39; =&gt; array( &#39;令牌 √3.11&#39; =&gt; array( &#39;获取与验证&#39; =&gt; array( &#39;/api/get_nonce/?controller=&amp;method=login&#39;, &#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;login&#34;,&#34;nonce&#34;:&#34;0bf680a229&#34;}&#39;, &#39;当提示nonce参数时，或提示nonce参数错误时，请重新获取该参数&lt;br /&gt;其它方法的使用/api/控制器/方法名/?cookie=cookie值&#39;, &#39;24小时内&lt;strong&gt;登录&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=login&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;, array ( &#39;输入参数&#39;=&gt;array( array (&#39;字段名&#39; =&gt; &#39;controller&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;控制器&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), array (&#39;字段名&#39; =&gt; &#39;method&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;方法名&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), ), &#39;输出参数&#39;=&gt;array( array (&#39;字段名&#39; =&gt; &#39;status&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;访问状态&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), array (&#39;字段名&#39; =&gt; &#39;controller&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;控制器&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), array (&#39;字段名&#39; =&gt; &#39;method&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;方法名&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), ), ), ) , ) , &#39;通用令牌 √3.10&#39; =&gt; array( &#39;获取与验证&#39; =&gt; array( &#39;/api/get_nonce/?controller=&amp;method=fastnonce&#39;, &#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;fastnonce&#34;,&#34;nonce&#34;:&#34;3bbcb111a8&#34;}&#39;, &#39;&lt;b&gt;本方法是考虑到第一版时间紧急，获取令牌后，可使用该令牌直接进行其它任何操作。该方法存在安全隐患，第二版或将取消。&lt;/b&gt;&#39;, &#39;24小时内&lt;strong&gt;所有&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=fastnonce&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;, ) , ) , ) , ) , ); function arr2table($data,$level=1,$opera=array()) { if(!isset($data[0])){$data=array($data);} $str=&#39;&#39;;//$level==1?&#39;这里原先是样式表&#39;:&#39;&#39;;$level++; $str.=&#39;&lt;table class=&#34;line&#34; border=&#34;0&#34; cellpadding=&#34;0&#34;&gt;&lt;tr&gt;&#39;; $fields=array_keys($data[0]); foreach($fields as $val) {$str.=&#39;&lt;th&gt;&#39;.$val.&#39;&lt;/th&gt;&#39;;} if (2==$level &amp;&amp; !empty($opera) &amp;&amp; !empty($data[0])) {$str.=&#39;&lt;th&gt;操作&lt;/th&gt;&#39;;} $str.=&#39;&lt;/tr&gt;&#39;; foreach($data as $v) { $str.=&#39;&lt;tr&gt;&#39;; foreach($fields as $val) { if(is_array($v[$val])) { $str.= empty($v[$val])?&#39;&lt;td&gt;&lt;/td&gt;&#39;:&#39;&lt;td&gt; &#39;.arr2table($v[$val],$level).&#39; &lt;/td&gt;&#39;; } else { $str.=empty($v[$val])?&#39;&lt;td&gt;&lt;/td&gt;&#39;:&#39;&lt;td&gt;&#39;.htmlspecialchars($v[$val]).&#39;&lt;/td&gt;&#39;; } } //增加一个操作列 if (2==$level &amp;&amp; !empty($opera) &amp;&amp; !empty($data[0])) { $str.=&#39;&lt;td&gt;&#39;; foreach ($opera as $opera_link =&gt; $opera_url) { $pk=isset($opera_url[&#39;pk&#39;])?$opera_url[&#39;pk&#39;]:&#39;id&#39;; $str.=&#39; &lt;a href=&#34;&#39;.$opera_url[&#39;url&#39;].$v[$pk].&#39;&#34; &#39;; unset($opera_url[&#39;url&#39;]); foreach ($opera_url as $key =&gt; $val) { $str.=$key.&#39;=&#34;&#39;.$val.&#39;&#34;&#39;; } $str.=&#39;&gt;&#39;.$opera_link.&#39;&lt;/a&gt;&#39;; } $str.=&#39;&lt;/td&gt;&#39;; } $str.=&#39;&lt;/tr&gt;&#39;; } $str.=&#39;&lt;/table&gt;&#39;; return $str; } ?&gt; &lt;html&gt; &lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;title&gt;API&lt;/title&gt;&lt;/head&gt; &lt;body&gt; &lt;div id=&#34;demo2&#34; class=&#34;demo&#34;&gt;&lt;span&gt;API目录&lt;/span&gt; &lt;ol class=&#34;mulu&#34;&gt; &lt;?php foreach($apis as $method=&gt;$m){ echo &#39;&lt;li&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$method.&#39;&#34;&gt; &#39;.$m[&#39;title&#39;].&#39; &lt;/a&gt;&#39;; $tmp=&#39;&lt;ol&gt;&#39;;//var_dump($m[&#39;content&#39;]); foreach($m[&#39;content&#39;] as $t =&gt; $c){$tmp.=&#39;&lt;li class=&#34;f&#34;&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$t.&#39;&#34;&gt; &#39;.$t.&#39;&lt;/a&gt;&lt;/li&gt;&#39;;} $tmp.=&#39;&lt;/ol&gt;&#39;; echo $tmp; echo &#39;&lt;/li&gt;&#39;; } // .f{float:left;padding-left:3px;display: inline;} ?&gt;&lt;/ol&gt; &lt;/div&gt; &lt;style&gt; *{font-family:arial,Helvetica,sans-serif;} BODY {margin:0;padding:0;border:0;} ol {font-size:12px;} .mulu {padding:0;margin:0;padding-left:20px;display:block;} ol ol { list-style-type: upper-alpha } ol ol ol{ list-style-type: lower-alpha } red{color:red;}b,h1{color:#003366;}h2{color:blue} .demo{width:180px; margin:10px;border:2px solid #003366;color:#fff; background:#003366; padding:10px;} #demo2{position:absolute; margin-top:66px; right:30px;} .demo a{text-decoration:underline; cursor:pointer;color:#fff; } .demo p{line-height:20px} .line{width:100%;font-size:12px;} .line td{border-style:solid; border-color:#003366; border-width:1px;text-align:center} .line th{background-color:#003366;color:#fff} &lt;/style&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;http://libs.baidu.com/jquery/1.4.2/jquery.min.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34;&gt;$(function(){$(&#34;#demo2&#34;).scrollFollow({speed:800,});});&lt;/script&gt; &lt;div style=&#34;background-color: #003366;color: #FFFFFF;font-size: 26px;width: 100%;&#34;&gt; &lt;div style=&#34;padding:3 40 0 60px;&#34;&gt;官方API接口&lt;font size=&#39;1&#39;&gt;更新：&lt;?php echo date(&#39;Y-m-d H:i:s&#39;,filemtime (__FILE__));?&gt;&lt;/font&gt;&lt;/div&gt; &lt;div style=&#34;padding:1 40 5 60px;;&#34;&gt;&lt;font size=&#39;1&#39;&gt;特别说明：本接口全部使用主流json格式进行数据传输，并提供友好错误提示。加上dev=1参数会显示友好格式。——clh021@gmail.com &lt;a href=&#34;/_sql.php&#34; target=&#34;_blank&#34; style=&#34;color:yellow&#34;&gt;数据库结构&lt;/a&gt;&lt;/font&gt;&lt;/div&gt; &lt;/div&gt; &lt;div style=&#34;font-size:12px;padding-left: 30px;padding-bottom: 2em;&#34;&gt; &lt;span&gt; &lt;ol&gt;&lt;?php foreach($apis as $method=&gt;$m){ echo &#39;&lt;li&gt;&lt;h1 id=&#34;&#39;.$method.&#39;&#34;&gt;&#39;.$m[&#39;title&#39;].&#39;&lt;/h1&gt;&#39;; echo $m[&#39;des&#39;]?&#39;&lt;span&gt;说明：&#39;.$m[&#39;des&#39;].&#39;&lt;/span&gt;&#39;:&#39;&#39;; echo &#39;&lt;ol&gt;&#39;; //var_dump($m[&#39;content&#39;]); foreach($m[&#39;content&#39;] as $tittle=&gt;$func){ echo &#39;&#39;; echo &#39;&lt;li&gt;&lt;h2 id=&#34;&#39;.$tittle.&#39;&#34;&gt;&#39;.$tittle.&#39;&lt;/h2&gt;&lt;ol&gt;&#39;; if(count($func)&gt;1){ foreach($func as $k=&gt;$v){ echo &#39;&lt;li&gt;&lt;h3&gt;&#39;.$k.&#39;&lt;/h3&gt;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;; echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;; echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;; if(!empty($v[4])){ foreach($v[4] as $title=&gt;$table){ if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;} } } echo &#39;&lt;/li&gt;&#39;; } }else{ foreach($func as $k=&gt;$v){ echo &#39;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;; echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;; echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;; if(!empty($v[4])){ foreach($v[4] as $title=&gt;$table){ if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;} } } } } echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;; } echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;; } ?&gt;&lt;/ol&gt; &lt;/span&gt; &lt;/div&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt; &lt;/body&gt; &lt;/html&gt; &lt;?php mysql.doc echo &#39;&lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;meta name=&#34;author&#34; content=&#34;clh021@gmail.com&#34;&gt;&lt;title&gt;数据库&lt;/title&gt;&lt;/head&gt;&lt;style&gt;*{font-family:arial,Helvetica,sans-serif;}BODY {margin:0;padding:0;border:0;font-size:12px;}div{margin-top:5px;margin:10px;padding:10px;border: 1px solid 666666; }&lt;/style&gt;&#39;; $sqlfile=dirname(__FILE__).&#39;/wp-sql.php&#39;; if($_REQUEST[&#39;dev&#39;]==1){ echo highlight_string(file_get_contents($sqlfile)); } else { echo &#39;&lt;h1 style=&#34;text-align:center;&#34;&gt;数据库&lt;font size=1&gt;更新：&#39;.date(&#39;m-d H:i:s&#39;,filemtime ($sqlfile)).&#39;&lt;/font&gt;&lt;/h1&gt;&#39;; $data=include($sqlfile);//array();// foreach($data as $k=&gt;$v){ //if(rand(0,1)){ if(! stristr($k,&#39;modify_&#39;)){ echo &#39;&lt;div&gt;&lt;font color=&#34;blue&#34;&gt;&lt;b&gt;&#39;.$k.&#39;&lt;/b&gt;&lt;/font&gt;&lt;hr /&gt;&lt;pre&gt;&#39;.str_replace(&#39;__PREFIX__&#39;,&#39;&#39;,$v).&#39;&lt;/pre&gt;&lt;/div&gt;&#39;; } } } ">
+<meta property='og:url' content='/post/tech/easy.api.doc/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='API' /><meta property='article:tag' content='PHP' /><meta property='article:tag' content='swagger' /><meta property='article:published_time' content='2014-02-20T10:10:05&#43;00:00'/><meta property='article:modified_time' content='2014-02-20T10:10:05&#43;00:00'/>
+<meta name="twitter:title" content="API DOC">
+<meta name="twitter:description" content="api.doc $wait=array(&#39;待更新&#39;=&gt; array(&#39;待更新&#39;,&#39;待更新&#39;,&#39;&#39;,&#39;&#39;,array(),),); $apis = array( &#39;nonce&#39; =&gt; array( &#39;title&#39; =&gt; &#39;安全验证&#39;, &#39;des&#39; =&gt; &#39;通过控制器和方法名获取令牌，令牌12小时会自动更新，24小时有效&lt;br /&gt; 获取格式：/api/?controller=控制器&amp;method=方法名&#39;, &#39;content&#39; =&gt; array( &#39;令牌 √3.11&#39; =&gt; array( &#39;获取与验证&#39; =&gt; array( &#39;/api/get_nonce/?controller=&amp;method=login&#39;, &#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;login&#34;,&#34;nonce&#34;:&#34;0bf680a229&#34;}&#39;, &#39;当提示nonce参数时，或提示nonce参数错误时，请重新获取该参数&lt;br /&gt;其它方法的使用/api/控制器/方法名/?cookie=cookie值&#39;, &#39;24小时内&lt;strong&gt;登录&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=login&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;, array ( &#39;输入参数&#39;=&gt;array( array (&#39;字段名&#39; =&gt; &#39;controller&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;控制器&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), array (&#39;字段名&#39; =&gt; &#39;method&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;方法名&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), ), &#39;输出参数&#39;=&gt;array( array (&#39;字段名&#39; =&gt; &#39;status&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;访问状态&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), array (&#39;字段名&#39; =&gt; &#39;controller&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;控制器&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), array (&#39;字段名&#39; =&gt; &#39;method&#39;,&#39;格式&#39; =&gt; &#39;字符串&#39;,&#39;意义&#39; =&gt; &#39;方法名&#39;,&#39;备注&#39; =&gt; &#39;&#39;,), ), ), ) , ) , &#39;通用令牌 √3.10&#39; =&gt; array( &#39;获取与验证&#39; =&gt; array( &#39;/api/get_nonce/?controller=&amp;method=fastnonce&#39;, &#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;fastnonce&#34;,&#34;nonce&#34;:&#34;3bbcb111a8&#34;}&#39;, &#39;&lt;b&gt;本方法是考虑到第一版时间紧急，获取令牌后，可使用该令牌直接进行其它任何操作。该方法存在安全隐患，第二版或将取消。&lt;/b&gt;&#39;, &#39;24小时内&lt;strong&gt;所有&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=fastnonce&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;, ) , ) , ) , ) , ); function arr2table($data,$level=1,$opera=array()) { if(!isset($data[0])){$data=array($data);} $str=&#39;&#39;;//$level==1?&#39;这里原先是样式表&#39;:&#39;&#39;;$level++; $str.=&#39;&lt;table class=&#34;line&#34; border=&#34;0&#34; cellpadding=&#34;0&#34;&gt;&lt;tr&gt;&#39;; $fields=array_keys($data[0]); foreach($fields as $val) {$str.=&#39;&lt;th&gt;&#39;.$val.&#39;&lt;/th&gt;&#39;;} if (2==$level &amp;&amp; !empty($opera) &amp;&amp; !empty($data[0])) {$str.=&#39;&lt;th&gt;操作&lt;/th&gt;&#39;;} $str.=&#39;&lt;/tr&gt;&#39;; foreach($data as $v) { $str.=&#39;&lt;tr&gt;&#39;; foreach($fields as $val) { if(is_array($v[$val])) { $str.= empty($v[$val])?&#39;&lt;td&gt;&lt;/td&gt;&#39;:&#39;&lt;td&gt; &#39;.arr2table($v[$val],$level).&#39; &lt;/td&gt;&#39;; } else { $str.=empty($v[$val])?&#39;&lt;td&gt;&lt;/td&gt;&#39;:&#39;&lt;td&gt;&#39;.htmlspecialchars($v[$val]).&#39;&lt;/td&gt;&#39;; } } //增加一个操作列 if (2==$level &amp;&amp; !empty($opera) &amp;&amp; !empty($data[0])) { $str.=&#39;&lt;td&gt;&#39;; foreach ($opera as $opera_link =&gt; $opera_url) { $pk=isset($opera_url[&#39;pk&#39;])?$opera_url[&#39;pk&#39;]:&#39;id&#39;; $str.=&#39; &lt;a href=&#34;&#39;.$opera_url[&#39;url&#39;].$v[$pk].&#39;&#34; &#39;; unset($opera_url[&#39;url&#39;]); foreach ($opera_url as $key =&gt; $val) { $str.=$key.&#39;=&#34;&#39;.$val.&#39;&#34;&#39;; } $str.=&#39;&gt;&#39;.$opera_link.&#39;&lt;/a&gt;&#39;; } $str.=&#39;&lt;/td&gt;&#39;; } $str.=&#39;&lt;/tr&gt;&#39;; } $str.=&#39;&lt;/table&gt;&#39;; return $str; } ?&gt; &lt;html&gt; &lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;title&gt;API&lt;/title&gt;&lt;/head&gt; &lt;body&gt; &lt;div id=&#34;demo2&#34; class=&#34;demo&#34;&gt;&lt;span&gt;API目录&lt;/span&gt; &lt;ol class=&#34;mulu&#34;&gt; &lt;?php foreach($apis as $method=&gt;$m){ echo &#39;&lt;li&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$method.&#39;&#34;&gt; &#39;.$m[&#39;title&#39;].&#39; &lt;/a&gt;&#39;; $tmp=&#39;&lt;ol&gt;&#39;;//var_dump($m[&#39;content&#39;]); foreach($m[&#39;content&#39;] as $t =&gt; $c){$tmp.=&#39;&lt;li class=&#34;f&#34;&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$t.&#39;&#34;&gt; &#39;.$t.&#39;&lt;/a&gt;&lt;/li&gt;&#39;;} $tmp.=&#39;&lt;/ol&gt;&#39;; echo $tmp; echo &#39;&lt;/li&gt;&#39;; } // .f{float:left;padding-left:3px;display: inline;} ?&gt;&lt;/ol&gt; &lt;/div&gt; &lt;style&gt; *{font-family:arial,Helvetica,sans-serif;} BODY {margin:0;padding:0;border:0;} ol {font-size:12px;} .mulu {padding:0;margin:0;padding-left:20px;display:block;} ol ol { list-style-type: upper-alpha } ol ol ol{ list-style-type: lower-alpha } red{color:red;}b,h1{color:#003366;}h2{color:blue} .demo{width:180px; margin:10px;border:2px solid #003366;color:#fff; background:#003366; padding:10px;} #demo2{position:absolute; margin-top:66px; right:30px;} .demo a{text-decoration:underline; cursor:pointer;color:#fff; } .demo p{line-height:20px} .line{width:100%;font-size:12px;} .line td{border-style:solid; border-color:#003366; border-width:1px;text-align:center} .line th{background-color:#003366;color:#fff} &lt;/style&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;http://libs.baidu.com/jquery/1.4.2/jquery.min.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34;&gt;$(function(){$(&#34;#demo2&#34;).scrollFollow({speed:800,});});&lt;/script&gt; &lt;div style=&#34;background-color: #003366;color: #FFFFFF;font-size: 26px;width: 100%;&#34;&gt; &lt;div style=&#34;padding:3 40 0 60px;&#34;&gt;官方API接口&lt;font size=&#39;1&#39;&gt;更新：&lt;?php echo date(&#39;Y-m-d H:i:s&#39;,filemtime (__FILE__));?&gt;&lt;/font&gt;&lt;/div&gt; &lt;div style=&#34;padding:1 40 5 60px;;&#34;&gt;&lt;font size=&#39;1&#39;&gt;特别说明：本接口全部使用主流json格式进行数据传输，并提供友好错误提示。加上dev=1参数会显示友好格式。——clh021@gmail.com &lt;a href=&#34;/_sql.php&#34; target=&#34;_blank&#34; style=&#34;color:yellow&#34;&gt;数据库结构&lt;/a&gt;&lt;/font&gt;&lt;/div&gt; &lt;/div&gt; &lt;div style=&#34;font-size:12px;padding-left: 30px;padding-bottom: 2em;&#34;&gt; &lt;span&gt; &lt;ol&gt;&lt;?php foreach($apis as $method=&gt;$m){ echo &#39;&lt;li&gt;&lt;h1 id=&#34;&#39;.$method.&#39;&#34;&gt;&#39;.$m[&#39;title&#39;].&#39;&lt;/h1&gt;&#39;; echo $m[&#39;des&#39;]?&#39;&lt;span&gt;说明：&#39;.$m[&#39;des&#39;].&#39;&lt;/span&gt;&#39;:&#39;&#39;; echo &#39;&lt;ol&gt;&#39;; //var_dump($m[&#39;content&#39;]); foreach($m[&#39;content&#39;] as $tittle=&gt;$func){ echo &#39;&#39;; echo &#39;&lt;li&gt;&lt;h2 id=&#34;&#39;.$tittle.&#39;&#34;&gt;&#39;.$tittle.&#39;&lt;/h2&gt;&lt;ol&gt;&#39;; if(count($func)&gt;1){ foreach($func as $k=&gt;$v){ echo &#39;&lt;li&gt;&lt;h3&gt;&#39;.$k.&#39;&lt;/h3&gt;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;; echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;; echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;; if(!empty($v[4])){ foreach($v[4] as $title=&gt;$table){ if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;} } } echo &#39;&lt;/li&gt;&#39;; } }else{ foreach($func as $k=&gt;$v){ echo &#39;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;; echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;; echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;; if(!empty($v[4])){ foreach($v[4] as $title=&gt;$table){ if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;} } } } } echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;; } echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;; } ?&gt;&lt;/ol&gt; &lt;/span&gt; &lt;/div&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt; &lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt; &lt;/body&gt; &lt;/html&gt; &lt;?php mysql.doc echo &#39;&lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;meta name=&#34;author&#34; content=&#34;clh021@gmail.com&#34;&gt;&lt;title&gt;数据库&lt;/title&gt;&lt;/head&gt;&lt;style&gt;*{font-family:arial,Helvetica,sans-serif;}BODY {margin:0;padding:0;border:0;font-size:12px;}div{margin-top:5px;margin:10px;padding:10px;border: 1px solid 666666; }&lt;/style&gt;&#39;; $sqlfile=dirname(__FILE__).&#39;/wp-sql.php&#39;; if($_REQUEST[&#39;dev&#39;]==1){ echo highlight_string(file_get_contents($sqlfile)); } else { echo &#39;&lt;h1 style=&#34;text-align:center;&#34;&gt;数据库&lt;font size=1&gt;更新：&#39;.date(&#39;m-d H:i:s&#39;,filemtime ($sqlfile)).&#39;&lt;/font&gt;&lt;/h1&gt;&#39;; $data=include($sqlfile);//array();// foreach($data as $k=&gt;$v){ //if(rand(0,1)){ if(! stristr($k,&#39;modify_&#39;)){ echo &#39;&lt;div&gt;&lt;font color=&#34;blue&#34;&gt;&lt;b&gt;&#39;.$k.&#39;&lt;/b&gt;&lt;/font&gt;&lt;hr /&gt;&lt;pre&gt;&#39;.str_replace(&#39;__PREFIX__&#39;,&#39;&#39;,$v).&#39;&lt;/pre&gt;&lt;/div&gt;&#39;; } } } ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/easy.api.doc/">API DOC</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2014-02-20T10:10:05Z'>2014-02-20 10:10:05</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="apidoc">api.doc
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$wait<span style="color:#f92672">=</span><span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#39;待更新&#39;</span><span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#39;待更新&#39;</span>,<span style="color:#e6db74">&#39;待更新&#39;</span>,<span style="color:#e6db74">&#39;&#39;</span>,<span style="color:#e6db74">&#39;&#39;</span>,<span style="color:#66d9ef">array</span>(),),);
+</span></span><span style="display:flex;"><span>$apis <span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;nonce&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;title&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;安全验证&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;des&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;通过控制器和方法名获取令牌，令牌12小时会自动更新，24小时有效&lt;br /&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            获取格式：/api/?controller=控制器&amp;method=方法名&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;content&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;令牌 √3.11&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;获取与验证&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;/api/get_nonce/?controller=&amp;method=login&#39;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;login&#34;,&#34;nonce&#34;:&#34;0bf680a229&#34;}&#39;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;当提示nonce参数时，或提示nonce参数错误时，请重新获取该参数&lt;br /&gt;其它方法的使用/api/控制器/方法名/?cookie=cookie值&#39;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;24小时内&lt;strong&gt;登录&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=login&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">array</span> (
+</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">&#39;输入参数&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>                          <span style="color:#66d9ef">array</span> (<span style="color:#e6db74">&#39;字段名&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;controller&#39;</span>,<span style="color:#e6db74">&#39;格式&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;字符串&#39;</span>,<span style="color:#e6db74">&#39;意义&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;控制器&#39;</span>,<span style="color:#e6db74">&#39;备注&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;&#39;</span>,),
+</span></span><span style="display:flex;"><span>                          <span style="color:#66d9ef">array</span> (<span style="color:#e6db74">&#39;字段名&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;method&#39;</span>,<span style="color:#e6db74">&#39;格式&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;字符串&#39;</span>,<span style="color:#e6db74">&#39;意义&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;方法名&#39;</span>,<span style="color:#e6db74">&#39;备注&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;&#39;</span>,),
+</span></span><span style="display:flex;"><span>                        ),
+</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">&#39;输出参数&#39;</span><span style="color:#f92672">=&gt;</span><span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>                          <span style="color:#66d9ef">array</span> (<span style="color:#e6db74">&#39;字段名&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;status&#39;</span>,<span style="color:#e6db74">&#39;格式&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;字符串&#39;</span>,<span style="color:#e6db74">&#39;意义&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;访问状态&#39;</span>,<span style="color:#e6db74">&#39;备注&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;&#39;</span>,),
+</span></span><span style="display:flex;"><span>                          <span style="color:#66d9ef">array</span> (<span style="color:#e6db74">&#39;字段名&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;controller&#39;</span>,<span style="color:#e6db74">&#39;格式&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;字符串&#39;</span>,<span style="color:#e6db74">&#39;意义&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;控制器&#39;</span>,<span style="color:#e6db74">&#39;备注&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;&#39;</span>,),
+</span></span><span style="display:flex;"><span>                          <span style="color:#66d9ef">array</span> (<span style="color:#e6db74">&#39;字段名&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;method&#39;</span>,<span style="color:#e6db74">&#39;格式&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;字符串&#39;</span>,<span style="color:#e6db74">&#39;意义&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;方法名&#39;</span>,<span style="color:#e6db74">&#39;备注&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;&#39;</span>,),
+</span></span><span style="display:flex;"><span>                        ),
+</span></span><span style="display:flex;"><span>                   ),
+</span></span><span style="display:flex;"><span>                ) ,
+</span></span><span style="display:flex;"><span>            ) ,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;通用令牌 √3.10&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;获取与验证&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">array</span>(
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;/api/get_nonce/?controller=&amp;method=fastnonce&#39;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;{&#34;status&#34;:&#34;ok&#34;,&#34;controller&#34;:&#34;&#34;,&#34;method&#34;:&#34;fastnonce&#34;,&#34;nonce&#34;:&#34;3bbcb111a8&#34;}&#39;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;&lt;b&gt;本方法是考虑到第一版时间紧急，获取令牌后，可使用该令牌直接进行其它任何操作。该方法存在安全隐患，第二版或将取消。&lt;/b&gt;&#39;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#39;24小时内&lt;strong&gt;所有&lt;/strong&gt;操作的令牌&lt;a href=&#34;/api/?controller=&amp;method=fastnonce&#34; target=&#34;_blank&#34;&gt;点这里测试&lt;/a&gt;&#39;</span>,
+</span></span><span style="display:flex;"><span>                ) ,
+</span></span><span style="display:flex;"><span>            ) ,
+</span></span><span style="display:flex;"><span>        ) ,
+</span></span><span style="display:flex;"><span>    ) ,
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">arr2table</span>($data,$level<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,$opera<span style="color:#f92672">=</span><span style="color:#66d9ef">array</span>()) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span><span style="color:#a6e22e">isset</span>($data[<span style="color:#ae81ff">0</span>])){$data<span style="color:#f92672">=</span><span style="color:#66d9ef">array</span>($data);}
+</span></span><span style="display:flex;"><span>    $str<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#75715e">//$level==1?&#39;这里原先是样式表&#39;:&#39;&#39;;$level++;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&lt;table class=&#34;line&#34; border=&#34;0&#34; cellpadding=&#34;0&#34;&gt;&lt;tr&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>	$fields<span style="color:#f92672">=</span><span style="color:#a6e22e">array_keys</span>($data[<span style="color:#ae81ff">0</span>]);
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">foreach</span>($fields <span style="color:#66d9ef">as</span> $val) {$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&lt;th&gt;&#39;</span><span style="color:#f92672">.</span>$val<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;&lt;/th&gt;&#39;</span>;}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (<span style="color:#ae81ff">2</span><span style="color:#f92672">==</span>$level <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($opera) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($data[<span style="color:#ae81ff">0</span>])) {$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&lt;th&gt;操作&lt;/th&gt;&#39;</span>;}
+</span></span><span style="display:flex;"><span>	$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&lt;/tr&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">foreach</span>($data <span style="color:#66d9ef">as</span> $v) {
+</span></span><span style="display:flex;"><span>		$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&lt;tr&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">foreach</span>($fields <span style="color:#66d9ef">as</span> $val) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">is_array</span>($v[$val])) {
+</span></span><span style="display:flex;"><span>				$str<span style="color:#f92672">.=</span> <span style="color:#66d9ef">empty</span>($v[$val])<span style="color:#f92672">?</span><span style="color:#e6db74">&#39;&lt;td&gt;&lt;/td&gt;&#39;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;&lt;td&gt; &#39;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">arr2table</span>($v[$val],$level)<span style="color:#f92672">.</span><span style="color:#e6db74">&#39; &lt;/td&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>			} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>				$str<span style="color:#f92672">.=</span><span style="color:#66d9ef">empty</span>($v[$val])<span style="color:#f92672">?</span><span style="color:#e6db74">&#39;&lt;td&gt;&lt;/td&gt;&#39;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;&lt;td&gt;&#39;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">htmlspecialchars</span>($v[$val])<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;&lt;/td&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//增加一个操作列
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> (<span style="color:#ae81ff">2</span><span style="color:#f92672">==</span>$level <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($opera) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#66d9ef">empty</span>($data[<span style="color:#ae81ff">0</span>])) {
+</span></span><span style="display:flex;"><span>			$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&lt;td&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">foreach</span> ($opera <span style="color:#66d9ef">as</span> $opera_link <span style="color:#f92672">=&gt;</span> $opera_url) {
+</span></span><span style="display:flex;"><span>				$pk<span style="color:#f92672">=</span><span style="color:#a6e22e">isset</span>($opera_url[<span style="color:#e6db74">&#39;pk&#39;</span>])<span style="color:#f92672">?</span>$opera_url[<span style="color:#e6db74">&#39;pk&#39;</span>]<span style="color:#f92672">:</span><span style="color:#e6db74">&#39;id&#39;</span>;
+</span></span><span style="display:flex;"><span>				$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39; &lt;a href=&#34;&#39;</span><span style="color:#f92672">.</span>$opera_url[<span style="color:#e6db74">&#39;url&#39;</span>]<span style="color:#f92672">.</span>$v[$pk]<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;&#34; &#39;</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">unset</span>($opera_url[<span style="color:#e6db74">&#39;url&#39;</span>]);
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">foreach</span> ($opera_url <span style="color:#66d9ef">as</span> $key <span style="color:#f92672">=&gt;</span> $val) {
+</span></span><span style="display:flex;"><span>					$str<span style="color:#f92672">.=</span>$key<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;=&#34;&#39;</span><span style="color:#f92672">.</span>$val<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;&#34;&#39;</span>;
+</span></span><span style="display:flex;"><span>				}
+</span></span><span style="display:flex;"><span>				$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&gt;&#39;</span><span style="color:#f92672">.</span>$opera_link<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;&lt;/a&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>			$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&lt;/td&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&lt;/tr&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	$str<span style="color:#f92672">.=</span><span style="color:#e6db74">&#39;&lt;/table&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> $str;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;html&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;title&gt;API&lt;/title&gt;&lt;/head&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;body&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;div id=&#34;demo2&#34; class=&#34;demo&#34;&gt;&lt;span&gt;API目录&lt;/span&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;ol class=&#34;mulu&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;?php
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">foreach($apis as $method=&gt;$m){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">	echo &#39;&lt;li&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$method.&#39;&#34;&gt; &#39;.$m[&#39;title&#39;].&#39; &lt;/a&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    $tmp=&#39;&lt;ol&gt;&#39;;//var_dump($m[&#39;content&#39;]);
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    foreach($m[&#39;content&#39;] as $t =&gt; $c){$tmp.=&#39;&lt;li class=&#34;f&#34;&gt;&lt;a class=&#34;ca&#34; href=&#34;#&#39;.$t.&#39;&#34;&gt; &#39;.$t.&#39;&lt;/a&gt;&lt;/li&gt;&#39;;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        $tmp.=&#39;&lt;/ol&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        echo $tmp;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    echo &#39;&lt;/li&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">//  .f{float:left;padding-left:3px;display: inline;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">?&gt;&lt;/ol&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;style&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">*{font-family:arial,Helvetica,sans-serif;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    BODY {margin:0;padding:0;border:0;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    ol {font-size:12px;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    .mulu {padding:0;margin:0;padding-left:20px;display:block;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    ol ol { list-style-type: upper-alpha }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    ol ol ol{ list-style-type: lower-alpha }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    red{color:red;}b,h1{color:#003366;}h2{color:blue}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    .demo{width:180px; margin:10px;border:2px solid #003366;color:#fff; background:#003366; padding:10px;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    #demo2{position:absolute; margin-top:66px;  right:30px;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    .demo a{text-decoration:underline; cursor:pointer;color:#fff; }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    .demo p{line-height:20px}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    .line{width:100%;font-size:12px;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    .line td{border-style:solid; border-color:#003366; border-width:1px;text-align:center}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    .line th{background-color:#003366;color:#fff}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;/style&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;script type=&#34;text/javascript&#34; src=&#34;http://libs.baidu.com/jquery/1.4.2/jquery.min.js&#34;&gt;&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;script type=&#34;text/javascript&#34;&gt;$(function(){$(&#34;#demo2&#34;).scrollFollow({speed:800,});});&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;div style=&#34;background-color: #003366;color: #FFFFFF;font-size: 26px;width: 100%;&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;div style=&#34;padding:3 40 0 60px;&#34;&gt;官方API接口&lt;font size=&#39;1&#39;&gt;更新：&lt;?php echo date(&#39;Y-m-d H:i:s&#39;,filemtime (__FILE__));?&gt;&lt;/font&gt;&lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;div style=&#34;padding:1 40 5 60px;;&#34;&gt;&lt;font size=&#39;1&#39;&gt;特别说明：本接口全部使用主流json格式进行数据传输，并提供友好错误提示。加上dev=1参数会显示友好格式。——clh021@gmail.com &lt;a href=&#34;/_sql.php&#34; target=&#34;_blank&#34; style=&#34;color:yellow&#34;&gt;数据库结构&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;div style=&#34;font-size:12px;padding-left: 30px;padding-bottom: 2em;&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">	&lt;span&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">		&lt;ol&gt;&lt;?php
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">foreach($apis as $method=&gt;$m){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    echo &#39;&lt;li&gt;&lt;h1 id=&#34;&#39;.$method.&#39;&#34;&gt;&#39;.$m[&#39;title&#39;].&#39;&lt;/h1&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    echo $m[&#39;des&#39;]?&#39;&lt;span&gt;说明：&#39;.$m[&#39;des&#39;].&#39;&lt;/span&gt;&#39;:&#39;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    echo &#39;&lt;ol&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    //var_dump($m[&#39;content&#39;]);
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    foreach($m[&#39;content&#39;] as $tittle=&gt;$func){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        echo &#39;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            echo &#39;&lt;li&gt;&lt;h2 id=&#34;&#39;.$tittle.&#39;&#34;&gt;&#39;.$tittle.&#39;&lt;/h2&gt;&lt;ol&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        	if(count($func)&gt;1){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            	foreach($func as $k=&gt;$v){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    echo &#39;&lt;li&gt;&lt;h3&gt;&#39;.$k.&#39;&lt;/h3&gt;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                	echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    if(!empty($v[4])){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                        foreach($v[4] as $title=&gt;$table){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                            if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                        }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                	echo &#39;&lt;/li&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            }else{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            	foreach($func as $k=&gt;$v){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    echo &#39;&lt;p&gt;&lt;b&gt;请求:&lt;/b&gt;&#39;.$v[0].&#39;&lt;/p&gt;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;返回&lt;/legend&gt;&#39;.$v[1].&#39;&lt;/fieldset&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    echo !empty($v[2])?&#39;&lt;p&gt;&#39;.$v[2].&#39;&lt;/p&gt;&#39;:&#39;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    echo !empty($v[3])?&#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;测试&lt;/legend&gt;&#39;.$v[3].&#39;&lt;/fieldset&gt;&#39;:&#39;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    if(!empty($v[4])){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                        foreach($v[4] as $title=&gt;$table){
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                            if($table){echo &#39;&lt;fieldset style=&#34;width:78%;&#34;&gt;&lt;legend&gt;&#39;.$title.&#39;&lt;/legend&gt;&#39;.arr2table($table).&#39;&lt;/fieldset&gt;&#39;;}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                        }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                    }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    echo &#39;&lt;/ol&gt;&lt;/li&gt;&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">?&gt;&lt;/ol&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;/span&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;/div&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;script type=&#34;text/javascript&#34; src=&#34;jquery.cookie.js&#34;&gt;&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;script type=&#34;text/javascript&#34; src=&#34;jquery.scroll-follow.js&#34;&gt;&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;/body&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;/html&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;?php
+</span></span></span></code></pre></div><h1 id="mysqldoc">mysql.doc
+</h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;&lt;head&gt;&lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf8&#34; /&gt;&lt;meta name=&#34;author&#34; content=&#34;clh021@gmail.com&#34;&gt;&lt;title&gt;数据库&lt;/title&gt;&lt;/head&gt;&lt;style&gt;*{font-family:arial,Helvetica,sans-serif;}BODY {margin:0;padding:0;border:0;font-size:12px;}div{margin-top:5px;margin:10px;padding:10px;border: 1px solid 666666; }&lt;/style&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>$sqlfile<span style="color:#f92672">=</span><span style="color:#a6e22e">dirname</span>(<span style="color:#66d9ef">__FILE__</span>)<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;/wp-sql.php&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>($_REQUEST[<span style="color:#e6db74">&#39;dev&#39;</span>]<span style="color:#f92672">==</span><span style="color:#ae81ff">1</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">highlight_string</span>(<span style="color:#a6e22e">file_get_contents</span>($sqlfile));
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;&lt;h1 style=&#34;text-align:center;&#34;&gt;数据库&lt;font size=1&gt;更新：&#39;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">date</span>(<span style="color:#e6db74">&#39;m-d H:i:s&#39;</span>,<span style="color:#a6e22e">filemtime</span> ($sqlfile))<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;&lt;/font&gt;&lt;/h1&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>    $data<span style="color:#f92672">=</span><span style="color:#66d9ef">include</span>($sqlfile);<span style="color:#75715e">//array();//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">foreach</span>($data <span style="color:#66d9ef">as</span> $k<span style="color:#f92672">=&gt;</span>$v){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//if(rand(0,1)){
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span> <span style="color:#a6e22e">stristr</span>($k,<span style="color:#e6db74">&#39;modify_&#39;</span>)){
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;&lt;div&gt;&lt;font color=&#34;blue&#34;&gt;&lt;b&gt;&#39;</span><span style="color:#f92672">.</span>$k<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;&lt;/b&gt;&lt;/font&gt;&lt;hr /&gt;&lt;pre&gt;&#39;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">str_replace</span>(<span style="color:#e6db74">&#39;__PREFIX__&#39;</span>,<span style="color:#e6db74">&#39;&#39;</span>,$v)<span style="color:#f92672">.</span><span style="color:#e6db74">&#39;&lt;/pre&gt;&lt;/div&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/api/">API</a>
+        
+            <a href="/tags/php/">PHP</a>
+        
+            <a href="/tags/swagger/">Swagger</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

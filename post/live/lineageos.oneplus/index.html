@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="OnePlus9 使用 lineageOS 20 和 GApps 京东入了一台二手OnePlus9，拿来装了第三方 ROM lineageOS。\n前期准备工作 打开开发者模式 设置-&gt;关于手机-&gt;版本信息，基带内核版本等-&gt;连续点击”版本号“\n">
+<title>lineageOS.OnePlus</title>
+
+<link rel='canonical' href='/post/live/lineageos.oneplus/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="lineageOS.OnePlus">
+<meta property='og:description' content="OnePlus9 使用 lineageOS 20 和 GApps 京东入了一台二手OnePlus9，拿来装了第三方 ROM lineageOS。\n前期准备工作 打开开发者模式 设置-&gt;关于手机-&gt;版本信息，基带内核版本等-&gt;连续点击”版本号“\n">
+<meta property='og:url' content='/post/live/lineageos.oneplus/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='AdGuard' /><meta property='article:published_time' content='2021-08-01T12:01:20&#43;08:00'/><meta property='article:modified_time' content='2021-08-01T12:01:20&#43;08:00'/>
+<meta name="twitter:title" content="lineageOS.OnePlus">
+<meta name="twitter:description" content="OnePlus9 使用 lineageOS 20 和 GApps 京东入了一台二手OnePlus9，拿来装了第三方 ROM lineageOS。\n前期准备工作 打开开发者模式 设置-&gt;关于手机-&gt;版本信息，基带内核版本等-&gt;连续点击”版本号“\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/live/" style="background-color: #2a9d8f; color: #fff;">
+                Live
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/live/lineageos.oneplus/">lineageOS.OnePlus</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2021-08-01T12:01:20&#43;08:00'>2021-08-01 12:01:20</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="oneplus9-使用-lineageos-20-和-gapps">OnePlus9 使用 lineageOS 20 和 GApps
+</h1><p>京东入了一台二手OnePlus9，拿来装了第三方 ROM lineageOS。</p>
+<h2 id="前期准备工作">前期准备工作
+</h2><h3 id="打开开发者模式">打开开发者模式
+</h3><p>设置-&gt;关于手机-&gt;版本信息，基带内核版本等-&gt;连续点击”版本号“</p>
+<h3 id="打开-usb-调试和设备解锁">打开 usb 调试和设备解锁
+</h3><p>设置-&gt;更多设置-&gt;开发者选项</p>
+<ul>
+<li>打开 usb 调试</li>
+<li>通过同时按住 <code>音量-</code>+<code>关机键</code> 进入 <code>fastboot</code>,也可以通过 <code>adb reboot fastboot</code> 的方法进入</li>
+</ul>
+<blockquote>
+<p>通过 <code>adb devices</code> 的方法确认连接，如果提示 <code>no permissions</code> 则将充电模式修改为文件传输模式</p>
+</blockquote>
+<ul>
+<li><code>adb reboot fastboot</code> 进入到一个选择语言的地方(假fastboot)，格式化数据，确认后将会重启，按住音量上下键可进入真正的 <code>FastBoot Mode</code></li>
+<li><code>sudo fastboot oem unlock</code> # 解锁设备，会重启清楚数据，再次进入系统</li>
+<li>重启进入后的系统默认就已经打开了 usb调试和设备锁, 但是默认并没有打开开发者模式</li>
+<li>之后就可以非常稳定容易的通过 <code>音量-</code> + <code>关机键</code> 进入真正的 <code>FastBoot Mode</code> 了</li>
+<li>通过 <code>fastboot oem device-info</code> 可以在电脑端查看 <code>oem</code> 信息</li>
+</ul>
+<blockquote>
+<p>也可以在 twrp 状态，将包全部拷贝进手机，一次性选好三个包，直接刷入，比起 adb 速度相当快。不过，我在刷 twrp 时，发现始终无法正常启动。</p>
+</blockquote>
+<h2 id="需要下载的文件">需要下载的文件
+</h2><ul>
+<li><a class="link" href="https://wiki.lineageos.org/devices/lemonade/install"  target="_blank" rel="noopener"
+    >刷机文档</a></li>
+<li><a class="link" href="https://mirror.math.princeton.edu/pub/lineageos/full/lemonade/20230101/"  target="_blank" rel="noopener"
+    >镜像下载</a></li>
+<li><a class="link" href="https://lineage-archive.timschumi.net/"  target="_blank" rel="noopener"
+    >老镜像下载</a></li>
+<li><a class="link" href="https://twrp.me/oneplus/oneplus9.html"  target="_blank" rel="noopener"
+    >TWRP下载</a></li>
+<li><a class="link" href="https://wiki.lineageos.org/gapps.html"  target="_blank" rel="noopener"
+    >LineageOS Wiki</a> lemonade:一加9 sagit:小米6</li>
+<li>文件列表:
+<ul>
+<li><a class="link" href="https://twrp.me/oneplus/oneplus9.html"  target="_blank" rel="noopener"
+    >twrp-3.7.0_11-0-lemonadep.img</a></li>
+<li><a class="link" href="https://mirrors.ustc.edu.cn/lineageos/full/lemonade/20230122/"  target="_blank" rel="noopener"
+    >dtbo.img</a></li>
+<li><a class="link" href="https://mirrors.ustc.edu.cn/lineageos/full/lemonade/20230122/"  target="_blank" rel="noopener"
+    >vendor_boot.img</a></li>
+<li><a class="link" href="https://mirrors.ustc.edu.cn/lineageos/recovery/lemonade/20230101/lineage-20.0-20230101-recovery-lemonade.img"  target="_blank" rel="noopener"
+    >lineage-20.0-20230101-recovery-lemonade.img</a></li>
+<li><a class="link" href="https://mirrors.ustc.edu.cn/lineageos/full/lemonade/20230122/lineage-20.0-20230122-nightly-lemonade-signed.zip"  target="_blank" rel="noopener"
+    >lineage-20.0-20230101-nightly-lemonade-signed.zip</a></li>
+<li><a class="link" href="https://androidfilehost.com/?fid=14871746926876840643"  target="_blank" rel="noopener"
+    >MindTheGapps-13.0.0-arm64-20221025_100653.zip</a></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>科学文明上网可以加快下载速度</p>
+</blockquote>
+<h2 id="救砖过程">救砖过程
+</h2><p>要想刷机先要了解清楚如何救砖</p>
+<ul>
+<li>下载并启动<a class="link" href="https://pan.baidu.com/s/1jbw8PjUFk-Vlw-wiJNrhLA?pwd=ayqz"  target="_blank" rel="noopener"
+    >救砖工具包</a>程序 <a class="link" href="https://yun.daxiaamu.com/OnePlus_Roms_2/%E4%B8%80%E5%8A%A09/"  target="_blank" rel="noopener"
+    >备用下载地址</a></li>
+<li><code>音量+</code>+<code>音量-</code>+<code>关机键</code> 工具提示连接上时，即可选择 <code>India</code> 而后开始</li>
+<li>等待自动刷入完成，机器自动重启，进入到系统</li>
+</ul>
+<h2 id="刷机过程">刷机过程
+</h2><ul>
+<li><code>音量-</code>+<code>关机键</code>进入 <code>fastboot 模式</code></li>
+<li><code>fastboot flash dtbo &lt;dtbo&gt;.img</code></li>
+<li><code>fastboot flash vendor_boot &lt;vendor_boot&gt;.img</code></li>
+<li><code>fastboot flash boot lineage-20.0-20230122-recovery-lemonade.img</code> # 此处测试 twrp-3.7.0_11-0-lemonadep.img 失败</li>
+<li><code>fastboot set_active &lt;a/b&gt;</code></li>
+<li><code>fastboot flash boot lineage-20.0-20230122-recovery-lemonade.img</code> # 此处测试 twrp-3.7.0_11-0-lemonadep.img 失败</li>
+<li>多重启两次 recovery 模式 <code>lineage recovery lemonade</code> 成功</li>
+<li>进入 lineage recovery <code>Factory reset</code> -&gt; <code>Format data</code> 格式化所有数据</li>
+<li>返回至 <code>Apply update</code> -&gt; <code>Apply from ADB</code> -&gt; <code>ADB Sideload</code> 进入 <code>sideload</code> 模式</li>
+<li><code>adb sideload ~/lineage-20.0-20230122-nightly-lemonade-signed.zip</code> # 操作停滞后，可能会失败，重新进入即可</li>
+<li>观察设备，会提示刷入成功，桌面也会提示 Success</li>
+<li>继续刷入 GApps：<code>adb sideload open_gapps-arm64-11.0-nano-20210730.zip</code></li>
+<li>再次进入系统打开 usb 调试, 选择文件模式，在手机提示上允许你的电脑调试此设备</li>
+<li>全部安装完成后，重启手机，进行一系列设置就能开心使用了。</li>
+</ul>
+<blockquote>
+<p>oneplus 在 linux 下使用 adb 非常稳定，驱动都不用安装。小米却时不时的断开，需要反复尝试。
+oneplus9 一直无法正确启动 twrp <code>adb reboot bootloader</code> -&gt; <code>fastboot boot twrp.img</code></p>
+</blockquote>
+<h3 id="安装-magisk">安装 Magisk
+</h3><p>下载准备</p>
+<ul>
+<li><a class="link" href="https://github.com/ssut/payload-dumper-go/releases"  target="_blank" rel="noopener"
+    >手机镜像提取工具</a></li>
+<li><a class="link" href="https://hub.fgit.ml/barry-ran/QtScrcpy/releases"  target="_blank" rel="noopener"
+    >手机桌面连接工具</a></li>
+<li><a class="link" href="https://github.com/topjohnwu/Magisk/releases"  target="_blank" rel="noopener"
+    >Magisk</a></li>
+</ul>
+<p>操作步骤</p>
+<ul>
+<li>ROM 是一个 zip 压缩包，解压其中一个 payload.bin 文件</li>
+<li>提取其中的 boot.img <code>./payload-dumper-go -p boot -o out2 ./payload.bin</code></li>
+<li>打开 MagiskApp 安装-&gt;修补一个文件-&gt;选择<code>boot.img</code>-&gt;得到<code>magisk_patched-25200_HLBCc.img</code></li>
+<li>进入<code>adb reboot recovery</code></li>
+<li><code>fastboot flash boot magisk_patched-25200_HLBCc.img</code></li>
+</ul>
+<h4 id="隐藏magisk"><a class="link" href="https://magiskcn.com/hide-magisk-app"  target="_blank" rel="noopener"
+    >隐藏Magisk</a>
+</h4><ul>
+<li>Magisk设置-&gt;隐藏Magisk应用-&gt;允许来自此来源的应用安装-&gt;隐藏输入框输入新的应用名-&gt;确定-&gt;继续安装-&gt;成功修改包名(即隐藏成功)</li>
+</ul>
+<h4 id="隐藏应用列表"><a class="link" href="https://magiskcn.com/hide-my-applist"  target="_blank" rel="noopener"
+    >隐藏应用列表</a>
+</h4><h5 id="安装隐藏应用列表"><a class="link" href="https://magiskcn.com/hide-my-applist-install"  target="_blank" rel="noopener"
+    >安装隐藏应用列表</a>
+</h5><p>下载准备</p>
+<ul>
+<li><a class="link" href="https://github.com/LSPosed/LSPosed/releases"  target="_blank" rel="noopener"
+    >LSPosed模块(Zygisk版)</a><a class="link" href="https://hub.fgit.ml/LSPosed/LSPosed/releases"  target="_blank" rel="noopener"
+    >备用镜像</a> LSPosed-v1.8.5-6649-zygisk-release.zip</li>
+<li><a class="link" href="https://github.com/Dr-TSNG/Hide-My-Applist/releases"  target="_blank" rel="noopener"
+    >Hide-My-Applist</a><a class="link" href="https://hub.fgit.ml/Dr-TSNG/Hide-My-Applist/releases"  target="_blank" rel="noopener"
+    >备用镜像</a> HMA-V3.1.1.apk</li>
+<li><a class="link" href="https://github.com/Dr-TSNG/ApplistDetector/releases"  target="_blank" rel="noopener"
+    >ApplistDetector</a><a class="link" href="https://hub.fgit.ml/Dr-TSNG/ApplistDetector/releases"  target="_blank" rel="noopener"
+    >备用镜像</a> ApplistDetector.V2.4.apk</li>
+</ul>
+<p>操作步骤</p>
+<ul>
+<li>Magisk设置-&gt;开启Zygisk</li>
+<li>Magisk模块-&gt;从本地安装<code>LSPosed-v1.8.5-6649-zygisk-release.zip</code>-&gt;重启设备，打开<code>LSPosed</code>显示<code>已激活</code>则成功<code>安装LSPosed模块框架</code>。</li>
+<li>LSPosed模块-&gt;隐藏应用列表-&gt;启用(勾选系统框架)-&gt;重启设备，打开<code>隐藏应用列表</code>首页显示<code>模块已激活</code>则成功。</li>
+</ul>
+<blockquote>
+<p>在未安装并激活任何「模块」的情况下，LSPosed 不会发挥任何作用。示意图中的「XX模块已启用」是针对已经设定好的情况，不代表初始效果。 - 安装隐藏应用列表<code>HMA-3.1.1.apk</code>首页-&gt;模板管理-&gt;创建黑名单模板-&gt;模板名称随意-&gt;0个应用不可见-编辑列表-&gt;勾选要隐藏的应用，如面具和模块</p>
+</blockquote>
+<ul>
+<li>安装检测隐藏的App<code>ApplistDetector.V2.4.apk</code></li>
+<li>隐藏应用列表-&gt;应用管理-&gt;选择应用-&gt;启用隐藏(勾选模板)确定-&gt;打开 ApplistDetector（检测器）</li>
+</ul>
+<h2 id="其它">其它
+</h2><h3 id="how-to-use-adb">How to use adb?
+</h3><pre><code>`adb devices` 检查设备是否正确连接到计算机。
+`adb push fichero ruta` 将文件或文件夹从计算机发送到智能手机
+`adb pull archivo` 将文件或文件夹从智能手机到电脑。
+`adb install app.apk` 此命令将在智能手机上安装应用程序
+`adb uninstall` 使用这个卸载应用程序。
+`adb shell` 加载一个终端来控制我们的设备。
+`adb reboot` 重新启动手机。
+`adb reboot-bootloader` 以快速启动模式重新启动
+`adb reboot recovery` 使用此命令命令以恢复模式重新启动
+</code></pre>
+<h3 id="how-to-use-fastboot">How to use fastboot?
+</h3><pre><code>`fastboot devices` #查看设备
+`fastboot reboot` #重新开机
+`fastboot reboot bootloader` #重新开机且进入bootloader
+`fastboot flash boot boot.img` #烧录kernel区
+`fastboot flash system system.img` #烧录系统区
+`fastboot flash vendor vendor.img` #烧录vendor区
+`fastboot flash persist persist.img` #烧录persist区
+`fastboot flash userdata userdata.img` #烧录用户数据区，包含一些安装的APP
+`fastboot oem device-info` #查询设备的基本信息
+`fastboot oem [COMMAND...]` #执行oem的特定命令
+`fastboot flashing unlock` #新的安卓设备需要用fastboot flashing unlock指令后才可解锁bootloader开机载入器，使用该指令可能会失去保固和手机资料(包含照片、影片、文件、app)，请记得备份
+`fastboot oem unlock` #解锁BL
+`fastboot getvar &lt;变量名&gt;` #查询设备bootloader的某变量
+`fastboot getvar all` #查询设备bootloader的所有变量
+`fastboot set_active &lt;a/b&gt;` #切换a/b槽(刷双系统要用到)
+`fastboot help` #查看说明
+</code></pre>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/adguard/">AdGuard</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/live/lineageos.mi/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">lineageOS.MI</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/live/adguard/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">AdGuard搭建</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="#!/usr/bin/env bash # leehom Chen clh021@gmail.com # 本脚本旨在提供一个用于快速编写 shell 脚本模板 set -e # 路径准备 OldPath=$(pwd) # SCRIPT_PATH=$(realpath &#34;${BASH_SOURCE[0]}&#34;) SCRIPT_PATH=$(realpath &#34;$0&#34;) ProjectPath=&#34;$(dirname &#34;$(dirname &#34;$SCRIPT_PATH&#34;)&#34;)&#34; pushd $ProjectPath &gt; /dev/null if [ -f &#34;$ProjectPath/.env&#34; ]; then source &#34;$ProjectPath/.env&#34; fi # arch=`dpkg --print-architecture` # amd64 arch=$(uname -m) # x86_64 echo &#34;当前系统架构为: $arch&#34; nowTime=$(date +%Y%m%d_%H%M%S) pkgTime=$(git log -1 --format=%at | xargs -I{} date -d @{} +%Y%m%d_%H%M%S) LITHIUM_BIN= # 为适应不同打包环境(仅拷贝脚本等文件而非整个项目即可打包)，本脚本会自动寻找浏览器程序进行容器打包 # 查找 lithium 程序 findLithiumBin() { if test -f &#34;$ProjectPath/lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/lithium/lithium&#34; elif test -f &#34;$ProjectPath/../lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/../lithium/lithium&#34; elif test -f &#34;$ProjectPath/build/dist/lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/build/dist/lithium/lithium&#34; elif test -f &#34;$ProjectPath/../../lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/../../lithium/lithium&#34; fi } generateSha512sumFile() { echo &gt; SHA512SUMS for f in $1; do if [ -r $f ]; then echo &#34;$(date +%Y-%m-%d_%H:%M:%S) $f&#34; sha512sum &#34;$f&#34; &gt;&gt; SHA512SUMS else echo &#34;Not find $1 files.&#34; fi done } display_usage() { echo -e &#34; example: $0 -b -u https://baidu.com Usage: b build before test (default:false) a appid (default:12as.ji_a.com) u URL to open g Whether use gecko engine c Whether clear cache&#34; # \\t\\n exit 1 } # 解析传递的参数 _URL= _CLEAR= _BUILD= _USE_GECKO= _APPID=12as.ji_a.com parseArg() { # check whether user had supplied -h or --help . If yes display usage if [[ ( $* == &#34;--help&#34;) || $* == &#34;-h&#34; ]]; then display_usage fi while getopts &#34;ba:u:cg&#34; arg; do case $arg in b) _BUILD=true ;; a) _APPID=${OPTARG} ;; u) _URL=${OPTARG} ;; c) _CLEAR=true ;; g) _USE_GECKO=true ;; ?) display_usage ;; esac done } parseArg &#34;$@&#34; showOptions() { echo &#34;_URL: $_URL&#34; echo &#34;_CLEAR: $_CLEAR&#34; echo &#34;_BUILD: $_BUILD&#34; echo &#34;_USE_GECKO: $_USE_GECKO&#34; echo &#34;_APPID: $_APPID&#34; } main() { findLithiumBin if test -n &#34;$LITHIUM_BIN&#34;;then echo &#39;找到了要打包的浏览器。&#39; if [[ -n &#34;$_CLEAR&#34; ]]; then echo &#39;正在清理缓存&#39; fi if [[ -z &#34;$_URL&#34; ]]; then _URL=&#34;http://localhost:8000&#34; # /gecko.html&#34; fi echo &#39;正在打开测试页面&#39; export DEBUG_GECKO=true COMMAND=&#34;${PROJ_DIR}/build/dist/lithium/lithium ${_OPTIONS} ${_URL}&#34; echo &#34;$COMMAND&#34;; #strace -f -o &#34;${PROJ_DIR}/tools/run-lithium-in-strace.log&#34; \\ # $COMMAND | grep --color -E &#39;^|JavaScript|error|x11ID|lastSet&#39; cd - else echo &#39;没有找到要打包的浏览器。&#39; fi } showOptions export LANG=en_US.UTF-8 ./child.python &amp; PID_P1=$! ./detect &amp; PID_P2=$! ./main &amp; PID_P3=$! ./kit &amp; PID_P4=$! on_exit() { echo &#34;clean on_exit, kill $PID_P1 $PID_P2 $PID_P3 $PID_P4&#34; kill -9 ${PID_P4} || : kill -9 ${PID_P3} || : kill -9 ${PID_P2} || : kill -9 ${PID_P1} || : } trap on_exit EXIT SIGTERM SIGINT main popd &gt; /dev/null cd &#34;$OldPath&#34; .PHONY: init init: .git/hooks/pre-push .air .git/hooks/pre-push:makefile @echo &#34;#!/usr/bin/env bash&#34; &gt; $@ @echo &#34;set -e&#34; &gt;&gt; $@ @echo &#34;make test&#34; &gt;&gt; $@ @echo &#34;cd web &amp;&amp; npm run lint&#34; &gt;&gt; $@ @chmod a+x $@ .PHONY: clean clean: rm -rf dist/webdist rm -rf web/dist rm -rf web/node_modules .PHONY: test test: sh -c &#34;ulimit -n 20000; go test ./...&#34; #TODO: move to k8s or jenkins upload-cos: cd web &amp;&amp; npm run build &amp;&amp; cd dist &amp;&amp; coscmd upload -rs . / .PHONY: .air .air: go get -u github.com/cosmtrek/air touch .air .PHONY: dev dev: p1=&#34;air&#34; dev: p2=[&#34;sh&#34;, &#34;-c&#34;, &#34;cd web &amp;&amp; exec npm run serve&#34;] dev: .air test_data @echo &#39;import subprocess; [p.wait() for p in subprocess.Popen(${p1}),subprocess.Popen(${p2})]&#39; | python2 .PHONY: test_data test_data: mkdir test_data 为什么 echo 出来的命令在terminal中直接执行没问题，而在脚本中执行有问题呢？ 因为 terminal 中直接执行可以读取到当前用户所有环境变量，而脚本中执行却不可以。\n">
+<title>Shell Script Template</title>
+
+<link rel='canonical' href='/post/tech/bash.script/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Shell Script Template">
+<meta property='og:description' content="#!/usr/bin/env bash # leehom Chen clh021@gmail.com # 本脚本旨在提供一个用于快速编写 shell 脚本模板 set -e # 路径准备 OldPath=$(pwd) # SCRIPT_PATH=$(realpath &#34;${BASH_SOURCE[0]}&#34;) SCRIPT_PATH=$(realpath &#34;$0&#34;) ProjectPath=&#34;$(dirname &#34;$(dirname &#34;$SCRIPT_PATH&#34;)&#34;)&#34; pushd $ProjectPath &gt; /dev/null if [ -f &#34;$ProjectPath/.env&#34; ]; then source &#34;$ProjectPath/.env&#34; fi # arch=`dpkg --print-architecture` # amd64 arch=$(uname -m) # x86_64 echo &#34;当前系统架构为: $arch&#34; nowTime=$(date +%Y%m%d_%H%M%S) pkgTime=$(git log -1 --format=%at | xargs -I{} date -d @{} +%Y%m%d_%H%M%S) LITHIUM_BIN= # 为适应不同打包环境(仅拷贝脚本等文件而非整个项目即可打包)，本脚本会自动寻找浏览器程序进行容器打包 # 查找 lithium 程序 findLithiumBin() { if test -f &#34;$ProjectPath/lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/lithium/lithium&#34; elif test -f &#34;$ProjectPath/../lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/../lithium/lithium&#34; elif test -f &#34;$ProjectPath/build/dist/lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/build/dist/lithium/lithium&#34; elif test -f &#34;$ProjectPath/../../lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/../../lithium/lithium&#34; fi } generateSha512sumFile() { echo &gt; SHA512SUMS for f in $1; do if [ -r $f ]; then echo &#34;$(date +%Y-%m-%d_%H:%M:%S) $f&#34; sha512sum &#34;$f&#34; &gt;&gt; SHA512SUMS else echo &#34;Not find $1 files.&#34; fi done } display_usage() { echo -e &#34; example: $0 -b -u https://baidu.com Usage: b build before test (default:false) a appid (default:12as.ji_a.com) u URL to open g Whether use gecko engine c Whether clear cache&#34; # \\t\\n exit 1 } # 解析传递的参数 _URL= _CLEAR= _BUILD= _USE_GECKO= _APPID=12as.ji_a.com parseArg() { # check whether user had supplied -h or --help . If yes display usage if [[ ( $* == &#34;--help&#34;) || $* == &#34;-h&#34; ]]; then display_usage fi while getopts &#34;ba:u:cg&#34; arg; do case $arg in b) _BUILD=true ;; a) _APPID=${OPTARG} ;; u) _URL=${OPTARG} ;; c) _CLEAR=true ;; g) _USE_GECKO=true ;; ?) display_usage ;; esac done } parseArg &#34;$@&#34; showOptions() { echo &#34;_URL: $_URL&#34; echo &#34;_CLEAR: $_CLEAR&#34; echo &#34;_BUILD: $_BUILD&#34; echo &#34;_USE_GECKO: $_USE_GECKO&#34; echo &#34;_APPID: $_APPID&#34; } main() { findLithiumBin if test -n &#34;$LITHIUM_BIN&#34;;then echo &#39;找到了要打包的浏览器。&#39; if [[ -n &#34;$_CLEAR&#34; ]]; then echo &#39;正在清理缓存&#39; fi if [[ -z &#34;$_URL&#34; ]]; then _URL=&#34;http://localhost:8000&#34; # /gecko.html&#34; fi echo &#39;正在打开测试页面&#39; export DEBUG_GECKO=true COMMAND=&#34;${PROJ_DIR}/build/dist/lithium/lithium ${_OPTIONS} ${_URL}&#34; echo &#34;$COMMAND&#34;; #strace -f -o &#34;${PROJ_DIR}/tools/run-lithium-in-strace.log&#34; \\ # $COMMAND | grep --color -E &#39;^|JavaScript|error|x11ID|lastSet&#39; cd - else echo &#39;没有找到要打包的浏览器。&#39; fi } showOptions export LANG=en_US.UTF-8 ./child.python &amp; PID_P1=$! ./detect &amp; PID_P2=$! ./main &amp; PID_P3=$! ./kit &amp; PID_P4=$! on_exit() { echo &#34;clean on_exit, kill $PID_P1 $PID_P2 $PID_P3 $PID_P4&#34; kill -9 ${PID_P4} || : kill -9 ${PID_P3} || : kill -9 ${PID_P2} || : kill -9 ${PID_P1} || : } trap on_exit EXIT SIGTERM SIGINT main popd &gt; /dev/null cd &#34;$OldPath&#34; .PHONY: init init: .git/hooks/pre-push .air .git/hooks/pre-push:makefile @echo &#34;#!/usr/bin/env bash&#34; &gt; $@ @echo &#34;set -e&#34; &gt;&gt; $@ @echo &#34;make test&#34; &gt;&gt; $@ @echo &#34;cd web &amp;&amp; npm run lint&#34; &gt;&gt; $@ @chmod a+x $@ .PHONY: clean clean: rm -rf dist/webdist rm -rf web/dist rm -rf web/node_modules .PHONY: test test: sh -c &#34;ulimit -n 20000; go test ./...&#34; #TODO: move to k8s or jenkins upload-cos: cd web &amp;&amp; npm run build &amp;&amp; cd dist &amp;&amp; coscmd upload -rs . / .PHONY: .air .air: go get -u github.com/cosmtrek/air touch .air .PHONY: dev dev: p1=&#34;air&#34; dev: p2=[&#34;sh&#34;, &#34;-c&#34;, &#34;cd web &amp;&amp; exec npm run serve&#34;] dev: .air test_data @echo &#39;import subprocess; [p.wait() for p in subprocess.Popen(${p1}),subprocess.Popen(${p2})]&#39; | python2 .PHONY: test_data test_data: mkdir test_data 为什么 echo 出来的命令在terminal中直接执行没问题，而在脚本中执行有问题呢？ 因为 terminal 中直接执行可以读取到当前用户所有环境变量，而脚本中执行却不可以。\n">
+<meta property='og:url' content='/post/tech/bash.script/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='shell' /><meta property='article:published_time' content='2022-03-29T00:22:18&#43;08:00'/><meta property='article:modified_time' content='2022-03-29T00:22:18&#43;08:00'/>
+<meta name="twitter:title" content="Shell Script Template">
+<meta name="twitter:description" content="#!/usr/bin/env bash # leehom Chen clh021@gmail.com # 本脚本旨在提供一个用于快速编写 shell 脚本模板 set -e # 路径准备 OldPath=$(pwd) # SCRIPT_PATH=$(realpath &#34;${BASH_SOURCE[0]}&#34;) SCRIPT_PATH=$(realpath &#34;$0&#34;) ProjectPath=&#34;$(dirname &#34;$(dirname &#34;$SCRIPT_PATH&#34;)&#34;)&#34; pushd $ProjectPath &gt; /dev/null if [ -f &#34;$ProjectPath/.env&#34; ]; then source &#34;$ProjectPath/.env&#34; fi # arch=`dpkg --print-architecture` # amd64 arch=$(uname -m) # x86_64 echo &#34;当前系统架构为: $arch&#34; nowTime=$(date +%Y%m%d_%H%M%S) pkgTime=$(git log -1 --format=%at | xargs -I{} date -d @{} +%Y%m%d_%H%M%S) LITHIUM_BIN= # 为适应不同打包环境(仅拷贝脚本等文件而非整个项目即可打包)，本脚本会自动寻找浏览器程序进行容器打包 # 查找 lithium 程序 findLithiumBin() { if test -f &#34;$ProjectPath/lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/lithium/lithium&#34; elif test -f &#34;$ProjectPath/../lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/../lithium/lithium&#34; elif test -f &#34;$ProjectPath/build/dist/lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/build/dist/lithium/lithium&#34; elif test -f &#34;$ProjectPath/../../lithium/lithium&#34;; then LITHIUM_BIN=&#34;$ProjectPath/../../lithium/lithium&#34; fi } generateSha512sumFile() { echo &gt; SHA512SUMS for f in $1; do if [ -r $f ]; then echo &#34;$(date +%Y-%m-%d_%H:%M:%S) $f&#34; sha512sum &#34;$f&#34; &gt;&gt; SHA512SUMS else echo &#34;Not find $1 files.&#34; fi done } display_usage() { echo -e &#34; example: $0 -b -u https://baidu.com Usage: b build before test (default:false) a appid (default:12as.ji_a.com) u URL to open g Whether use gecko engine c Whether clear cache&#34; # \\t\\n exit 1 } # 解析传递的参数 _URL= _CLEAR= _BUILD= _USE_GECKO= _APPID=12as.ji_a.com parseArg() { # check whether user had supplied -h or --help . If yes display usage if [[ ( $* == &#34;--help&#34;) || $* == &#34;-h&#34; ]]; then display_usage fi while getopts &#34;ba:u:cg&#34; arg; do case $arg in b) _BUILD=true ;; a) _APPID=${OPTARG} ;; u) _URL=${OPTARG} ;; c) _CLEAR=true ;; g) _USE_GECKO=true ;; ?) display_usage ;; esac done } parseArg &#34;$@&#34; showOptions() { echo &#34;_URL: $_URL&#34; echo &#34;_CLEAR: $_CLEAR&#34; echo &#34;_BUILD: $_BUILD&#34; echo &#34;_USE_GECKO: $_USE_GECKO&#34; echo &#34;_APPID: $_APPID&#34; } main() { findLithiumBin if test -n &#34;$LITHIUM_BIN&#34;;then echo &#39;找到了要打包的浏览器。&#39; if [[ -n &#34;$_CLEAR&#34; ]]; then echo &#39;正在清理缓存&#39; fi if [[ -z &#34;$_URL&#34; ]]; then _URL=&#34;http://localhost:8000&#34; # /gecko.html&#34; fi echo &#39;正在打开测试页面&#39; export DEBUG_GECKO=true COMMAND=&#34;${PROJ_DIR}/build/dist/lithium/lithium ${_OPTIONS} ${_URL}&#34; echo &#34;$COMMAND&#34;; #strace -f -o &#34;${PROJ_DIR}/tools/run-lithium-in-strace.log&#34; \\ # $COMMAND | grep --color -E &#39;^|JavaScript|error|x11ID|lastSet&#39; cd - else echo &#39;没有找到要打包的浏览器。&#39; fi } showOptions export LANG=en_US.UTF-8 ./child.python &amp; PID_P1=$! ./detect &amp; PID_P2=$! ./main &amp; PID_P3=$! ./kit &amp; PID_P4=$! on_exit() { echo &#34;clean on_exit, kill $PID_P1 $PID_P2 $PID_P3 $PID_P4&#34; kill -9 ${PID_P4} || : kill -9 ${PID_P3} || : kill -9 ${PID_P2} || : kill -9 ${PID_P1} || : } trap on_exit EXIT SIGTERM SIGINT main popd &gt; /dev/null cd &#34;$OldPath&#34; .PHONY: init init: .git/hooks/pre-push .air .git/hooks/pre-push:makefile @echo &#34;#!/usr/bin/env bash&#34; &gt; $@ @echo &#34;set -e&#34; &gt;&gt; $@ @echo &#34;make test&#34; &gt;&gt; $@ @echo &#34;cd web &amp;&amp; npm run lint&#34; &gt;&gt; $@ @chmod a+x $@ .PHONY: clean clean: rm -rf dist/webdist rm -rf web/dist rm -rf web/node_modules .PHONY: test test: sh -c &#34;ulimit -n 20000; go test ./...&#34; #TODO: move to k8s or jenkins upload-cos: cd web &amp;&amp; npm run build &amp;&amp; cd dist &amp;&amp; coscmd upload -rs . / .PHONY: .air .air: go get -u github.com/cosmtrek/air touch .air .PHONY: dev dev: p1=&#34;air&#34; dev: p2=[&#34;sh&#34;, &#34;-c&#34;, &#34;cd web &amp;&amp; exec npm run serve&#34;] dev: .air test_data @echo &#39;import subprocess; [p.wait() for p in subprocess.Popen(${p1}),subprocess.Popen(${p2})]&#39; | python2 .PHONY: test_data test_data: mkdir test_data 为什么 echo 出来的命令在terminal中直接执行没问题，而在脚本中执行有问题呢？ 因为 terminal 中直接执行可以读取到当前用户所有环境变量，而脚本中执行却不可以。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/bash.script/">Shell Script Template</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2022-03-29T00:22:18&#43;08:00'>2022-03-29 00:22:18</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e"># leehom Chen clh021@gmail.com</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 本脚本旨在提供一个用于快速编写 shell 脚本模板</span>
+</span></span><span style="display:flex;"><span>set -e
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 路径准备</span>
+</span></span><span style="display:flex;"><span>OldPath<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>pwd<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># SCRIPT_PATH=$(realpath &#34;${BASH_SOURCE[0]}&#34;)</span>
+</span></span><span style="display:flex;"><span>SCRIPT_PATH<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>realpath <span style="color:#e6db74">&#34;</span>$0<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>ProjectPath<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>dirname <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>dirname <span style="color:#e6db74">&#34;</span>$SCRIPT_PATH<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pushd $ProjectPath &gt; /dev/null
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -f <span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/.env&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  source <span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/.env&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># arch=`dpkg --print-architecture` # amd64</span>
+</span></span><span style="display:flex;"><span>arch<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>uname -m<span style="color:#66d9ef">)</span> <span style="color:#75715e"># x86_64</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;当前系统架构为: </span>$arch<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>nowTime<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date +%Y%m%d_%H%M%S<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>pkgTime<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>git log -1 --format<span style="color:#f92672">=</span>%at | xargs -I<span style="color:#f92672">{}</span> date -d @<span style="color:#f92672">{}</span> +%Y%m%d_%H%M%S<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>LITHIUM_BIN<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 为适应不同打包环境(仅拷贝脚本等文件而非整个项目即可打包)，本脚本会自动寻找浏览器程序进行容器打包</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查找 lithium 程序</span>
+</span></span><span style="display:flex;"><span>findLithiumBin<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> test -f <span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/lithium/lithium&#34;</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>      LITHIUM_BIN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/lithium/lithium&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">elif</span> test -f <span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/../lithium/lithium&#34;</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>      LITHIUM_BIN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/../lithium/lithium&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">elif</span> test -f <span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/build/dist/lithium/lithium&#34;</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>      LITHIUM_BIN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/build/dist/lithium/lithium&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">elif</span> test -f <span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/../../lithium/lithium&#34;</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>      LITHIUM_BIN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$ProjectPath<span style="color:#e6db74">/../../lithium/lithium&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>generateSha512sumFile<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  echo &gt; SHA512SUMS
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> f in $1; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -r $f <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>      echo <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>date +%Y-%m-%d_%H:%M:%S<span style="color:#66d9ef">)</span><span style="color:#e6db74"> </span>$f<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>      sha512sum <span style="color:#e6db74">&#34;</span>$f<span style="color:#e6db74">&#34;</span> &gt;&gt; SHA512SUMS
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>      echo <span style="color:#e6db74">&#34;Not find </span>$1<span style="color:#e6db74"> files.&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>display_usage<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">example:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    </span>$0<span style="color:#e6db74"> -b -u https://baidu.com
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Usage:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    b build before test (default:false)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    a appid (default:12as.ji_a.com)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    u URL to open
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    g Whether use gecko engine
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    c Whether clear cache&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># \t\n</span>
+</span></span><span style="display:flex;"><span>    exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 解析传递的参数</span>
+</span></span><span style="display:flex;"><span>_URL<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>_CLEAR<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>_BUILD<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>_USE_GECKO<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>_APPID<span style="color:#f92672">=</span>12as.ji_a.com
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>parseArg<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># check whether user had supplied -h or --help . If yes display usage</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> <span style="color:#f92672">(</span> $* <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;--help&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">||</span>  $* <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;-h&#34;</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>      display_usage
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> getopts <span style="color:#e6db74">&#34;ba:u:cg&#34;</span> arg; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> $arg in
+</span></span><span style="display:flex;"><span>      b<span style="color:#f92672">)</span> _BUILD<span style="color:#f92672">=</span>true ;;
+</span></span><span style="display:flex;"><span>      a<span style="color:#f92672">)</span> _APPID<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>OPTARG<span style="color:#e6db74">}</span> ;;
+</span></span><span style="display:flex;"><span>      u<span style="color:#f92672">)</span> _URL<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>OPTARG<span style="color:#e6db74">}</span> ;;
+</span></span><span style="display:flex;"><span>      c<span style="color:#f92672">)</span> _CLEAR<span style="color:#f92672">=</span>true ;;
+</span></span><span style="display:flex;"><span>      g<span style="color:#f92672">)</span> _USE_GECKO<span style="color:#f92672">=</span>true ;;
+</span></span><span style="display:flex;"><span>      ?<span style="color:#f92672">)</span> display_usage ;;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">esac</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>parseArg <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>showOptions<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;_URL: </span>$_URL<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;_CLEAR: </span>$_CLEAR<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;_BUILD: </span>$_BUILD<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;_USE_GECKO: </span>$_USE_GECKO<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;_APPID: </span>$_APPID<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>main<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  findLithiumBin
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> test -n <span style="color:#e6db74">&#34;</span>$LITHIUM_BIN<span style="color:#e6db74">&#34;</span>;<span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#39;找到了要打包的浏览器。&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> -n <span style="color:#e6db74">&#34;</span>$_CLEAR<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>      echo <span style="color:#e6db74">&#39;正在清理缓存&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> -z <span style="color:#e6db74">&#34;</span>$_URL<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>      _URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://localhost:8000&#34;</span> <span style="color:#75715e"># /gecko.html&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#39;正在打开测试页面&#39;</span>
+</span></span><span style="display:flex;"><span>    export DEBUG_GECKO<span style="color:#f92672">=</span>true
+</span></span><span style="display:flex;"><span>    COMMAND<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>PROJ_DIR<span style="color:#e6db74">}</span><span style="color:#e6db74">/build/dist/lithium/lithium </span><span style="color:#e6db74">${</span>_OPTIONS<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">${</span>_URL<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;</span>$COMMAND<span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#strace -f -o &#34;${PROJ_DIR}/tools/run-lithium-in-strace.log&#34; \</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># $COMMAND | grep --color -E &#39;^|JavaScript|error|x11ID|lastSet&#39;</span>
+</span></span><span style="display:flex;"><span>    cd -
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#39;没有找到要打包的浏览器。&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>showOptions
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>export LANG<span style="color:#f92672">=</span>en_US.UTF-8
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./child.python &amp;
+</span></span><span style="display:flex;"><span>PID_P1<span style="color:#f92672">=</span>$!
+</span></span><span style="display:flex;"><span>./detect &amp;
+</span></span><span style="display:flex;"><span>PID_P2<span style="color:#f92672">=</span>$!
+</span></span><span style="display:flex;"><span>./main &amp;
+</span></span><span style="display:flex;"><span>PID_P3<span style="color:#f92672">=</span>$!
+</span></span><span style="display:flex;"><span>./kit &amp;
+</span></span><span style="display:flex;"><span>PID_P4<span style="color:#f92672">=</span>$!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>on_exit<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;clean on_exit, kill </span>$PID_P1<span style="color:#e6db74"> </span>$PID_P2<span style="color:#e6db74"> </span>$PID_P3<span style="color:#e6db74"> </span>$PID_P4<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>	kill -9 <span style="color:#e6db74">${</span>PID_P4<span style="color:#e6db74">}</span> <span style="color:#f92672">||</span> :
+</span></span><span style="display:flex;"><span>	kill -9 <span style="color:#e6db74">${</span>PID_P3<span style="color:#e6db74">}</span> <span style="color:#f92672">||</span> :
+</span></span><span style="display:flex;"><span>	kill -9 <span style="color:#e6db74">${</span>PID_P2<span style="color:#e6db74">}</span> <span style="color:#f92672">||</span> :
+</span></span><span style="display:flex;"><span>	kill -9 <span style="color:#e6db74">${</span>PID_P1<span style="color:#e6db74">}</span> <span style="color:#f92672">||</span> :
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>trap on_exit EXIT SIGTERM SIGINT
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>popd &gt; /dev/null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cd <span style="color:#e6db74">&#34;</span>$OldPath<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Makefile" data-lang="Makefile"><span style="display:flex;"><span><span style="color:#a6e22e">.PHONY</span><span style="color:#f92672">:</span> init
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">init</span><span style="color:#f92672">:</span> .git/hooks/pre-push .air
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">.git/hooks/pre-push</span><span style="color:#f92672">:</span>makefile
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#e6db74">&#34;#!/usr/bin/env bash&#34;</span> &gt; $@
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#e6db74">&#34;set -e&#34;</span> &gt;&gt; $@
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#e6db74">&#34;make test&#34;</span> &gt;&gt; $@
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#e6db74">&#34;cd web &amp;&amp; npm run lint&#34;</span> &gt;&gt; $@
+</span></span><span style="display:flex;"><span>	@chmod a+x $@
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">.PHONY</span><span style="color:#f92672">:</span> clean
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">clean</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	rm -rf dist/webdist
+</span></span><span style="display:flex;"><span>	rm -rf web/dist
+</span></span><span style="display:flex;"><span>	rm -rf web/node_modules
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">.PHONY</span><span style="color:#f92672">:</span> test
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">test</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	sh -c <span style="color:#e6db74">&#34;ulimit -n 20000; go test ./...&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#TODO: move to k8s or jenkins
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">upload-cos</span><span style="color:#f92672">:</span> 
+</span></span><span style="display:flex;"><span>	cd web <span style="color:#f92672">&amp;&amp;</span> npm run build <span style="color:#f92672">&amp;&amp;</span> cd dist <span style="color:#f92672">&amp;&amp;</span> coscmd upload -rs . /
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">.PHONY</span><span style="color:#f92672">:</span> .air
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">.air</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	go get -u github.com/cosmtrek/air
+</span></span><span style="display:flex;"><span>	touch .air
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">.PHONY</span><span style="color:#f92672">:</span> dev
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">dev</span><span style="color:#f92672">:</span> p1=&#34;air&#34;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">dev</span><span style="color:#f92672">:</span> p2=[&#34;sh&#34;, &#34;-c&#34;, &#34;cd web &amp;&amp; exec npm run serve&#34;]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">dev</span><span style="color:#f92672">:</span> .air test_data
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#e6db74">&#39;import subprocess; [p.wait() for p in subprocess.Popen(${p1}),subprocess.Popen(${p2})]&#39;</span> | python2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">.PHONY</span><span style="color:#f92672">:</span> test_data
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">test_data</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	mkdir test_data
+</span></span></code></pre></div><p>为什么 echo 出来的命令在terminal中直接执行没问题，而在脚本中执行有问题呢？
+因为 terminal 中直接执行可以读取到当前用户所有环境变量，而脚本中执行却不可以。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 将输出的命令和脚本结果对比即可得到差异，(由公司产品无法切换中文输入法问题发现)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 可以通过 sudo -E 的方式保持所有环境变量(如果没有保持的权限会报错)</span>
+</span></span><span style="display:flex;"><span>SCRIPT_PATH<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>realpath <span style="color:#e6db74">&#34;</span>$0<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">${</span>UID<span style="color:#e6db74">}</span> -gt <span style="color:#ae81ff">0</span> <span style="color:#f92672">]]</span> ; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    sudo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>SCRIPT_PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    exit
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>echo sudo -u <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>SUDO_USER<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> env
+</span></span><span style="display:flex;"><span>sudo -u <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>SUDO_USER<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> env
+</span></span></code></pre></div><p>例子，是否可以切换中文输入法输入中文</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># sudo apt install gedit</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 命令行中执行</span>
+</span></span><span style="display:flex;"><span>sudo gedit <span style="color:#75715e"># 不能</span>
+</span></span><span style="display:flex;"><span>sudo -u chenlianghong gedit <span style="color:#75715e"># 可以</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 脚本中执行</span>
+</span></span><span style="display:flex;"><span>sudo -u <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>SUDO_USER<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> gedit <span style="color:#75715e"># 不可以</span>
+</span></span><span style="display:flex;"><span>sudo -E -u <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>SUDO_USER<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> gedit <span style="color:#75715e"># 不可以,输入法相关的环境变量没有带过来</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 有关输入法的问题，经过几轮研究(不同软件和不同发行版测试)，发现最好是直接模拟普通用户再来执行脚本，以完整获取环境变量</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>目前发现，不同发行版<span style="color:#f92672">(</span>可能还包含同样发行版的不同版本<span style="color:#f92672">)</span>对于环境变量的传递处理方式都不一样，所以目前只能当作是对产品运行环境的提前测试。
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/shell/">Shell</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="如何理解 timeoutlen 和 ttimeoutlen? :set timeout timeoutlen=3000 ttimeoutlen=100 inoremap jk &lt;esc&gt; 此示例中，插入模式并键入j时，vim将等待timeoutlen毫秒确定是j还是jk\n0, 使用终端命令行 :terminal Ctrl+W w 相互切换 0, 水平打开终端 :vertical terminal 0, 垂直打开终端 :belowright terminal | :bel term\n">
+<title>Vim2</title>
+
+<link rel='canonical' href='/post/vim2/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Vim2">
+<meta property='og:description' content="如何理解 timeoutlen 和 ttimeoutlen? :set timeout timeoutlen=3000 ttimeoutlen=100 inoremap jk &lt;esc&gt; 此示例中，插入模式并键入j时，vim将等待timeoutlen毫秒确定是j还是jk\n0, 使用终端命令行 :terminal Ctrl+W w 相互切换 0, 水平打开终端 :vertical terminal 0, 垂直打开终端 :belowright terminal | :bel term\n">
+<meta property='og:url' content='/post/vim2/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='vim' /><meta property='article:published_time' content='2022-04-06T20:53:48&#43;08:00'/><meta property='article:modified_time' content='2022-04-06T20:53:48&#43;08:00'/>
+<meta name="twitter:title" content="Vim2">
+<meta name="twitter:description" content="如何理解 timeoutlen 和 ttimeoutlen? :set timeout timeoutlen=3000 ttimeoutlen=100 inoremap jk &lt;esc&gt; 此示例中，插入模式并键入j时，vim将等待timeoutlen毫秒确定是j还是jk\n0, 使用终端命令行 :terminal Ctrl+W w 相互切换 0, 水平打开终端 :vertical terminal 0, 垂直打开终端 :belowright terminal | :bel term\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/editor/" style="background-color: #df7988; color: #fff;">
+                Editor
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+            
+            
+            
+            <a href="/categories/keymap/" style="background-color: darkgreen; color: #fff;">
+                Keymap
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/vim2/">Vim2</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2022-04-06T20:53:48&#43;08:00'>2022-04-06 20:53:48</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="如何理解-timeoutlen-和-ttimeoutlen">如何理解 timeoutlen 和 ttimeoutlen?
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vimrc" data-lang="vimrc"><span style="display:flex;"><span>:<span style="color:#66d9ef">set</span> <span style="color:#a6e22e">timeout</span> <span style="color:#a6e22e">timeoutlen</span>=<span style="color:#ae81ff">3000</span> <span style="color:#a6e22e">ttimeoutlen</span>=<span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">inoremap</span> <span style="color:#a6e22e">jk</span> &lt;<span style="color:#a6e22e">esc</span>&gt;
+</span></span></code></pre></div><p>此示例中，插入模式并键入j时，vim将等待timeoutlen毫秒确定是<code>j</code>还是<code>jk</code></p>
+<p>0, 使用终端命令行 :terminal Ctrl+W w 相互切换
+0, 水平打开终端 :vertical terminal
+0, 垂直打开终端 :belowright terminal   |  :bel term</p>
+<ol>
+<li>
+<p>多使用 <code>:Te</code> 命令来进行选项卡浏览，normal 下 <code>gt</code> 切换选项卡</p>
+</li>
+<li>
+<p><code>vim -On file1 file2 ...</code> 大写O来垂直分屏，n是数字，表示分成几个屏</p>
+</li>
+<li>
+<p><code>vim -on file1 file2 ...</code> 小写o来水平分屏</p>
+</li>
+<li>
+<p><code>Ctrl+W c</code> 关闭当前窗口</p>
+</li>
+<li>
+<p><code>Ctrl+W q</code> 关闭最后一个窗口退出vim</p>
+</li>
+<li>
+<p><code>Ctrl+W s</code> 上下分割打开的文件</p>
+</li>
+<li>
+<p><code>:sp filename</code> 上下分割打开新文件</p>
+</li>
+<li>
+<p><code>Ctrl+W v</code> 左右分割打开的文件</p>
+</li>
+<li>
+<p><code>:vsp filename</code> 左右分割打开新文件</p>
+</li>
+<li>
+<p>分屏中移动光标<code>Ctrl+W l|h|k|j|w</code></p>
+</li>
+<li>
+<p>分屏的移动<code>Ctrl+W L|H|K|J</code></p>
+</li>
+<li>
+<p>分屏的尺寸<code>Ctrl+W =+-</code> 一样高度|增加|减少</p>
+</li>
+<li>
+<p>?? <code>:He[!]</code> 在下边[上边]分屏浏览目录</p>
+</li>
+<li>
+<p>?? <code>:Ve[!]</code> 在左边[右边]分屏浏览目录</p>
+</li>
+<li>
+<p><code>:set scb[!]</code> 两个屏中都命令后即可[取消]同步移动 set scrollbind</p>
+</li>
+<li>
+<p><code>:Te</code> 分页式浏览 Tab explorer 标签前面的数字表示那一页打开文件的个数
+<code>gt</code> 到下一页
+<code>gT</code> 到上一页
+<code>{i}gt</code> 到第{i}gt
+<code>tabs</code> 查看打开的窗口和Tab情况
+<code>tabclose [i]</code> 关闭指定页，如果没有就关闭当前页
+<code>vim -p cool.cpp shell.cpp haoel.cpp | vim -p *.cpp</code> -p 参数用Tab页方式打开多个文件
+<code>bufdo tab split</code> 把 buffer 中的文件全转成 tab 的话</p>
+</li>
+<li>
+<p><code>:mksession ~/.mysession.vim</code> 保存会话状态</p>
+</li>
+<li>
+<p><code>vim -S ~/.mysession.vim</code> 打开会话状态</p>
+</li>
+<li>
+<p><code>:wqa</code> 保存全部并退出全部</p>
+</li>
+<li>
+<p><code>:make</code> 可以直接根据 makefile 进行编译</p>
+</li>
+<li>
+<p><code>:cw</code>   可以把 make 出错信息显示到分屏中
+<code>:cp</code>   跳到上一个错误
+<code>:cn</code>   跳到下一个错误
+<code>:cl</code>   列出所有错误
+<code>:cc</code>   显示错误详细信息</p>
+</li>
+<li>
+<p><code>:grep -r –include=”*.[ch]” NGX_HTTP_VAR_INDEXED src/</code> 递归查询src目录下.c&amp;.h文件,<code>:cw</code>取出</p>
+</li>
+<li>
+<p>代码补全
+<code>Ctrl+N</code> <code>Ctrl+P</code> 搜索所在目录的代码
+<code>Ctrl + X Ctrl + D</code> 宏定义
+<code>Ctrl + X Ctrl + ]</code> Tag
+<code>Ctrl + X Ctrl + F</code> 文件名
+<code>Ctrl + X Ctrl + I</code> 关键词(词后有所在文件名标记)
+<code>Ctrl + X Ctrl + V</code> 表达式
+<code>Ctrl + X Ctrl + L</code> 整行补全</p>
+</li>
+<li>
+<p>字符相关技巧
+guu|Vu 一行变小写
+gUU|VU 一行改大写
+v 选择文本 u|U 转 小写|大写
+ga 光标处字符的 ascii 码
+g8 光标处字符的 utf-8 码
+gf 打开光标处所指的文件(#include 头文件时好用，仅限于有路径的)
+*|# 当前文件搜索光标单词</p>
+</li>
+<li>
+<p>缩进相关技巧</p>
+<blockquote>
+<blockquote>
+<p>|&laquo;|=|=% 缩进|反缩进|对齐缩进|缩进代码块 当前行
+G=gg || G=gg 缩进整个文件</p>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<p>光标移动相关
+Ctrl + O 回退你的光标移动
+Ctrl + l 追赶光标移动
+可以在Tab页和Window中向前和向后 trace 你的光标键也方便跳转光标</p>
+</li>
+<li>
+<p>读取 Shell 命令相关
+:r!date 插入日期
+:read 的所写，!表示读取一个shell命令运行的输出到vim中</p>
+</li>
+<li>
+<p>vim 的终极插件</p>
+</li>
+</ol>
+<pre tabindex="0"><code></code></pre>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vim/">Vim</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/space-vim/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Space Vim</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/vim/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vim</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
