@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="大家好，这篇文章完整记录了我在 2026 年 3 月，从一个空白的 Docker 容器开始，一步步搭建 OpenClaw（2026.3.2 版本）+ Ollama 的全过程。整个过程遇到了大量实际问题（尤其是 Gateway 启动、配置生效、模型识别等），也把所有坑和解决方案都写出来了，希望能帮到同样在 Docker 环境里折腾的朋友。\n">
+<title>从零开始：在 Docker 容器中部署 OpenClaw &#43; Ollama 本地 AI 助手（完整实操记录与问题解决）</title>
+
+<link rel='canonical' href='/post/tech/openclaw/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="从零开始：在 Docker 容器中部署 OpenClaw + Ollama 本地 AI 助手（完整实操记录与问题解决）">
+<meta property='og:description' content="大家好，这篇文章完整记录了我在 2026 年 3 月，从一个空白的 Docker 容器开始，一步步搭建 OpenClaw（2026.3.2 版本）+ Ollama 的全过程。整个过程遇到了大量实际问题（尤其是 Gateway 启动、配置生效、模型识别等），也把所有坑和解决方案都写出来了，希望能帮到同样在 Docker 环境里折腾的朋友。\n">
+<meta property='og:url' content='/post/tech/openclaw/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='openclaw' /><meta property='article:tag' content='docker' /><meta property='article:published_time' content='2026-03-04T21:54:47&#43;08:00'/><meta property='article:modified_time' content='2026-03-04T21:54:47&#43;08:00'/>
+<meta name="twitter:title" content="从零开始：在 Docker 容器中部署 OpenClaw + Ollama 本地 AI 助手（完整实操记录与问题解决）">
+<meta name="twitter:description" content="大家好，这篇文章完整记录了我在 2026 年 3 月，从一个空白的 Docker 容器开始，一步步搭建 OpenClaw（2026.3.2 版本）+ Ollama 的全过程。整个过程遇到了大量实际问题（尤其是 Gateway 启动、配置生效、模型识别等），也把所有坑和解决方案都写出来了，希望能帮到同样在 Docker 环境里折腾的朋友。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+            
+            
+            
+            <a href="/categories/command/" style="background-color: brown; color: #fff;">
+                Command
+            </a>
+        
+            
+            
+            
+            <a href="/categories/tool/" style="background-color: #0177b8; color: #fff;">
+                Tool
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/openclaw/">从零开始：在 Docker 容器中部署 OpenClaw &#43; Ollama 本地 AI 助手（完整实操记录与问题解决）</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2026-03-04T21:54:47&#43;08:00'>2026-03-04 21:54:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>大家好，这篇文章完整记录了我在 2026 年 3 月，从一个空白的 Docker 容器开始，一步步搭建 OpenClaw（2026.3.2 版本）+ Ollama 的全过程。整个过程遇到了大量实际问题（尤其是 Gateway 启动、配置生效、模型识别等），也把所有坑和解决方案都写出来了，希望能帮到同样在 Docker 环境里折腾的朋友。</p>
+<p>最终目标：用 tmux 保活 TUI，在终端里愉快地使用本地 Ollama 模型（例如 lfm2:24b-a2b、qwen2.5:7b 等）。</p>
+<h2 id="环境与前提">环境与前提
+</h2><ul>
+<li>宿主机：任意支持 Docker 的系统</li>
+<li>容器镜像：archlinux:latest</li>
+<li>OpenClaw 版本：2026.3.2 (85377a2)</li>
+<li>Ollama：部署在宿主机或另一台机器（IP: 192.168.1.3:11434）</li>
+<li>容器启动命令（关键：映射 Ollama 端口）</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -it --name claw1 -p 11434:11434 archlinux:latest /bin/bash
+</span></span></code></pre></div><p>进入容器后先更新并安装基础工具：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pacman -Syu --noconfirm
+</span></span><span style="display:flex;"><span>pacman -S --noconfirm base-devel git curl wget sudo which tmux net-tools
+</span></span></code></pre></div><h2 id="步骤-1安装-nvm--nodejs-lts">步骤 1：安装 NVM + Node.js LTS
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+</span></span><span style="display:flex;"><span>export NVM_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.nvm&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span> -s <span style="color:#e6db74">&#34;</span>$NVM_DIR<span style="color:#e6db74">/nvm.sh&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\.</span> <span style="color:#e6db74">&#34;</span>$NVM_DIR<span style="color:#e6db74">/nvm.sh&#34;</span>
+</span></span><span style="display:flex;"><span>nvm install --lts
+</span></span><span style="display:flex;"><span>nvm use --lts
+</span></span><span style="display:flex;"><span>nvm alias default lts/*
+</span></span></code></pre></div><p>验证：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>node -v   <span style="color:#75715e"># 应显示 v20.x 或 v22.x</span>
+</span></span></code></pre></div><h2 id="步骤-2安装-openclaw跳过-onboarding">步骤 2：安装 OpenClaw（跳过 onboarding）
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -fsSL https://openclaw.ai/install.sh | bash
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或 npm install -g openclaw@latest</span>
+</span></span><span style="display:flex;"><span>openclaw --no-onboard
+</span></span></code></pre></div><h2 id="步骤-3ollama-推荐分离部署网络连接方式">步骤 3：Ollama 推荐分离部署（网络连接方式）
+</h2><p><strong>强烈建议</strong>：不要在同一个容器里同时跑 OpenClaw 和 Ollama。</p>
+<p>我在宿主机（或另一台服务器）运行 Ollama：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 宿主机执行</span>
+</span></span><span style="display:flex;"><span>curl -fsSL https://ollama.com/install.sh | sh
+</span></span><span style="display:flex;"><span>ollama serve &amp;
+</span></span><span style="display:flex;"><span>ollama pull lfm2:24b-a2b
+</span></span><span style="display:flex;"><span>ollama pull qwen2.5:7b
+</span></span><span style="display:flex;"><span>ollama pull llama3.1:8b
+</span></span><span style="display:flex;"><span>ollama pull deepseek-coder-v2:16b
+</span></span></code></pre></div><p>容器内连接配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>openclaw config set models.providers.ollama.baseUrl <span style="color:#e6db74">&#34;http://192.168.1.3:11434&#34;</span>
+</span></span><span style="display:flex;"><span>openclaw config set models.providers.ollama.apiKey <span style="color:#e6db74">&#34;ollama-local-dummy&#34;</span>
+</span></span><span style="display:flex;"><span>openclaw config set models.providers.ollama.api <span style="color:#e6db74">&#34;ollama&#34;</span>
+</span></span></code></pre></div><p>手动指定模型列表（绕过自动发现 bug）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>openclaw config set models.providers.ollama.models <span style="color:#e6db74">&#39;[
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  {&#34;id&#34;: &#34;lfm2:24b-a2b&#34;, &#34;name&#34;: &#34;LFM2 24B A2B&#34;},
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  {&#34;id&#34;: &#34;qwen2.5:7b&#34;, &#34;name&#34;: &#34;Qwen 2.5 7B&#34;},
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  {&#34;id&#34;: &#34;llama3.1:8b&#34;, &#34;name&#34;: &#34;Llama 3.1 8B&#34;},
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  {&#34;id&#34;: &#34;deepseek-coder-v2:16b&#34;, &#34;name&#34;: &#34;DeepSeek Coder V2&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">]&#39;</span>
+</span></span></code></pre></div><p>设置默认模型：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>openclaw config set agents.defaults.model.primary <span style="color:#e6db74">&#34;ollama/lfm2:24b-a2b&#34;</span>
+</span></span></code></pre></div><h2 id="步骤-4最常见的启动坑与解决">步骤 4：最常见的启动坑与解决
+</h2><h3 id="坑-1gateway-restart-依赖-systemd-失败">坑 1：gateway restart 依赖 systemd 失败
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>openclaw gateway restart
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 报错：systemctl --user is-enabled unavailable</span>
+</span></span></code></pre></div><p><strong>Docker 容器内没有 systemd</strong>，所以所有依赖 systemctl 的命令都会失败。</p>
+<p><strong>正确做法</strong>：直接手动启动 Gateway</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>openclaw gateway --verbose
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或后台 + tmux</span>
+</span></span><span style="display:flex;"><span>tmux new -s gateway
+</span></span><span style="display:flex;"><span>openclaw gateway --verbose
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># detach: Ctrl+b d</span>
+</span></span></code></pre></div><h3 id="坑-2gateway-start-被-blocked2026-版本安全检查">坑 2：Gateway start 被 blocked（2026 版本安全检查）
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Gateway start blocked: set gateway.mode<span style="color:#f92672">=</span>local <span style="color:#f92672">(</span>current: unset<span style="color:#f92672">)</span> or pass --allow-unconfigured.
+</span></span></code></pre></div><p><strong>解决</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>openclaw config set gateway.mode local
+</span></span><span style="display:flex;"><span>openclaw gateway --verbose
+</span></span></code></pre></div><h3 id="坑-3tui-连接失败gateway-disconnected-closed">坑 3：TUI 连接失败（gateway disconnected: closed）
+</h3><p>原因：Gateway 根本没跑起来。</p>
+<p>解决：先确保 Gateway 在运行（用 tmux 保活），再开 TUI：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tmux attach -t gateway   <span style="color:#75715e"># 查看是否在跑</span>
+</span></span><span style="display:flex;"><span>openclaw tui
+</span></span></code></pre></div><h2 id="步骤-5模型识别坑anthropic-前缀鬼故事">步骤 5：模型识别坑（anthropic 前缀鬼故事）
+</h2><p>最崩溃的一幕：</p>
+<p>TUI 显示模型为 <code>anthropic/lfm2:24b-a2b</code> → Unknown model</p>
+<p><strong>原因</strong>：OpenClaw 默认会给模型名加 <code>anthropic/</code> 前缀，除非明确指定 <code>ollama/</code> provider。</p>
+<p><strong>解决</strong>（在 TUI 里立即生效）：</p>
+<pre tabindex="0"><code>/model ollama/lfm2:24b-a2b
+</code></pre><p>永久设置（CLI）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>openclaw config set agents.defaults.model.primary <span style="color:#e6db74">&#34;ollama/lfm2:24b-a2b&#34;</span>
+</span></span></code></pre></div><p>切换后状态栏变为：</p>
+<pre tabindex="0"><code>connected | idle
+agent main | session main (openclaw-tui) | ollama/lfm2:24b-a2b | tokens ?/33k
+</code></pre><p>成功回复：</p>
+<blockquote>
+<p>你好！我是你的开放式AI助手。很高兴认识你。……</p>
+</blockquote>
+<h2 id="步骤-6安全加固别忘了">步骤 6：安全加固（别忘了）
+</h2><p>运行审计：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>openclaw security audit
+</span></span></code></pre></div><p>常见高危项及修复：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 解决两个 CRITICAL</span>
+</span></span><span style="display:flex;"><span>openclaw config set gateway.auth.token <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>openssl rand -base64 32<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>openclaw gateway --verbose   <span style="color:#75715e"># 重启生效</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修复权限</span>
+</span></span><span style="display:flex;"><span>chmod <span style="color:#ae81ff">700</span> ~/.openclaw
+</span></span><span style="display:flex;"><span>chmod <span style="color:#ae81ff">600</span> ~/.openclaw/*.json
+</span></span></code></pre></div><h2 id="最终状态栏解释很多人问">最终状态栏解释（很多人问）
+</h2><pre tabindex="0"><code>connected | idle
+agent main | session main (openclaw-tui) | ollama/lfm2:24b-a2b | tokens ?/33k
+</code></pre><ul>
+<li>connected | idle：已连接网关，当前空闲</li>
+<li>agent main：使用 main 智能体</li>
+<li>session main (openclaw-tui)：会话名为 main，通过 TUI 访问</li>
+<li>ollama/lfm2:24b-a2b：当前模型</li>
+<li>tokens ?/33k：已用 token 未知 / 上下文最大 33k token</li>
+</ul>
+<h2 id="小结--经验教训">小结 &amp; 经验教训
+</h2><ol>
+<li>Docker 容器里<strong>不要依赖</strong> <code>openclaw gateway restart/start/install</code> 等命令，直接 <code>openclaw gateway --verbose</code> 或 tmux 后台跑。</li>
+<li>必须设置 <code>gateway.mode local</code>，否则启动被 block。</li>
+<li>本地模型一定要写全 <code>ollama/模型名</code>，否则被强制加 anthropic/ 前缀导致 Unknown model。</li>
+<li>Gateway 配置变更后，<strong>重启容器</strong>（<code>docker restart claw1</code>）是最暴力但最可靠的生效方式。</li>
+<li>TUI + tmux 是最舒服的长期使用方式。</li>
+</ol>
+<p>现在我已经在容器里稳定运行 lfm2:24b-a2b 了，响应速度和质量都超出预期。</p>
+<p>希望这篇记录能帮你少走弯路。</p>
+<p>有问题欢迎留言或直接问我～</p>
+<p>🦞 Happy clawing!</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/openclaw/">Openclaw</a>
+        
+            <a href="/tags/docker/">Docker</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/dockerwrong/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">docker wrong</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/loongarch64.env/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Loongarch64 Docker 镜像</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/iso2dockerimage/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ISO convert to Docker image</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/create.docker.base/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">自建一个系统的基础镜像</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/live/windows-init/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">windows系统工作环境</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.2">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

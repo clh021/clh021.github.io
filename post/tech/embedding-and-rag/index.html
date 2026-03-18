@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="向量检索与 RAG 一、基础认知：什么是向量 &amp; 向量检索 向量（Embedding） 语义的数学表示：一串浮点数数组 单向、有损编码，不可还原原文 意义：相近语义 → 空间距离近 向量检索 vs 传统搜索 传统：关键词精确匹配（SQL/ES） 向量：语义相似性搜索 核心计算：余弦相似度 / 欧氏距离 核心特点 理解意思，不看字面 支持近义词、意译、跨语言 无统一全球标准，模型决定空间 二、文档处理：从原始文件到可向量化文本 非纯文本文件解析 docx/pptx/xlsx 本质是 zip 包 必须专用工具提取纯文本 丢弃格式、XML、样式、冗余信息 文本分块（Chunking） 错误方式：按物理行、固定字符硬切 问题：切断语义，导致检索失效 正确方式：语义分块 按段落、句子边界切分 保持语义完整 可使用滑动窗口微调 分块目标 不长不短，适合 LLM 输入 语义独立，便于精准召回 三、Embedding 模型：整个系统的基石 模型作用 文本 → 向量 图片 → 向量 多模态：文本↔图片同空间映射 模型尺寸差异（small/base/large） 小模型：语义粗糙、易混淆、空间混乱 大模型：细粒度区分强、专业领域更准 决定向量库质量与检索上限 向量空间规则 不同模型 = 不同空间，不可混用 入库模型 = 查询模型，必须一致 维度必须统一（512/768/1024） 主流模型类别 文本专用：BGE / GTE / E5 / OpenAI Embedding 多模态：CLIP（文搜图核心） 四、向量数据库：存储与检索结构 存储内容（三元组） 向量：用于相似度检索 文本片段 chunk：给 LLM 使用 元数据：来源、页码、行号、偏移 向量是否足够？ 向量不能还原原文 chunk 绝对不能删 原始文档可删（无需二次解析） 检索方式 粗检索：定位段落/行 细检索：定位半句/跨行/中间片段 混合检索：向量 + 关键词（精确到词） 数据量级与存储 向量本身极小（百万条仅几GB） 占空间的是文本 chunk 百万级文档约需 300GB~500GB 空间 五、检索深度能力：定位与可解释性 基础定位 定位到：文档、段落、页码、行数 依靠元数据实现 精细定位 行内：上半句 / 后半句 / 中间句 跨行：上下行拼接语义片段 方式：二次滑动窗口 + 细粒度匹配 为什么搜到这一段？（可解释性） 向量本身是黑盒，不自带依据 方案：Token 贡献度分析 遮词→相似度下降→判断核心词 支持近义词、语义关联归因 六、多模态检索：用文字搜图片原理 核心模型：CLIP 类多模态模型 两个编码器：文本编码器 + 图像编码器 同空间训练：语义对齐 建库流程 图片 → 图像向量 → 入库 查询流程 文字 → 文本向量 → 检索 原理与文本 RAG 完全一致 只是“chunk”从文本变成图片 无分块问题，一张图一个语义单元 七、RAG 完整工作流程（核心主线） 离线构建阶段 原始文档 → 提取纯文本 文本 → 语义分块 chunk chunk → Embedding 模型 → 向量 向量 + chunk + 元数据 → 向量库 在线问答阶段 用户问题 → 同一 Embedding 模型 → 查询向量 向量库检索 → 最相似文本片段 可做精细定位 + 归因分析 片段拼 Prompt → 送入 LLM LLM 生成有据可查的回答 八、关键误区与重要结论 误区 向量可以还原原文 ❌ 不同模型向量可以混用 ❌ 按行切分文本效果好 ❌ 模型大小只影响速度和长度 ❌ 核心结论 Embedding 质量 = RAG 天花板 向量只负责检索，不负责存储内容 精细定位靠二次检索，不是向量自带 文搜图 = 多模态版 RAG，原理完全一致 附思维导图\n">
+<title>Embedding and RAG</title>
+
+<link rel='canonical' href='/post/tech/embedding-and-rag/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Embedding and RAG">
+<meta property='og:description' content="向量检索与 RAG 一、基础认知：什么是向量 &amp; 向量检索 向量（Embedding） 语义的数学表示：一串浮点数数组 单向、有损编码，不可还原原文 意义：相近语义 → 空间距离近 向量检索 vs 传统搜索 传统：关键词精确匹配（SQL/ES） 向量：语义相似性搜索 核心计算：余弦相似度 / 欧氏距离 核心特点 理解意思，不看字面 支持近义词、意译、跨语言 无统一全球标准，模型决定空间 二、文档处理：从原始文件到可向量化文本 非纯文本文件解析 docx/pptx/xlsx 本质是 zip 包 必须专用工具提取纯文本 丢弃格式、XML、样式、冗余信息 文本分块（Chunking） 错误方式：按物理行、固定字符硬切 问题：切断语义，导致检索失效 正确方式：语义分块 按段落、句子边界切分 保持语义完整 可使用滑动窗口微调 分块目标 不长不短，适合 LLM 输入 语义独立，便于精准召回 三、Embedding 模型：整个系统的基石 模型作用 文本 → 向量 图片 → 向量 多模态：文本↔图片同空间映射 模型尺寸差异（small/base/large） 小模型：语义粗糙、易混淆、空间混乱 大模型：细粒度区分强、专业领域更准 决定向量库质量与检索上限 向量空间规则 不同模型 = 不同空间，不可混用 入库模型 = 查询模型，必须一致 维度必须统一（512/768/1024） 主流模型类别 文本专用：BGE / GTE / E5 / OpenAI Embedding 多模态：CLIP（文搜图核心） 四、向量数据库：存储与检索结构 存储内容（三元组） 向量：用于相似度检索 文本片段 chunk：给 LLM 使用 元数据：来源、页码、行号、偏移 向量是否足够？ 向量不能还原原文 chunk 绝对不能删 原始文档可删（无需二次解析） 检索方式 粗检索：定位段落/行 细检索：定位半句/跨行/中间片段 混合检索：向量 + 关键词（精确到词） 数据量级与存储 向量本身极小（百万条仅几GB） 占空间的是文本 chunk 百万级文档约需 300GB~500GB 空间 五、检索深度能力：定位与可解释性 基础定位 定位到：文档、段落、页码、行数 依靠元数据实现 精细定位 行内：上半句 / 后半句 / 中间句 跨行：上下行拼接语义片段 方式：二次滑动窗口 + 细粒度匹配 为什么搜到这一段？（可解释性） 向量本身是黑盒，不自带依据 方案：Token 贡献度分析 遮词→相似度下降→判断核心词 支持近义词、语义关联归因 六、多模态检索：用文字搜图片原理 核心模型：CLIP 类多模态模型 两个编码器：文本编码器 + 图像编码器 同空间训练：语义对齐 建库流程 图片 → 图像向量 → 入库 查询流程 文字 → 文本向量 → 检索 原理与文本 RAG 完全一致 只是“chunk”从文本变成图片 无分块问题，一张图一个语义单元 七、RAG 完整工作流程（核心主线） 离线构建阶段 原始文档 → 提取纯文本 文本 → 语义分块 chunk chunk → Embedding 模型 → 向量 向量 + chunk + 元数据 → 向量库 在线问答阶段 用户问题 → 同一 Embedding 模型 → 查询向量 向量库检索 → 最相似文本片段 可做精细定位 + 归因分析 片段拼 Prompt → 送入 LLM LLM 生成有据可查的回答 八、关键误区与重要结论 误区 向量可以还原原文 ❌ 不同模型向量可以混用 ❌ 按行切分文本效果好 ❌ 模型大小只影响速度和长度 ❌ 核心结论 Embedding 质量 = RAG 天花板 向量只负责检索，不负责存储内容 精细定位靠二次检索，不是向量自带 文搜图 = 多模态版 RAG，原理完全一致 附思维导图\n">
+<meta property='og:url' content='/post/tech/embedding-and-rag/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='embedding' /><meta property='article:tag' content='rag' /><meta property='article:published_time' content='2025-03-17T18:54:47&#43;08:00'/><meta property='article:modified_time' content='2025-03-17T18:54:47&#43;08:00'/>
+<meta name="twitter:title" content="Embedding and RAG">
+<meta name="twitter:description" content="向量检索与 RAG 一、基础认知：什么是向量 &amp; 向量检索 向量（Embedding） 语义的数学表示：一串浮点数数组 单向、有损编码，不可还原原文 意义：相近语义 → 空间距离近 向量检索 vs 传统搜索 传统：关键词精确匹配（SQL/ES） 向量：语义相似性搜索 核心计算：余弦相似度 / 欧氏距离 核心特点 理解意思，不看字面 支持近义词、意译、跨语言 无统一全球标准，模型决定空间 二、文档处理：从原始文件到可向量化文本 非纯文本文件解析 docx/pptx/xlsx 本质是 zip 包 必须专用工具提取纯文本 丢弃格式、XML、样式、冗余信息 文本分块（Chunking） 错误方式：按物理行、固定字符硬切 问题：切断语义，导致检索失效 正确方式：语义分块 按段落、句子边界切分 保持语义完整 可使用滑动窗口微调 分块目标 不长不短，适合 LLM 输入 语义独立，便于精准召回 三、Embedding 模型：整个系统的基石 模型作用 文本 → 向量 图片 → 向量 多模态：文本↔图片同空间映射 模型尺寸差异（small/base/large） 小模型：语义粗糙、易混淆、空间混乱 大模型：细粒度区分强、专业领域更准 决定向量库质量与检索上限 向量空间规则 不同模型 = 不同空间，不可混用 入库模型 = 查询模型，必须一致 维度必须统一（512/768/1024） 主流模型类别 文本专用：BGE / GTE / E5 / OpenAI Embedding 多模态：CLIP（文搜图核心） 四、向量数据库：存储与检索结构 存储内容（三元组） 向量：用于相似度检索 文本片段 chunk：给 LLM 使用 元数据：来源、页码、行号、偏移 向量是否足够？ 向量不能还原原文 chunk 绝对不能删 原始文档可删（无需二次解析） 检索方式 粗检索：定位段落/行 细检索：定位半句/跨行/中间片段 混合检索：向量 + 关键词（精确到词） 数据量级与存储 向量本身极小（百万条仅几GB） 占空间的是文本 chunk 百万级文档约需 300GB~500GB 空间 五、检索深度能力：定位与可解释性 基础定位 定位到：文档、段落、页码、行数 依靠元数据实现 精细定位 行内：上半句 / 后半句 / 中间句 跨行：上下行拼接语义片段 方式：二次滑动窗口 + 细粒度匹配 为什么搜到这一段？（可解释性） 向量本身是黑盒，不自带依据 方案：Token 贡献度分析 遮词→相似度下降→判断核心词 支持近义词、语义关联归因 六、多模态检索：用文字搜图片原理 核心模型：CLIP 类多模态模型 两个编码器：文本编码器 + 图像编码器 同空间训练：语义对齐 建库流程 图片 → 图像向量 → 入库 查询流程 文字 → 文本向量 → 检索 原理与文本 RAG 完全一致 只是“chunk”从文本变成图片 无分块问题，一张图一个语义单元 七、RAG 完整工作流程（核心主线） 离线构建阶段 原始文档 → 提取纯文本 文本 → 语义分块 chunk chunk → Embedding 模型 → 向量 向量 + chunk + 元数据 → 向量库 在线问答阶段 用户问题 → 同一 Embedding 模型 → 查询向量 向量库检索 → 最相似文本片段 可做精细定位 + 归因分析 片段拼 Prompt → 送入 LLM LLM 生成有据可查的回答 八、关键误区与重要结论 误区 向量可以还原原文 ❌ 不同模型向量可以混用 ❌ 按行切分文本效果好 ❌ 模型大小只影响速度和长度 ❌ 核心结论 Embedding 质量 = RAG 天花板 向量只负责检索，不负责存储内容 精细定位靠二次检索，不是向量自带 文搜图 = 多模态版 RAG，原理完全一致 附思维导图\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/embedding-and-rag/">Embedding and RAG</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-03-17T18:54:47&#43;08:00'>2025-03-17 18:54:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="向量检索与-rag">向量检索与 RAG
+</h1><h2 id="一基础认知什么是向量--向量检索">一、基础认知：什么是向量 &amp; 向量检索
+</h2><ul>
+<li>向量（Embedding）
+<ul>
+<li>语义的数学表示：一串浮点数数组</li>
+<li>单向、有损编码，不可还原原文</li>
+<li>意义：相近语义 → 空间距离近</li>
+</ul>
+</li>
+<li>向量检索 vs 传统搜索
+<ul>
+<li>传统：关键词精确匹配（SQL/ES）</li>
+<li>向量：语义相似性搜索</li>
+<li>核心计算：余弦相似度 / 欧氏距离</li>
+</ul>
+</li>
+<li>核心特点
+<ul>
+<li>理解意思，不看字面</li>
+<li>支持近义词、意译、跨语言</li>
+<li>无统一全球标准，模型决定空间</li>
+</ul>
+</li>
+</ul>
+<h2 id="二文档处理从原始文件到可向量化文本">二、文档处理：从原始文件到可向量化文本
+</h2><ul>
+<li>非纯文本文件解析
+<ul>
+<li>docx/pptx/xlsx 本质是 zip 包</li>
+<li>必须专用工具提取纯文本</li>
+<li>丢弃格式、XML、样式、冗余信息</li>
+</ul>
+</li>
+<li>文本分块（Chunking）
+<ul>
+<li>错误方式：按物理行、固定字符硬切</li>
+<li>问题：切断语义，导致检索失效</li>
+<li>正确方式：语义分块
+<ul>
+<li>按段落、句子边界切分</li>
+<li>保持语义完整</li>
+<li>可使用滑动窗口微调</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>分块目标
+<ul>
+<li>不长不短，适合 LLM 输入</li>
+<li>语义独立，便于精准召回</li>
+</ul>
+</li>
+</ul>
+<h2 id="三embedding-模型整个系统的基石">三、Embedding 模型：整个系统的基石
+</h2><ul>
+<li>模型作用
+<ul>
+<li>文本 → 向量</li>
+<li>图片 → 向量</li>
+<li>多模态：文本↔图片同空间映射</li>
+</ul>
+</li>
+<li>模型尺寸差异（small/base/large）
+<ul>
+<li>小模型：语义粗糙、易混淆、空间混乱</li>
+<li>大模型：细粒度区分强、专业领域更准</li>
+<li>决定向量库质量与检索上限</li>
+</ul>
+</li>
+<li>向量空间规则
+<ul>
+<li>不同模型 = 不同空间，不可混用</li>
+<li>入库模型 = 查询模型，必须一致</li>
+<li>维度必须统一（512/768/1024）</li>
+</ul>
+</li>
+<li>主流模型类别
+<ul>
+<li>文本专用：BGE / GTE / E5 / OpenAI Embedding</li>
+<li>多模态：CLIP（文搜图核心）</li>
+</ul>
+</li>
+</ul>
+<h2 id="四向量数据库存储与检索结构">四、向量数据库：存储与检索结构
+</h2><ul>
+<li>存储内容（三元组）
+<ul>
+<li>向量：用于相似度检索</li>
+<li>文本片段 chunk：给 LLM 使用</li>
+<li>元数据：来源、页码、行号、偏移</li>
+</ul>
+</li>
+<li>向量是否足够？
+<ul>
+<li>向量不能还原原文</li>
+<li>chunk 绝对不能删</li>
+<li>原始文档可删（无需二次解析）</li>
+</ul>
+</li>
+<li>检索方式
+<ul>
+<li>粗检索：定位段落/行</li>
+<li>细检索：定位半句/跨行/中间片段</li>
+<li>混合检索：向量 + 关键词（精确到词）</li>
+</ul>
+</li>
+<li>数据量级与存储
+<ul>
+<li>向量本身极小（百万条仅几GB）</li>
+<li>占空间的是文本 chunk</li>
+<li>百万级文档约需 300GB~500GB 空间</li>
+</ul>
+</li>
+</ul>
+<h2 id="五检索深度能力定位与可解释性">五、检索深度能力：定位与可解释性
+</h2><ul>
+<li>基础定位
+<ul>
+<li>定位到：文档、段落、页码、行数</li>
+<li>依靠元数据实现</li>
+</ul>
+</li>
+<li>精细定位
+<ul>
+<li>行内：上半句 / 后半句 / 中间句</li>
+<li>跨行：上下行拼接语义片段</li>
+<li>方式：二次滑动窗口 + 细粒度匹配</li>
+</ul>
+</li>
+<li>为什么搜到这一段？（可解释性）
+<ul>
+<li>向量本身是黑盒，不自带依据</li>
+<li>方案：Token 贡献度分析</li>
+<li>遮词→相似度下降→判断核心词</li>
+<li>支持近义词、语义关联归因</li>
+</ul>
+</li>
+</ul>
+<h2 id="六多模态检索用文字搜图片原理">六、多模态检索：用文字搜图片原理
+</h2><ul>
+<li>核心模型：CLIP 类多模态模型
+<ul>
+<li>两个编码器：文本编码器 + 图像编码器</li>
+<li>同空间训练：语义对齐</li>
+</ul>
+</li>
+<li>建库流程
+<ul>
+<li>图片 → 图像向量 → 入库</li>
+</ul>
+</li>
+<li>查询流程
+<ul>
+<li>文字 → 文本向量 → 检索</li>
+</ul>
+</li>
+<li>原理与文本 RAG 完全一致
+<ul>
+<li>只是“chunk”从文本变成图片</li>
+<li>无分块问题，一张图一个语义单元</li>
+</ul>
+</li>
+</ul>
+<h2 id="七rag-完整工作流程核心主线">七、RAG 完整工作流程（核心主线）
+</h2><ul>
+<li>离线构建阶段
+<ol>
+<li>原始文档 → 提取纯文本</li>
+<li>文本 → 语义分块 chunk</li>
+<li>chunk → Embedding 模型 → 向量</li>
+<li>向量 + chunk + 元数据 → 向量库</li>
+</ol>
+</li>
+<li>在线问答阶段
+<ol>
+<li>用户问题 → 同一 Embedding 模型 → 查询向量</li>
+<li>向量库检索 → 最相似文本片段</li>
+<li>可做精细定位 + 归因分析</li>
+<li>片段拼 Prompt → 送入 LLM</li>
+<li>LLM 生成有据可查的回答</li>
+</ol>
+</li>
+</ul>
+<h2 id="八关键误区与重要结论">八、关键误区与重要结论
+</h2><ul>
+<li>误区
+<ul>
+<li>向量可以还原原文 ❌</li>
+<li>不同模型向量可以混用 ❌</li>
+<li>按行切分文本效果好 ❌</li>
+<li>模型大小只影响速度和长度 ❌</li>
+</ul>
+</li>
+<li>核心结论
+<ul>
+<li>Embedding 质量 = RAG 天花板</li>
+<li>向量只负责检索，不负责存储内容</li>
+<li>精细定位靠二次检索，不是向量自带</li>
+<li>文搜图 = 多模态版 RAG，原理完全一致</li>
+</ul>
+</li>
+</ul>
+<p>附思维导图</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>向量检索与RAG全流程原理
+</span></span><span style="display:flex;"><span>	基础认知：向量与向量检索
+</span></span><span style="display:flex;"><span>		向量(Embedding)本质
+</span></span><span style="display:flex;"><span>			语义的数学表示：浮点数数组
+</span></span><span style="display:flex;"><span>			单向有损编码，不可还原原文
+</span></span><span style="display:flex;"><span>			语义相近→空间距离相近
+</span></span><span style="display:flex;"><span>		向量检索VS传统搜索
+</span></span><span style="display:flex;"><span>			传统搜索：关键词精确匹配
+</span></span><span style="display:flex;"><span>			向量检索：语义相似性搜索
+</span></span><span style="display:flex;"><span>			核心计算：余弦相似度/欧氏距离
+</span></span><span style="display:flex;"><span>		核心特性
+</span></span><span style="display:flex;"><span>			理解语义而非字面
+</span></span><span style="display:flex;"><span>			支持近义词、跨语言
+</span></span><span style="display:flex;"><span>			无统一标准，模型决定向量空间
+</span></span><span style="display:flex;"><span>	文档处理：原始文件到Chunk
+</span></span><span style="display:flex;"><span>		非纯文本文档解析
+</span></span><span style="display:flex;"><span>			docx/pptx/xlsx本质为zip压缩包
+</span></span><span style="display:flex;"><span>			专用工具提取纯文本
+</span></span><span style="display:flex;"><span>			丢弃格式、XML、冗余信息
+</span></span><span style="display:flex;"><span>		文本分块(Chunking)
+</span></span><span style="display:flex;"><span>			错误方式：按物理行、固定字符硬切
+</span></span><span style="display:flex;"><span>				问题：语义断裂，检索失效
+</span></span><span style="display:flex;"><span>			正确方式：语义分块
+</span></span><span style="display:flex;"><span>				按段落、句子边界切分
+</span></span><span style="display:flex;"><span>				保证语义完整
+</span></span><span style="display:flex;"><span>				滑动窗口辅助优化
+</span></span><span style="display:flex;"><span>		分块目标
+</span></span><span style="display:flex;"><span>			适配LLM输入长度
+</span></span><span style="display:flex;"><span>			语义独立，提升召回精度
+</span></span><span style="display:flex;"><span>	Embedding模型：系统核心基石
+</span></span><span style="display:flex;"><span>		模型核心作用
+</span></span><span style="display:flex;"><span>			文本转向量
+</span></span><span style="display:flex;"><span>			图片转向量
+</span></span><span style="display:flex;"><span>			多模态：图文同空间映射
+</span></span><span style="display:flex;"><span>		模型尺寸差异
+</span></span><span style="display:flex;"><span>			小模型：语义粗糙、易混淆、空间混乱
+</span></span><span style="display:flex;"><span>			大模型：细粒度区分强、专业领域精准
+</span></span><span style="display:flex;"><span>			尺寸决定检索上限与向量库价值
+</span></span><span style="display:flex;"><span>		向量空间铁律
+</span></span><span style="display:flex;"><span>			不同模型=不同空间，禁止混用
+</span></span><span style="display:flex;"><span>			入库模型=查询模型，必须一致
+</span></span><span style="display:flex;"><span>			向量维度必须统一
+</span></span><span style="display:flex;"><span>		主流模型分类
+</span></span><span style="display:flex;"><span>			文本模型：BGE/GTE/E5/OpenAI Embedding
+</span></span><span style="display:flex;"><span>			多模态模型：CLIP(文搜图核心)
+</span></span><span style="display:flex;"><span>	向量数据库：存储与检索
+</span></span><span style="display:flex;"><span>		存储三元结构
+</span></span><span style="display:flex;"><span>			向量：用于相似度检索
+</span></span><span style="display:flex;"><span>			文本Chunk：提供给LLM使用
+</span></span><span style="display:flex;"><span>			元数据：来源、页码、行号、偏移量
+</span></span><span style="display:flex;"><span>		存储关键说明
+</span></span><span style="display:flex;"><span>			向量不可还原原文
+</span></span><span style="display:flex;"><span>			Chunk禁止删除
+</span></span><span style="display:flex;"><span>			原始文档可删除
+</span></span><span style="display:flex;"><span>		检索方式
+</span></span><span style="display:flex;"><span>			粗检索：定位段落、行
+</span></span><span style="display:flex;"><span>			细检索：定位半句、跨行片段
+</span></span><span style="display:flex;"><span>			混合检索：向量+关键词(精确到词)
+</span></span><span style="display:flex;"><span>		数据存储量级
+</span></span><span style="display:flex;"><span>			向量本身占用空间极小
+</span></span><span style="display:flex;"><span>			空间占用主力为文本Chunk
+</span></span><span style="display:flex;"><span>			百万级文档总空间300GB~500GB
+</span></span><span style="display:flex;"><span>	检索深度能力：定位与可解释
+</span></span><span style="display:flex;"><span>		基础定位
+</span></span><span style="display:flex;"><span>			定位文档、段落、页码、行数
+</span></span><span style="display:flex;"><span>			依靠元数据实现
+</span></span><span style="display:flex;"><span>		精细定位
+</span></span><span style="display:flex;"><span>			行内：上半句/下半句/中间句
+</span></span><span style="display:flex;"><span>			跨行：上下行拼接语义片段
+</span></span><span style="display:flex;"><span>			实现方式：二次滑动窗口+细粒度匹配
+</span></span><span style="display:flex;"><span>		匹配可解释性
+</span></span><span style="display:flex;"><span>			向量为黑盒，无自带依据
+</span></span><span style="display:flex;"><span>			方案：Token贡献度分析
+</span></span><span style="display:flex;"><span>			遮词对比相似度，定位核心词汇
+</span></span><span style="display:flex;"><span>			支持近义词语义归因
+</span></span><span style="display:flex;"><span>	多模态检索：文搜图原理
+</span></span><span style="display:flex;"><span>		核心模型：CLIP
+</span></span><span style="display:flex;"><span>			文本编码器+图像编码器
+</span></span><span style="display:flex;"><span>			同源训练，共享向量空间
+</span></span><span style="display:flex;"><span>		离线建库流程
+</span></span><span style="display:flex;"><span>			图片→图像向量→存入向量库
+</span></span><span style="display:flex;"><span>		在线查询流程
+</span></span><span style="display:flex;"><span>			文字→文本向量→向量检索
+</span></span><span style="display:flex;"><span>		与文本RAG关系
+</span></span><span style="display:flex;"><span>			原理完全一致
+</span></span><span style="display:flex;"><span>			图片天然为一个Chunk，无分块问题
+</span></span><span style="display:flex;"><span>	RAG完整工作流程
+</span></span><span style="display:flex;"><span>		离线构建阶段
+</span></span><span style="display:flex;"><span>			原始文档→提取纯文本
+</span></span><span style="display:flex;"><span>			纯文本→语义分块生成Chunk
+</span></span><span style="display:flex;"><span>			Chunk→Embedding模型→向量
+</span></span><span style="display:flex;"><span>			向量+Chunk+元数据→入库
+</span></span><span style="display:flex;"><span>		在线问答阶段
+</span></span><span style="display:flex;"><span>			用户问题→同一模型→查询向量
+</span></span><span style="display:flex;"><span>			向量库相似度检索
+</span></span><span style="display:flex;"><span>			精细定位+归因分析(可选)
+</span></span><span style="display:flex;"><span>			Chunk拼接Prompt→送入LLM
+</span></span><span style="display:flex;"><span>			LLM生成有据可依的回答
+</span></span><span style="display:flex;"><span>	关键误区与核心结论
+</span></span><span style="display:flex;"><span>		常见误区
+</span></span><span style="display:flex;"><span>			向量可还原原文❌
+</span></span><span style="display:flex;"><span>			不同模型向量可混用❌
+</span></span><span style="display:flex;"><span>			按行切分效果更好❌
+</span></span><span style="display:flex;"><span>			模型大小只影响速度长度❌
+</span></span><span style="display:flex;"><span>		核心结论
+</span></span><span style="display:flex;"><span>			Embedding质量=RAG系统天花板
+</span></span><span style="display:flex;"><span>			向量仅负责检索，不负责内容存储
+</span></span><span style="display:flex;"><span>			精细定位依靠二次检索实现
+</span></span><span style="display:flex;"><span>			文搜图为多模态版本RAG，原理同源
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/embedding/">Embedding</a>
+        
+            <a href="/tags/rag/">Rag</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/embedding-llm-hardware/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Embedding, llm and hardware</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.2">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

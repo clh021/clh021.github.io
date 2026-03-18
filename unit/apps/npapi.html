@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>haha</title>
+</head>
+<body>
+<h1>本页面模拟引擎临时切换到 npapi 场景演示</h1>
+<button onclick="tempUseNpAPI()">npapi支持</button>
+切换后即可通过 `Ctrl+J` 查看引擎对应的调试工具确认。
+<br><span></span>
+<script>
+    function tempUseNpAPI() {
+        lnks.openWindow2({
+            url: location.href,
+            useGecko: true
+        }, "");
+    }
+
+    let win = new window.lnks.MainWindow(window);
+    if ("function" != typeof win.isGecko) {
+      win.isGecko = function () {
+          return false;
+      }
+    }
+    let isGecko = win.isGecko();
+    if (isGecko) {
+        document.querySelector('span').innerHTML = "当前是 Gecko  引擎。";
+    } else {
+        document.querySelector('span').innerHTML = "当前是 Chromium 引擎。";
+    }
+</script>
+</body>
+</html>

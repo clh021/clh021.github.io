@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="向量空间对大模型&amp;知识库上限的影响 一、核心结论总览 1.1 向量空间与上限关系 向量空间设计决定能力天花板 数据与训练决定接近上限的程度 1.2 向量空间来源 人为设计（骨架） 数据训练（血肉） 二、向量空间的两类核心场景 2.1 大模型内部隐层向量空间 Token 映射为隐层状态 决定模型理解、推理、生成上限 2.2 Embedding 检索向量空间 文本/图像映射为固定维度向量 决定知识库召回精度上限 三、向量空间的构成：人为设计 VS 数据训练 3.1 人为设计部分（自上而下） 3.1.1 模型架构设计 Transformer 结构（层数、头数、d_model） 归一化（LayerNorm/RMSNorm） 残差连接、位置编码（RoPE等） 3.1.2 Embedding 工程设计 向量维度（768/1024/1536） L2归一化、余弦相似度 池化方式（CLS/均值池化） 3.1.3 训练目标设计 预训练（MLM、NSP） 对比学习（SimCSE、E5、BGE） 对齐训练（DPO、PPO） 3.1.4 系统工程设计 文本分块（Chunk）策略 检索召回与重排机制 3.2 数据训练部分（自下而上） 语义关系学习（相似内容空间靠近） 世界知识与领域知识编码 数据质量影响空间规整度 训练充分度决定收敛效果 四、上限决定机制 4.1 上限锁死因素 向量维度不足 模型架构过于简单 训练目标与任务不匹配 Embedding 空间设计不合理 4.2 影响上限发挥的因素 训练数据规模与质量 训练收敛程度 知识库构建工程（切分、索引） 检索策略优劣 五、知识库+大模型工作流程原理 5.1 知识库构建流程（离线） 原始文档处理 文档清洗、去重、格式标准化 文本分块（Chunking） 按语义/长度/段落切分 Embedding 向量化 调用 Embedding 模型生成向量 向量库索引存储 构建 FAISS/Milvus 等索引 5.2 用户问答流程（在线） 用户问题输入 问题 Embedding 向量化 向量库检索召回 粗召回 → 重排精筛 相关知识片段拼接 大模型输入（Prompt+知识片段+问题） 大模型推理生成答案 答案输出给用户 5.3 双空间协同作用 Embedding 空间：精准找到知识 大模型隐空间：理解并使用知识 六、总结要点 设计定上限，训练定水平 人为设计与数据训练缺一不可 知识库+大模型双空间共同决定系统效果 ">
+<title>Embedding space and rag,llm</title>
+
+<link rel='canonical' href='/post/tech/embedding-space-and-rag-llm/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Embedding space and rag,llm">
+<meta property='og:description' content="向量空间对大模型&amp;知识库上限的影响 一、核心结论总览 1.1 向量空间与上限关系 向量空间设计决定能力天花板 数据与训练决定接近上限的程度 1.2 向量空间来源 人为设计（骨架） 数据训练（血肉） 二、向量空间的两类核心场景 2.1 大模型内部隐层向量空间 Token 映射为隐层状态 决定模型理解、推理、生成上限 2.2 Embedding 检索向量空间 文本/图像映射为固定维度向量 决定知识库召回精度上限 三、向量空间的构成：人为设计 VS 数据训练 3.1 人为设计部分（自上而下） 3.1.1 模型架构设计 Transformer 结构（层数、头数、d_model） 归一化（LayerNorm/RMSNorm） 残差连接、位置编码（RoPE等） 3.1.2 Embedding 工程设计 向量维度（768/1024/1536） L2归一化、余弦相似度 池化方式（CLS/均值池化） 3.1.3 训练目标设计 预训练（MLM、NSP） 对比学习（SimCSE、E5、BGE） 对齐训练（DPO、PPO） 3.1.4 系统工程设计 文本分块（Chunk）策略 检索召回与重排机制 3.2 数据训练部分（自下而上） 语义关系学习（相似内容空间靠近） 世界知识与领域知识编码 数据质量影响空间规整度 训练充分度决定收敛效果 四、上限决定机制 4.1 上限锁死因素 向量维度不足 模型架构过于简单 训练目标与任务不匹配 Embedding 空间设计不合理 4.2 影响上限发挥的因素 训练数据规模与质量 训练收敛程度 知识库构建工程（切分、索引） 检索策略优劣 五、知识库+大模型工作流程原理 5.1 知识库构建流程（离线） 原始文档处理 文档清洗、去重、格式标准化 文本分块（Chunking） 按语义/长度/段落切分 Embedding 向量化 调用 Embedding 模型生成向量 向量库索引存储 构建 FAISS/Milvus 等索引 5.2 用户问答流程（在线） 用户问题输入 问题 Embedding 向量化 向量库检索召回 粗召回 → 重排精筛 相关知识片段拼接 大模型输入（Prompt+知识片段+问题） 大模型推理生成答案 答案输出给用户 5.3 双空间协同作用 Embedding 空间：精准找到知识 大模型隐空间：理解并使用知识 六、总结要点 设计定上限，训练定水平 人为设计与数据训练缺一不可 知识库+大模型双空间共同决定系统效果 ">
+<meta property='og:url' content='/post/tech/embedding-space-and-rag-llm/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='embedding' /><meta property='article:tag' content='rag' /><meta property='article:published_time' content='2025-03-17T18:58:47&#43;08:00'/><meta property='article:modified_time' content='2025-03-17T18:58:47&#43;08:00'/>
+<meta name="twitter:title" content="Embedding space and rag,llm">
+<meta name="twitter:description" content="向量空间对大模型&amp;知识库上限的影响 一、核心结论总览 1.1 向量空间与上限关系 向量空间设计决定能力天花板 数据与训练决定接近上限的程度 1.2 向量空间来源 人为设计（骨架） 数据训练（血肉） 二、向量空间的两类核心场景 2.1 大模型内部隐层向量空间 Token 映射为隐层状态 决定模型理解、推理、生成上限 2.2 Embedding 检索向量空间 文本/图像映射为固定维度向量 决定知识库召回精度上限 三、向量空间的构成：人为设计 VS 数据训练 3.1 人为设计部分（自上而下） 3.1.1 模型架构设计 Transformer 结构（层数、头数、d_model） 归一化（LayerNorm/RMSNorm） 残差连接、位置编码（RoPE等） 3.1.2 Embedding 工程设计 向量维度（768/1024/1536） L2归一化、余弦相似度 池化方式（CLS/均值池化） 3.1.3 训练目标设计 预训练（MLM、NSP） 对比学习（SimCSE、E5、BGE） 对齐训练（DPO、PPO） 3.1.4 系统工程设计 文本分块（Chunk）策略 检索召回与重排机制 3.2 数据训练部分（自下而上） 语义关系学习（相似内容空间靠近） 世界知识与领域知识编码 数据质量影响空间规整度 训练充分度决定收敛效果 四、上限决定机制 4.1 上限锁死因素 向量维度不足 模型架构过于简单 训练目标与任务不匹配 Embedding 空间设计不合理 4.2 影响上限发挥的因素 训练数据规模与质量 训练收敛程度 知识库构建工程（切分、索引） 检索策略优劣 五、知识库+大模型工作流程原理 5.1 知识库构建流程（离线） 原始文档处理 文档清洗、去重、格式标准化 文本分块（Chunking） 按语义/长度/段落切分 Embedding 向量化 调用 Embedding 模型生成向量 向量库索引存储 构建 FAISS/Milvus 等索引 5.2 用户问答流程（在线） 用户问题输入 问题 Embedding 向量化 向量库检索召回 粗召回 → 重排精筛 相关知识片段拼接 大模型输入（Prompt+知识片段+问题） 大模型推理生成答案 答案输出给用户 5.3 双空间协同作用 Embedding 空间：精准找到知识 大模型隐空间：理解并使用知识 六、总结要点 设计定上限，训练定水平 人为设计与数据训练缺一不可 知识库+大模型双空间共同决定系统效果 ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/embedding-space-and-rag-llm/">Embedding space and rag,llm</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-03-17T18:58:47&#43;08:00'>2025-03-17 18:58:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="向量空间对大模型知识库上限的影响">向量空间对大模型&amp;知识库上限的影响
+</h1><h2 id="一核心结论总览">一、核心结论总览
+</h2><h3 id="11-向量空间与上限关系">1.1 向量空间与上限关系
+</h3><h4 id="向量空间设计决定能力天花板">向量空间设计决定能力天花板
+</h4><h4 id="数据与训练决定接近上限的程度">数据与训练决定接近上限的程度
+</h4><h3 id="12-向量空间来源">1.2 向量空间来源
+</h3><h4 id="人为设计骨架">人为设计（骨架）
+</h4><h4 id="数据训练血肉">数据训练（血肉）
+</h4><h2 id="二向量空间的两类核心场景">二、向量空间的两类核心场景
+</h2><h3 id="21-大模型内部隐层向量空间">2.1 大模型内部隐层向量空间
+</h3><h4 id="token-映射为隐层状态">Token 映射为隐层状态
+</h4><h4 id="决定模型理解推理生成上限">决定模型理解、推理、生成上限
+</h4><h3 id="22-embedding-检索向量空间">2.2 Embedding 检索向量空间
+</h3><h4 id="文本图像映射为固定维度向量">文本/图像映射为固定维度向量
+</h4><h4 id="决定知识库召回精度上限">决定知识库召回精度上限
+</h4><h2 id="三向量空间的构成人为设计-vs-数据训练">三、向量空间的构成：人为设计 VS 数据训练
+</h2><h3 id="31-人为设计部分自上而下">3.1 人为设计部分（自上而下）
+</h3><h4 id="311-模型架构设计">3.1.1 模型架构设计
+</h4><h5 id="transformer-结构层数头数d_model">Transformer 结构（层数、头数、d_model）
+</h5><h5 id="归一化layernormrmsnorm">归一化（LayerNorm/RMSNorm）
+</h5><h5 id="残差连接位置编码rope等">残差连接、位置编码（RoPE等）
+</h5><h4 id="312-embedding-工程设计">3.1.2 Embedding 工程设计
+</h4><h5 id="向量维度76810241536">向量维度（768/1024/1536）
+</h5><h5 id="l2归一化余弦相似度">L2归一化、余弦相似度
+</h5><h5 id="池化方式cls均值池化">池化方式（CLS/均值池化）
+</h5><h4 id="313-训练目标设计">3.1.3 训练目标设计
+</h4><h5 id="预训练mlmnsp">预训练（MLM、NSP）
+</h5><h5 id="对比学习simcsee5bge">对比学习（SimCSE、E5、BGE）
+</h5><h5 id="对齐训练dpoppo">对齐训练（DPO、PPO）
+</h5><h4 id="314-系统工程设计">3.1.4 系统工程设计
+</h4><h5 id="文本分块chunk策略">文本分块（Chunk）策略
+</h5><h5 id="检索召回与重排机制">检索召回与重排机制
+</h5><h3 id="32-数据训练部分自下而上">3.2 数据训练部分（自下而上）
+</h3><h4 id="语义关系学习相似内容空间靠近">语义关系学习（相似内容空间靠近）
+</h4><h4 id="世界知识与领域知识编码">世界知识与领域知识编码
+</h4><h4 id="数据质量影响空间规整度">数据质量影响空间规整度
+</h4><h4 id="训练充分度决定收敛效果">训练充分度决定收敛效果
+</h4><h2 id="四上限决定机制">四、上限决定机制
+</h2><h3 id="41-上限锁死因素">4.1 上限锁死因素
+</h3><h4 id="向量维度不足">向量维度不足
+</h4><h4 id="模型架构过于简单">模型架构过于简单
+</h4><h4 id="训练目标与任务不匹配">训练目标与任务不匹配
+</h4><h4 id="embedding-空间设计不合理">Embedding 空间设计不合理
+</h4><h3 id="42-影响上限发挥的因素">4.2 影响上限发挥的因素
+</h3><h4 id="训练数据规模与质量">训练数据规模与质量
+</h4><h4 id="训练收敛程度">训练收敛程度
+</h4><h4 id="知识库构建工程切分索引">知识库构建工程（切分、索引）
+</h4><h4 id="检索策略优劣">检索策略优劣
+</h4><h2 id="五知识库大模型工作流程原理">五、知识库+大模型工作流程原理
+</h2><h3 id="51-知识库构建流程离线">5.1 知识库构建流程（离线）
+</h3><h4 id="原始文档处理">原始文档处理
+</h4><h5 id="文档清洗去重格式标准化">文档清洗、去重、格式标准化
+</h5><h4 id="文本分块chunking">文本分块（Chunking）
+</h4><h5 id="按语义长度段落切分">按语义/长度/段落切分
+</h5><h4 id="embedding-向量化">Embedding 向量化
+</h4><h5 id="调用-embedding-模型生成向量">调用 Embedding 模型生成向量
+</h5><h4 id="向量库索引存储">向量库索引存储
+</h4><h5 id="构建-faissmilvus-等索引">构建 FAISS/Milvus 等索引
+</h5><h3 id="52-用户问答流程在线">5.2 用户问答流程（在线）
+</h3><h4 id="用户问题输入">用户问题输入
+</h4><h4 id="问题-embedding-向量化">问题 Embedding 向量化
+</h4><h4 id="向量库检索召回">向量库检索召回
+</h4><h5 id="粗召回--重排精筛">粗召回 → 重排精筛
+</h5><h4 id="相关知识片段拼接">相关知识片段拼接
+</h4><h4 id="大模型输入prompt知识片段问题">大模型输入（Prompt+知识片段+问题）
+</h4><h4 id="大模型推理生成答案">大模型推理生成答案
+</h4><h4 id="答案输出给用户">答案输出给用户
+</h4><h3 id="53-双空间协同作用">5.3 双空间协同作用
+</h3><h4 id="embedding-空间精准找到知识">Embedding 空间：精准找到知识
+</h4><h4 id="大模型隐空间理解并使用知识">大模型隐空间：理解并使用知识
+</h4><h2 id="六总结要点">六、总结要点
+</h2><h3 id="设计定上限训练定水平">设计定上限，训练定水平
+</h3><h3 id="人为设计与数据训练缺一不可">人为设计与数据训练缺一不可
+</h3><h3 id="知识库大模型双空间共同决定系统效果">知识库+大模型双空间共同决定系统效果
+</h3>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/embedding/">Embedding</a>
+        
+            <a href="/tags/rag/">Rag</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/embedding-rag-search/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Embedding and RAG searching</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/embedding-and-rag/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Embedding and RAG</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/embedding-llm-hardware/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Embedding, llm and hardware</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/llm-safe-or-blackbox/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">llm-safe-or-blackbox</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.2">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

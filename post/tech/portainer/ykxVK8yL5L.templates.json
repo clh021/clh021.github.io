@@ -1,0 +1,1676 @@
+{
+	"version": "2",
+	"templates": [{
+			"name": "Siyuan",
+			"type": 1,
+			"title": "思源笔记",
+			"description": "思源笔记 Docker 镜像.容器镜像:https://hub.docker.com/r/b3log/siyuan",
+			"categories": [
+				"tool"
+			],
+			"platform": "linux",
+			"logo": "",
+			"image": "b3log/siyuan",
+			"ports": [
+			        "10014:6806/tcp"
+			],
+			"volumes": [{
+				"container": "/siyuan/workspace",
+				"bind": "/docker_data/siyuan",
+				"readonly": false
+			}],
+			"env": [
+			],
+			"network": "bridge"
+		},{
+			"name": "Pikpak-webdav",
+			"type": 1,
+			"title": "Pikpak-webdav",
+			"description": "Pikpak-webdav的rust实现.提供webdav服务.容器镜像:https://hub.docker.com/r/ykxvk8yl5l/pikpak-webdav",
+			"categories": [
+				"cloud"
+			],
+			"platform": "linux",
+			"logo": "",
+			"image": "ykxvk8yl5l/pikpak-webdav",
+			"ports": [
+			        "9867:9867/tcp"
+			],
+			"env": [{
+					"name": "PIKPAK_USER",
+					"default": "",
+					"label": "PIKPAK_USER",
+					"description": "Pikpak用户名"
+				},
+				{
+					"name": "PIKPAK_PASSWORD",
+					"default": "",
+					"label": "PIKPAK_PASSWORD",
+					"description": "Pikpak密码"
+				},
+				{
+					"name": "PROXY_URL",
+					"default": "",
+					"label": "PROXY_URL",
+					"description": "代理网址"
+				}
+			],
+			"network": "bridge"
+		},{
+			"name": "Alist",
+			"type": 1,
+			"title": "Alist",
+			"description": "挂载多个网盘到本地，提供webdav服务。默认密码:alist.容器镜像:https://hub.docker.com/r/xhofe/alist",
+			"categories": [
+				"tool"
+			],
+			"platform": "linux",
+			"logo": "",
+			"image": "xhofe/alist",
+			"ports": [
+			        "10100:5244/tcp"
+			],
+			"volumes": [{
+				"container": "/opt/alist/data",
+				"bind": "/docker_data/alist",
+				"readonly": false
+			}],
+			"network": "bridge"
+		},{
+			"name": "Axum-web",
+			"type": 1,
+			"title": "Axum-web",
+			"description": "一个小工具，目前没啥大用。容器镜像:https://hub.docker.com/r/ykxvk8yl5l/axum-web",
+			"categories": [
+				"tool"
+			],
+			"platform": "linux",
+			"logo": "",
+			"image": "ykxvk8yl5l/axum-web",
+			"ports": [
+			        "10099:10099/tcp",
+			        "10098:10098/tcp"
+			],
+			"volumes": [{
+				"container": "/root/music-data",
+				"bind": "/docker_data/axum-web",
+				"readonly": false
+			}],
+			"env": [{
+					"name": "DATABASE",
+					"default": "axum-web.db",
+					"label": "DATABASE",
+					"description": "数据库名称"
+				}
+			],
+			"network": "bridge"
+		},{
+			"name": "mywiki",
+			"type": 1,
+			"title": "Wiki.js",
+			"description": "Wiki.js开源wiki。容器镜像:https://hub.docker.com/r/requarks/wiki",
+			"categories": [
+				"tool"
+			],
+			"platform": "linux",
+			"logo": "https://static.requarks.io/logo/wikijs-butterfly.svg",
+			"image": "requarks/wiki:2",
+			"ports": [
+			        "10013:3000/tcp"
+			],
+			"volumes": [{
+				"container": "/root",
+				"bind": "/docker_data/mywiki",
+				"readonly": false
+			}],
+			"env": [{
+					"name": "DB_TYPE",
+					"default": "sqlite",
+					"label": "DB_TYPE",
+					"description": "数据库类型"
+				},
+				{
+					"name": "DB_FILEPATH",
+					"default": "/root/mywiki.db",
+					"label": "DB_FILEPATH",
+					"description": "数据库路径"
+				},
+				{
+					"name": "DB_NAME",
+					"default": "wiki",
+					"label": "DB_NAME",
+					"description": "数据库名称"
+				}
+			],
+			"network": "bridge"
+		},{
+			"name": "adminmongo",
+			"type": 1,
+			"title": "adminmongo",
+			"description": "mongodb web管理UI。容器镜像:https://hub.docker.com/r/ykxvk8yl5l/adminmongo",
+			"categories": [
+				"tool"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/mongo.png",
+			"image": "ykxvk8yl5l/adminmongo",
+			"ports": [
+			        "10012:1234/tcp"
+			],
+			"volumes": [{
+				"container": "/app/user/config",
+				"bind": "/docker_data/adminmongo/config",
+				"readonly": false
+			}],
+			"env": [{
+					"name": "HOST",
+					"default": "0.0.0.0",
+					"label": "HOST",
+					"description": "HOST监听网址"
+				}
+			],
+			"network": "bridge"
+		},{
+			"name": "ipfs-actions",
+			"type": 1,
+			"title": "ipfs-actions",
+			"description": "ipfs下载记录本地管理及提交下载任务 容器镜像:https://hub.docker.com/r/ykxvk8yl5l/ipfs",
+			"categories": [
+				"cloud"
+			],
+			"platform": "linux",
+			"logo": "https://secure.gravatar.com/avatar/a105f594a3b966afa8c1d09e952d5dbd.jpg",
+			"image": "ykxvk8yl5l/ipfs",
+			"ports": [
+			        "10011:8080/tcp"
+			],
+			"volumes": [{
+				"container": "/root/config",
+				"bind": "/docker_data/ipfs-actions/",
+				"readonly": false
+			}],
+			"network": "bridge"
+		},{
+			"name": "ipfs",
+			"type": 1,
+			"title": "go-ipfs",
+			"description": "可配合web3.storage使用 实测速度有提升 容器镜像:https://hub.docker.com/r/ipfs/go-ipfs",
+			"categories": [
+				"cloud"
+			],
+			"platform": "linux",
+			"logo": "https://secure.gravatar.com/avatar/a105f594a3b966afa8c1d09e952d5dbd.jpg",
+			"image": "ipfs/go-ipfs",
+			"ports": [
+			        "10010:8080/tcp"
+			],
+			"volumes": [{
+				"container": "/export",
+				"bind": "/docker_data/ipfs/export",
+				"readonly": false
+			}, {
+				"container": "/data/ipfs",
+				"bind": "/docker_data/ipfs/data/ipfs",
+				"readonly": false
+			}],
+			"network": "bridge"
+		},{
+			"name": "web3",
+			"type": 1,
+			"title": "web3.storage",
+			"description": "Aria2 Pro超载完成后上传到web3.storage 容器镜像:https://hub.docker.com/r/ykxvk8yl5l/web3",
+			"categories": [
+				"cloud"
+			],
+			"platform": "linux",
+			"logo": "https://web3.storage/w3storage-logo.svg",
+			"image": "ykxvk8yl5l/web3",
+			"ports": [
+			        "10009:8080/tcp",
+				"6800:6800/tcp",
+				"6888:6888/tcp",
+				"6888:6888/udp"
+			],
+			"volumes": [{
+				"container": "/config",
+				"bind": "/docker_data/aria2/config",
+				"readonly": false
+			}, {
+				"container": "/downloads",
+				"bind": "/docker_data/aria2/downloads",
+				"readonly": false
+			},{
+				"container": "/u/upload.db",
+				"bind": "/docker_data/aria2/config/upload.db",
+				"readonly": false
+			},{
+				"container": "/u/token.ini",
+				"bind": "/docker_data/aria2/config/token.ini",
+				"readonly": false
+			}],
+			"env": [{
+					"name": "RPC_SECRET",
+					"default": "123456",
+					"label": "RPC_SECRET",
+					"description": "RPC_SECRET"
+				},
+				{
+					"name": "RPC_PORT",
+					"default": "6800",
+					"label": "RPC_PORT",
+					"description": "RPC_PORT"
+				},
+				{
+					"name": "LISTEN_PORT",
+					"default": "6888",
+					"label": "LISTEN_PORT",
+					"description": "LISTEN_PORT"
+				}
+			],
+			"network": "bridge"
+		},{
+			"name": "Gitea",
+			"type": 1,
+			"title": "Gitea",
+			"description": "和Gitlab端口相同两者选其一即可.需要配合数据库使用，或用docker-compose安装。详细请看https://hub.docker.com/r/gitea/gitea",
+			"categories": [
+				"Tool"
+			],
+			"platform": "linux",
+			"logo": "https://secure.gravatar.com/avatar/5603d5a79452bc237ac44f663d39f9aa.jpg",
+			"image": "gitea/gitea:latest",
+			"ports": [
+				"20080:3000/tcp",
+				"20020:22/tcp"
+			],
+			"volumes": [{
+				"container": "/data",
+				"bind": "/docker_data/gitea/data",
+				"readonly": false
+			}]
+		}, {
+			"name": "Subconverter",
+			"type": 1,
+			"title": "Subconverter",
+			"description": "不同订阅之间转换.不同于原版这个支持多target由于是文件读写不建议公开使用，多个target之间用英文-分隔",
+			"categories": [
+				"tool"
+			],
+			"platform": "linux",
+			"logo": "https://ae01.alicdn.com/kf/Ua4c61369a9424a44a341ea4ae69defc7G.jpg",
+			"image": "ykxvk8yl5l/axum-converter:latest",
+			"ports": [
+				"25500:3000/tcp"
+			],
+			"network": "bridge"
+		},
+		{
+			"name": "MyNav",
+			"type": 1,
+			"title": "MyNav",
+			"description": "自用NAS导航 详细请看https://hub.docker.com/r/ykxvk8yl5l/mynav",
+			"categories": [
+				"cloud"
+			],
+			"platform": "linux",
+			"logo": "https://s3.ax1x.com/2021/03/16/6rx3CD.jpg",
+			"image": "ykxvk8yl5l/mynav:latest",
+			"ports": [
+				"10008:8080/tcp"
+			],
+			"network": "bridge"
+		}, {
+			"type": 1,
+			"title": "File browser",
+			"description": "A web file manager",
+			"note": "Default credentials: admin/admin",
+			"categories": [
+				"filesystem",
+				"storage"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/filebrowser.png",
+			"image": "filebrowser/filebrowser:latest",
+			"ports": [
+				"80/tcp"
+			],
+			"volumes": [{
+				"container": "/data",
+				"bind": "/docker_data/filebrowser/data",
+				"readonly": false
+			}, {
+				"container": "/srv",
+				"bind": "/docker_data",
+				"readonly": false
+			}],
+			"command": "--port 80 --database /data/database.db --root /srv"
+		}, {
+			"name": "nextcloud",
+			"type": 1,
+			"title": "nextcloud",
+			"description": "A safe home for all your data 容器镜像:https://hub.docker.com/_/nextcloud.",
+			"categories": [
+				"cloud"
+			],
+			"platform": "linux",
+			"logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-nextcloud-logo.png",
+			"image": "nextcloud:latest",
+			"ports": [
+				"10007:80/tcp"
+			],
+			"volumes": [{
+				"container": "/var/www/html",
+				"bind": "/docker_data/nextcloud",
+				"readonly": false
+			}],
+			"network": "bridge"
+		}, {
+			"name": "aria2-pro",
+			"type": 1,
+			"title": "aria2-pro",
+			"description": "Aria2 Pro - 更好用的 Aria2 Docker 容器镜像:https://p3terx.com/archives/docker-aria2-pro.html",
+			"categories": [
+				"cloud"
+			],
+			"platform": "linux",
+			"logo": "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3752871109,4089745176&fm=26&gp=0.jpg",
+			"image": "p3terx/aria2-pro",
+			"ports": [
+				"6800:6800/tcp",
+				"6888:6888/tcp",
+				"6888:6888/udp"
+			],
+			"volumes": [{
+				"container": "/config",
+				"bind": "/docker_data/aria2/config",
+				"readonly": false
+			}, {
+				"container": "/downloads",
+				"bind": "/docker_data/aria2/downloads",
+				"readonly": false
+			}],
+			"env": [{
+					"name": "RPC_SECRET",
+					"default": "123456",
+					"label": "RPC_SECRET",
+					"description": "RPC_SECRET"
+				},
+				{
+					"name": "RPC_PORT",
+					"default": "6800",
+					"label": "RPC_PORT",
+					"description": "RPC_PORT"
+				},
+				{
+					"name": "LISTEN_PORT",
+					"default": "6888",
+					"label": "LISTEN_PORT",
+					"description": "LISTEN_PORT"
+				}
+			],
+			"network": "bridge"
+		},{
+			"name": "WebDAV",
+			"type": 1,
+			"title": "WebDAV",
+			"description": "webdav服务器,如需数据持久化绑定本地文件夹到容器/var/lib/dav/data目录。默认用户名密码为root详细请看https://hub.docker.com/r/bytemark/webdav",
+			"categories": [
+				"cloud"
+			],
+			"platform": "linux",
+			"logo": "https://s3.ax1x.com/2020/11/25/DUB5mF.png",
+			"image": "bytemark/webdav",
+			"ports": [
+				"10006:80/tcp"
+			],
+			"volumes": [{
+				"container": "/var/lib/dav/data",
+				"bind": "/docker_data/",
+				"readonly": false
+			}],
+			"env": [{
+					"name": "AUTH_TYPE",
+					"default": "Digest",
+					"label": "AUTH_TYPE",
+					"description": "AUTH_TYPE"
+				},
+				{
+					"name": "USERNAME",
+					"default": "root",
+					"label": "USERNAME",
+					"description": "USERNAME"
+				},
+				{
+					"name": "PASSWORD",
+					"default": "root",
+					"label": "PASSWORD",
+					"description": "PASSWORD"
+				}
+			],
+			"network": "bridge"
+		}, {
+			"name": "6pan",
+			"type": 1,
+			"title": "6pan",
+			"description": "6盘多用户加在线视频，如需数据持久化绑定本地文件夹到容器/app/users目录。详细请看https://hub.docker.com/r/ykxvk8yl5l/6pan",
+			"categories": [
+				"cloud"
+			],
+			"platform": "linux",
+			"logo": "https://v3-beta.6pan.cn/static/media/logo.1924c9f2.png",
+			"image": "ykxvk8yl5l/zyplayer:latest",
+			"ports": [
+				"10003:10003/tcp"
+			],
+			"volumes": [{
+				"container": "/usr/src/app/users",
+				"bind": "/docker_data/6pan",
+				"readonly": false
+			}],
+			"network": "bridge"
+		},
+		{
+			"name": "editor-ipad",
+			"type": 1,
+			"title": "VSCode-ipad",
+			"description": "通过降低版本至3.10.2解决ipad的白屏问题.在线代码编译器。第一次请看容器日志，密码在日志路径里。如不需要密码修改文件内容为:auth: none.详细请看https://hub.docker.com/r/codercom/code-server",
+			"categories": [
+				"Tool"
+			],
+			"platform": "linux",
+			"logo": "https://s1.ax1x.com/2020/10/25/BmMvex.png",
+			"image": "codercom/code-server:3.10.2",
+			"ports": [
+				"10005:8080/tcp"
+			],
+			"volumes": [{
+				"container": "/home/coder/project",
+				"bind": "/docker_data",
+				"readonly": false
+			},{
+				"container": "/home/coder/.config/code-server/config.yaml",
+				"bind": "/docker_data/editor/config/config.yaml",
+				"readonly": false
+			},{
+				"container": "/home/coder/.local",
+				"bind": "/docker_data/editor/local",
+				"readonly": false
+			}]
+		},
+		{
+			"name": "editor",
+			"type": 1,
+			"title": "VSCode",
+			"description": "在线代码编译器。第一次请看容器日志，密码在日志路径里。如不需要密码修改文件内容为:auth: none.详细请看https://hub.docker.com/r/codercom/code-server",
+			"categories": [
+				"Tool"
+			],
+			"platform": "linux",
+			"logo": "https://s1.ax1x.com/2020/10/25/BmMvex.png",
+			"image": "codercom/code-server:latest",
+			"ports": [
+				"10005:8080/tcp"
+			],
+			"volumes": [{
+				"container": "/home/coder/project",
+				"bind": "/docker_data",
+				"readonly": false
+			}]
+		},
+		{
+			"name": "video-dl",
+			"type": 1,
+			"title": "Video-dl",
+			"description": "下载视频用。注意访问地址是：http://{{host}}:8080/youtube-dl 详细请看https://hub.docker.com/r/kmb32123/youtube-dl-server",
+			"categories": [
+				"Tool"
+			],
+			"platform": "linux",
+			"logo": "https://s1.ax1x.com/2020/10/25/BmMDdf.png",
+			"image": "ykxvk8yl5l/video-dl:latest",
+			"ports": [
+				"10002:8080/tcp"
+			],
+			"volumes": [{
+				"container": "/youtube-dl",
+				"bind": "/docker_data/jellyfin/media",
+				"readonly": false
+			}]
+		},
+		{
+			"name": "jellyfin",
+			"type": 1,
+			"title": "Jelyfin",
+			"description": "媒体服务器大家都在用.注意如果要使用dlan等其它网络功能请将网络模式改为host 详细请看https://hub.docker.com/r/jellyfin/jellyfin",
+			"categories": [
+				"Media"
+			],
+			"platform": "linux",
+			"logo": "https://s1.ax1x.com/2020/10/25/BmMeG4.png",
+			"image": "jellyfin/jellyfin:latest",
+			"ports": [
+				"10001:8096/tcp"
+			],
+			"volumes": [{
+					"container": "/media",
+					"bind": "/docker_data/jellyfin/media",
+					"readonly": false
+				},
+				{
+					"container": "/config",
+					"bind": "/docker_data/jellyfin/config",
+					"readonly": false
+				},
+				{
+					"container": "/cache",
+					"bind": "/docker_data/jellyfin/cache",
+					"readonly": false
+				}
+
+			]
+		},
+		{
+			"name": "nginx",
+			"type": 1,
+			"title": "Nginx",
+			"description": "High performance web server.注意第一次使用请不要挂载etc目录，挂载本地空etc目录的话会导致nginx启动失败。需要到container内把配置目录拷贝出来再挂载",
+			"categories": [
+				"webserver"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/nginx.png",
+			"image": "nginx:latest",
+			"ports": [
+				"10000:80/tcp"
+			],
+			"volumes": [{
+					"container": "/etc/nginx",
+					"bind": "/docker_data/www/etc/nginx",
+					"readonly": false
+				},
+				{
+					"container": "/usr/share/nginx/html",
+					"bind": "/docker_data/www/webroot",
+					"readonly": false
+				}
+			]
+		},
+		{
+			"name": "php-fpm",
+			"type": 1,
+			"title": "php-fpm",
+			"description": "High performance web server",
+			"categories": [
+				"Language"
+			],
+			"platform": "linux",
+			"logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-php-logo.png",
+			"image": "ykxvk8yl5l/php-fpm-alpine-with-ext:latest",
+			"volumes": [{
+				"container": "/var/www/html",
+				"bind": "/docker_data/www/webroot",
+				"readonly": false
+			}]
+		},
+{
+			"name": "snapdrop",
+			"type": 1,
+			"title": "Snapdrop",
+			"description": "High performance web server",
+			"categories": [
+				"Tool"
+			],
+			"platform": "linux",
+			"logo": "https://i.328888.xyz/2023/03/09/ofhL5.png",
+			"image": "linuxserver/snapdrop",
+			"ports": [
+				"10101:80/tcp"
+			]
+		},
+		{
+			"type": 1,
+			"title": "Registry",
+			"description": "Docker image registry",
+			"categories": [
+				"docker"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/registry.png",
+			"image": "registry:latest",
+			"ports": [
+				"5000/tcp"
+			],
+			"volumes": [{
+				"container": "/var/lib/registry"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Httpd",
+			"description": "Open-source HTTP server",
+			"categories": [
+				"webserver"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/httpd.png",
+			"image": "httpd:latest",
+			"ports": [
+				"80/tcp"
+			],
+			"volumes": [{
+				"container": "/usr/local/apache2/htdocs/"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Caddy",
+			"description": "HTTP/2 web server with automatic HTTPS",
+			"categories": [
+				"webserver"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/caddy.png",
+			"image": "abiosoft/caddy:latest",
+			"ports": [
+				"80/tcp",
+				"443/tcp",
+				"2015/tcp"
+			],
+			"volumes": [{
+				"container": "/root/.caddy"
+			}]
+		},
+		{
+			"type": 1,
+			"name": "mysql",
+			"title": "MySQL",
+			"description": "The most popular open-source database.homepage:https://hub.docker.com/_/mysql",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/mysql.png",
+			"image": "mysql:latest",
+			"env": [{
+				"name": "MYSQL_ROOT_PASSWORD",
+				"label": "Root password",
+				"default": "root"
+			}],
+			"ports": [
+				"3306:3306/tcp"
+			],
+			"volumes": [{
+				"container": "/var/lib/mysql",
+				"bind": "/docker_data/mysql",
+				"readonly": false
+			}]
+		},{
+			"name": "emqx",
+			"type": 1,
+			"title": "Emqx",
+			"description": "5G 时代，万物互联消息引擎。详细请看https://hub.docker.com/r/emqx/emqx",
+			"categories": [
+				"Tool"
+			],
+			"platform": "linux",
+			"logo": "https://docs.emqx.cn/logo.png",
+			"image": "emqx/emqx:latest",
+			"ports": [
+				"1883:1883/tcp",
+				"8081:8081/tcp",
+				"8083:8083/tcp",
+				"8883:8883/tcp",
+				"8084:8084/tcp"
+			]
+		},
+		{
+			"type": 1,
+			"title": "MariaDB",
+			"description": "Performance beyond MySQL",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/mariadb.png",
+			"image": "mariadb:latest",
+			"env": [{
+				"name": "MYSQL_ROOT_PASSWORD",
+				"label": "Root password"
+			}],
+			"ports": [
+				"3306/tcp"
+			],
+			"volumes": [{
+				"container": "/var/lib/mysql"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "PostgreSQL",
+			"description": "The most advanced open-source database",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/postgres.png",
+			"image": "postgres:latest",
+			"env": [{
+					"name": "POSTGRES_USER",
+					"label": "Superuser"
+				},
+				{
+					"name": "POSTGRES_PASSWORD",
+					"label": "Superuser password"
+				}
+			],
+			"ports": [
+				"5432/tcp"
+			],
+			"volumes": [{
+				"container": "/var/lib/postgresql/data"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Mongo",
+			"description": "Open-source document-oriented database",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/mongo.png",
+			"image": "mongo:latest",
+			"ports": [
+				"27017/tcp"
+			],
+			"volumes": [{
+				"container": "/data/db"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "CockroachDB",
+			"description": "An open-source, survivable, strongly consistent, scale-out SQL database",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/cockroachdb.png",
+			"image": "cockroachdb/cockroach:latest",
+			"ports": [
+				"26257/tcp",
+				"8080/tcp"
+			],
+			"volumes": [{
+				"container": "/cockroach/cockroach-data"
+			}],
+			"command": "start --insecure"
+		},
+		{
+			"type": 1,
+			"title": "CrateDB",
+			"description": "An open-source distributed SQL database",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/cratedb.png",
+			"image": "crate:latest",
+			"ports": [
+				"4200/tcp",
+				"4300/tcp"
+			],
+			"volumes": [{
+				"container": "/data"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Elasticsearch",
+			"description": "Open-source search and analytics engine",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/elasticsearch.png",
+			"image": "elasticsearch:latest",
+			"ports": [
+				"9200/tcp",
+				"9300/tcp"
+			],
+			"volumes": [{
+				"container": "/usr/share/elasticsearch/data"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Gitlab CE",
+			"name": "Gitlab",
+			"description": "和Gitea端口相同两者选其一即可。Open-source end-to-end software development platform",
+			"note": "Default username is <b>root</b>. Check the <a href=\"https://docs.gitlab.com/omnibus/docker/README.html#after-starting-a-container\" target=\"_blank\">Gitlab documentation</a> to get started.",
+			"categories": [
+				"development",
+				"project-management"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/gitlab_ce.png",
+			"image": "gitlab/gitlab-ce:latest",
+			"ports": [
+				"20080:80/tcp",
+				"20443:443/tcp",
+				"20022:22/tcp"
+			],
+			"volumes": [{
+					"container": "/etc/gitlab",
+					"bind": "/docker_data/gitlab/config",
+					"readonly": false
+				},
+				{
+					"container": "/var/log/gitlab",
+					"bind": "/docker_data/gitlab/logs",
+					"readonly": false
+				},
+				{
+					"container": "/var/opt/gitlab",
+					"bind": "/docker_data/gitlab/data",
+					"readonly": false
+				}
+			]
+		},
+		{
+			"type": 1,
+			"title": "Minio",
+			"description": "A distributed object storage server built for cloud applications and devops",
+			"categories": [
+				"storage"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/minio.png",
+			"image": "minio/minio:latest",
+			"ports": [
+				"9000/tcp"
+			],
+			"env": [{
+					"name": "MINIO_ACCESS_KEY",
+					"label": "Minio access key"
+				},
+				{
+					"name": "MINIO_SECRET_KEY",
+					"label": "Minio secret key"
+				}
+			],
+			"volumes": [{
+					"container": "/data"
+				},
+				{
+					"container": "/root/.minio"
+				}
+			],
+			"command": "server /data"
+		},
+		{
+			"type": 1,
+			"title": "Scality S3",
+			"description": "Standalone AWS S3 protocol server",
+			"categories": [
+				"storage"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/scality-s3.png",
+			"image": "scality/s3server",
+			"ports": [
+				"8000/tcp"
+			],
+			"env": [{
+					"name": "SCALITY_ACCESS_KEY",
+					"label": "Scality S3 access key"
+				},
+				{
+					"name": "SCALITY_SECRET_KEY",
+					"label": "Scality S3 secret key"
+				}
+			],
+			"volumes": [{
+					"container": "/usr/src/app/localData"
+				},
+				{
+					"container": "/usr/src/app/localMetadata"
+				}
+			]
+		},
+		{
+			"type": 1,
+			"title": "SQL Server",
+			"description": "Microsoft SQL Server on Linux",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"note": "Password needs to include at least 8 characters including uppercase, lowercase letters, base-10 digits and/or non-alphanumeric symbols.",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/microsoft.png",
+			"image": "microsoft/mssql-server-linux:2017-GA",
+			"ports": [
+				"1433/tcp"
+			],
+			"env": [{
+					"name": "ACCEPT_EULA",
+					"set": "Y"
+				},
+				{
+					"name": "SA_PASSWORD",
+					"label": "SA password"
+				}
+			]
+		},
+		{
+			"type": 1,
+			"title": "SQL Server",
+			"description": "Microsoft SQL Server Developer for Windows containers",
+			"categories": [
+				"database"
+			],
+			"platform": "windows",
+			"note": "Password needs to include at least 8 characters including uppercase, lowercase letters, base-10 digits and/or non-alphanumeric symbols.",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/microsoft.png",
+			"image": "microsoft/mssql-server-windows-developer:latest",
+			"ports": [
+				"1433/tcp"
+			],
+			"env": [{
+					"name": "ACCEPT_EULA",
+					"set": "Y"
+				},
+				{
+					"name": "sa_password",
+					"label": "SA password"
+				}
+			],
+			"volumes": [{
+				"container": "C:/temp/"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "SQL Server Express",
+			"description": "Microsoft SQL Server Express for Windows containers",
+			"categories": [
+				"database"
+			],
+			"platform": "windows",
+			"note": "Password needs to include at least 8 characters including uppercase, lowercase letters, base-10 digits and/or non-alphanumeric symbols.",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/microsoft.png",
+			"image": "microsoft/mssql-server-windows-express:latest",
+			"ports": [
+				"1433/tcp"
+			],
+			"env": [{
+					"name": "ACCEPT_EULA",
+					"set": "Y"
+				},
+				{
+					"name": "sa_password",
+					"label": "SA password"
+				}
+			],
+			"volumes": [{
+				"container": "C:/temp/"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "IronFunctions API",
+			"description": "Open-source serverless computing platform",
+			"categories": [
+				"serverless"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/ironfunctions.png",
+			"image": "iron/functions:latest",
+			"ports": [
+				"8080/tcp"
+			],
+			"volumes": [{
+				"container": "/app/data"
+			}],
+			"privileged": true
+		},
+		{
+			"type": 1,
+			"title": "IronFunctions UI",
+			"description": "Open-source user interface for IronFunctions",
+			"categories": [
+				"serverless"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/ironfunctions.png",
+			"image": "iron/functions-ui:latest",
+			"ports": [
+				"4000/tcp"
+			],
+			"volumes": [{
+				"container": "/app/data"
+			}],
+			"env": [{
+				"name": "API_URL",
+				"label": "API URL"
+			}],
+			"privileged": true
+		},
+		{
+			"type": 1,
+			"title": "Solr",
+			"description": "Open-source enterprise search platform",
+			"categories": [
+				"search-engine"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/solr.png",
+			"image": "solr:latest",
+			"ports": [
+				"8983/tcp"
+			],
+			"volumes": [{
+				"container": "/opt/solr/mydata"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Redis",
+			"description": "Open-source in-memory data structure store",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/redis.png",
+			"image": "redis:latest",
+			"ports": [
+				"6379/tcp"
+			],
+			"volumes": [{
+				"container": "/data"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "RabbitMQ",
+			"description": "Highly reliable enterprise messaging system",
+			"categories": [
+				"messaging"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/rabbitmq.png",
+			"image": "rabbitmq:latest",
+			"ports": [
+				"5671/tcp",
+				"5672/tcp"
+			],
+			"volumes": [{
+				"container": "/var/lib/rabbitmq"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Ghost",
+			"description": "Free and open-source blogging platform",
+			"categories": [
+				"blog"
+			],
+			"note": "Access the blog management interface under <code>/ghost/</code>.",
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/ghost.png",
+			"image": "ghost:latest",
+			"ports": [
+				"2368/tcp"
+			],
+			"volumes": [{
+				"container": "/var/lib/ghost/content"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Plesk",
+			"description": "WebOps platform and hosting control panel",
+			"categories": [
+				"CMS"
+			],
+			"platform": "linux",
+			"note": "Default credentials: admin / changeme",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/plesk.png",
+			"image": "plesk/plesk:latest",
+			"ports": [
+				"21/tcp",
+				"80/tcp",
+				"443/tcp",
+				"8880/tcp",
+				"8443/tcp",
+				"8447/tcp"
+			]
+		},
+		{
+			"type": 1,
+			"title": "Joomla",
+			"description": "Another free and open-source CMS",
+			"categories": [
+				"CMS"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/joomla.png",
+			"image": "joomla:latest",
+			"env": [{
+					"name": "JOOMLA_DB_HOST",
+					"label": "MySQL database host",
+					"type": "container"
+				},
+				{
+					"name": "JOOMLA_DB_PASSWORD",
+					"label": "Database password"
+				}
+			],
+			"ports": [
+				"80/tcp"
+			],
+			"volumes": [{
+				"container": "/var/www/html"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Drupal",
+			"description": "Open-source content management framework",
+			"categories": [
+				"CMS"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/drupal.png",
+			"image": "drupal:latest",
+			"ports": [
+				"80/tcp"
+			],
+			"volumes": [{
+				"container": "/var/www/html"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Plone",
+			"description": "A free and open-source CMS built on top of Zope",
+			"categories": [
+				"CMS"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/plone.png",
+			"image": "plone:latest",
+			"ports": [
+				"8080/tcp"
+			],
+			"volumes": [{
+				"container": "/data"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Magento 2",
+			"description": "Open-source e-commerce platform",
+			"categories": [
+				"CMS"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/magento.png",
+			"image": "alankent/gsd:latest",
+			"ports": [
+				"80/tcp",
+				"3000/tcp",
+				"3001/tcp"
+			],
+			"volumes": [{
+				"container": "/var/www/html/"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Sematext Docker Agent",
+			"description": "Collect logs, metrics and docker events",
+			"categories": [
+				"Log Management",
+				"Monitoring"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/sematext_agent.png",
+			"image": "sematext/sematext-agent-docker:latest",
+			"name": "sematext-agent",
+			"privileged": true,
+			"env": [{
+					"name": "LOGSENE_TOKEN",
+					"label": "Logs token"
+				},
+				{
+					"name": "SPM_TOKEN",
+					"label": "SPM monitoring token"
+				}
+			],
+			"volumes": [{
+				"container": "/var/run/docker.sock",
+				"bind": "/var/run/docker.sock"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Datadog agent",
+			"description": "Collect events and metrics",
+			"categories": [
+				"Monitoring"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/datadog_agent.png",
+			"image": "datadog/agent:latest",
+			"env": [{
+				"name": "DD_API_KEY",
+				"label": "Datadog API key"
+			}],
+			"volumes": [{
+					"container": "/var/run/docker.sock",
+					"bind": "/var/run/docker.sock",
+					"readonly": true
+				},
+				{
+					"container": "/host/sys/fs/cgroup",
+					"bind": "/sys/fs/cgroup",
+					"readonly": true
+				},
+				{
+					"container": "/host/proc",
+					"bind": "/proc",
+					"readonly": true
+				}
+			]
+		},
+		{
+			"type": 1,
+			"title": "Mautic",
+			"description": "Open-source marketing automation platform",
+			"categories": [
+				"marketing"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/mautic.png",
+			"image": "mautic/mautic:latest",
+			"env": [{
+					"name": "MAUTIC_DB_HOST",
+					"label": "MySQL database host",
+					"type": "container"
+				},
+				{
+					"name": "MAUTIC_DB_PASSWORD",
+					"label": "Database password"
+				}
+			],
+			"ports": [
+				"80/tcp"
+			],
+			"volumes": [{
+				"container": "/var/www/html"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Wowza",
+			"description": "Streaming media server",
+			"categories": [
+				"streaming"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/wowza.png",
+			"image": "sameersbn/wowza:4.1.2-8",
+			"env": [{
+					"name": "WOWZA_ACCEPT_LICENSE",
+					"label": "Agree to Wowza EULA",
+					"set": "yes"
+				},
+				{
+					"name": "WOWZA_KEY",
+					"label": "License key"
+				}
+			],
+			"ports": [
+				"1935/tcp",
+				"8086/tcp",
+				"8087/tcp",
+				"8088/tcp"
+			],
+			"volumes": [{
+				"container": "/var/lib/wowza"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Jenkins",
+			"description": "Open-source continuous integration tool",
+			"categories": [
+				"continuous-integration"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/jenkins.png",
+			"image": "jenkins/jenkins:lts",
+			"ports": [
+				"8080/tcp",
+				"50000/tcp"
+			],
+			"env": [{
+				"name": "JENKINS_OPTS",
+				"label": "Jenkins options"
+			}],
+			"volumes": [{
+				"container": "/var/jenkins_home"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Redmine",
+			"description": "Open-source project management tool",
+			"categories": [
+				"project-management"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/redmine.png",
+			"image": "redmine:latest",
+			"ports": [
+				"3000/tcp"
+			],
+			"volumes": [{
+				"container": "/usr/src/redmine/files"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "Odoo",
+			"description": "Open-source business apps",
+			"categories": [
+				"project-management"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/odoo.png",
+			"image": "odoo:latest",
+			"env": [{
+					"name": "HOST",
+					"label": "PostgreSQL database host",
+					"type": "container"
+				},
+				{
+					"name": "USER",
+					"label": "Database user"
+				},
+				{
+					"name": "PASSWORD",
+					"label": "Database password"
+				}
+			],
+			"ports": [
+				"8069/tcp"
+			],
+			"volumes": [{
+					"container": "/var/lib/odoo"
+				},
+				{
+					"container": "/mnt/extra-addons"
+				}
+			]
+		},
+		{
+			"type": 1,
+			"title": "Urbackup",
+			"description": "Open-source network backup",
+			"categories": [
+				"backup"
+			],
+			"platform": "linux",
+			"note": "This application web interface is exposed on the port 55414 inside the container.",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/urbackup.png",
+			"image": "cfstras/urbackup",
+			"ports": [
+				"55413/tcp",
+				"55414/tcp",
+				"55415/tcp",
+				"35622/tcp"
+			],
+			"volumes": [{
+				"container": "/var/urbackup"
+			}]
+		},
+		{
+			"type": 1,
+			"title": "CommandBox",
+			"description": "ColdFusion (CFML) CLI",
+			"categories": [
+				"development"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/ortussolutions-commandbox.png",
+			"image": "ortussolutions/commandbox:latest",
+			"env": [{
+				"name": "CFENGINE",
+				"set": "lucee@4.5"
+			}],
+			"ports": [
+				"8080/tcp",
+				"8443/tcp"
+			]
+		},
+		{
+			"type": 1,
+			"title": "ContentBox",
+			"description": "Open-source modular CMS",
+			"categories": [
+				"CMS"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/ortussolutions-contentbox.png",
+			"image": "ortussolutions/contentbox:latest",
+			"env": [{
+					"name": "express",
+					"set": "true"
+				},
+				{
+					"name": "install",
+					"set": "true"
+				},
+				{
+					"name": "CFENGINE",
+					"set": "lucee@4.5"
+				}
+			],
+			"ports": [
+				"8080/tcp",
+				"8443/tcp"
+			],
+			"volumes": [{
+					"container": "/data/contentbox/db"
+				},
+				{
+					"container": "/app/includes/shared/media"
+				}
+			]
+		},
+		{
+			"type": 2,
+			"title": "Portainer Agent",
+			"description": "Manage all the resources in your Swarm cluster",
+			"note": "The agent will be deployed globally inside your cluster and available on port 9001.",
+			"categories": [
+				"portainer"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/portainer.png",
+			"repository": {
+				"url": "https://github.com/portainer/templates",
+				"stackfile": "stacks/portainer-agent/docker-stack.yml"
+			}
+		},
+		{
+			"type": 2,
+			"title": "OpenFaaS",
+			"name": "func",
+			"description": "Serverless functions made simple",
+			"note": "Deploys the API gateway and sample functions. You can access the UI on port 8080. <b>Warning</b>: the name of the stack must be 'func'.",
+			"categories": [
+				"serverless"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/openfaas.png",
+			"repository": {
+				"url": "https://github.com/openfaas/faas",
+				"stackfile": "docker-compose.yml"
+			}
+		},
+		{
+			"type": 2,
+			"title": "IronFunctions",
+			"description": "Open-source serverless computing platform",
+			"note": "Deploys the IronFunctions API and UI.",
+			"categories": [
+				"serverless"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/ironfunctions.png",
+			"repository": {
+				"url": "https://github.com/portainer/templates",
+				"stackfile": "stacks/ironfunctions/docker-stack.yml"
+			}
+		},
+		{
+			"type": 2,
+			"title": "CockroachDB",
+			"description": "CockroachDB cluster",
+			"note": "Deploys an insecure CockroachDB cluster, please refer to <a href=\"https://www.cockroachlabs.com/docs/stable/orchestrate-cockroachdb-with-docker-swarm.html\" target=\"_blank\">CockroachDB documentation</a> for production deployments.",
+			"categories": [
+				"database"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/cockroachdb.png",
+			"repository": {
+				"url": "https://github.com/portainer/templates",
+				"stackfile": "stacks/cockroachdb/docker-stack.yml"
+			}
+		},
+		{
+			"type": 2,
+			"title": "Wordpress",
+			"description": "Wordpress setup with a MySQL database",
+			"note": "Deploys a Wordpress instance connected to a MySQL database.",
+			"categories": [
+				"CMS"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/wordpress.png",
+			"repository": {
+				"url": "https://github.com/portainer/templates",
+				"stackfile": "stacks/wordpress/docker-stack.yml"
+			},
+			"env": [{
+				"name": "MYSQL_DATABASE_PASSWORD",
+				"label": "Database root password",
+				"description": "Password used by the MySQL root user."
+			}]
+		},
+		{
+			"type": 3,
+			"title": "Wordpress",
+			"description": "Wordpress setup with a MySQL database",
+			"note": "Deploys a Wordpress instance connected to a MySQL database.",
+			"categories": [
+				"CMS"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/wordpress.png",
+			"repository": {
+				"url": "https://github.com/portainer/templates",
+				"stackfile": "stacks/wordpress/docker-compose.yml"
+			},
+			"env": [{
+				"name": "MYSQL_DATABASE_PASSWORD",
+				"label": "Database root password",
+				"description": "Password used by the MySQL root user."
+			}]
+		},
+		{
+			"type": 2,
+			"title": "Microsoft OMS Agent",
+			"description": "Microsoft Operations Management Suite Linux agent.",
+			"categories": [
+				"OPS"
+			],
+			"platform": "linux",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/microsoft.png",
+			"repository": {
+				"url": "https://github.com/portainer/templates",
+				"stackfile": "stacks/microsoft-oms/docker-stack.yml"
+			},
+			"env": [{
+					"name": "AZURE_WORKSPACE_ID",
+					"label": "Workspace ID",
+					"description": "Azure Workspace ID"
+				},
+				{
+					"name": "AZURE_PRIMARY_KEY",
+					"label": "Primary key",
+					"description": "Azure primary key"
+				}
+			]
+		},
+		{
+			"title": "Sematext Docker Agent",
+			"type": 2,
+			"categories": [
+				"Log Management",
+				"Monitoring"
+			],
+			"description": "Collect logs, metrics and docker events",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/sematext_agent.png",
+			"platform": "linux",
+			"repository": {
+				"url": "https://github.com/portainer/templates",
+				"stackfile": "stacks/sematext-agent-docker/docker-stack.yml"
+			},
+			"env": [{
+					"name": "LOGSENE_TOKEN",
+					"label": "Logs token"
+				},
+				{
+					"name": "SPM_TOKEN",
+					"label": "SPM monitoring token"
+				}
+			]
+		},
+		{
+			"title": "Datadog agent",
+			"type": 2,
+			"categories": [
+				"Monitoring"
+			],
+			"description": "Collect events and metrics",
+			"logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/datadog_agent.png",
+			"platform": "linux",
+			"repository": {
+				"url": "https://github.com/portainer/templates",
+				"stackfile": "stacks/datadog-agent/docker-stack.yml"
+			},
+			"env": [{
+				"name": "API_KEY",
+				"label": "Datadog API key"
+			}]
+		},
+		{
+			"type": 4,
+			"title": "Wordpress",
+			"description": "Wordpress setup with a MySQL database",
+			"note": "Deploys a Wordpress instance connected to a MySQL database.",
+			"stackfile": "https://raw.githubusercontent.com/portainer/templates/master/stacks/wordpress/edge/docker-stack.yml"
+		},
+		{
+			"type": 4,
+			"title": "CockroachDB",
+			"description": "CockroachDB cluster",
+			"note": "Deploys an insecure CockroachDB cluster, please refer to <a href=\"https://www.cockroachlabs.com/docs/stable/orchestrate-cockroachdb-with-docker-swarm.html\" target=\"_blank\">CockroachDB documentation</a> for production deployments.",
+			"stackfile": "https://raw.githubusercontent.com/portainer/templates/master/stacks/cockroachdb/edge/docker-stack.yml"
+		}
+	]
+}

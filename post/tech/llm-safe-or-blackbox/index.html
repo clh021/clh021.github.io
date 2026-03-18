@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="大模型底层 一、大模型基础认知 1.1 开源模型本质 1.1.1 核心构成 模型权重文件（.bin/.safetensors）：浮点数参数集合 模型结构代码：网络计算逻辑 分词器配置：词汇表+分词规则 1.1.2 本质定位 不是可执行程序，是数据+数学函数 开源模型是白盒子，结构参数可查看修改 1.1.3 不同模态模型共性 底层均为神经网络+矩阵运算 区别：输入输出模态、网络结构、训练数据 1.2 黑盒子误区澄清 结构透明：非黑盒 机理难解释：参数作用无法完全拆解 可操作：查看、修改结构与参数（非重训练） 二、核心组件详解（必含三层） 2.1 分词器 Tokenizer 2.1.1 作用 文字→Token ID 2.1.2 实现方式 词汇表 Vocab：词与ID的固定对照表 分词算法：BPE/WordPiece/Unigram 2.1.3 ID规则 算法统计生成，非人工设定 高频词汇ID更小 2.1.4 特性 训练前固定，后续不可变更 所有文本大模型必备组件 2.2 Embedding层（查表层） 2.2.1 作用 Token ID→向量 2.2.2 组成 词嵌入：词汇语义向量 位置嵌入：标记文字顺序 2.2.3 特性 模型训练得到的参数矩阵 仅做查表转换，无语义理解 2.3 Transformer网络层 2.3.1 核心功能 上下文关联计算 2.3.2 核心机制 多头注意力机制：权重关联上下文 前馈网络：非线性特征加工 2.3.3 特性 多层堆叠（32/80层） 模型的语义理解核心 2.4 输出层（补充组件） 2.4.1 线性层 向量映射至词汇表维度 2.4.2 Softmax 转换为下一个Token概率分布 三、自回归模型（GPT/千问）工作流程 3.1 输入处理阶段 用户输入文本 Tokenizer分词→Token ID序列 Embedding层→词向量+位置向量 3.2 计算推理阶段 向量输入多层Transformer 因果掩码：仅能查看前文 网络加工上下文语义 3.3 生成输出阶段 最后位置向量输出 线性+Softmax→Token概率 采样选取下一个Token 3.4 循环生成阶段 新Token拼入输入序列 重复上述流程至结束符 3.5 自回归定义 自身生成内容作为后续输入 四、Embedding模型与对话模型区别 4.1 Embedding模型 输出：固定长度语义向量 用途：语义搜索、相似度匹配 4.2 对话大模型 输出：下一个Token概率 用途：聊天、创作、问答 4.3 共性 均包含Tokenizer+Embedding+Transformer 4.4 差异 训练目标不同 输出层设计不同 五、模型安全与风险澄清 5.1 模型本身安全性 5.1.1 绝对安全 纯参数数据，无执行能力 无法像木马一样破坏系统 无法读写文件、联网、执行指令 5.1.2 无恶意能力 不会主动攻击设备 不会自我复制传播 5.2 真实风险来源 5.2.1 恶意加载代码 脚本夹带系统指令 框架后门窃取数据 5.2.2 模型内容风险 生成诈骗、攻击话术 输出有害内容 5.2.3 风险本质 风险在运行代码，不在模型参数 六、关键总结 6.1 核心结论 大模型=分词器+Embedding+Transformer+输出层 自回归=逐Token预测循环生成 模型是数据，程序是运行载体 6.2 常见误区纠正 不是黑盒子，是复杂数学机器 可查看修改结构，不可自主运行 无害≠运行代码无害 ">
+<title>llm-safe-or-blackbox</title>
+
+<link rel='canonical' href='/post/tech/llm-safe-or-blackbox/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="llm-safe-or-blackbox">
+<meta property='og:description' content="大模型底层 一、大模型基础认知 1.1 开源模型本质 1.1.1 核心构成 模型权重文件（.bin/.safetensors）：浮点数参数集合 模型结构代码：网络计算逻辑 分词器配置：词汇表+分词规则 1.1.2 本质定位 不是可执行程序，是数据+数学函数 开源模型是白盒子，结构参数可查看修改 1.1.3 不同模态模型共性 底层均为神经网络+矩阵运算 区别：输入输出模态、网络结构、训练数据 1.2 黑盒子误区澄清 结构透明：非黑盒 机理难解释：参数作用无法完全拆解 可操作：查看、修改结构与参数（非重训练） 二、核心组件详解（必含三层） 2.1 分词器 Tokenizer 2.1.1 作用 文字→Token ID 2.1.2 实现方式 词汇表 Vocab：词与ID的固定对照表 分词算法：BPE/WordPiece/Unigram 2.1.3 ID规则 算法统计生成，非人工设定 高频词汇ID更小 2.1.4 特性 训练前固定，后续不可变更 所有文本大模型必备组件 2.2 Embedding层（查表层） 2.2.1 作用 Token ID→向量 2.2.2 组成 词嵌入：词汇语义向量 位置嵌入：标记文字顺序 2.2.3 特性 模型训练得到的参数矩阵 仅做查表转换，无语义理解 2.3 Transformer网络层 2.3.1 核心功能 上下文关联计算 2.3.2 核心机制 多头注意力机制：权重关联上下文 前馈网络：非线性特征加工 2.3.3 特性 多层堆叠（32/80层） 模型的语义理解核心 2.4 输出层（补充组件） 2.4.1 线性层 向量映射至词汇表维度 2.4.2 Softmax 转换为下一个Token概率分布 三、自回归模型（GPT/千问）工作流程 3.1 输入处理阶段 用户输入文本 Tokenizer分词→Token ID序列 Embedding层→词向量+位置向量 3.2 计算推理阶段 向量输入多层Transformer 因果掩码：仅能查看前文 网络加工上下文语义 3.3 生成输出阶段 最后位置向量输出 线性+Softmax→Token概率 采样选取下一个Token 3.4 循环生成阶段 新Token拼入输入序列 重复上述流程至结束符 3.5 自回归定义 自身生成内容作为后续输入 四、Embedding模型与对话模型区别 4.1 Embedding模型 输出：固定长度语义向量 用途：语义搜索、相似度匹配 4.2 对话大模型 输出：下一个Token概率 用途：聊天、创作、问答 4.3 共性 均包含Tokenizer+Embedding+Transformer 4.4 差异 训练目标不同 输出层设计不同 五、模型安全与风险澄清 5.1 模型本身安全性 5.1.1 绝对安全 纯参数数据，无执行能力 无法像木马一样破坏系统 无法读写文件、联网、执行指令 5.1.2 无恶意能力 不会主动攻击设备 不会自我复制传播 5.2 真实风险来源 5.2.1 恶意加载代码 脚本夹带系统指令 框架后门窃取数据 5.2.2 模型内容风险 生成诈骗、攻击话术 输出有害内容 5.2.3 风险本质 风险在运行代码，不在模型参数 六、关键总结 6.1 核心结论 大模型=分词器+Embedding+Transformer+输出层 自回归=逐Token预测循环生成 模型是数据，程序是运行载体 6.2 常见误区纠正 不是黑盒子，是复杂数学机器 可查看修改结构，不可自主运行 无害≠运行代码无害 ">
+<meta property='og:url' content='/post/tech/llm-safe-or-blackbox/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='llm' /><meta property='article:tag' content='tokenizer' /><meta property='article:tag' content='embedding' /><meta property='article:tag' content='transformer' /><meta property='article:published_time' content='2025-03-17T18:56:47&#43;08:00'/><meta property='article:modified_time' content='2025-03-17T18:56:47&#43;08:00'/>
+<meta name="twitter:title" content="llm-safe-or-blackbox">
+<meta name="twitter:description" content="大模型底层 一、大模型基础认知 1.1 开源模型本质 1.1.1 核心构成 模型权重文件（.bin/.safetensors）：浮点数参数集合 模型结构代码：网络计算逻辑 分词器配置：词汇表+分词规则 1.1.2 本质定位 不是可执行程序，是数据+数学函数 开源模型是白盒子，结构参数可查看修改 1.1.3 不同模态模型共性 底层均为神经网络+矩阵运算 区别：输入输出模态、网络结构、训练数据 1.2 黑盒子误区澄清 结构透明：非黑盒 机理难解释：参数作用无法完全拆解 可操作：查看、修改结构与参数（非重训练） 二、核心组件详解（必含三层） 2.1 分词器 Tokenizer 2.1.1 作用 文字→Token ID 2.1.2 实现方式 词汇表 Vocab：词与ID的固定对照表 分词算法：BPE/WordPiece/Unigram 2.1.3 ID规则 算法统计生成，非人工设定 高频词汇ID更小 2.1.4 特性 训练前固定，后续不可变更 所有文本大模型必备组件 2.2 Embedding层（查表层） 2.2.1 作用 Token ID→向量 2.2.2 组成 词嵌入：词汇语义向量 位置嵌入：标记文字顺序 2.2.3 特性 模型训练得到的参数矩阵 仅做查表转换，无语义理解 2.3 Transformer网络层 2.3.1 核心功能 上下文关联计算 2.3.2 核心机制 多头注意力机制：权重关联上下文 前馈网络：非线性特征加工 2.3.3 特性 多层堆叠（32/80层） 模型的语义理解核心 2.4 输出层（补充组件） 2.4.1 线性层 向量映射至词汇表维度 2.4.2 Softmax 转换为下一个Token概率分布 三、自回归模型（GPT/千问）工作流程 3.1 输入处理阶段 用户输入文本 Tokenizer分词→Token ID序列 Embedding层→词向量+位置向量 3.2 计算推理阶段 向量输入多层Transformer 因果掩码：仅能查看前文 网络加工上下文语义 3.3 生成输出阶段 最后位置向量输出 线性+Softmax→Token概率 采样选取下一个Token 3.4 循环生成阶段 新Token拼入输入序列 重复上述流程至结束符 3.5 自回归定义 自身生成内容作为后续输入 四、Embedding模型与对话模型区别 4.1 Embedding模型 输出：固定长度语义向量 用途：语义搜索、相似度匹配 4.2 对话大模型 输出：下一个Token概率 用途：聊天、创作、问答 4.3 共性 均包含Tokenizer+Embedding+Transformer 4.4 差异 训练目标不同 输出层设计不同 五、模型安全与风险澄清 5.1 模型本身安全性 5.1.1 绝对安全 纯参数数据，无执行能力 无法像木马一样破坏系统 无法读写文件、联网、执行指令 5.1.2 无恶意能力 不会主动攻击设备 不会自我复制传播 5.2 真实风险来源 5.2.1 恶意加载代码 脚本夹带系统指令 框架后门窃取数据 5.2.2 模型内容风险 生成诈骗、攻击话术 输出有害内容 5.2.3 风险本质 风险在运行代码，不在模型参数 六、关键总结 6.1 核心结论 大模型=分词器+Embedding+Transformer+输出层 自回归=逐Token预测循环生成 模型是数据，程序是运行载体 6.2 常见误区纠正 不是黑盒子，是复杂数学机器 可查看修改结构，不可自主运行 无害≠运行代码无害 ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/llm-safe-or-blackbox/">llm-safe-or-blackbox</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-03-17T18:56:47&#43;08:00'>2025-03-17 18:56:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="大模型底层">大模型底层
+</h1><h2 id="一大模型基础认知">一、大模型基础认知
+</h2><h3 id="11-开源模型本质">1.1 开源模型本质
+</h3><h4 id="111-核心构成">1.1.1 核心构成
+</h4><ul>
+<li>模型权重文件（.bin/.safetensors）：浮点数参数集合</li>
+<li>模型结构代码：网络计算逻辑</li>
+<li>分词器配置：词汇表+分词规则</li>
+</ul>
+<h4 id="112-本质定位">1.1.2 本质定位
+</h4><ul>
+<li>不是可执行程序，是<strong>数据+数学函数</strong></li>
+<li>开源模型是白盒子，结构参数可查看修改</li>
+</ul>
+<h4 id="113-不同模态模型共性">1.1.3 不同模态模型共性
+</h4><ul>
+<li>底层均为神经网络+矩阵运算</li>
+<li>区别：输入输出模态、网络结构、训练数据</li>
+</ul>
+<h3 id="12-黑盒子误区澄清">1.2 黑盒子误区澄清
+</h3><ul>
+<li>结构透明：非黑盒</li>
+<li>机理难解释：参数作用无法完全拆解</li>
+<li>可操作：查看、修改结构与参数（非重训练）</li>
+</ul>
+<h2 id="二核心组件详解必含三层">二、核心组件详解（必含三层）
+</h2><h3 id="21-分词器-tokenizer">2.1 分词器 Tokenizer
+</h3><h4 id="211-作用">2.1.1 作用
+</h4><ul>
+<li>文字→Token ID</li>
+</ul>
+<h4 id="212-实现方式">2.1.2 实现方式
+</h4><ul>
+<li>词汇表 Vocab：词与ID的固定对照表</li>
+<li>分词算法：BPE/WordPiece/Unigram</li>
+</ul>
+<h4 id="213-id规则">2.1.3 ID规则
+</h4><ul>
+<li>算法统计生成，非人工设定</li>
+<li>高频词汇ID更小</li>
+</ul>
+<h4 id="214-特性">2.1.4 特性
+</h4><ul>
+<li>训练前固定，后续不可变更</li>
+<li>所有文本大模型必备组件</li>
+</ul>
+<h3 id="22-embedding层查表层">2.2 Embedding层（查表层）
+</h3><h4 id="221-作用">2.2.1 作用
+</h4><ul>
+<li>Token ID→向量</li>
+</ul>
+<h4 id="222-组成">2.2.2 组成
+</h4><ul>
+<li>词嵌入：词汇语义向量</li>
+<li>位置嵌入：标记文字顺序</li>
+</ul>
+<h4 id="223-特性">2.2.3 特性
+</h4><ul>
+<li>模型训练得到的参数矩阵</li>
+<li>仅做查表转换，无语义理解</li>
+</ul>
+<h3 id="23-transformer网络层">2.3 Transformer网络层
+</h3><h4 id="231-核心功能">2.3.1 核心功能
+</h4><ul>
+<li>上下文关联计算</li>
+</ul>
+<h4 id="232-核心机制">2.3.2 核心机制
+</h4><ul>
+<li>多头注意力机制：权重关联上下文</li>
+<li>前馈网络：非线性特征加工</li>
+</ul>
+<h4 id="233-特性">2.3.3 特性
+</h4><ul>
+<li>多层堆叠（32/80层）</li>
+<li>模型的语义理解核心</li>
+</ul>
+<h3 id="24-输出层补充组件">2.4 输出层（补充组件）
+</h3><h4 id="241-线性层">2.4.1 线性层
+</h4><ul>
+<li>向量映射至词汇表维度</li>
+</ul>
+<h4 id="242-softmax">2.4.2 Softmax
+</h4><ul>
+<li>转换为下一个Token概率分布</li>
+</ul>
+<h2 id="三自回归模型gpt千问工作流程">三、自回归模型（GPT/千问）工作流程
+</h2><h3 id="31-输入处理阶段">3.1 输入处理阶段
+</h3><ol>
+<li>用户输入文本</li>
+<li>Tokenizer分词→Token ID序列</li>
+<li>Embedding层→词向量+位置向量</li>
+</ol>
+<h3 id="32-计算推理阶段">3.2 计算推理阶段
+</h3><ol>
+<li>向量输入多层Transformer</li>
+<li>因果掩码：仅能查看前文</li>
+<li>网络加工上下文语义</li>
+</ol>
+<h3 id="33-生成输出阶段">3.3 生成输出阶段
+</h3><ol>
+<li>最后位置向量输出</li>
+<li>线性+Softmax→Token概率</li>
+<li>采样选取下一个Token</li>
+</ol>
+<h3 id="34-循环生成阶段">3.4 循环生成阶段
+</h3><ul>
+<li>新Token拼入输入序列</li>
+<li>重复上述流程至结束符</li>
+</ul>
+<h3 id="35-自回归定义">3.5 自回归定义
+</h3><ul>
+<li>自身生成内容作为后续输入</li>
+</ul>
+<h2 id="四embedding模型与对话模型区别">四、Embedding模型与对话模型区别
+</h2><h3 id="41-embedding模型">4.1 Embedding模型
+</h3><ul>
+<li>输出：固定长度语义向量</li>
+<li>用途：语义搜索、相似度匹配</li>
+</ul>
+<h3 id="42-对话大模型">4.2 对话大模型
+</h3><ul>
+<li>输出：下一个Token概率</li>
+<li>用途：聊天、创作、问答</li>
+</ul>
+<h3 id="43-共性">4.3 共性
+</h3><ul>
+<li>均包含Tokenizer+Embedding+Transformer</li>
+</ul>
+<h3 id="44-差异">4.4 差异
+</h3><ul>
+<li>训练目标不同</li>
+<li>输出层设计不同</li>
+</ul>
+<h2 id="五模型安全与风险澄清">五、模型安全与风险澄清
+</h2><h3 id="51-模型本身安全性">5.1 模型本身安全性
+</h3><h4 id="511-绝对安全">5.1.1 绝对安全
+</h4><ul>
+<li>纯参数数据，无执行能力</li>
+<li>无法像木马一样破坏系统</li>
+<li>无法读写文件、联网、执行指令</li>
+</ul>
+<h4 id="512-无恶意能力">5.1.2 无恶意能力
+</h4><ul>
+<li>不会主动攻击设备</li>
+<li>不会自我复制传播</li>
+</ul>
+<h3 id="52-真实风险来源">5.2 真实风险来源
+</h3><h4 id="521-恶意加载代码">5.2.1 恶意加载代码
+</h4><ul>
+<li>脚本夹带系统指令</li>
+<li>框架后门窃取数据</li>
+</ul>
+<h4 id="522-模型内容风险">5.2.2 模型内容风险
+</h4><ul>
+<li>生成诈骗、攻击话术</li>
+<li>输出有害内容</li>
+</ul>
+<h4 id="523-风险本质">5.2.3 风险本质
+</h4><ul>
+<li>风险在运行代码，不在模型参数</li>
+</ul>
+<h2 id="六关键总结">六、关键总结
+</h2><h3 id="61-核心结论">6.1 核心结论
+</h3><ul>
+<li>大模型=分词器+Embedding+Transformer+输出层</li>
+<li>自回归=逐Token预测循环生成</li>
+<li>模型是数据，程序是运行载体</li>
+</ul>
+<h3 id="62-常见误区纠正">6.2 常见误区纠正
+</h3><ul>
+<li>不是黑盒子，是复杂数学机器</li>
+<li>可查看修改结构，不可自主运行</li>
+<li>无害≠运行代码无害</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/llm/">Llm</a>
+        
+            <a href="/tags/tokenizer/">Tokenizer</a>
+        
+            <a href="/tags/embedding/">Embedding</a>
+        
+            <a href="/tags/transformer/">Transformer</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/embedding-and-rag/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Embedding and RAG</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/embedding-llm-hardware/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Embedding, llm and hardware</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.2">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

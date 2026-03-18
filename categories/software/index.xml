@@ -1,0 +1,2087 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Software on 良宏</title>
+        <link>/categories/software/</link>
+        <description>Recent content in Software on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 11 Oct 2023 13:56:15 +0800</lastBuildDate><atom:link href="/categories/software/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>autox.js</title>
+        <link>/post/tech/autox.js/</link>
+        <pubDate>Wed, 11 Oct 2023 13:56:15 +0800</pubDate>
+        
+        <guid>/post/tech/autox.js/</guid>
+        <description>&lt;p&gt;近期负责部分客户端程序的测试任务。包括桌面客户端和手机客户端。遂想到如何通过自动化测试，先整体扫一遍。&lt;/p&gt;
+&lt;p&gt;经过一些方案的摸索，最终采用 autox.js 方案。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Appium</title>
+        <link>/post/tech/appium/</link>
+        <pubDate>Tue, 10 Oct 2023 13:56:15 +0800</pubDate>
+        
+        <guid>/post/tech/appium/</guid>
+        <description>&lt;p&gt;近期负责部分客户端程序的测试任务。包括桌面客户端和手机客户端。遂想到如何通过自动化测试，先整体扫一遍。&lt;/p&gt;
+&lt;h2 id=&#34;自动化测试方案及优缺点&#34;&gt;自动化测试方案及优缺点
+&lt;/h2&gt;&lt;h3 id=&#34;ui自动化测试&#34;&gt;UI自动化测试
+&lt;/h3&gt;&lt;h4 id=&#34;优点&#34;&gt;优点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;可以模拟用户与应用程序的交互，验证应用程序的外观和行为是否正确。&lt;/li&gt;
+&lt;li&gt;可以覆盖整个应用程序的功能，并检查用户界面的正确性。&lt;/li&gt;
+&lt;li&gt;可以在不同的平台和设备上运行，如Web、移动应用程序等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缺点&#34;&gt;缺点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;对于图形界面变化较频繁的应用程序，维护测试脚本可能会变得复杂和脆弱。&lt;/li&gt;
+&lt;li&gt;在不同的设备和分辨率上运行测试需要额外的配置和工作。&lt;/li&gt;
+&lt;li&gt;可能需要较长的执行时间，特别是对于大型应用程序或复杂的测试用例。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;api接口自动化测试&#34;&gt;API/接口自动化测试
+&lt;/h3&gt;&lt;h4 id=&#34;优点-1&#34;&gt;优点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;可以独立于应用程序的界面进行测试，并验证应用程序的功能和数据交换是否正确。&lt;/li&gt;
+&lt;li&gt;执行速度较快，因为不需要加载和操作用户界面。&lt;/li&gt;
+&lt;li&gt;可以集成到持续集成/持续交付（CI/CD）流程中，以便在每次构建或部署时自动运行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缺点-1&#34;&gt;缺点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;需要对应用程序的API或接口进行深入了解，以编写正确的测试脚本。&lt;/li&gt;
+&lt;li&gt;对于某些应用程序，可能需要模拟或设置测试环境以及测试数据。&lt;/li&gt;
+&lt;li&gt;无法验证应用程序的外观和用户界面。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;单元测试&#34;&gt;单元测试
+&lt;/h3&gt;&lt;h4 id=&#34;优点-2&#34;&gt;优点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;可以快速执行，并且测试用例通常比较容易编写。&lt;/li&gt;
+&lt;li&gt;可以在开发过程中频繁运行，以及检测和修复代码中的问题。&lt;/li&gt;
+&lt;li&gt;可以帮助开发人员实现更好的代码组织和可测试性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缺点-2&#34;&gt;缺点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;只能验证单个单元的功能，无法测试整个应用程序的集成。&lt;/li&gt;
+&lt;li&gt;对于依赖于外部资源或复杂交互的代码，编写和维护单元测试可能会更加困难。&lt;/li&gt;
+&lt;li&gt;单元测试无法检测到系统级或用户界面级的问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;性能测试&#34;&gt;性能测试
+&lt;/h3&gt;&lt;h4 id=&#34;优点-3&#34;&gt;优点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;可以评估应用程序在不同负载条件下的性能和稳定性。&lt;/li&gt;
+&lt;li&gt;可以帮助发现和解决性能瓶颈，优化应用程序的性能。&lt;/li&gt;
+&lt;li&gt;可以模拟真实用户的行为模式和使用情况。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;缺点-3&#34;&gt;缺点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;需要特定的工具和技术来模拟并生成负载。&lt;/li&gt;
+&lt;li&gt;对于复杂的应用程序，设置和配置性能测试环境可能需要大量的工作。&lt;/li&gt;
+&lt;li&gt;需要专业知识和经验来解释和分析性能测试结果。&lt;/li&gt;
+&lt;li&gt;每个自动化测试方案都有其适用的场景和限制。根据项目需求和资源限制，可以选择合适的方案或结合多种方案来实现全面的自动化测试覆盖。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;appium自动化方案&#34;&gt;Appium自动化方案
+&lt;/h2&gt;&lt;p&gt;符合我目前任务场景的是 UI 自动化测试
+那么多自动化app的工具为什么选则appium？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开源免费&lt;/li&gt;
+&lt;li&gt;支持多个平台（android、IOS）&lt;/li&gt;
+&lt;li&gt;支持多种类型自动化：支持苹果安卓原生界面的自动化，支持应用内嵌WebView的自动化支持手机浏览器中的web网站自动化支持flutter应用的自动化&lt;/li&gt;
+&lt;li&gt;支持多种编程语言&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Appium是最近比较热门的框架，社区也很活跃。&lt;/p&gt;
+&lt;p&gt;这个框架应该是是功能最强大的，它的优点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开源；&lt;/li&gt;
+&lt;li&gt;支持Native App、Hybird App、Web App；&lt;/li&gt;
+&lt;li&gt;支持Android、iOS、Firefox OS；Server也是跨平台的，你可以使用Mac OS X、Windows或者Linux；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它的哲理是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用Appium自动化测试不需要重新编译App；&lt;/li&gt;
+&lt;li&gt;支持很多语言来编写测试脚本，Java、Javascript、PHP、Python、C#、Ruby等主流语言；&lt;/li&gt;
+&lt;li&gt;不需要为了自动化测试来重造轮子，因为扩展了WebDriver。（WebDriver是测试WebApps的一种简单、快速的自动化测试框架，所以有Web自动化测试经验的测试人员可以直接上手）；&lt;/li&gt;
+&lt;li&gt;移动端自动化测试应该是开源的；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;appium-的使用&#34;&gt;Appium 的使用
+&lt;/h2&gt;&lt;h3 id=&#34;环境准备&#34;&gt;环境准备
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://velog.io/@reverse/appium-doctor-android-en&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考博客&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://sites.google.com/chromium.org/driver/home&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;安装ChromeDriver&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://googlechromelabs.github.io/chrome-for-testing/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;当ChromeDriver太新时从这里看说明&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/117.0.5938.149/linux64/chromedriver-linux64.zip&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;最新ChromeDriver下载地址&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;安装&#34;&gt;安装
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/appium/appium-desktop/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;appium-desktop&lt;/a&gt; 建议appImage&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/appium/appium-inspector/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;appium-inspector&lt;/a&gt; 建议appImage&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/brf-test/p/16406092.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;极简使用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.android.com/tools?hl=zh-cn&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;android-sdk&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SDK 直接通过 Android Studio 安装比较省事，默认安装在 ~/Android/SDK&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install android-sdk
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install android-sdk-platform-tools-common
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# [gst-launch-1&amp;amp;gst-inspect-1](https://gstreamer.freedesktop.org/documentation/installing/on-linux.html?gi-language=c)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# opencv&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# https://docs.opencv.org/4.x/d2/de6/tutorial_py_setup_in_ubuntu.html&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install libopencv-dev python3-opencv
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt-get install libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev &lt;span style=&#34;color:#75715e&#34;&gt;# oppencv 的可选依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;验证 opencv 安装好了没&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ python3
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Python 3.11.4 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;main, Jun  &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt; 2023, 07:59:55&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;GCC 12.3.0&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; on linux
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Type &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;help&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;copyright&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;credits&amp;#34;&lt;/span&gt; or &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;license&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; more information.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; import cv2 as cv
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; print&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;cv.__version__&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;4.6.0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; exit&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;unset OPENCV4NODEJS_DISABLE_AUTOBUILD
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install libprotobuf-dev
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install --global opencv-build
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd .npm-global/opencv-build/ &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; node install.js
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir ~/opencv/build -p
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir ~/opencv/sources -p
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ~/opencv/sources
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/opencv/opencv.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/opencv/opencv_contrib.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ~/opencv/build
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cmake -DCMAKE_BUILD_TYPE&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;Release -DCMAKE_INSTALL_PREFIX&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;$HOME/opencv ~/opencv/sources/opencv/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make -j7
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make install &lt;span style=&#34;color:#75715e&#34;&gt;# 安装到了 $HOME/opencv 目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cmake -DCMAKE_BUILD_TYPE&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;Release -DCMAKE_INSTALL_PREFIX&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;$HOME/opencv opencv_contrib
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 安装失败&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;export OPENCV_LIB_DIR&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/usr/local/lib &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; export OPENCV4NODEJS_DISABLE_AUTOBUILD&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; npm install -g opencv4nodejs
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Android Studio 安装选项
+&lt;img src=&#34;/sdk-platform.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;sdk-platform&#34;
+	
+	
+&gt;
+&lt;img src=&#34;/sdk-tool.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;sdk-tool&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;环境变量设置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# java bin PATH&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Java/jdk-11.0.2/bin&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; ; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    export JAVA_HOME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Java/jdk-11.0.2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    PATH&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Java/jdk-11.0.2/bin:&lt;/span&gt;$PATH&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# ANDROID_HOME&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Android/Sdk/&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; ; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    export ANDROID_SDK_ROOT&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Android/Sdk/&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    export ANDROID_HOME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/Android/Sdk/&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    PATH&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$PATH&lt;span style=&#34;color:#e6db74&#34;&gt;:&lt;/span&gt;$ANDROID_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;/bundle-tool&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# use bundletool.jar from github.com/google/bundletool/releases&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g appium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g appium-doctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g opencv4nodejs
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g mjpeg-consumer
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 从 https://github.com/google/bundletool/releases 下载 bundletool.jar&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装完成后用 appium-doctor 检测一下，应该可以看到如下结果&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium-doctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;WARN AppiumDoctor &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Deprecated&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Please use appium-doctor installed with &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;npm install @appium/doctor --location=global&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor Appium Doctor v.1.16.2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor &lt;span style=&#34;color:#75715e&#34;&gt;### Diagnostic for necessary dependencies starting ###&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ The Node.js binary was found at: /home/lee/.local/bin/node
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ Node version is 16.18.0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ ANDROID_HOME is set to: /home/lee/Android/Sdk/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ JAVA_HOME is set to: /home/lee/Java/jdk-11.0.2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor    Checking adb, android, emulator, apkanalyzer
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;adb&amp;#39;&lt;/span&gt; is in /home/lee/Android/Sdk/platform-tools/adb
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;android&amp;#39;&lt;/span&gt; is in /home/lee/Android/Sdk/tools/android
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;emulator&amp;#39;&lt;/span&gt; is in /home/lee/Android/Sdk/emulator/emulator
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;apkanalyzer&amp;#39;&lt;/span&gt; is in /home/lee/Android/Sdk/cmdline-tools/latest/bin/apkanalyzer
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ adb, android, emulator, apkanalyzer exist: /home/lee/Android/Sdk/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bin&amp;#39;&lt;/span&gt; subfolder exists under &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/home/lee/Java/jdk-11.0.2&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor &lt;span style=&#34;color:#75715e&#34;&gt;### Diagnostic for necessary dependencies completed, no fix needed. ###&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor &lt;span style=&#34;color:#75715e&#34;&gt;### Diagnostic for optional dependencies starting ###&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ opencv4nodejs is installed at: /home/lee/.cache/.npm-global/lib. Installed version is: undefined
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ ffmpeg is installed at: /usr/bin/ffmpeg. ffmpeg version 5.1.2-3ubuntu1 Copyright &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;c&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; 2000-2022 the FFmpeg developers
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ mjpeg-consumer is installed at: /home/lee/.cache/.npm-global/lib. Installed version is: 2.0.0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ bundletool.jar is installed at: /home/lee/Android/Sdk/bundle-tool/bundletool.jar
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor  ✔ gst-launch-1.0 and gst-inspect-1.0 are installed at: /usr/bin/gst-launch-1.0 and /usr/bin/gst-inspect-1.0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor &lt;span style=&#34;color:#75715e&#34;&gt;### Diagnostic for optional dependencies completed, no fix possible. ###&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor Everything looks good, bye!
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;info AppiumDoctor
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 查看可选驱动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;appium driver list
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 安装我需要的驱动：适用于Android的 Native, Hybrid, Web 应用测试&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;appium driver install uiautomator2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin list
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Listing available plugins
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- images &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;not installed&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- execute-driver &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;not installed&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- relaxed-caps &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;not installed&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- universal-xml &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;not installed&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install images
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;images&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/images-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ℹ Plugin images@2.1.4 successfully installed
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install execute-driver
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;execute-driver&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/execute-driver-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ℹ Plugin execute-driver@3.0.17 successfully installed
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install relaxed-caps
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relaxed-caps&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/relaxed-caps-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ℹ Plugin relaxed-caps@1.0.5 successfully installed
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install universal-xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;universal-xml&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/universal-xml-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ℹ Plugin universal-xml@1.0.12 successfully installed
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin install universal-xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Installing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;universal-xml&amp;#39;&lt;/span&gt; using NPM install spec &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;@appium/universal-xml-plugin&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;❯ appium plugin list
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;✔ Listing available plugins
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- images@2.1.4 &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;installed &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;npm&lt;span style=&#34;color:#f92672&#34;&gt;)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- execute-driver@3.0.17 &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;installed &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;npm&lt;span style=&#34;color:#f92672&#34;&gt;)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- relaxed-caps@1.0.5 &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;installed &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;npm&lt;span style=&#34;color:#f92672&#34;&gt;)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- universal-xml@1.0.12 &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;installed &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;npm&lt;span style=&#34;color:#f92672&#34;&gt;)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;环境检测&#34;&gt;环境检测
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 检查 appium 环境及依赖问题工具&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install -g appium-doctor
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 开始检查&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;appium-doctor
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;极简使用&#34;&gt;极简使用
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run --privileged -d -p 4723:4723  -v /dev/bus/usb:/dev/bus/usb --name appium-container appium/appium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run -d --privileged -v /dev/bus/usb:dev/bus/usb -v $ANDROID_HOME:/android -p 4723:4723 muicoder/appium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker exec -it appium-container adb devices
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run -d -p 4724:4723 --device /dev/bus/usb/XXX/ZZZ:/dev/bus/usb/XXX/ZZZ -v ~/.android:/root/.android --name device2 appium/appium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run -d -p 4723:4723 -e REMOTE_ADB&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;true -e ANDROID_DEVICES&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;192.168.0.5:5555,192.168.0.6:5555 -e REMOTE_ADB_POLLING_SEC&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker run --privileged -d -p 4723:4723 -e CONNECT_TO_GRID&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;true -e APPIUM_HOST&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;127.0.0.1&amp;#34;&lt;/span&gt; -e APPIUM_PORT&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4723&lt;/span&gt; -e SELENIUM_HOST&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;172.17.0.1&amp;#34;&lt;/span&gt; -e SELENIUM_PORT&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4444&lt;/span&gt; -v /dev/bus/usb:/dev/bus/usb --name appium-container appium/appium
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;浏览器访问 &lt;code&gt;http://127.0.0.1:4723&lt;/code&gt; 出现 &lt;code&gt;The URL ‘/’ did not map to a valid resource&lt;/code&gt; 就是 appium 环境配置好了。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker exec -it -u &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; appium-container adb devices &lt;span style=&#34;color:#75715e&#34;&gt;# 检查设备连接，宿主机能识别就能识别&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker exec -it -u &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; appium-container node --version &lt;span style=&#34;color:#75715e&#34;&gt;# 检查测试脚本运行脚本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;编写测试脚本
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/appium/appium/tree/1.x/sample-code&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/appium/appium/tree/1.x/sample-code&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://appium.io/docs/en/2.1/quickstart/test-js/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://appium.io/docs/en/2.1/quickstart/test-js/&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://testerhome.com/topics/16605&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://testerhome.com/topics/16605&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; { &lt;span style=&#34;color:#a6e22e&#34;&gt;remote&lt;/span&gt; } &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;webdriverio&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;opts&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;hostname&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;localhost&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// 连接到哪里，脚本在宿主机上跑
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;port&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;4723&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/wd/hub&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// 不用改
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;capabilities&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;platformName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Android&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;platformVersion&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;your_android_version&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// 平台OS版本号
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;deviceName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;MI10Lite&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// 设备的名称–值可以随便写
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cloud.lazycat.client&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// appActivity: &amp;#39;&amp;#39;, // 确保自动化之后不重置app
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 添加其他所需的配置
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - platformName: 平台名称设置为Android
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - platformVersion:填写当前连接的Android设备的系统版本，必须正确
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - deviceName: 填写Android设备名称，不需要正确
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - app: 路径，从本地选择要测试应用的apk路径
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - appPackage: 测试app的package
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - appActivity: 测试app的StartActivity
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - unicodeKeyboard: 布尔值 true则禁用手机键盘
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - noReset: 布尔值true 则不重新安装apk，false则重新安装apk
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// - newCommandTimeout: 6000
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;async&lt;/span&gt; () =&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;remote&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;opts&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 启动应用程序
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;launchApp&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 执行操作，例如点击按钮
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;$&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;xpath=//button&amp;#39;&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;click&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 断言结果
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;$&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;xpath=//div&amp;#39;&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;getText&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;console&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Text:&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;text&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 关闭应用程序
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;closeApp&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})();
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;继续编写脚本，通过 &lt;code&gt;Appium-Inspector-linux-2023.8.4.appimage&lt;/code&gt; 通信，拿到元素
+然后继续编写脚本，但是在实际使用过程中，比如要列举出所有按钮元素，尝试点击元素，都会失败。
+app页面切换导航了，刷新Appium-Inspector-linux-2023视图，却没有反应。&lt;/p&gt;
+&lt;p&gt;所以放弃这个方案了。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>在 Chrome 中模拟微信内置浏览器</title>
+        <link>/post/tech/wechat.agent/</link>
+        <pubDate>Sun, 25 Jun 2023 08:06:15 +0800</pubDate>
+        
+        <guid>/post/tech/wechat.agent/</guid>
+        <description>&lt;p&gt;微信和 QQ 内置浏览器 UA
+安卓 QQ 内置浏览器 UA:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Mozilla/5.0 (Linux; Android 5.0; SM-N9100 Build/LRX21V) &amp;gt; AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 &amp;gt; Chrome/37.0.0.0 Mobile Safari/537.36 V1_AND_SQ_5.3.1_196_YYB_D &amp;gt; QQ/5.3.1.2335 NetType/WIFI
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安卓微信内置浏览器 UA:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Mozilla/5.0 (Linux; Android 5.0; SM-N9100 Build/LRX21V) &amp;gt; AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 &amp;gt; Chrome/37.0.0.0 Mobile Safari/537.36 &amp;gt; MicroMessenger/6.0.2.56_r958800.520 NetType/WIFI
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;IOSQQ 内置浏览器 UA:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) &amp;gt; AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 &amp;gt; QQ/5.2.1.302 NetType/WIFI Mem/28
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;IOS 微信内置浏览器 UA:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) &amp;gt; AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 &amp;gt; MicroMessenger/6.0.1 NetType/WIFI
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        <item>
+        <title>Keepalived</title>
+        <link>/post/tech/keepalived&#43;mysql/</link>
+        <pubDate>Fri, 16 Sep 2022 08:09:21 +0800</pubDate>
+        
+        <guid>/post/tech/keepalived&#43;mysql/</guid>
+        <description>&lt;h1 id=&#34;mysql--keepalived-双主热备高可用操作记录&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/kevingrace/p/6710136.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MySQL + Keepalived 双主热备高可用操作记录&lt;/a&gt;
+&lt;/h1&gt;&lt;p&gt;我们通常说的双机热备是指两台机器都在运行，但并不是两台机器都同时在提供服务。当提供服务的一台出现故障的时候，另外一台会马上自动接管并且提供服务，而且切换的时间非常短。MySQL双主复制，即互为Master-Slave(只有一个Master提供写操作)，可以实现数据库服务器的热备，但是一个Master宕机后不能实现动态切换。使用Keepalived，可以通过虚拟IP，实现双主对外的统一接口以及自动检查、失败切换机制，从而实现MySQL数据库的高可用方案。之前梳理了&lt;a class=&#34;link&#34; href=&#34;http://www.cnblogs.com/kevingrace/p/6256603.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Mysql主从/主主同步&lt;/a&gt;，下面说下Mysql+keeoalived双主热备高可用方案的实施。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Keepalived看名字就知道，保持存活，在网络里面就是保持在线了，也就是所谓的高可用或热备，用来防止单点故障（单点故障是指一旦某一点出现故障就会导
+整个系统架构的不可用）的发生，那说到keepalived不得不说的一个协议不是VRRP协议，可以说这个协议就是keepalived实现的基础。
+1）Keepalived的工作原理是VRRP（Virtual Router Redundancy Protocol）虚拟路由冗余协议。在VRRP中有两组重要的概念：VRRP路由器和虚拟路由器，主控路由器和备份路由器。
+2）VRRP路由器是指运行VRRP的路由器，是物理实体，虚拟路由器是指VRRP协议创建的，是逻辑概念。一组VRRP路由器协同工作，共同构成一台虚拟路由器。
+Vrrp中存在着一种选举机制，用以选出提供服务的路由即主控路由，其他的则成了备份路由。当主控路由失效后，备份路由中会重新选举出一个主控路由，来继
+续工作，来保障不间断服务。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;过多内容在这里就不做详细介绍了，下面详细记录下Mysql+Keepalived双主热备的高可用方案的操作记录&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;1）先实施Master-&amp;gt;Slave的主主同步。主主是数据双向同步，主从是数据单向同步。一般情况下，主库宕机后，需要手动将连接切换到从库上。（但是用keepalived就可以自动切换）
+2）再结合Keepalived的使用，通过VIP实现Mysql双主对外连接的统一接口。即客户端通过Vip连接数据库；当其中一台宕机后，VIP会漂移到另一台上，这个过程对于客户端的数据连接来说几乎无感觉，从而实现高可用。
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;                                VIP 182.148.15.236
+                             /                     \
+                           /                         \
+      Master 182.148.15.238           &amp;lt;----&amp;gt;          Slave 182.148.15.237
+
+环境描述：
+mysql的安装可以参考：http://www.cnblogs.com/kevingrace/p/6109679.html
+Centos6.8版本
+Master1：182.148.15.238        安装mysql和keepalived
+Master2: 182.148.15.237        安装mysql和keepalived
+VIP：182.148.15.236
+
+要实现主主同步，可以先实现主从同步，即master1-&amp;gt;master2的主从同步，然后master2-&amp;gt;master1的主从同步.
+这样，双方就完成了主主同步。
+
+注意下面几点：
+1）要保证同步服务期间之间的网络联通。即能相互ping通，能使用对方授权信息连接到对方数据库（防火墙开放3306端口）。
+2）关闭selinux。
+3）同步前，双方数据库中需要同步的数据要保持一致。这样，同步环境实现后，再次更新的数据就会如期同步了。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;可能出现的问题&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;报错：
+Last_IO_Error: Fatal error: The slave I/O thread stops because master and slave have equal MySQL server ids; these ids must be different for replication to work (or the --replicate-same-server-id option must be used on slave but this does not always make sense; please check the manual before using it).
+
+解决办法：
+删除mysql数据目录下的auto.cnf文件，重启mysql服务即可！
+
+另：Keepalived必须使用root账号启动！！
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;一、Mysql主主同步环境部署&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;---------------master1服务器操作记录---------------
+在my.cnf文件的[mysqld]配置区域添加下面内容：
+[root@master1 ~]# vim /usr/local/mysql/my.cnf
+server-id = 1
+log-bin = mysql-bin
+sync_binlog = 1
+binlog_checksum = none
+binlog_format = mixed
+auto-increment-increment = 2
+auto-increment-offset = 1
+slave-skip-errors = all
+
+[root@master1 ~]# /etc/init.d/mysql restart
+Shutting down MySQL. SUCCESS!
+Starting MySQL.. SUCCESS!
+
+数据同步授权（iptables防火墙开启3306端口）这样I/O线程就可以以这个用户的身份连接到主服务器，并且读取它的二进制日志。
+mysql&amp;gt; grant replication slave,replication client on *.* to wang@&#39;182.148.15.%&#39; identified by &amp;quot;wang@123&amp;quot;;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&amp;gt; flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+
+最好将库锁住，仅仅允许读，以保证数据一致性；待主主同步环境部署后再解锁；
+锁住后，就不能往表里写数据，但是重启mysql服务后就会自动解锁！
+mysql&amp;gt; flush tables with read lock;  //注意该参数设置后，如果自己同步对方数据，同步前一定要记得先解锁！
+Query OK, 0 rows affected (0.00 sec)
+
+查看下log bin日志和pos值位置
+mysql&amp;gt; show master status;
++------------------+----------+--------------+--------------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB         | Executed_Gtid_Set |
++------------------+----------+--------------+--------------------------+-------------------+
+| mysql-bin.000004 |      430 |              | mysql,information_schema |                   |
++------------------+----------+--------------+--------------------------+-------------------+
+1 row in set (0.00 sec)
+
+---------------master2服务器操作记录---------------
+在my.cnf文件的[mysqld]配置区域添加下面内容：
+[root@master2 ~]# vim /usr/local/mysql/my.cnf
+server-id = 2
+log-bin = mysql-bin
+sync_binlog = 1
+binlog_checksum = none
+binlog_format = mixed
+auto-increment-increment = 2
+auto-increment-offset = 2
+slave-skip-errors = all
+
+[root@master2 ~]# /etc/init.d/mysql restart
+Shutting down MySQL.. SUCCESS!
+Starting MySQL.. SUCCESS!
+
+mysql&amp;gt; grant replication slave,replication client on *.* to wang@&#39;182.148.15.%&#39; identified by &amp;quot;wang@123&amp;quot;;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&amp;gt; flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&amp;gt; flush tables with read lock;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&amp;gt; show master status;
++------------------+----------+--------------+--------------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB         | Executed_Gtid_Set |
++------------------+----------+--------------+--------------------------+-------------------+
+| mysql-bin.000003 |      430 |              | mysql,information_schema |                   |
++------------------+----------+--------------+--------------------------+-------------------+
+1 row in set (0.00 sec)
+
+---------------master1服务器做同步操作---------------
+mysql&amp;gt; unlock tables;     //先解锁，将对方数据同步到自己的数据库中
+mysql&amp;gt; slave stop；
+mysql&amp;gt; change  master to master_host=&#39;182.148.15.237&#39;,master_user=&#39;wang&#39;,master_password=&#39;wang@123&#39;,master_log_file=&#39;mysql-bin.000003&#39;,master_log_pos=430;
+Query OK, 0 rows affected, 2 warnings (0.01 sec)
+
+mysql&amp;gt; start slave;
+Query OK, 0 rows affected (0.01 sec)
+
+查看同步状态，如下出现两个“Yes”，表明同步成功！
+mysql&amp;gt; show slave status \G;
+*************************** 1. row ***************************
+            Slave_IO_State: Waiting for master to send event
+                Master_Host: 182.148.15.237
+                Master_User: wang
+                Master_Port: 3306
+                Connect_Retry: 60
+            Master_Log_File: mysql-bin.000003
+        Read_Master_Log_Pos: 430
+            Relay_Log_File: mysql-relay-bin.000002
+                Relay_Log_Pos: 279
+        Relay_Master_Log_File: mysql-bin.000003
+            Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
+        .........................
+        Seconds_Behind_Master: 0
+        .........................
+
+这样，master1就和master2实现了主从同步，即master1同步master2的数据。
+
+---------------master2服务器做同步操作---------------
+mysql&amp;gt; unlock tables;     //先解锁，将对方数据同步到自己的数据库中
+mysql&amp;gt; slave stop；
+mysql&amp;gt; change  master to master_host=&#39;182.148.15.238&#39;,master_user=&#39;wang&#39;,master_password=&#39;wang@123&#39;,master_log_file=&#39;mysql-bin.000004&#39;,master_log_pos=430;
+Query OK, 0 rows affected, 2 warnings (0.06 sec)
+
+mysql&amp;gt; start slave;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&amp;gt; show slave status \G;
+*************************** 1. row ***************************
+            Slave_IO_State: Waiting for master to send event
+                Master_Host: 182.148.15.238
+                Master_User: wang
+                Master_Port: 3306
+                Connect_Retry: 60
+            Master_Log_File: mysql-bin.000004
+        Read_Master_Log_Pos: 430
+            Relay_Log_File: mysql-relay-bin.000002
+                Relay_Log_Pos: 279
+        Relay_Master_Log_File: mysql-bin.000004
+            Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
+        ........................
+        Seconds_Behind_Master: 0
+        ........................
+
+这样，master2就和master1实现了主从同步，即master2也同步master1的数据。
+
+以上表明双方已经实现了mysql主主同步。
+当运行一段时间后，要是发现同步有问题，比如只能单向同步，双向同步失效。可以重新执行下上面的change master同步操作，只不过这样同步后，只能同步在此之后的更新数据。下面开始进行数据验证：
+
+-----------------主主同步效果验证---------------------
+1）在master1数据库上写入新数据
+mysql&amp;gt; unlock tables;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&amp;gt; create database huanqiu;
+Query OK, 1 row affected (0.01 sec)
+
+mysql&amp;gt; use huanqiu;
+Database changed
+
+mysql&amp;gt; create table if not exists haha (
+    -&amp;gt; id int(10) PRIMARY KEY AUTO_INCREMENT,
+    -&amp;gt; name varchar(50) NOT NULL);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql&amp;gt; insert into haha values(1,&amp;quot;王士博&amp;quot;);
+Query OK, 1 row affected (0.00 sec)
+
+mysql&amp;gt; insert into haha values(2,&amp;quot;郭慧慧&amp;quot;);
+Query OK, 1 row affected (0.00 sec)
+
+mysql&amp;gt; select * from haha;
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | 王士博    |
+|  2 | 郭慧慧    |
++----+-----------+
+2 rows in set (0.00 sec)
+
+然后在master2数据库上查看，发现数据已经同步过来了!
+mysql&amp;gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| huanqiu            |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql&amp;gt; use huanqiu;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&amp;gt; show tables;
++-------------------+
+| Tables_in_huanqiu |
++-------------------+
+| haha              |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql&amp;gt; select * from haha;
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | 王士博    |
+|  2 | 郭慧慧    |
++----+-----------+
+2 rows in set (0.00 sec)
+
+2）在master2数据库上写入新数据
+mysql&amp;gt; create database hehe;
+Query OK, 1 row affected (0.00 sec)
+
+mysql&amp;gt; insert into huanqiu.haha values(3,&amp;quot;周正&amp;quot;),(4,&amp;quot;李敏&amp;quot;);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+然后在master1数据库上查看，发现数据也已经同步过来了!
+mysql&amp;gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| hehe               |
+| huanqiu            |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql&amp;gt; select * from huanqiu.haha;
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | 王士博    |
+|  2 | 郭慧慧    |
+|  3 | 周正      |
+|  4 | 李敏      |
++----+-----------+
+4 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;至此，Mysql主主同步环境已经实现。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;二、配置Mysql+Keepalived故障转移的高可用环境&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1）安装keepalived并将其配置成系统服务。master1和master2两台机器上同样进行如下操作：
+[root@master1 ~]# yum install -y openssl-devel
+[root@master1 ~]# cd /usr/local/src/
+[root@master1 src]# wget http://www.keepalived.org/software/keepalived-1.3.5.tar.gz
+[root@master1 src]# tar -zvxf keepalived-1.3.5.tar.gz
+[root@master1 src]# cd keepalived-1.3.5
+[root@master1 keepalived-1.3.5]# ./configure --prefix=/usr/local/keepalived
+[root@master1 keepalived-1.3.5]# make &amp;amp;&amp;amp; make install
+
+[root@master1 keepalived-1.3.5]# cp /usr/local/src/keepalived-1.3.5/keepalived/etc/init.d/keepalived /etc/rc.d/init.d/
+[root@master1 keepalived-1.3.5]# cp /usr/local/keepalived/etc/sysconfig/keepalived /etc/sysconfig/
+[root@master1 keepalived-1.3.5]# mkdir /etc/keepalived/
+[root@master1 keepalived-1.3.5]# cp /usr/local/keepalived/etc/keepalived/keepalived.conf /etc/keepalived/
+[root@master1 keepalived-1.3.5]# cp /usr/local/keepalived/sbin/keepalived /usr/sbin/
+[root@master1 keepalived-1.3.5]# echo &amp;quot;/etc/init.d/keepalived start&amp;quot; &amp;gt;&amp;gt; /etc/rc.local
+
+2）master1机器上的keepalived.conf配置。（下面配置中没有使用lvs的负载均衡功能，所以不需要配置虚拟服务器virtual server）
+[root@master1 ~]# cp /etc/keepalived/keepalived.conf /etc/keepalived/keepalived.conf.bak
+[root@master1 ~]# vim /etc/keepalived/keepalived.conf       ＃清空默认内容，直接采用下面配置：
+! Configuration File for keepalived
+
+global_defs {
+notification_email {
+ops@wangshibo.cn
+tech@wangshibo.cn
+}
+
+notification_email_from ops@wangshibo.cn
+smtp_server 127.0.0.1
+smtp_connect_timeout 30
+router_id MASTER-HA
+}
+
+vrrp_script chk_mysql_port {     #检测mysql服务是否在运行。有很多方式，比如进程，用脚本检测等等
+    script &amp;quot;/opt/chk_mysql.sh&amp;quot;   #这里通过脚本监测
+    interval 2                   #脚本执行间隔，每2s检测一次
+    weight -5                    #脚本结果导致的优先级变更，检测失败（脚本返回非0）则优先级 -5
+    fall 2                    #检测连续2次失败才算确定是真失败。会用weight减少优先级（1-255之间）
+    rise 1                    #检测1次成功就算成功。但不修改优先级
+}
+
+vrrp_instance VI_1 {
+    state MASTER
+    interface eth0      #指定虚拟ip的网卡接口
+    mcast_src_ip 182.148.15.238
+    virtual_router_id 51    #路由器标识，MASTER和BACKUP必须是一致的
+    priority 101            #定义优先级，数字越大，优先级越高，在同一个vrrp_instance下，MASTER的优先级必须大于BACKUP的优先级。这样MASTER故障恢复后，就可以将VIP资源再次抢回来
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    virtual_ipaddress {
+        182.148.15.236
+    }
+
+track_script {
+chk_mysql_port
+}
+}
+
+编写切换脚本。KeepAlived做心跳检测，如果Master的MySQL服务挂了(3306端口挂了),那么它就会选择自杀。Slave的KeepAlived通过心跳检测发现这个情况，就会将VIP的请求接管
+[root@master1 ~]# vim /opt/chk_mysql.sh
+#!/bin/bash
+counter=$(netstat -na|grep &amp;quot;LISTEN&amp;quot;|grep &amp;quot;3306&amp;quot;|wc -l)
+if [ &amp;quot;${counter}&amp;quot; -eq 0 ]; then
+    /etc/init.d/keepalived stop
+fi
+
+[root@master1 ~]# chmod 755 /opt/chk_mysql.sh
+
+启动keepalived服务
+[root@master1 ~]# /etc/init.d/keepalived start
+正在启动 keepalived：                                      [确定]
+
+
+4）master2机器上的keepalived配置。master2机器上的keepalived.conf文件只修改priority为90、nopreempt不设置、real_server设置本地IP。
+[root@master2 ~]# cp /etc/keepalived/keepalived.conf /etc/keepalived/keepalived.conf.bak
+[root@master2 ~]# &amp;gt;/etc/keepalived/keepalived.conf
+[root@master2 ~]# vim /etc/keepalived/keepalived.conf
+! Configuration File for keepalived
+
+global_defs {
+notification_email {
+ops@wangshibo.cn
+tech@wangshibo.cn
+}
+
+notification_email_from ops@wangshibo.cn
+smtp_server 127.0.0.1
+smtp_connect_timeout 30
+router_id MASTER-HA
+}
+
+vrrp_script chk_mysql_port {
+    script &amp;quot;/opt/chk_mysql.sh&amp;quot;
+    interval 2
+    weight -5
+    fall 2
+    rise 1
+}
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface eth0
+    mcast_src_ip 182.148.15.237
+    virtual_router_id 51
+    priority 99
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    virtual_ipaddress {
+        182.148.15.236
+    }
+
+track_script {
+chk_mysql_port
+}
+}
+
+
+[root@master2 ~]# cat /opt/chk_mysql.sh
+#!/bin/bash
+counter=$(netstat -na|grep &amp;quot;LISTEN&amp;quot;|grep &amp;quot;3306&amp;quot;|wc -l)
+if [ &amp;quot;${counter}&amp;quot; -eq 0 ]; then
+    /etc/init.d/keepalived stop
+fi
+
+[root@master2 ~]# chmod 755 /opt/chk_mysql.sh
+
+[root@master2 ~]# /etc/init.d/keepalived start
+正在启动 keepalived：                                      [确定]
+
+
+5）master1和master2两台服务器都要授权允许root用户远程登录，用于在客户端登陆测试！
+mysql&amp;gt; grant all on *.* to root@&#39;%&#39; identified by &amp;quot;1234567&amp;quot;;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&amp;gt; flush privileges;
+Query OK, 0 rows affected (0.01 sec)
+
+6）在master1和master2两台机器上设置iptables防火墙规则，如下：
+[root@master1 ~]# cat /etc/sysconfig/iptables
+........
+-A INPUT -s 182.148.15.0/24 -d 224.0.0.18 -j ACCEPT       #允许组播地址通信
+-A INPUT -s 182.148.15.0/24 -p vrrp -j ACCEPT             #允许VRRP（虚拟路由器冗余协）通信
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT    #开放mysql的3306端口
+
+[root@master1 ~]# /etc/init.d/iptables restart
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;三、Mysql＋keepalived故障转移的高可用测试&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1）通过Mysql客户端通过VIP连接，看是否连接成功。
+比如，在远程一台测试机上连接，通过vip地址可以正常连接（下面的连接权限要是在服务端提前授权的）
+[root@dev-new-test ~]# mysql -h182.148.15.236 -uroot -p123456
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 60
+Server version: 5.6.35-log Source distribution
+
+Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
+
+mysql&amp;gt; select * from huanqiu.haha;
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | 王士博    |
+|  2 | 郭慧慧    |
+|  3 | 周正      |
+|  4 | 李敏      |
++----+-----------+
+4 rows in set (0.00 sec)
+
+
+2）默认情况下，vip是在master1上的。使用&amp;quot;ip addr&amp;quot;命令查看vip切换情况
+[root@master1 ~]# ip addr
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    valid_lft forever preferred_lft forever
+2: eth0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 52:54:00:3c:25:42 brd ff:ff:ff:ff:ff:ff
+    inet 182.148.15.238/27 brd 182.148.15.255 scope global eth0
+    inet 182.148.15.236/32 scope global eth0                              //这个32位子网掩码的vip地址表示该资源目前还在master1机器上
+    inet 182.148.15.236/27 brd 82.48.115.255 scope global secondary eth0:0
+    inet6 fe80::5054:ff:fe3c:2542/64 scope link
+    valid_lft forever preferred_lft forever
+
+停止master1机器上的mysql服务，根据配置中的脚本，mysql服务停了，keepalived也会停，从而vip资源将会切换到master2机器上。（mysql服务没有起来的时候，keepalived服务也无法顺利启动！）
+[root@master1 ~]# /etc/init.d/mysql stop
+Shutting down MySQL.. SUCCESS!
+[root@master1 ~]# ps -ef|grep mysql
+root     25812 21588  0 17:30 pts/0    00:00:00 grep mysql
+[root@master1 ~]# ps -ef|grep keepalived
+root     25814 21588  0 17:30 pts/0    00:00:00 grep keepalived
+[root@master1 ~]# ip addr
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    valid_lft forever preferred_lft forever
+2: eth0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 52:54:00:3c:25:42 brd ff:ff:ff:ff:ff:ff
+    inet 182.148.15.238/27 brd 182.148.15.255 scope global eth0
+    inet 182.148.15.236/27 brd 82.48.115.255 scope global secondary eth0:0
+    inet6 fe80::5054:ff:fe3c:2542/64 scope link
+    valid_lft forever preferred_lft forever
+
+如上结果，发现32位子网掩码的vip没有了，说明此时vip资源已不在master1机器上了
+查看下master1的系统日志，如下，会发现vip资源已经切换走了
+[root@master1 ~]# tail -f /var/log/messages
+Apr 15 17:17:43 localhost Keepalived_vrrp[23037]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:17:48 localhost Keepalived_vrrp[23037]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:17:48 localhost Keepalived_vrrp[23037]: VRRP_Instance(VI_1) Sending/queueing gratuitous ARPs on eth0 for 182.148.15.236
+Apr 15 17:17:48 localhost Keepalived_vrrp[23037]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:17:48 localhost Keepalived_vrrp[23037]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:17:48 localhost Keepalived_vrrp[23037]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:17:48 localhost Keepalived_vrrp[23037]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:39 localhost Keepalived_healthcheckers[23036]: Stopped
+Apr 15 17:30:39 localhost Keepalived_vrrp[23037]: VRRP_Instance(VI_1) sent 0 priority
+Apr 15 17:30:39 localhost Keepalived_vrrp[23037]: VRRP_Instance(VI_1) removing protocol VIPs.
+
+再到master2机器上，发现vip资源的确切换过来了
+[root@master2 ~]# ip addr
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    valid_lft forever preferred_lft forever
+2: eth0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 52:54:00:95:1f:6d brd ff:ff:ff:ff:ff:ff
+    inet 182.148.15.237/27 brd 182.148.15.255 scope global eth0
+    inet 182.148.15.236/32 scope global eth0
+    inet6 fe80::5054:ff:fe95:1f6d/64 scope link
+    valid_lft forever preferred_lft forever
+
+查看master2的系统日志
+[root@master2 ~]# tail -f /var/log/messages
+Apr 15 17:30:41 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:41 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:41 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:41 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: VRRP_Instance(VI_1) Sending/queueing gratuitous ARPs on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+
+3）再次启动master1的mysql和keepalived服务。（注意：如果restart重启mysql，那么还要启动下keepalived，因为mysql重启，根据脚本会造成keepalived关闭）
+注意：一定要先启动mysql服务，然后再启动keepalived服务。如果先启动keepalived服务，按照上面的配置，mysql没有起来，就会自动关闭keepalived。
+[root@master1 ~]# /etc/init.d/mysql start
+Starting MySQL.. SUCCESS!
+
+[root@master1 ~]# /etc/init.d/keepalived start
+正在启动 keepalived：                                      [确定]
+
+启动这两个服务器后，稍微等过一会儿，注意观察会发现vip资源再次从master2机器上切换回来了。
+[root@master1 ~]# ip addr
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    valid_lft forever preferred_lft forever
+2: eth0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 52:54:00:3c:25:42 brd ff:ff:ff:ff:ff:ff
+    inet 182.148.15.238/27 brd 182.148.15.255 scope global eth0
+    inet 182.148.15.236/32 scope global eth0
+    inet 182.148.15.236/27 brd 82.48.115.255 scope global secondary eth0:0
+    inet6 fe80::5054:ff:fe3c:2542/64 scope link
+    valid_lft forever preferred_lft forever
+
+[root@master1 ~]# tail -f /var/log/messages
+Apr 15 17:40:41 localhost Keepalived_vrrp[27002]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:40:41 localhost Keepalived_vrrp[27002]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:40:41 localhost Keepalived_vrrp[27002]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:40:41 localhost Keepalived_vrrp[27002]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:40:46 localhost Keepalived_vrrp[27002]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:40:46 localhost Keepalived_vrrp[27002]: VRRP_Instance(VI_1) Sending/queueing gratuitous ARPs on eth0 for 182.148.15.236
+Apr 15 17:40:46 localhost Keepalived_vrrp[27002]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:40:46 localhost Keepalived_vrrp[27002]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:40:46 localhost Keepalived_vrrp[27002]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:40:46 localhost Keepalived_vrrp[27002]: Sending gratuitous ARP on eth0 for 182.148.15.236
+
+再看看master2机器，发现vip资源又被恢复后的master1抢过去了
+[root@master2 ~]# ip addr
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    valid_lft forever preferred_lft forever
+2: eth0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 52:54:00:95:1f:6d brd ff:ff:ff:ff:ff:ff
+    inet 182.148.15.237/27 brd 182.148.15.255 scope global eth0
+    inet6 fe80::5054:ff:fe95:1f6d/64 scope link
+    valid_lft forever preferred_lft forever
+
+[root@master2 ~]# tail -f /var/log/messages
+Apr 15 17:30:41 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: VRRP_Instance(VI_1) Sending/queueing gratuitous ARPs on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:30:46 localhost Keepalived_vrrp[8731]: Sending gratuitous ARP on eth0 for 182.148.15.236
+Apr 15 17:40:41 localhost Keepalived_vrrp[8731]: VRRP_Instance(VI_1) Received advert with higher priority 101, ours 99
+Apr 15 17:40:41 localhost Keepalived_vrrp[8731]: VRRP_Instance(VI_1) Entering BACKUP STATE
+Apr 15 17:40:41 localhost Keepalived_vrrp[8731]: VRRP_Instance(VI_1) removing protocol VIPs.
+
+4）同样，关闭master1机器的keepalived服务，vip资源会自动切换到master2机器上。当master1的keepalived服务恢复后，会将vip资源再次切回来。
+[root@master1 ~]# /etc/init.d/keepalived stop
+停止 keepalived：                                          [确定]
+[root@master1 ~]# ip addr
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    valid_lft forever preferred_lft forever
+2: eth0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 52:54:00:3c:25:42 brd ff:ff:ff:ff:ff:ff
+    inet 182.148.15.238/27 brd 182.148.15.255 scope global eth0
+    inet 182.148.15.236/27 brd 82.48.115.255 scope global secondary eth0:0
+    inet6 fe80::5054:ff:fe3c:2542/64 scope link
+    valid_lft forever preferred_lft forever
+
+查看master2，发现vip切过来了
+[root@master2 ~]# ip addr
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    valid_lft forever preferred_lft forever
+2: eth0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 52:54:00:95:1f:6d brd ff:ff:ff:ff:ff:ff
+    inet 182.148.15.237/27 brd 182.148.15.255 scope global eth0
+    inet 182.148.15.236/32 scope global eth0
+    inet6 fe80::5054:ff:fe95:1f6d/64 scope link
+    valid_lft forever preferred_lft forever
+
+再次恢复master1的keepalived服务，发现vip资源很快油切回来了。
+[root@master1 ~]# /etc/init.d/keepalived start
+正在启动 keepalived：                                      [确定]
+[root@master1 ~]# ip addr
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    valid_lft forever preferred_lft forever
+2: eth0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 52:54:00:3c:25:42 brd ff:ff:ff:ff:ff:ff
+    inet 182.148.15.238/27 brd 182.148.15.255 scope global eth0
+    inet 182.148.15.236/32 scope global eth0
+    inet 182.148.15.236/27 brd 82.48.115.255 scope global secondary eth0:0
+    inet6 fe80::5054:ff:fe3c:2542/64 scope link
+    valid_lft forever preferred_lft forever
+
+在此查看master2，发现vip资源被切走了
+[root@master2 ~]# ip addr
+1: lo: &amp;lt;LOOPBACK,UP,LOWER_UP&amp;gt; mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    valid_lft forever preferred_lft forever
+2: eth0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 52:54:00:95:1f:6d brd ff:ff:ff:ff:ff:ff
+    inet 182.148.15.237/27 brd 182.148.15.255 scope global eth0
+    inet6 fe80::5054:ff:fe95:1f6d/64 scope link
+    valid_lft forever preferred_lft forever
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上在vip资源切换过程中，对于客户端连接mysql（使用vip连接）来说几乎是没有任何影响的。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;温馨提示（Keepalived的抢占和非抢占模式）&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;keepalive是基于vrrp协议在linux主机上以守护进程方式，根据配置文件实现健康检查。
+VRRP是一种选择协议，它可以把一个虚拟路由器的责任动态分配到局域网上的VRRP路由器中的一台。
+控制虚拟路由器IP地址的VRRP路由器称为主路由器，它负责转发数据包到这些虚拟IP地址。
+一旦主路由器不可用，这种选择过程就提供了动态的故障转移机制，这就允许虚拟路由器的IP地址可以作为终端主机的默认第一跳路由器。
+
+keepalive通过组播，单播等方式（自定义），实现keepalive主备推选。工作模式分为抢占和非抢占（通过参数nopreempt来控制）。
+1）抢占模式：
+主服务正常工作时，虚拟IP会在主上，备不提供服务，当主服务优先级低于备的时候，备会自动抢占虚拟IP，这时，主不提供服务，备提供服务。
+也就是说，工作在抢占模式下，不分主备，只管优先级。
+
+如上配置，不管keepalived.conf里的state配置成master还是backup，只看谁的priority优先级高（一般而言，state为MASTER的优先级要高于BACKUP）。
+priority优先级高的那一个在故障恢复后，会自动将VIP资源再次抢占回来！！
+
+2）非抢占模式：
+这种方式通过参数nopreempt（一般设置在advert_int的那一行下面）来控制。不管priority优先级，只要MASTER机器发生故障，VIP资源就会被切换到BACKUP上。
+并且当MASTER机器恢复后，也不会去将VIP资源抢占回来，直至BACKUP机器发生故障时，才能自动切换回来。
+
+千万注意：
+nopreempt这个参数只能用于state为backup的情况，所以在配置的时候要把master和backup的state都设置成backup，这样才会实现keepalived的非抢占模式！
+
+也就是说：
+a）当state状态一个为master，一个为backup的时候，加不加nopreempt这个参数都是一样的效果。即都是根据priority优先级来决定谁抢占vip资源的，是抢占模式！
+b）当state状态都设置成backup，如果不配置nopreempt参数，那么也是看priority优先级决定谁抢占vip资源，即也是抢占模式。
+c）当state状态都设置成backup，如果配置nopreempt参数，那么就不会去考虑priority优先级了，是非抢占模式！即只有vip当前所在机器发生故障，另一台机器才能接管vip。即使优先级高的那一台机器恢复  后也不会主动抢回vip，只能等到对方发生故障，才会将vip切回来。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;mysql状态检测脚本优化&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;上面的mysql监测脚本有点过于简单且粗暴，即脚本一旦监测到Master的mysql服务关闭，就立刻把keepalived服务关闭，从而实现vip转移！&lt;/p&gt;
+&lt;p&gt;下面对该脚本进行优化，优化后，当监测到Master的mysql服务关闭后，就会将vip切换到Backup上（但此时Master的keepalived服务不会被暴力kill）
+当Master的mysql服务恢复后，就会再次将VIP资源切回来！&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;root@master ~&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# cat /opt/chk_mysql.sh&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;MYSQL&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/usr/local/mysql/bin/mysql
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;MYSQL_HOST&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;localhost
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;MYSQL_USER&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;root
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;MYSQL_PASSWORD&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;123456&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;CHECK_TIME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#mysql  is working MYSQL_OK is 1 , mysql down MYSQL_OK is 0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;MYSQL_OK&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; check_mysql_helth &lt;span style=&#34;color:#f92672&#34;&gt;(){&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $MYSQL -h $MYSQL_HOST -u $MYSQL_USER -p&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;MYSQL_PASSWORD&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt; -e &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;show status;&amp;#34;&lt;/span&gt; &amp;gt;/dev/null 2&amp;gt;&amp;amp;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; $? &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; ;&lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    MYSQL_OK&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    MYSQL_OK&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; $MYSQL_OK
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; $CHECK_TIME -ne &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    let &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CHECK_TIME -= 1&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    check_mysql_helth
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; $MYSQL_OK &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; ; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    CHECK_TIME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    exit &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; $MYSQL_OK -eq &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; $CHECK_TIME -eq &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    pkill keepalived
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    exit &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sleep &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Keepalived</title>
+        <link>/post/tech/keepalived/</link>
+        <pubDate>Fri, 16 Sep 2022 08:09:21 +0800</pubDate>
+        
+        <guid>/post/tech/keepalived/</guid>
+        <description>&lt;h3 id=&#34;keepalived安装与配置&#34;&gt;keepalived安装与配置
+&lt;/h3&gt;&lt;h4 id=&#34;前言&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://makefile.so/2022/05/05/install-keepalived//#%e5%89%8d%e8%a8%80&#34;  title=&#34;前言&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;前言
+&lt;/h4&gt;&lt;p&gt;在多机环境下，安装keepalived，保证高可用；
+同时多个机器对外暴露一个VIP（Virtual IP），客户端连接VIP即可；&lt;/p&gt;
+&lt;h4 id=&#34;开始&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://makefile.so/2022/05/05/install-keepalived//#%e5%bc%80%e5%a7%8b&#34;  title=&#34;开始&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;开始
+&lt;/h4&gt;&lt;h5 id=&#34;0-前置条件&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://makefile.so/2022/05/05/install-keepalived//#0-%e5%89%8d%e7%bd%ae%e6%9d%a1%e4%bb%b6&#34;  title=&#34;0. 前置条件&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;0. 前置条件
+&lt;/h5&gt;&lt;ol&gt;
+&lt;li&gt;多个机器，如：
+&lt;ol&gt;
+&lt;li&gt;Node1（主节点 MASTER）： 192.168.31.1&lt;/li&gt;
+&lt;li&gt;Node2（备用节点 SLAVE）： 192.168.31.2&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;root权限；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;1-安装&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://makefile.so/2022/05/05/install-keepalived//#1-%e5%ae%89%e8%a3%85&#34;  title=&#34;1. 安装&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;1. 安装
+&lt;/h5&gt;&lt;p&gt;在每个机器上安装keepalived：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   sudo apt install keepalived -y
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   systemctl enable keepalived
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   systemctl start keepalived
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;2-配置&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://makefile.so/2022/05/05/install-keepalived//#2-%e9%85%8d%e7%bd%ae&#34;  title=&#34;2. 配置&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;2. 配置
+&lt;/h5&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;默认是没有配置文件的，需要手动添加并修改：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd /etc/keepalived
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;touch keepalived.conf
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;主节点的&lt;code&gt;keepalived.conf&lt;/code&gt;内容如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#检查应用是否正常的script：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_script chk_service_ok &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       &lt;span style=&#34;color:#75715e&#34;&gt;#这里只检查/tmp/service_ok这个文件是否存在：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       script &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ls /tmp/service_ok&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       &lt;span style=&#34;color:#75715e&#34;&gt;#间隔2秒检查一次：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       interval &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_instance VI_1 &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#指定网卡名称；可以通过：ip addr命令查看网卡信息：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    interface enp3s0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#主节点：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    state MASTER
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#虚拟路由ID，主节点、备用节点必须为通一个ID：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_router_id &lt;span style=&#34;color:#ae81ff&#34;&gt;51&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#优先级；主节点比备用节点高：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    priority &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#VIP：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_ipaddress &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        192.168.31.20/25
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#上文指定的检查脚本：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    track_script &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       chk_service_ok
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;备用节点的&lt;code&gt;keepalived.conf&lt;/code&gt;内容如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#检查应用是否正常的script：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_script chk_service_ok &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       &lt;span style=&#34;color:#75715e&#34;&gt;#这里只检查/tmp/service_ok这个文件是否存在：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       script &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ls /tmp/service_ok&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       &lt;span style=&#34;color:#75715e&#34;&gt;#间隔2秒检查一次：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       interval &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_instance VI_1 &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#指定网卡名称；可以通过：ip addr命令查看网卡信息：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    interface enp3s0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#备用节点：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    state SLAVE
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#虚拟路由ID，主节点、备用节点必须为通一个ID：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_router_id &lt;span style=&#34;color:#ae81ff&#34;&gt;51&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#优先级；主节点比备用节点高：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    priority &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#VIP：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_ipaddress &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        192.168.31.20/25
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#上文指定的检查脚本：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    track_script &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       chk_service_ok
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在主节点和备用节点同时创建&lt;code&gt;/tmp/service_ok&lt;/code&gt;文件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;touch /tmp/service_ok
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;重启keepalived：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;systemctl restart keepalived
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;测试：使用ssh连接虚拟IP：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ssh root@192.168.31.20
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#此时连接的是主节点192.168.31.1；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#删除主节点的/tmp/service_ok文件后，&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#ssh连接会断开；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#再次连接后，连接的是备用节点192.168.31.2；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#再次创建主节点的/tmp/service_ok文件后，&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#ssh会断开，再次连接后，恢复为主节点；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;3-配置多个要监听的应用&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://makefile.so/2022/05/05/install-keepalived//#3-%e9%85%8d%e7%bd%ae%e5%a4%9a%e4%b8%aa%e8%a6%81%e7%9b%91%e5%90%ac%e7%9a%84%e5%ba%94%e7%94%a8&#34;  title=&#34;3. 配置多个要监听的应用&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;3. 配置多个要监听的应用
+&lt;/h5&gt;&lt;p&gt;配置多个要监听的应用，只需添加多个IP和检查脚本；
+如下为Nginx监听脚本：
+主节点：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   vrrp_script chk_service_ok &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       script &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ls /tmp/service_ok&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       interval &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_script chk_nginx_ok &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       script &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/etc/keepalived/chk_nginx.sh&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       interval &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_instance VI_1 &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    interface enp5s0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    state MASTER
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_router_id &lt;span style=&#34;color:#ae81ff&#34;&gt;51&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    priority &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_ipaddress &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        192.168.31.20/25
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    track_script &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       chk_service_ok
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_instance VI_2 &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    interface enp5s0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    state MASTER
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_router_id &lt;span style=&#34;color:#ae81ff&#34;&gt;52&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    priority &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_ipaddress &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        192.168.31.21/25
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    track_script &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       chk_nginx_ok
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;备用节点：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   vrrp_script chk_service_ok &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       script &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ls /tmp/service_ok&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       interval &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_script chk_nginx_ok &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      script &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/etc/keepalived/chk_nginx.sh&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       interval &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_instance VI_1 &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    interface enp3s0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    state BACKUP
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_router_id &lt;span style=&#34;color:#ae81ff&#34;&gt;51&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    priority &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_ipaddress &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        192.168.31.20/25
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    track_script &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       chk_service_ok
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vrrp_instance VI_2 &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    interface enp3s0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    state BACKUP
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_router_id &lt;span style=&#34;color:#ae81ff&#34;&gt;52&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    priority &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    virtual_ipaddress &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        192.168.31.21/25
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    track_script &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       chk_nginx_ok
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;chk_nginx.sh&lt;/code&gt;内容如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   set -ex
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; -z &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;`pidof nginx`&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     exit &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;4-测试&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://makefile.so/2022/05/05/install-keepalived//#4-%e6%b5%8b%e8%af%95&#34;  title=&#34;4. 测试&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;4. 测试
+&lt;/h5&gt;&lt;p&gt;客户端使用VIP：&lt;code&gt;192.168.31.21&lt;/code&gt;访问Nginx应用：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;#Nginx端口为8080：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   curl 192.168.31.21:8080
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;#此时访问的是主节点；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;#关闭主节点的Nginx：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   systemctl stop nginx
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;#再次访问：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   curl 192.168.31.21:8080
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;#此时访问的是备用节点；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;5-查看日志和配置&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://makefile.so/2022/05/05/install-keepalived//#5-%e6%9f%a5%e7%9c%8b%e6%97%a5%e5%bf%97%e5%92%8c%e9%85%8d%e7%bd%ae&#34;  title=&#34;5. 查看日志和配置&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;5. 查看日志和配置
+&lt;/h5&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;默认日志路径：&lt;code&gt;/var/log/messages&lt;/code&gt;；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修改日志级别和路径： &lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/i0day/p/6070575.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Keepalived日志路径&lt;/a&gt;；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;默认全局配置：&lt;code&gt;/etc/sysconfig/keepalived&lt;/code&gt;；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;默认全局配置文件内容(如果不存在该文件，需要手动创建；cat /etc/sysconfig/keepalived)：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Options for keepalived. keepalived--help &amp;#39; Output and keepalived (8) and&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# keepalived.conf (5) Man pages for a list of all options. Here are the most&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# common ones:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--VRRP               -P only    run with VRRP subsystem.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#--check              -C is    run with Health-checker subsystem.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#--DONT-RELEASE-VRRP    -v dont remove VRRP VIPs &amp;amp; vroutes on daemon stop.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#--dont-release-ipvs    -i dont remove Ipvs topology on daemon stop.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#--dump-conf    -D dump the configuration data.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#--log-detail    -D Detailed log messages.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#--log-facility    -S 0-7 Set local syslog facility (Default=log_daemon)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;keepalived_options&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-d &amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;参考链接&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://makefile.so/2022/05/05/install-keepalived//#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5&#34;  title=&#34;参考链接&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;参考链接
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/kevingrace/p/6710136.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MySQL + Keepalived 双主热备高可用操作记录&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/lijiaman/p/13430668.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;keepalived+MySQL实现高可用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/i0day/p/6070575.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;修改日志级别和路径&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
+        <title>Alpine Install</title>
+        <link>/post/tech/alpine.installed.in.virtualbox/</link>
+        <pubDate>Thu, 15 Sep 2022 07:59:40 +0800</pubDate>
+        
+        <guid>/post/tech/alpine.installed.in.virtualbox/</guid>
+        <description>&lt;h2 id=&#34;启动镜像&#34;&gt;启动镜像
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;下载需要的&lt;a class=&#34;link&#34; href=&#34;https://alpinelinux.org/downloads/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;镜像&lt;/a&gt;并启动&lt;/li&gt;
+&lt;li&gt;文档时使用的镜像是 &lt;code&gt;alpine-standard-3.16.2-x86_64.iso&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;用户名root，无密码登陆&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;setup-alpine&#34;&gt;&lt;code&gt;setup-alpine&lt;/code&gt;
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;启动安装程序&lt;code&gt;setup-alpine&lt;/code&gt;:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;键盘布局:&lt;code&gt;us&lt;/code&gt; 两次&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;后面&lt;code&gt;hostname&lt;/code&gt;、&lt;code&gt;网卡配置&lt;/code&gt;、&lt;code&gt;IP地址配置&lt;/code&gt;、&lt;code&gt;配置dns&lt;/code&gt;都选择默认即可&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;时区&lt;code&gt;timezone&lt;/code&gt;:&lt;code&gt;Asia&lt;/code&gt;,&lt;code&gt;Hong_Kong&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;NTP&lt;/code&gt;: 默认 &lt;code&gt;chrony&lt;/code&gt; 即可&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;root Password&lt;/code&gt;: 自行设置，短密码会警告，但仍可设置成功&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Proxy&lt;/code&gt;:跳过&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;repositories mirror&lt;/code&gt;: &lt;code&gt;f&lt;/code&gt; 可以自动选择最快的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;setup a user&lt;/code&gt;: 根据情况设置，可跳过&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;ssh server&lt;/code&gt;: 默认 &lt;code&gt;openssh&lt;/code&gt; 即可&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;allow root ssh login&lt;/code&gt;: 根据情况选择 &lt;code&gt;yes&lt;/code&gt; 允许密钥和密码，&lt;code&gt;prohibit-password&lt;/code&gt; 只允许密钥登陆&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;How would you like to use disk?&lt;/code&gt;: &lt;code&gt;sda&lt;/code&gt; -&amp;gt; &lt;code&gt;sys&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Erase(擦除) the disk?[y/N]&lt;/code&gt;: &lt;code&gt;y&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Installation is complete&lt;/code&gt;: 安装完成，如果是虚拟机关闭电脑，移除虚拟盘，导出虚拟机(109M)，或者做个快照以后就可以随意折腾了&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;use&#34;&gt;&lt;code&gt;use&lt;/code&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;install-docker&#34;&gt;Install Docker
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apk update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apk add vim &lt;span style=&#34;color:#75715e&#34;&gt;# 安装 vim&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim /etc/apk/repositories &lt;span style=&#34;color:#75715e&#34;&gt;# 去除 community 这一行的注释 打开更多仓库&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apk update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apk add docker &lt;span style=&#34;color:#75715e&#34;&gt;# 安装 docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rc-update add docker boot &lt;span style=&#34;color:#75715e&#34;&gt;# 开机自动启动 docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;service docker start &lt;span style=&#34;color:#75715e&#34;&gt;# 启动 docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rc-service docker start &lt;span style=&#34;color:#75715e&#34;&gt;# 启动 docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;addgroup lee docker &lt;span style=&#34;color:#75715e&#34;&gt;# 将用户加入 docker 组&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;groups lee &lt;span style=&#34;color:#75715e&#34;&gt;# 查看用户所属的组&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;id lee &lt;span style=&#34;color:#75715e&#34;&gt;# 查看用户所属的组&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 让组变更立即生效   不需要重新登录 以 root 执行，给当前用户的会话赋予新组权限&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# sudo apk add --no-cache shadow&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# sudo apk add --no-cache shadow-login&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# sudo apk add --no-cache util-linux&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;newgrp docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apk add docker-cli-compose
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>简易在线音乐播放器</title>
+        <link>/post/tech/web.music/</link>
+        <pubDate>Tue, 19 Apr 2022 08:06:15 +0800</pubDate>
+        
+        <guid>/post/tech/web.music/</guid>
+        <description>&lt;p&gt;简易在线音乐播放器&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;head&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;meta&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;charset&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt; /&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;title&lt;/span&gt;&amp;gt;音乐播放器&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;title&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;link&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rel&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;stylesheet&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;text/css&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;href&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;./index.css&amp;#34;&lt;/span&gt;/&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;head&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;header&lt;/span&gt;&amp;gt;音乐播放器&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;header&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;section&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;ul&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;Here We Are Again&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;不谓侠&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;多想在平庸的生活拥抱你&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;浪子回头&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;那个女孩&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;那女孩对我说&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;平胸女子&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;情深深雨濛濛&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;雅俗共赏&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;野狼disco&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;这一生关于你的风景&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;ul&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;section&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;audio&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ado&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;controls&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;controls&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;audio&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;footer&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			当前播放的是：&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;span&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;con&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;span&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;footer&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;./index.js&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;text/javascript&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;charset&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-css&#34; data-lang=&#34;css&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/* 写样式通常首先-清空所有标签的内外边距 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;margin&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;padding&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/*  */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;width&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;31.25&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;rem&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;overflow&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;auto&lt;/span&gt;;		&lt;span style=&#34;color:#75715e&#34;&gt;/* overflow 属性规定当内容溢出元素框时发生的事情 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;margin&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;auto&lt;/span&gt;;  &lt;span style=&#34;color:#75715e&#34;&gt;/* 外边距 上下20 水平居中 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/* 设置头部和底部样式 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;header&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;footer&lt;/span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;height&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;line-height&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt;;  &lt;span style=&#34;color:#75715e&#34;&gt;/* 与模块同高 可以字体上下居中显示 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;background&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;#808080&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;text-align&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;center&lt;/span&gt;; &lt;span style=&#34;color:#75715e&#34;&gt;/* 文本居中 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/* 给音乐列表写样式 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;li&lt;/span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;height&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;line-height&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;border&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;solid&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;red&lt;/span&gt;;  &lt;span style=&#34;color:#75715e&#34;&gt;/* 添加边框属性 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;border-top&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;none&lt;/span&gt;;  		&lt;span style=&#34;color:#75715e&#34;&gt;/* 上下线条重合 so清空上线条 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;font-size&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;15&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt;;		&lt;span style=&#34;color:#75715e&#34;&gt;/* 字体大小设置 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;text-indent&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt;;		&lt;span style=&#34;color:#75715e&#34;&gt;/* text-indent 属性规定文本块中首行文本的缩进。 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;							&lt;span style=&#34;color:#75715e&#34;&gt;/* 注释：允许使用负值。如果使用负值，那么首行会被缩进到左边 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;list-style&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;none&lt;/span&gt;;		&lt;span style=&#34;color:#75715e&#34;&gt;/* 清空一下列表的样式-列表前方的点或数字 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/* 音频文件的样式设置 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#ado{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;width&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;%&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;height&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;margin-top&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/* 设置控制列表的类名样式 */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;sty&lt;/span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;background&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;#FF0000&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; document.&lt;span style=&#34;color:#a6e22e&#34;&gt;getElementsByTagName&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;li&amp;#39;&lt;/span&gt;);   &lt;span style=&#34;color:#75715e&#34;&gt;//获取dom元素
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ado&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; document.&lt;span style=&#34;color:#a6e22e&#34;&gt;getElementById&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ado&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;con&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; document.&lt;span style=&#34;color:#a6e22e&#34;&gt;getElementById&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;con&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//创建数组存放音乐文件路径，通过下标找到相应文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;arr&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/Here We Are Again.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/不谓侠.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/多想在平庸的生活拥抱你.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/浪子回头.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/那个女孩.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/那女孩对我说.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/平胸女子.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/情深深雨濛濛.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/雅俗共赏.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/野狼disco.mp3&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;audio/这一生关于你的风景.mp3&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//通过循环遍历的方式添加点击事件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;].&lt;span style=&#34;color:#a6e22e&#34;&gt;onclick&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;(){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;]) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;].&lt;span style=&#34;color:#a6e22e&#34;&gt;className&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sty&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#a6e22e&#34;&gt;ado&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;arr&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#a6e22e&#34;&gt;ado&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;play&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#a6e22e&#34;&gt;con&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;innerHTML&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;].&lt;span style=&#34;color:#a6e22e&#34;&gt;innerHTML&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#75715e&#34;&gt;//通过ended事件监听是否播放完毕
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;				&lt;span style=&#34;color:#a6e22e&#34;&gt;ado&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;onended&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;(){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;						&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#75715e&#34;&gt;//通过for循环清空所有样式列表
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;					&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;j&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;j&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;j&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;						&lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;j&lt;/span&gt;].&lt;span style=&#34;color:#a6e22e&#34;&gt;className&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#75715e&#34;&gt;//通过下标a给相应的列表进行样式的修饰和音乐的播放
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;					&lt;span style=&#34;color:#a6e22e&#34;&gt;con&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;innerHTML&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;].&lt;span style=&#34;color:#a6e22e&#34;&gt;innerHTML&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#a6e22e&#34;&gt;ado&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;arr&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#a6e22e&#34;&gt;ado&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;play&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;].&lt;span style=&#34;color:#a6e22e&#34;&gt;className&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sty&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			} &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#a6e22e&#34;&gt;lis&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;].&lt;span style=&#34;color:#a6e22e&#34;&gt;className&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>go-callvis</title>
+        <link>/post/tech/graph-go.go-callvis/</link>
+        <pubDate>Tue, 19 Apr 2022 00:06:03 +0800</pubDate>
+        
+        <guid>/post/tech/graph-go.go-callvis/</guid>
+        <description>&lt;h1 id=&#34;go-callvis&#34;&gt;go-callvis
+&lt;/h1&gt;&lt;p&gt;go-callvis是一个开发工具，可帮助使用交互式视图可视化 Go 程序的调用图。
+该工具的目的是为开发人员提供使用调用图数据及其与包和类型的关系的 Go 程序的可视化概览。这在代码复杂性更高的大型项目中或当您只是试图理解其他人的代码时特别有用。&lt;/p&gt;
+&lt;h2 id=&#34;安装&#34;&gt;安装
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go install github.com/ofabry/go-callvis
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;使用&#34;&gt;使用
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go-callvis -nointer -nostd -nodesep 0.1 ./client
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;参数说明&#34;&gt;参数说明
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;   -debug
+         输出详细日志
+   -file string
+         以文件新式输出结果，并将忽略server交互模式
+   -focus string
+         Focus specific package using name or import path. (default &amp;#34;main&amp;#34;)
+   -format string
+         输出文件的格式 [svg | png | jpg | ...] (默认 &amp;#34;svg&amp;#34;)
+   -graphviz
+         使用Graphviz渲染图像
+   -group string
+         分组功能，根据包 与/或 类型分组 [pkg, type] (用逗号分开) (默认 &amp;#34;pkg&amp;#34;)，例如 -group pkg,type
+   -http string
+         HTTP 服务地址 (默认 &amp;#34;:7878&amp;#34;)
+   -ignore string
+        忽略包含给定前缀的包路径(用逗号分开)
+   -include string
+         包含具有给定前缀的包路径 (用逗号分开)
+   -limit string
+         Limit package paths to given prefixes (separated by comma)
+   -minlen uint
+         Minimum edge length (for wider output). (default 2)
+   -nodesep float
+         Minimum space between two adjacent nodes in the same rank (for taller output). (default 0.35)
+   -nointer
+         忽略对未导出函数的调用。
+   -nostd
+         忽略标准库的调用
+   -skipbrowser
+         跳过打开浏览器
+   -tags build tags
+         a list of build tags to consider satisfied during the build. For more information about build tags, see the description of build constraints in the documentation for the go/build package
+   -tests
+         包含测试代码
+   -version
+         显示版本号
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        <item>
+        <title>Netstat</title>
+        <link>/post/tech/netstat/</link>
+        <pubDate>Fri, 24 Dec 2021 15:56:49 +0800</pubDate>
+        
+        <guid>/post/tech/netstat/</guid>
+        <description>&lt;p&gt;&lt;code&gt;netstat&lt;/code&gt; 作为调试网络问题的必备工具, 有些常用选项, 在这里记录一下&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;显示路由表: netstat -r&lt;/li&gt;
+&lt;li&gt;显示所有连接: netstat -a&lt;/li&gt;
+&lt;li&gt;显示所有 TCP 连接: netstat -at&lt;/li&gt;
+&lt;li&gt;显示所有 UDP 连接: netstat -au&lt;/li&gt;
+&lt;li&gt;显示所有的 TCP 监听服务: netstat -lt&lt;/li&gt;
+&lt;li&gt;列举网络接口: netstat -ie&lt;/li&gt;
+&lt;li&gt;最常用选项: netstat -plent 显示本地 TCP 监听服务及其对应的进程信息&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Terminal</title>
+        <link>/post/tech/terminal/</link>
+        <pubDate>Fri, 24 Dec 2021 15:56:34 +0800</pubDate>
+        
+        <guid>/post/tech/terminal/</guid>
+        <description>&lt;h1 id=&#34;linux终端terminal常用快捷键&#34;&gt;Linux终端Terminal常用快捷键
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;CTRL+ALT+T 打开终端
+Ctrl+a 光标移动到开始位置
+Ctrl+e 光标移动到最末尾
+Ctrl+k 删除此处至末尾的所有内容
+Ctrl+u 删除此处至开始的所有内容
+Ctrl+d 删除当前字符
+Ctrl+h 删除当前字符前一个字符
+Ctrl+w 删除此处到左边的单词
+Ctrl+y 粘贴由Ctrl+u， Ctrl+d， Ctrl+w删除的单词
+Ctrl+l 相当于clear，即清屏
+Ctrl+r 查找历史命令
+Ctrl+b 向回移动光标
+Ctrl+f 向前移动光标
+Ctrl+t 将光标位置的字符和前一个字符进行位置交换
+Ctrl+&amp;amp; 恢复 ctrl+h 或者 ctrl+d 或者 ctrl+w 删除的内容
+Ctrl+S 暂停屏幕输出
+Ctrl+Q 继续屏幕输出
+Ctrl+Left-Arrow 光标移动到上一个单词的词首
+Ctrl+Right-Arrow 光标移动到下一个单词的词尾
+Ctrl+p 向上显示缓存命令
+Ctrl+n 向下显示缓存命令
+Ctrl+d 关闭终端
+Ctrl+xx 在EOL和当前光标位置移动
+Ctrl+x@ 显示可能hostname补全
+Ctrl+c 终止进程/命令
+Shift+上或下 终端上下滚动
+Shift+PgUp/PgDn 终端上下翻页滚动
+Ctrl+Shift+n 新终端
+alt+F2 输入gnome-terminal打开终端
+Shift+Ctrl+T 打开新的标签页
+Shift+Ctrl+W 关闭标签页
+Shift+Ctrl+C 复制
+Shift+Ctrl+V 粘贴
+Alt+数字 切换至对应的标签页
+Shift+Ctrl+N 打开新的终端窗口
+Shift+Ctrl+Q 管壁终端窗口
+Shift+Ctrl+PgUp/PgDn 左移右移标签页
+Ctrl+PgUp/PgDn 切换标签页
+F1 打开帮助指南
+F10 激活菜单栏
+F11 全屏切换
+
+Alt+F 打开 “文件” 菜单（file）
+Alt+E 打开 “编辑” 菜单（edit）
+Alt+V 打开 “查看” 菜单（view）
+Alt+S 打开 “搜索” 菜单（search）
+Alt+T 打开 “终端” 菜单（terminal）
+Alt+H 打开 “帮助” 菜单（help）
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        <item>
+        <title>Grep</title>
+        <link>/post/tech/grep/</link>
+        <pubDate>Fri, 24 Dec 2021 15:56:15 +0800</pubDate>
+        
+        <guid>/post/tech/grep/</guid>
+        <description>&lt;h1 id=&#34;grep&#34;&gt;grep
+&lt;/h1&gt;&lt;h2 id=&#34;参数&#34;&gt;参数
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt; -A&amp;lt;显示行数&amp;gt;: 除了显示符合范本样式的那一列之外，并显示该行之后的内容。
+ -B&amp;lt;显示行数&amp;gt;: 除了显示符合样式的那一行之外，并显示该行之前的内容。
+ -C&amp;lt;显示行数&amp;gt;: 除了显示符合样式的那一行之外，并显示该行之前后的内容。
+ -c: 统计匹配的行数
+ -e: 实现多个选项间的逻辑or 关系
+ -E: 扩展的正则表达式
+ -f FILE: 从FILE获取PATTERN匹配
+ -F: 相当于fgrep
+ -i --ignore-case #忽略字符大小写的差别。
+ -n: 显示匹配的行号
+ -n: 搜索结果显示行号
+ -o: 仅显示匹配到的字符串
+ -q: 静默模式，不输出任何信息
+ -r: 递归查找
+ -s: 不显示错误信息。
+ -v: 显示不被pattern 匹配到的行，相当于[^] 反向匹配
+ -w: 匹配 整个单词
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;常用法&#34;&gt;常用法
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;查找不区分大小写
+grep -rni memcpy .
+在搜索结果中用反向匹配”-v“排除*.o.cmd文件的匹配
+grep -rn memcpy | grep -v .o.cmd
+使用多个-v依次对上一次的结果进行反向匹配
+grep -rn memcpy | grep -v .o.cmd | grep -v .s.cmd | grep -v .o | grep -v .map
+使用-Ev一次进行多个反向匹配搜索
+grep -rn memcpy | grep -Ev &amp;#39;\.o\.cmd|\.s\.cmd|\.o|\.map&amp;#39;
+使用”--exclude=GLOB“来指定排除某些格式的文件，如不在“*.cmd”，“*.o”和“*.map”中搜索
+grep -rn --exclude=*.cmd --exclude=*.o --exclude=*.map memcpy
+跟“--exclude=GLOB”类似的用法有“--include=GLOB”，从指定的文件中搜索，如只在“*.cmd”，“*.o”和“*.map”中搜索
+grep -rn --include=*.cmd --include=*.o --include=*.map memcpy
+“--include=GLOB”在不确定某些函数是否被编译时特别有用
+grep -rn --include=*.o rpi_is_serial_active
+不在某些指定的目录查找
+grep -rn --exclude-dir=out memcpy
+忽略多个目录
+grep -rn --exclude-dir=out --exclude-dir=doc memcpy
+查找精确匹配结果
+grep -rnw memcpy .
+查找作为单词分界的结果
+grep -rn -E &amp;#34;(\b|_)memcpy(\b|_)&amp;#34;
+查看查找结果的上下文想看宏定义“MEMCPY”匹配的前三行和后两行
+grep -rn -B 3 -A 2 MEMCPY
+
+find命令先找出makefile类文件，然后再从结果中搜索CFLAGS
+find . -iname Makefile -o -iname *.inc -o -iname *.mk | xargs grep -rn CFLAGS
+grep -rn --include=Makefile --include=*.inc --include=*.mk CFLAGS .
+
+在linux目录中查找所有的*.h，并在这些文件中查找“SYSCALL_VECTOR”
+find linux -name *.h | xargs grep &amp;#34;SYSCALL_VECTOR&amp;#34;
+打印出所有包含”SYSCALL_VECTOR”字符串的文件名
+find linux -name *.h | xargs grep -l &amp;#34;SYSCALL_VECTOR&amp;#34;
+grep的选项-l只打印匹配的文件名
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;实战脚本&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#echo &amp;lt;&amp;lt;&amp;lt;EOT &amp;gt; test.txt&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#aaaa&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#bbbbbb&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#AAAaaa&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#BBBBBASDABBDA&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#EOT&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set +x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  sleep &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set -x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tee test.txt &amp;gt; /dev/null &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt;EOT
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;aaa
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;bbbbbb
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;AAAaaa
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;BBBBBASDABBDA
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EOT&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;aaa&amp;#34;&lt;/span&gt; &amp;gt; grep.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# cat grep.txt&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -A2 b test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -B1 b test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -C1 b test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -c aaa test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -e AAA -e bbb test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -in b test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -o ASDA test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -q aa test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -v aaa test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -w aaa test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -f grep.txt test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;正则表达式&#34;&gt;正则表达式
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt; . 匹配任意单个字符，不能匹配空行
+  [] 匹配指定范围内的任意单个字符
+  [^] 取反
+  [:alnum:] 或 [0-9a-zA-Z]
+  [:alpha:] 或 [a-zA-Z]
+  [:upper:] 或 [A-Z]
+  [:lower:] 或 [a-z]
+  [:blank:] 空白字符（空格和制表符）
+  [:space:] 水平和垂直的空白字符（比[:blank:]包含的范围广）
+  [:cntrl:] 不可打印的控制字符（退格、删除、警铃...）
+  [:digit:] 十进制数字 或[0-9]
+  [:xdigit:]十六进制数字
+  [:graph:] 可打印的非空白字符
+  [:print:] 可打印字符
+  [:punct:] 标点符号
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;实战&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;------------------------sleepAndExecDebug&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set +x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  sleep &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set -x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;aaa&amp;#34;&lt;/span&gt; &amp;gt; grep.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tee test.reg.txt &amp;gt; /dev/null &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt;EOT
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;abc
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;123
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;//[
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EOT&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tee test.reg2.txt &amp;gt; /dev/null &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt;EOT
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ggle
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;gogle
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;google
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;goooooooooooooooooooooooooogle
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;gagle
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EOT&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep . test.reg.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;a/&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; test.reg.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;^abc&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; test.reg.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#f92672&#34;&gt;[[&lt;/span&gt;:alnum:&lt;span style=&#34;color:#f92672&#34;&gt;]]&lt;/span&gt; test.reg.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;a-z&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; test.reg.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#f92672&#34;&gt;[[&lt;/span&gt;:space:&lt;span style=&#34;color:#f92672&#34;&gt;]]&lt;/span&gt; test.reg.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#f92672&#34;&gt;[[&lt;/span&gt;:punct:&lt;span style=&#34;color:#f92672&#34;&gt;]]&lt;/span&gt; test.reg.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;g[o]*gle&amp;#34;&lt;/span&gt; test.reg2.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;g[o].*gle&amp;#34;&lt;/span&gt; test.reg2.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;g[o]\?gle&amp;#34;&lt;/span&gt; test.reg2.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;g[o]\+gle&amp;#34;&lt;/span&gt; test.reg2.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;g[o]\{1,2\}gle&amp;#34;&lt;/span&gt; test.reg2.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep -E &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;g[o]{10,}gle&amp;#34;&lt;/span&gt; test.reg2.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;egrep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;g[o]{,10}gle&amp;#34;&lt;/span&gt; test.reg2.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;位置锚定&#34;&gt;位置锚定
+&lt;/h3&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  ^  行首锚定，用于模式的最左侧
+  $  行尾锚定，用于模式的最右侧
+  ^PATTERN$，用于模式匹配整行
+  ^$ 空行
+  ^[[:space:]].*$  空白行
+  \&amp;lt; 或 \b  词首锚定，用于单词模式的左侧
+  \&amp;gt; 或 \b  词尾锚定；用于单词模式的右侧
+  \&amp;lt;PATTERN\&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;实战&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;------------------------sleepAndExecDebug&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set +x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  sleep &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set -x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tee test.reg3.txt &amp;gt; /dev/null &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt;EOT
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;aaa
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;bbbbbb
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;acdfsddsfb
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EOT&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep ^a test.reg3.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep b$ test.reg3.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep ^$ test.reg3.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep ^&lt;span style=&#34;color:#f92672&#34;&gt;[[&lt;/span&gt;:space:&lt;span style=&#34;color:#f92672&#34;&gt;]]&lt;/span&gt;.*$ test.reg3.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;\&amp;lt;a.*b\&amp;gt;&amp;#34;&lt;/span&gt; test.reg3.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;分组和后向引用&#34;&gt;分组和后向引用
+&lt;/h3&gt;&lt;p&gt;① 分组：() 将一个或多个字符捆绑在一起，当作一个整体进行处理
+　　分组括号中的模式匹配到的内容会被正则表达式引擎记录于内部的变量中，这些变量的命名方式为: \1, \2, \3, &amp;hellip;
+② 后向引用
+引用前面的分组括号中的模式所匹配字符，而非模式本身
+\1 表示从左侧起第1个左括号以及与之匹配右括号之间的模式所匹配到的字符
+\2 表示从左侧起第2个左括号以及与之匹配右括号之间的模式所匹配到的字符，以此类推
+&amp;amp; 表示前面的分组中所有字符&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/tech/grep/1.png&#34;
+	width=&#34;487&#34;
+	height=&#34;135&#34;
+	srcset=&#34;/post/tech/grep/1_hu_6f7c7e74a1a1cc64.png 480w, /post/tech/grep/1_hu_12b16602ff2bb148.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;1.png&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;360&#34;
+		data-flex-basis=&#34;865px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;------------------------sleepAndExecDebug&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set +x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  sleep &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set -x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tee test.reg4.txt &amp;gt; /dev/null &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt;EOT
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Hello world Hello world
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Heiii world Heiii world
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Hello world Heiii wwwww
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EOT&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;\(He\)&amp;#34;&lt;/span&gt; test.reg4.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;\(He\).*\1&amp;#34;&lt;/span&gt; test.reg4.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------sleepAndExecDebug
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;\(He\).*\(wo\).*\2&amp;#34;&lt;/span&gt; test.reg4.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;扩展正则表达式&#34;&gt;扩展正则表达式
+&lt;/h3&gt;&lt;p&gt;（1）字符匹配：
+.  任意单个字符
+[]  指定范围的字符
+[^] 不在指定范围的字符
+次数匹配：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;：匹配前面字符任意次
+?  : 0 或1次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;：1 次或多次
+{m} ：匹配m次 次
+{m,n} ：至少m ，至多n次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;（2）位置锚定：
+^ : 行首
+$ : 行尾
+&amp;lt;, \b : 语首
+&amp;gt;, \b : 语尾
+分组：()
+后向引用：\1, \2, &amp;hellip;&lt;/p&gt;
+&lt;p&gt;（3）总结
+　　除了&amp;lt;, \b : 语首、&amp;gt;, \b : 语尾；使用其他正则都可以去掉\；&lt;/p&gt;
+&lt;h1 id=&#34;ack&#34;&gt;ack
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# http://betterthangrep.com/documentation/
+# http://codeseekah.com/2012/03/11/ack-vs-grep/
+sudo apt install ack
+# 速度非常快,因为它只搜索有意义的东西。
+# 更友好的搜索，忽略那些不是你源码的东西。
+# 为源代码搜索而设计，用更少的击键完成任务。
+# 非常轻便，移植性好。
+# 免费且开源
+
+-c(统计)/ -i(忽略大小)/ -h(不显示名称)/
+-l(只显文件名)/ -n(加行号)/ -v(显示不匹配)
+
+文本搜索
+ack hello
+ack -i hello  # -i, --ignore-case   屏蔽大小写
+                   # -I, --no-ignore-case  不屏蔽大小写(默认)
+ack -v hello  # -v, --invert-match  反向匹配
+ack -w hello  # -w, --word-regexp   单词匹配
+ack -Q &amp;#39;hello*&amp;#39;    # -Q, --literal  引用所有元字符； PATTERN 是文字
+
+文件搜索
+ack --line=1       # 输出所有文件第二行
+ack -l &amp;#39;hello&amp;#39;     # 包含的文件名
+ack -L &amp;#39;print&amp;#39;     # 非包含文件名
+
+
+ack hello --pager=&amp;#39;less -R&amp;#39;    # 以less形式展示
+ack hello --noheading      # 不在头上显示文件
+ack hello --nocolor        # 不对匹配字符着色
+
+
+ack -f hello.py    # 查找全匹配文件
+ack -g hello.py$    # 查找正则匹配文件
+ack -g hello  --sort-files     #查找然后排序
+
+
+ack --python hello #查找所有python文件
+ack -G hello.py$ hello     # 查找匹配正则的文件
+
+ack配置
+# 设置排序
+--sort-files
+#设置文件过滤
+--python
+--html
+--js
+--conf
+# 设置显示
+--noheading
+# 定义新的文件类型
+--type-set=conf=.conf
+# 智能识别大小写
+--smart-case
+# 设置以less形式展示，设定less参数
+--pager=less -R -M --shift 5 -i
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;ag&#34;&gt;ag
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo apt-get install silversearcher-ag
+
+ag main
+ag &amp;#34;main(&amp;#34;
+ag &amp;#34;main\(&amp;#34; src
+ag &amp;#34;main\(&amp;#34; --ignore-dir 3rdparty
+ag &amp;#34;main\(&amp;#34; --ignore-dir 3rdparty --ignore-dir doc
+ag &amp;#34;http&amp;#34; -l | xargs sed -i &amp;#39;s/http/https/g&amp;#39;
+grep -ri &amp;#34;http&amp;#34; * -l | xargs sed -i &amp;#39;s/http/https/g&amp;#39;
+
+ag 另外其他很有用的選項是
+ag -i 使用大小寫不敏感的匹配方式
+ag -w 全詞匹配
+ag -G &amp;#34;.+\.java&amp;#34; 搜索 java 類型的檔案
+ag -l 顯示有匹配的檔案路徑
+ag -L 顯示沒有任何匹配的檔案路徑
+ag -v 反向匹配，將匹配到的資料排除
+
+ag 搭配正規表達式
+ag ^abc log.txt
+ag abc$ log.txt
+ag abc[0-9] log.txt
+&lt;/code&gt;&lt;/pre&gt;</description>
+        </item>
+        <item>
+        <title>Find</title>
+        <link>/post/tech/find/</link>
+        <pubDate>Fri, 24 Dec 2021 15:56:03 +0800</pubDate>
+        
+        <guid>/post/tech/find/</guid>
+        <description>&lt;p&gt;find 是最常见最强大的查找命令，可找到任何想找的文件&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ find &amp;lt;目录&amp;gt; &amp;lt;条件&amp;gt; &amp;lt;动作&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ find path -option &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; -print&lt;span style=&#34;color:#f92672&#34;&gt;][&lt;/span&gt;-exec -ok command&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;find . -name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;my*&amp;#39;&lt;/span&gt; -ls &lt;span style=&#34;color:#75715e&#34;&gt;# 当前目录所有以 my 开头的文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;find . -type -f -mmin -10 &lt;span style=&#34;color:#75715e&#34;&gt;# 10分钟内更新过的普通文件(-type f)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;find ~ -mtime -7 &lt;span style=&#34;color:#75715e&#34;&gt;# 查找主目录一周内修改的文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;find ~ -mtime +1 -mtime -7 &lt;span style=&#34;color:#75715e&#34;&gt;# 查找修改时间超过1天，不超过1周的文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# -type: d 目录; f 文件; l 链接; s 套接字; p 命名管道; b 块设备;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;find /usr -maxdepth &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; -iname &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;*xml&amp;#34;&lt;/span&gt; | wc -l
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# -maxdepth 最大深度&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# -mindepth 最小深度&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;find . -name runme -exec rm &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# 任何名为 runme 的文件都会被立即删除&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;find . -name runme -ok rm &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\;&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#查找明为 runme 的文件提示后 y 确认删除&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;find . -type f -perm &lt;span style=&#34;color:#ae81ff&#34;&gt;644&lt;/span&gt; -exec ls -l &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 查找当前目录中文件属主有读写权限，且文件属组用户和其它用户有读权限的文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;locate 其实是 &lt;code&gt;find -name&lt;/code&gt; 的另一种写法&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;locate /etc/sh &lt;span style=&#34;color:#75715e&#34;&gt;# etc 下以 sh 开头的文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;locate ~/m &lt;span style=&#34;color:#75715e&#34;&gt;# 主目录下 m 开头的文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;类似的查找命令还有: &lt;code&gt;which type&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;找到root用户的文件全部改成www-data用户的&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# find . -user root -group root -exec chown 1000:1000 {} \;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# find . -user root -group root -exec chown www-data:www-data {} \;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# find . -user root -group root | xargs chown 1000:1000&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;find . -user root -group root | xargs chown www-data:www-data
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# find . -user root -exec chown www-data {} \;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 更快的权限设置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# chownspeed www-data /var/www&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; chownspeed&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;#find /var/www -not -user www-data -execdir chown www-data {} \+&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  find &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$2&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; -not -user &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$1&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; -execdir chown &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$1&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\+&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
