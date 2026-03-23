@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Search on 良宏</title>
+        <link>/tags/search/</link>
+        <description>Recent content in Search on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Mon, 17 Mar 2025 18:57:47 +0800</lastBuildDate><atom:link href="/tags/search/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Embedding and RAG searching</title>
+        <link>/post/tech/embedding-rag-search/</link>
+        <pubDate>Mon, 17 Mar 2025 18:57:47 +0800</pubDate>
+        
+        <guid>/post/tech/embedding-rag-search/</guid>
+        <description>&lt;h1 id=&#34;向量数据库与ai相似搜索&#34;&gt;向量数据库与AI相似搜索
+&lt;/h1&gt;&lt;h2 id=&#34;一基础认知&#34;&gt;一、基础认知
+&lt;/h2&gt;&lt;h3 id=&#34;11-核心定义&#34;&gt;1.1 核心定义
+&lt;/h3&gt;&lt;h4 id=&#34;向量数据库&#34;&gt;向量数据库
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;存储高维向量，支持高效相似检索&lt;/li&gt;
+&lt;li&gt;解决非结构化数据的相似度匹配问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;相似搜索原理&#34;&gt;相似搜索原理
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;数据→Embedding模型→向量→向量库→Top-K相似结果&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;配合ai模型价值&#34;&gt;配合AI模型价值
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;大模型负责理解生成，向量库负责记忆查找&lt;/li&gt;
+&lt;li&gt;弥补大模型实时性、知识时效性缺陷&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;12-核心技术流程&#34;&gt;1.2 核心技术流程
+&lt;/h3&gt;&lt;h4 id=&#34;标准工作流&#34;&gt;标准工作流
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;非结构化数据处理（文本/图片/音频/视频）&lt;/li&gt;
+&lt;li&gt;向量嵌入生成（Embedding Model）&lt;/li&gt;
+&lt;li&gt;向量入库与索引构建&lt;/li&gt;
+&lt;li&gt;用户查询向量化&lt;/li&gt;
+&lt;li&gt;向量相似度计算（余弦/欧氏距离）&lt;/li&gt;
+&lt;li&gt;返回相似结果&lt;/li&gt;
+&lt;li&gt;大模型后处理（总结/问答/推荐）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;关键技术点&#34;&gt;关键技术点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;向量索引类型（IVF、HNSW、Annoy）&lt;/li&gt;
+&lt;li&gt;相似度度量方式&lt;/li&gt;
+&lt;li&gt;向量维度选择&lt;/li&gt;
+&lt;li&gt;检索精度与速度平衡&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二主流应用场景&#34;&gt;二、主流应用场景
+&lt;/h2&gt;&lt;h3 id=&#34;21-文本类场景&#34;&gt;2.1 文本类场景
+&lt;/h3&gt;&lt;h4 id=&#34;智能问答rag&#34;&gt;智能问答RAG
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;企业知识库、政务咨询、智能客服&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;语义搜索&#34;&gt;语义搜索
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;替代关键词搜索，理解语义意图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;内容治理&#34;&gt;内容治理
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;论文查重、文案去重、违规检测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;内容推荐&#34;&gt;内容推荐
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文章、小说、资讯相似推荐&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;22-图像视觉类场景&#34;&gt;2.2 图像视觉类场景
+&lt;/h3&gt;&lt;h4 id=&#34;以图搜图&#34;&gt;以图搜图
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;电商同款、文物检索、安防识别&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;相似风格推荐&#34;&gt;相似风格推荐
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;设计、服装、室内设计素材匹配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;工业质检&#34;&gt;工业质检
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;产品瑕疵异常检测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;23-多模态跨模态场景&#34;&gt;2.3 多模态跨模态场景
+&lt;/h3&gt;&lt;h4 id=&#34;图文互搜&#34;&gt;图文互搜
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文字搜图、图片搜文字&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;多模态rag&#34;&gt;多模态RAG
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文本提问召回图片/视频/音频资料&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;aigc素材管理&#34;&gt;AIGC素材管理
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;生成内容的语义检索与归类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;24-拓展创新场景&#34;&gt;2.4 拓展创新场景
+&lt;/h3&gt;&lt;h4 id=&#34;用户个性化推荐&#34;&gt;用户个性化推荐
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;用户行为向量+内容向量精准匹配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;风控异常检测&#34;&gt;风控异常检测
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;交易、登录行为向量异常识别&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;音频语音场景&#34;&gt;音频语音场景
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;声纹识别、哼唱搜歌、客服录音质检&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;医疗健康&#34;&gt;医疗健康
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;病历检索、医学影像匹配、药物研发&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;法律合规&#34;&gt;法律合规
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;裁判文书检索、合同风险匹配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;工业iot&#34;&gt;工业IoT
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;时序数据故障预测、设备异常检测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;教育人才&#34;&gt;教育人才
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;简历岗位匹配、错题精准推题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;代码研发&#34;&gt;代码研发
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;相似代码检索、漏洞检测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三多模态统一向量空间&#34;&gt;三、多模态统一向量空间
+&lt;/h2&gt;&lt;h3 id=&#34;31-核心概念&#34;&gt;3.1 核心概念
+&lt;/h3&gt;&lt;h4 id=&#34;定义&#34;&gt;定义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;不同模态数据映射到同一向量空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;优势&#34;&gt;优势
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;一套向量库管理多模态数据&lt;/li&gt;
+&lt;li&gt;跨模态任意检索&lt;/li&gt;
+&lt;li&gt;多模态Agent长期记忆&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;32-支持模型&#34;&gt;3.2 支持模型
+&lt;/h3&gt;&lt;h4 id=&#34;商用全模态模型&#34;&gt;商用全模态模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Gemini Embedding 2（文本/图像/音频/视频/PDF）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;开源全模态模型&#34;&gt;开源全模态模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;ImageBind（6模态：文本、图像、音频、深度、红外、IMU）&lt;/li&gt;
+&lt;li&gt;ONE-PEACE（文本、图像、音频、视频、3D点云）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;图文主流模型&#34;&gt;图文主流模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;CLIP（OpenAI，生态最完善）&lt;/li&gt;
+&lt;li&gt;Qwen-VL Embedding（中文友好）&lt;/li&gt;
+&lt;li&gt;LLaVA/BLIP-2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;音视频专用模型&#34;&gt;音视频专用模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;CLAP（文本-音频）&lt;/li&gt;
+&lt;li&gt;VideoCLIP（文本-视频）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;33-技术路线&#34;&gt;3.3 技术路线
+&lt;/h3&gt;&lt;h4 id=&#34;双塔对齐模型&#34;&gt;双塔对齐模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;CLIP、ImageBind&lt;/li&gt;
+&lt;li&gt;优点：快、稳定、适合检索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;单塔融合模型&#34;&gt;单塔融合模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;LLaVA、BLIP-2&lt;/li&gt;
+&lt;li&gt;优点：理解能力强&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;原生全模态模型&#34;&gt;原生全模态模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Gemini系列&lt;/li&gt;
+&lt;li&gt;优点：统一度最高，无模态边界&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;34-落地选型建议&#34;&gt;3.4 落地选型建议
+&lt;/h3&gt;&lt;h4 id=&#34;快速上线全模态&#34;&gt;快速上线全模态
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Gemini Embedding 2 API&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;开源本地部署&#34;&gt;开源本地部署
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;ImageBind/ONE-PEACE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;中文图文场景&#34;&gt;中文图文场景
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Qwen-VL Embedding&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;高性价比图文&#34;&gt;高性价比图文
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;CLIP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四落地实施方向&#34;&gt;四、落地实施方向
+&lt;/h2&gt;&lt;h3 id=&#34;41-优先切入方向&#34;&gt;4.1 优先切入方向
+&lt;/h3&gt;&lt;h4 id=&#34;现有搜索升级&#34;&gt;现有搜索升级
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;关键词搜索→语义搜索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;推荐系统增强&#34;&gt;推荐系统增强
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;协同过滤+向量召回&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;非结构化数据治理&#34;&gt;非结构化数据治理
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文档、图片、音视频统一管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;42-前沿延伸方向&#34;&gt;4.2 前沿延伸方向
+&lt;/h3&gt;&lt;h4 id=&#34;向量库知识图谱&#34;&gt;向量库+知识图谱
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;语义检索+关系推理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;多模态统一向量空间&#34;&gt;多模态统一向量空间
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;全模态互搜&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;ai-agent长期记忆&#34;&gt;AI Agent长期记忆
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;对话历史、偏好向量存储&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实时流式向量检索&#34;&gt;实时流式向量检索
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;直播、监控、实时风控&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Embedding, llm and hardware</title>
+        <link>/post/tech/embedding-llm-hardware/</link>
+        <pubDate>Mon, 17 Mar 2025 17:00:47 +0800</pubDate>
+        
+        <guid>/post/tech/embedding-llm-hardware/</guid>
+        <description>&lt;h1 id=&#34;向量数据库与大模型硬件及运行原理全解&#34;&gt;向量数据库与大模型硬件及运行原理全解
+&lt;/h1&gt;&lt;h2 id=&#34;一核心结论总览&#34;&gt;一、核心结论总览
+&lt;/h2&gt;&lt;h3 id=&#34;1-通用核心结论&#34;&gt;1. 通用核心结论
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;输出质量与硬件算力无关，仅由算法、输入、精度决定&lt;/li&gt;
+&lt;li&gt;只要内存/显存足够加载数据，一定能运算结束&lt;/li&gt;
+&lt;li&gt;配置低仅导致运行速度慢，无结果质量下降&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-关键前提&#34;&gt;2. 关键前提
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;无程序崩溃、无数值溢出、无精度压缩改变&lt;/li&gt;
+&lt;li&gt;随机采样设置固定，否则结果本身存在随机性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二向量数据库详解&#34;&gt;二、向量数据库详解
+&lt;/h2&gt;&lt;h3 id=&#34;1-硬件需求&#34;&gt;1. 硬件需求
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;非必需显卡，CPU 即可正常运行&lt;/li&gt;
+&lt;li&gt;GPU仅用于高并发、亿级向量的检索加速&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-本质属性&#34;&gt;2. 本质属性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;存储+高维向量相似度检索&lt;/li&gt;
+&lt;li&gt;特殊数据库，无训练、无权重加载&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-运行特性&#34;&gt;3. 运行特性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;计算确定性，结果一致&lt;/li&gt;
+&lt;li&gt;内存足够则召回质量、排序不受硬件影响&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三大模型llm详解&#34;&gt;三、大模型(LLM)详解
+&lt;/h2&gt;&lt;h3 id=&#34;1-硬件需求-1&#34;&gt;1. 硬件需求
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;必需高性能显卡(显存充足)&lt;/li&gt;
+&lt;li&gt;核心消耗：模型权重+KV Cache&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-本质属性-1&#34;&gt;2. 本质属性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;神经网络推理计算&lt;/li&gt;
+&lt;li&gt;需加载权重，支持训练、微调、推理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-运行特性-1&#34;&gt;3. 运行特性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;推理计算确定性&lt;/li&gt;
+&lt;li&gt;配置低仅速度变慢，结果质量不变&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四两者核心对比&#34;&gt;四、两者核心对比
+&lt;/h2&gt;&lt;h3 id=&#34;1-相同点&#34;&gt;1. 相同点
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;结果质量不受硬件速度影响&lt;/li&gt;
+&lt;li&gt;内存/显存足够即可完成运算&lt;/li&gt;
+&lt;li&gt;仅存在运行速度差异&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-不同点&#34;&gt;2. 不同点
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;硬件依赖：向量库CPU优先，大模型GPU必需&lt;/li&gt;
+&lt;li&gt;核心逻辑：向量库是数据库，大模型是神经网络&lt;/li&gt;
+&lt;li&gt;流程环节：向量库无训练，大模型有训练微调&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;五工作流程原理梳理&#34;&gt;五、工作流程原理梳理
+&lt;/h2&gt;&lt;h3 id=&#34;1-向量数据库工作流程&#34;&gt;1. 向量数据库工作流程
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;向量生成(可搭配模型生成)&lt;/li&gt;
+&lt;li&gt;向量存储与索引构建&lt;/li&gt;
+&lt;li&gt;相似度检索计算&lt;/li&gt;
+&lt;li&gt;返回匹配结果&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;2-大模型推理工作流程&#34;&gt;2. 大模型推理工作流程
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;模型权重加载至显存/内存&lt;/li&gt;
+&lt;li&gt;输入文本向量化(Embedding)&lt;/li&gt;
+&lt;li&gt;逐层神经网络推理运算&lt;/li&gt;
+&lt;li&gt;Token采样生成输出文本&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;六常见误区纠正&#34;&gt;六、常见误区纠正
+&lt;/h2&gt;&lt;h3 id=&#34;误区1算力低会导致输出质量变差&#34;&gt;误区1：算力低会导致输出质量变差
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：仅速度变慢，质量不变&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;误区2向量数据库需要像大模型一样配显卡&#34;&gt;误区2：向量数据库需要像大模型一样配显卡
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：CPU即可，GPU非必需&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;误区3模型跑不完是算力不足&#34;&gt;误区3：模型跑不完是算力不足
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：多为内存/显存不足导致崩溃，非算力问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;误区4量化导致效果差是硬件问题&#34;&gt;误区4：量化导致效果差是硬件问题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：数值精度损失，和硬件配置无关&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;误区5结果不同是硬件导致&#34;&gt;误区5：结果不同是硬件导致
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：多为随机采样参数未固定，与硬件无关&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

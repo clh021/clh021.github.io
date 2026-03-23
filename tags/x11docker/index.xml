@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>X11docker on 良宏</title>
+        <link>/tags/x11docker/</link>
+        <description>Recent content in X11docker on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Tue, 29 Mar 2022 23:50:47 +0800</lastBuildDate><atom:link href="/tags/x11docker/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>构建一个x11Docker</title>
+        <link>/post/tech/buildx11docker/</link>
+        <pubDate>Tue, 29 Mar 2022 23:50:47 +0800</pubDate>
+        
+        <guid>/post/tech/buildx11docker/</guid>
+        <description>&lt;h1 id=&#34;构建一个运行于docker中的图形界面软件&#34;&gt;构建一个运行于Docker中的图形界面软件
+&lt;/h1&gt;&lt;h2 id=&#34;软件仓库的软件&#34;&gt;软件仓库的软件
+&lt;/h2&gt;&lt;p&gt;通常情况下，我们如果要将一个软件直接安装进 Docker，直接 install 即可。因为依赖会自动安装好。&lt;/p&gt;
+&lt;h2 id=&#34;修改的软件&#34;&gt;修改的软件
+&lt;/h2&gt;&lt;p&gt;如果一个软件包是修改自软件仓库的软件，一般也可以通过 &lt;code&gt;apt-cache depends packageName&lt;/code&gt; 查看到依赖的软件包。
+依次安装这些包即可。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-cache depends firefox
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: lsb-release
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libasound2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libatk1.0-0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libc6
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libcairo-gobject2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libcairo2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libdbus-1-3
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libdbus-glib-1-2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libfontconfig1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libfreetype6
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libgcc-s1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libgdk-pixbuf2.0-0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libglib2.0-0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libgtk-3-0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libharfbuzz0b
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libpango-1.0-0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libpangocairo-1.0-0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libstdc++6
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libx11-6
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libx11-xcb1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxcb-shm0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxcb1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxcomposite1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxcursor1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxdamage1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxext6
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxfixes3
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxi6
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxrandr2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxrender1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  依赖: libxtst6
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  推荐: xul-ext-ubufox
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  推荐: libcanberra0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  推荐: libdbusmenu-glib4
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  推荐: libdbusmenu-gtk3-4
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  建议: fonts-lyx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;修改较大的软件&#34;&gt;修改较大的软件
+&lt;/h2&gt;&lt;p&gt;如果一个软件包修改程度较大，添加了新的依赖。
+则可以通过先上述方式，在容器环境中 安装好已经查明的依赖包。
+然后就可以用类似完全未知来源的软件方法来查找所需的软件依赖包了。&lt;/p&gt;
+&lt;h2 id=&#34;未知依赖的软件&#34;&gt;未知依赖的软件
+&lt;/h2&gt;&lt;h3 id=&#34;ldd找出缺失的依赖库&#34;&gt;ldd找出缺失的依赖库
+&lt;/h3&gt;&lt;p&gt;通过 ldd 查看没有链接到的库。通过这些没有链接到的库名即可找到所需的依赖包。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;root@d444d316c665:/opt/lithium# ldd lithium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;linux-vdso.so.1 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ffdb53c8000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libX11.so.6 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libX11.so.6 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8ce496000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libcef.so &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; ./libcef.so &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8c108a000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libgtk-3.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libgtk-3.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8c08d9000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libgdk-3.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libgdk-3.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8c07d4000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libgdk_pixbuf-2.0.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8c07ac000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libgobject-2.0.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libgobject-2.0.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8c074c000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libc.so.6 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libc.so.6 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8c00a9000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libxcb.so.1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libxcb.so.1 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8c007f000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libXtst.so.6 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; not found
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libgbm.so.1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; not found
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libpango-1.0.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libpango-1.0.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8bfb06000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libcairo.so.2 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libcairo.so.2 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8bf9e3000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;/lib64/ld-linux-x86-64.so.2 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8ce5d9000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libxshmfence.so.1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; not found
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libepoxy.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; /lib/x86_64-linux-gnu/libepoxy.so.0 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0x00007ff8bf6a9000&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# ldd -v lithium # 可以查看更多详细信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此时可以通过 &lt;code&gt;grep&lt;/code&gt; 筛选来快速查看缺少的库
+&lt;code&gt;ldd /package/path/bin | grep &amp;quot;not found&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;root@d444d316c665:/opt/lithium# ldd lithium | grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;not found&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libXtst.so.6 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; not found
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libgbm.so.1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; not found
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libxshmfence.so.1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;gt; not found
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;使用apt-file根据动态库找依赖包&#34;&gt;使用&lt;code&gt;apt-file&lt;/code&gt;根据动态库找依赖包
+&lt;/h3&gt;&lt;p&gt;有关 &lt;code&gt;apt-file&lt;/code&gt; 的安装和使用，请参见我的 &lt;a class=&#34;link&#34; href=&#34;/p/apt/&#34; &gt;另一篇&lt;code&gt;apt&lt;/code&gt;笔记&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 以下两种方式都可以找到所需的依赖包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dpkg -S libX11.so.6 &lt;span style=&#34;color:#75715e&#34;&gt;# 只能用来查找已经安装好的包所带的库，换言之只能用来查询已知库与软件包的关系，而不能查找未知的包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-file search /usr/lib32/libstdc++.so.6
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;工具脚本&#34;&gt;工具脚本
+&lt;/h1&gt;&lt;p&gt;理解了以上流程后，快速安装好一个软件的依赖库的步骤就可以比较方便的封装进一个个脚本来代替手动操作。
+一次解决 &lt;code&gt;apt-file&lt;/code&gt; 环境，在安装软件时，如果速度很慢，可以通过我的另一个&lt;a class=&#34;link&#34; href=&#34;https://gitee.com/clh21/sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;脚本工具&lt;/a&gt;快速替换软件源为国内源&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt update; apt install apt-file; apt-file update
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;核心逻辑就是通过查找出来的动态库循环查找对应的软件包&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ldd /bin/bash | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/=&amp;gt;/{print $(NF-1)}&amp;#39;&lt;/span&gt;  |
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; read n; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt; apt-file search $n; &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt; |
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt; | sed &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/://&amp;#39;&lt;/span&gt; | sort | uniq
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;优化后，大概可以总结为如下脚本&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkgsLithium&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;ldd lithium | grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;not found&amp;#34;&lt;/span&gt; | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/=&amp;gt;/{print $(NF-3)}&amp;#39;&lt;/span&gt;  | &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; read n; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt; apt-file search $n; &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt; | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt; | sed &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/://&amp;#39;&lt;/span&gt; | sort | uniq&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkgsGecko&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;ldd gecko/libxul.so | grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;not found&amp;#34;&lt;/span&gt; | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/=&amp;gt;/{print $(NF-3)}&amp;#39;&lt;/span&gt;  | &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; read n; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt; apt-file search $n; &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt; | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt; | sed &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/://&amp;#39;&lt;/span&gt; | sort | uniq&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkgsChrome&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;ldd libcef.so | grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;not found&amp;#34;&lt;/span&gt; | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/=&amp;gt;/{print $(NF-3)}&amp;#39;&lt;/span&gt;  | &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; read n; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt; apt-file search $n; &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt; | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt; | sed &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/://&amp;#39;&lt;/span&gt; | sort | uniq&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[[&lt;/span&gt; -n &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$pkgsLithium&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; echo pkgsLithium
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[[&lt;/span&gt; -n &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$pkgsGecko&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; echo pkgsLithium  &lt;span style=&#34;color:#75715e&#34;&gt;# 此处包含有仅火狐才具备的动态库，注意不要安装，可以运行&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[[&lt;/span&gt; -n &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$pkgsChrome&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; echo pkgsLithium
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
