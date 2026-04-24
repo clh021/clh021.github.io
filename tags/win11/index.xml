@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Win11 on 良宏</title>
+        <link>/tags/win11/</link>
+        <description>Recent content in Win11 on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sat, 24 Jan 2026 17:45:26 +0800</lastBuildDate><atom:link href="/tags/win11/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>记录 Win11 开发环境摸索过程</title>
+        <link>/post/live/win.dev/</link>
+        <pubDate>Sat, 24 Jan 2026 17:45:26 +0800</pubDate>
+        
+        <guid>/post/live/win.dev/</guid>
+        <description>&lt;h2 id=&#34;前提条件&#34;&gt;前提条件
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;wsl2 是必备的，不可能在 windows 环境进行开发&lt;/li&gt;
+&lt;li&gt;docker desktop 是必备的，搭建各种服务的基础&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;wsl2 不能开机启动，内置服务不能开机启动，运行过程中，如果切换到别的服务，可能导致休眠(取决于 windows 对 wsl2 的优化策略)
+wsl2 服务端口会自动映射到本机
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;case2-使用-vscode-自带-devcontainer-方式开发&#34;&gt;Case2: 使用 vscode 自带 devcontainer 方式开发
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;专属的配置文件，配置项设计的过于复杂     -&amp;gt;    不考虑使用所有配置，希望保持对应用的最纯粹理解，避免在 devcontainer 上分散心力&lt;/li&gt;
+&lt;li&gt;考虑精简配置自己使用                   -&amp;gt;     似乎不如自己维护最灵活顺手&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;case2-自建容器开发时启动容器ide进入进行开发&#34;&gt;case2: 自建容器，开发时启动容器，IDE进入进行开发
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;保持隔离性，windows11 wsl2 所有文件都是可以被直接读取的，应该考虑使用容器卷。&lt;/li&gt;
+&lt;li&gt;容器卷不可以子目录共享，只能选择是否共享，如果填写了指定目录会整个卷内容挂载至指定目录，非预期。&lt;/li&gt;
+&lt;li&gt;考虑代码完全放在容器自己的数据卷中，不挂载到 wsl2 中，通过 ssh 让 IDE AI 开发。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;容器和 windows主机 网络不互通，必须做端口绑定才能互通。不能通过 172.17.*.* 的IP访问容器服务。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;case3-退回-archlinux-保持开发环境&#34;&gt;case3: 退回 archlinux 保持开发环境
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;放弃免费国产IDE的AI，考虑别的方式&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

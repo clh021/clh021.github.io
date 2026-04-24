@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>MITV on 良宏</title>
+        <link>/tags/mitv/</link>
+        <description>Recent content in MITV on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sun, 05 Feb 2023 12:01:20 +0800</lastBuildDate><atom:link href="/tags/mitv/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Mi TV removes ads</title>
+        <link>/post/live/mi.tv/</link>
+        <pubDate>Sun, 05 Feb 2023 12:01:20 +0800</pubDate>
+        
+        <guid>/post/live/mi.tv/</guid>
+        <description>&lt;h1 id=&#34;打开开发者模式打开adb调试&#34;&gt;打开开发者模式，打开ADB调试
+&lt;/h1&gt;&lt;p&gt;小米电视设置 - 关于 - 产品型号 - 遥控器确定多按几次(看电视提示)
+小米电视设置 - 账号与安全 - 打开ADB调试(左右键)&lt;/p&gt;
+&lt;h1 id=&#34;使用-adb-命令连接到电视&#34;&gt;使用 ADB 命令连接到电视
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 不需要配对&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb connect 192.168.1.10
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 电视上提示是否允许调试，选择允许&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;执行停用命令&#34;&gt;执行停用命令
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#建议清除的应用&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xm.webcontent &lt;span style=&#34;color:#75715e&#34;&gt;#电视活动中心&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.sogou.speech.offlineservice &lt;span style=&#34;color:#75715e&#34;&gt;#搜狗离线语音识别引擎&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.tweather &lt;span style=&#34;color:#75715e&#34;&gt;#天气&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mimusic2 &lt;span style=&#34;color:#75715e&#34;&gt;#本地音乐播放器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.videoplayer &lt;span style=&#34;color:#75715e&#34;&gt;#小米TV播放器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.providers.downloads &lt;span style=&#34;color:#75715e&#34;&gt;#下载管理程序&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.handbook &lt;span style=&#34;color:#75715e&#34;&gt;#用户手册&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.certinstaller &lt;span style=&#34;color:#75715e&#34;&gt;#证书安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.captiveportallogin &lt;span style=&#34;color:#75715e&#34;&gt;#wifi认证&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.appstore.component.land &lt;span style=&#34;color:#75715e&#34;&gt;#应用商店内容land&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.tvmanager &lt;span style=&#34;color:#75715e&#34;&gt;#电视管家&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.alarmcenter &lt;span style=&#34;color:#75715e&#34;&gt;#定时提醒&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.calendar &lt;span style=&#34;color:#75715e&#34;&gt;#日历&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.gallery &lt;span style=&#34;color:#75715e&#34;&gt;#相册&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.gamecenter.sdk.service.mibox &lt;span style=&#34;color:#75715e&#34;&gt;#小米服务安全插件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.care &lt;span style=&#34;color:#75715e&#34;&gt;#adcare&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.karaoke.service &lt;span style=&#34;color:#75715e&#34;&gt;#卡拉OK服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.miplay &lt;span style=&#34;color:#75715e&#34;&gt;#MIOTHOST&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mibox.gamecenter &lt;span style=&#34;color:#75715e&#34;&gt;#游戏中心&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.upgrade &lt;span style=&#34;color:#75715e&#34;&gt;#系统更新&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.account &lt;span style=&#34;color:#75715e&#34;&gt;#小米帐号&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.droidlogic &lt;span style=&#34;color:#75715e&#34;&gt;#droidlogic系统&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.payment &lt;span style=&#34;color:#75715e&#34;&gt;#小米支付&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.pay &lt;span style=&#34;color:#75715e&#34;&gt;#电视支付&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.tv.appupgrade &lt;span style=&#34;color:#75715e&#34;&gt;#应用更新&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.vpndialogs &lt;span style=&#34;color:#75715e&#34;&gt;#VPN&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.tvpush.tvpushservice &lt;span style=&#34;color:#75715e&#34;&gt;#电视推送&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.account.auth &lt;span style=&#34;color:#75715e&#34;&gt;#小米帐号授权&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.statistic &lt;span style=&#34;color:#75715e&#34;&gt;#统计&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mipay.wallet.tv &lt;span style=&#34;color:#75715e&#34;&gt;#小米钱包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.smarthome.tv &lt;span style=&#34;color:#75715e&#34;&gt;#米家&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.appstore &lt;span style=&#34;color:#75715e&#34;&gt;#应用商店&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.miui.tv.analytics &lt;span style=&#34;color:#75715e&#34;&gt;#分析&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.shop &lt;span style=&#34;color:#75715e&#34;&gt;#小米商城&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.devicereport &lt;span style=&#34;color:#75715e&#34;&gt;#设备报告&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mibox.lockscreen &lt;span style=&#34;color:#75715e&#34;&gt;#锁屏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mi.umi &lt;span style=&#34;color:#75715e&#34;&gt;#小米音响服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mi.umifrontend &lt;span style=&#34;color:#75715e&#34;&gt;#音响前端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.proxyhandler &lt;span style=&#34;color:#75715e&#34;&gt;#代理&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.advertise &lt;span style=&#34;color:#75715e&#34;&gt;#广告应用&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.location.fused &lt;span style=&#34;color:#75715e&#34;&gt;#一体化位置信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.screenrecorder &lt;span style=&#34;color:#75715e&#34;&gt;#录屏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.miui.systemAdSolution &lt;span style=&#34;color:#75715e&#34;&gt;#去除开机广告&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.tv.gallery &lt;span style=&#34;color:#75715e&#34;&gt;#时尚画报&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.duokan.videodaily &lt;span style=&#34;color:#75715e&#34;&gt;#今日头屏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#不建议清除的应用&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.mitv.screensaver #智能屏保&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.android.packageinstaller #软件包安装程序&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.sohu.inputmethod.sogou.tv #搜狗输入法&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.mitv.mivideoplayer #小米电视播放器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.pacprocessor #pacprocessor&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.mediaexplorer #高清播放器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.android.bluetooth #蓝牙共享&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.tvplayer #模拟电视&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.upnp #upnp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.smartshare #无线投屏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.milink.udt #米联&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.mi.miplay.mitvupnpsink #upnpapp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.dlnatvservice #DLNA连接&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.assistant.manual #投屏神器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.duokan.airkan.tvbox #milink服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.android.statementservice #AppLinks功能&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 mitv.service #无说明未测试&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.service #无说明未测试&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.mitv.tvhome #桌面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;屏蔽小米广告&#34;&gt;屏蔽小米广告
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;127.0.0.1 ad.xiaomi.com
+127.0.0.1 ad1.xiaomi.com
+127.0.0.1 ad.mi.com
+127.0.0.1 tat.pandora.xiaomi.com
+127.0.0.1 t7z.cupid.ptqy.gitv.tv
+127.0.0.1 de.pandora.xiaomi.com
+127.0.0.1 mishop.pandora.xiaomi.com
+127.0.0.1 auth.api.gitv.tv
+127.0.0.1 misc.pandora.xiaomi.com
+127.0.0.1 tvapi.kuyun.com
+127.0.0.1 data.mistat.xiaomi.com
+127.0.0.1 tv.aiseet.atianqi.com
+127.0.0.1 vv.play.aiseet.atianqi.com
+127.0.0.1 gallery.pandora.xiaomi.com
+127.0.0.1 config.kuyun.com
+127.0.0.1 bss.pandora.xiaomi.com
+127.0.0.1 o2o.api.xiaomi.com
+127.0.0.1 dvb.pandora.xiaomi.com
+127.0.0.1 alog.umeng.com
+127.0.0.1 pandora.mi.com
+127.0.0.1 api.ad.xiaomi.com
+127.0.0.1 tvapi.kuyun.com
+127.0.0.1 sdkconfig.ad.xiaomi.com
+127.0.0.1 assistant.pandora.xiaomi.com
+127.0.0.1 tracking.miui.com
+127.0.0.1 misc.pandora.xiaomi.com
+127.0.0.1 gvod.aiseejapp.atianqi.com
+127.0.0.1 omgmta.play.aiseet.atianqi.com
+127.0.0.1 jellyfish.pandora.xiaomi.com
+127.0.0.1 starfish.pandora.xiaomi.com
+127.0.0.1 misc.in.duokanbox.com
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;锁定第三方桌面&#34;&gt;锁定第三方桌面
+&lt;/h1&gt;&lt;p&gt;安装 &lt;a class=&#34;link&#34; href=&#34;https://www.dangbei.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;当贝桌面&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;./LMUltimate-TDUK-NOV.apk&#34; &gt;LM Ultimate&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;运行&lt;code&gt;当贝桌面&lt;/code&gt;进行简单设置后，打开&lt;code&gt;LM Ultimate&lt;/code&gt;设置&lt;code&gt;DISABLE STOCK LAUNCHER&lt;/code&gt; 就彻底禁止了 系统桌面应用(不建议卸载)。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一定要先安装好至少一个第三方桌面才应该进行配置操作。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;推荐应用&#34;&gt;推荐应用
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://tvhuoxing.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;火星直播&lt;/a&gt; 为父母准备的够看的电视直播应用。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://m.dangbei.com/wap-view-7985.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;阿里云盘TV版&lt;/a&gt; 为家人下载保存的影片立刻就能看。唯一愿意充会员的网盘。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;别的启动器推荐&#34;&gt;别的启动器推荐
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;用来帮助锁定&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;halauncher&#34;&gt;HALauncher
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://halauncher.cn.uptodown.com/android&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://halauncher.cn.uptodown.com/android&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://download.cnet.com/halauncher-android-tv/3001-20432_4-78044530.html?dt=internalDownload&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://download.cnet.com/halauncher-android-tv/3001-20432_4-78044530.html?dt=internalDownload&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;projectivy-launcher&#34;&gt;Projectivy Launcher
+&lt;/h2&gt;&lt;p&gt;Simple TV Launcher 或 TV Launcher 是不错的选择。如果你需要高级调整，Projectivy 或 ATV Launcher Pro 是最佳选择
+避免突击广告。如果它们让你感到困扰，请优先选择无广告选项或可以禁用广告的程序，例如 HALauncher。
+在 Android TV/Google TV 上切换启动器是一个立竿见影的决定：界面更加人性化，电视响应更灵敏，干扰也随之消失。无论您是追求极简无广告的启动方式、支持通过 APK 安装的应用，还是即时访问外部输入，FLauncher、Projectivy、ATV Launcher Pro、HALauncher、Simple TV Launcher、TV Launcher、Sideload Launcher 和 Dispatch 等启动器都能满足您的各种使用需求，并结合了多种功能。 轻盈与控制.
+Sideload Launcher&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

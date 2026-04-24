@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电费计算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .calculator {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #409eff;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #409eff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 25px;
+        }
+
+        button:hover {
+            background-color: #337ecc;
+        }
+
+        .result {
+            padding: 20px;
+            background-color: #f0f7ff;
+            border-radius: 6px;
+        }
+
+        .result p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .result span {
+            color: #e63946;
+            font-weight: bold;
+            font-size: 17px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>⚡ 电费计算器</h2>
+
+        <div class="form-group">
+            <label>设备功率（瓦 W）</label>
+            <input type="number" id="power" placeholder="例如：1000（1千瓦）" min="0">
+        </div>
+
+        <div class="form-group">
+            <label>每天运行时长（小时）</label>
+            <input type="number" id="hours" placeholder="例如：8" min="0">
+        </div>
+
+        <div class="form-group">
+            <label>当地电价（元/度 kWh）</label>
+            <input type="number" id="price" placeholder="例如：0.56" min="0" step="0.01">
+        </div>
+
+        <button onclick="calculate()">计算电费</button>
+
+        <div class="result">
+            <p>每日耗电量：<span id="dayPower">0</span> 度</p>
+            <p>每日电费：<span id="dayCost">0</span> 元</p>
+            <p>每月电费（按30天）：<span id="monthCost">0</span> 元</p>
+            <p>每年电费（按365天）：<span id="yearCost">0</span> 元</p>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            // 获取输入值
+            const power = parseFloat(document.getElementById('power').value) || 0;
+            const hours = parseFloat(document.getElementById('hours').value) || 0;
+            const price = parseFloat(document.getElementById('price').value) || 0;
+
+            // 计算公式：1度电 = 1000瓦 × 1小时
+            const dayPower = (power * hours) / 1000; // 每日耗电量（度）
+            const dayCost = dayPower * price; // 每日电费
+            const monthCost = dayCost * 30; // 每月电费
+            const yearCost = dayCost * 365; // 每年电费
+
+            // 显示结果（保留2位小数）
+            document.getElementById('dayPower').textContent = dayPower.toFixed(2);
+            document.getElementById('dayCost').textContent = dayCost.toFixed(2);
+            document.getElementById('monthCost').textContent = monthCost.toFixed(2);
+            document.getElementById('yearCost').textContent = yearCost.toFixed(2);
+        }
+    </script>
+</body>
+</html>

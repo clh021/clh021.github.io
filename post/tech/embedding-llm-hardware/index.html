@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="向量数据库与大模型硬件及运行原理全解 一、核心结论总览 1. 通用核心结论 输出质量与硬件算力无关，仅由算法、输入、精度决定 只要内存/显存足够加载数据，一定能运算结束 配置低仅导致运行速度慢，无结果质量下降 2. 关键前提 无程序崩溃、无数值溢出、无精度压缩改变 随机采样设置固定，否则结果本身存在随机性 二、向量数据库详解 1. 硬件需求 非必需显卡，CPU 即可正常运行 GPU仅用于高并发、亿级向量的检索加速 2. 本质属性 存储+高维向量相似度检索 特殊数据库，无训练、无权重加载 3. 运行特性 计算确定性，结果一致 内存足够则召回质量、排序不受硬件影响 三、大模型(LLM)详解 1. 硬件需求 必需高性能显卡(显存充足) 核心消耗：模型权重+KV Cache 2. 本质属性 神经网络推理计算 需加载权重，支持训练、微调、推理 3. 运行特性 推理计算确定性 配置低仅速度变慢，结果质量不变 四、两者核心对比 1. 相同点 结果质量不受硬件速度影响 内存/显存足够即可完成运算 仅存在运行速度差异 2. 不同点 硬件依赖：向量库CPU优先，大模型GPU必需 核心逻辑：向量库是数据库，大模型是神经网络 流程环节：向量库无训练，大模型有训练微调 五、工作流程原理梳理 1. 向量数据库工作流程 向量生成(可搭配模型生成) 向量存储与索引构建 相似度检索计算 返回匹配结果 2. 大模型推理工作流程 模型权重加载至显存/内存 输入文本向量化(Embedding) 逐层神经网络推理运算 Token采样生成输出文本 六、常见误区纠正 误区1：算力低会导致输出质量变差 纠正：仅速度变慢，质量不变 误区2：向量数据库需要像大模型一样配显卡 纠正：CPU即可，GPU非必需 误区3：模型跑不完是算力不足 纠正：多为内存/显存不足导致崩溃，非算力问题 误区4：量化导致效果差是硬件问题 纠正：数值精度损失，和硬件配置无关 误区5：结果不同是硬件导致 纠正：多为随机采样参数未固定，与硬件无关 ">
+<title>Embedding, llm and hardware</title>
+
+<link rel='canonical' href='/post/tech/embedding-llm-hardware/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Embedding, llm and hardware">
+<meta property='og:description' content="向量数据库与大模型硬件及运行原理全解 一、核心结论总览 1. 通用核心结论 输出质量与硬件算力无关，仅由算法、输入、精度决定 只要内存/显存足够加载数据，一定能运算结束 配置低仅导致运行速度慢，无结果质量下降 2. 关键前提 无程序崩溃、无数值溢出、无精度压缩改变 随机采样设置固定，否则结果本身存在随机性 二、向量数据库详解 1. 硬件需求 非必需显卡，CPU 即可正常运行 GPU仅用于高并发、亿级向量的检索加速 2. 本质属性 存储+高维向量相似度检索 特殊数据库，无训练、无权重加载 3. 运行特性 计算确定性，结果一致 内存足够则召回质量、排序不受硬件影响 三、大模型(LLM)详解 1. 硬件需求 必需高性能显卡(显存充足) 核心消耗：模型权重+KV Cache 2. 本质属性 神经网络推理计算 需加载权重，支持训练、微调、推理 3. 运行特性 推理计算确定性 配置低仅速度变慢，结果质量不变 四、两者核心对比 1. 相同点 结果质量不受硬件速度影响 内存/显存足够即可完成运算 仅存在运行速度差异 2. 不同点 硬件依赖：向量库CPU优先，大模型GPU必需 核心逻辑：向量库是数据库，大模型是神经网络 流程环节：向量库无训练，大模型有训练微调 五、工作流程原理梳理 1. 向量数据库工作流程 向量生成(可搭配模型生成) 向量存储与索引构建 相似度检索计算 返回匹配结果 2. 大模型推理工作流程 模型权重加载至显存/内存 输入文本向量化(Embedding) 逐层神经网络推理运算 Token采样生成输出文本 六、常见误区纠正 误区1：算力低会导致输出质量变差 纠正：仅速度变慢，质量不变 误区2：向量数据库需要像大模型一样配显卡 纠正：CPU即可，GPU非必需 误区3：模型跑不完是算力不足 纠正：多为内存/显存不足导致崩溃，非算力问题 误区4：量化导致效果差是硬件问题 纠正：数值精度损失，和硬件配置无关 误区5：结果不同是硬件导致 纠正：多为随机采样参数未固定，与硬件无关 ">
+<meta property='og:url' content='/post/tech/embedding-llm-hardware/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='embedding' /><meta property='article:tag' content='rag' /><meta property='article:tag' content='search' /><meta property='article:published_time' content='2025-03-17T17:00:47&#43;08:00'/><meta property='article:modified_time' content='2025-03-17T17:00:47&#43;08:00'/>
+<meta name="twitter:title" content="Embedding, llm and hardware">
+<meta name="twitter:description" content="向量数据库与大模型硬件及运行原理全解 一、核心结论总览 1. 通用核心结论 输出质量与硬件算力无关，仅由算法、输入、精度决定 只要内存/显存足够加载数据，一定能运算结束 配置低仅导致运行速度慢，无结果质量下降 2. 关键前提 无程序崩溃、无数值溢出、无精度压缩改变 随机采样设置固定，否则结果本身存在随机性 二、向量数据库详解 1. 硬件需求 非必需显卡，CPU 即可正常运行 GPU仅用于高并发、亿级向量的检索加速 2. 本质属性 存储+高维向量相似度检索 特殊数据库，无训练、无权重加载 3. 运行特性 计算确定性，结果一致 内存足够则召回质量、排序不受硬件影响 三、大模型(LLM)详解 1. 硬件需求 必需高性能显卡(显存充足) 核心消耗：模型权重+KV Cache 2. 本质属性 神经网络推理计算 需加载权重，支持训练、微调、推理 3. 运行特性 推理计算确定性 配置低仅速度变慢，结果质量不变 四、两者核心对比 1. 相同点 结果质量不受硬件速度影响 内存/显存足够即可完成运算 仅存在运行速度差异 2. 不同点 硬件依赖：向量库CPU优先，大模型GPU必需 核心逻辑：向量库是数据库，大模型是神经网络 流程环节：向量库无训练，大模型有训练微调 五、工作流程原理梳理 1. 向量数据库工作流程 向量生成(可搭配模型生成) 向量存储与索引构建 相似度检索计算 返回匹配结果 2. 大模型推理工作流程 模型权重加载至显存/内存 输入文本向量化(Embedding) 逐层神经网络推理运算 Token采样生成输出文本 六、常见误区纠正 误区1：算力低会导致输出质量变差 纠正：仅速度变慢，质量不变 误区2：向量数据库需要像大模型一样配显卡 纠正：CPU即可，GPU非必需 误区3：模型跑不完是算力不足 纠正：多为内存/显存不足导致崩溃，非算力问题 误区4：量化导致效果差是硬件问题 纠正：数值精度损失，和硬件配置无关 误区5：结果不同是硬件导致 纠正：多为随机采样参数未固定，与硬件无关 ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/embedding-llm-hardware/">Embedding, llm and hardware</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-03-17T17:00:47&#43;08:00'>2025-03-17 17:00:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="向量数据库与大模型硬件及运行原理全解">向量数据库与大模型硬件及运行原理全解
+</h1><h2 id="一核心结论总览">一、核心结论总览
+</h2><h3 id="1-通用核心结论">1. 通用核心结论
+</h3><ul>
+<li>输出质量与硬件算力无关，仅由算法、输入、精度决定</li>
+<li>只要内存/显存足够加载数据，一定能运算结束</li>
+<li>配置低仅导致运行速度慢，无结果质量下降</li>
+</ul>
+<h3 id="2-关键前提">2. 关键前提
+</h3><ul>
+<li>无程序崩溃、无数值溢出、无精度压缩改变</li>
+<li>随机采样设置固定，否则结果本身存在随机性</li>
+</ul>
+<h2 id="二向量数据库详解">二、向量数据库详解
+</h2><h3 id="1-硬件需求">1. 硬件需求
+</h3><ul>
+<li>非必需显卡，CPU 即可正常运行</li>
+<li>GPU仅用于高并发、亿级向量的检索加速</li>
+</ul>
+<h3 id="2-本质属性">2. 本质属性
+</h3><ul>
+<li>存储+高维向量相似度检索</li>
+<li>特殊数据库，无训练、无权重加载</li>
+</ul>
+<h3 id="3-运行特性">3. 运行特性
+</h3><ul>
+<li>计算确定性，结果一致</li>
+<li>内存足够则召回质量、排序不受硬件影响</li>
+</ul>
+<h2 id="三大模型llm详解">三、大模型(LLM)详解
+</h2><h3 id="1-硬件需求-1">1. 硬件需求
+</h3><ul>
+<li>必需高性能显卡(显存充足)</li>
+<li>核心消耗：模型权重+KV Cache</li>
+</ul>
+<h3 id="2-本质属性-1">2. 本质属性
+</h3><ul>
+<li>神经网络推理计算</li>
+<li>需加载权重，支持训练、微调、推理</li>
+</ul>
+<h3 id="3-运行特性-1">3. 运行特性
+</h3><ul>
+<li>推理计算确定性</li>
+<li>配置低仅速度变慢，结果质量不变</li>
+</ul>
+<h2 id="四两者核心对比">四、两者核心对比
+</h2><h3 id="1-相同点">1. 相同点
+</h3><ul>
+<li>结果质量不受硬件速度影响</li>
+<li>内存/显存足够即可完成运算</li>
+<li>仅存在运行速度差异</li>
+</ul>
+<h3 id="2-不同点">2. 不同点
+</h3><ul>
+<li>硬件依赖：向量库CPU优先，大模型GPU必需</li>
+<li>核心逻辑：向量库是数据库，大模型是神经网络</li>
+<li>流程环节：向量库无训练，大模型有训练微调</li>
+</ul>
+<h2 id="五工作流程原理梳理">五、工作流程原理梳理
+</h2><h3 id="1-向量数据库工作流程">1. 向量数据库工作流程
+</h3><ol>
+<li>向量生成(可搭配模型生成)</li>
+<li>向量存储与索引构建</li>
+<li>相似度检索计算</li>
+<li>返回匹配结果</li>
+</ol>
+<h3 id="2-大模型推理工作流程">2. 大模型推理工作流程
+</h3><ol>
+<li>模型权重加载至显存/内存</li>
+<li>输入文本向量化(Embedding)</li>
+<li>逐层神经网络推理运算</li>
+<li>Token采样生成输出文本</li>
+</ol>
+<h2 id="六常见误区纠正">六、常见误区纠正
+</h2><h3 id="误区1算力低会导致输出质量变差">误区1：算力低会导致输出质量变差
+</h3><ul>
+<li>纠正：仅速度变慢，质量不变</li>
+</ul>
+<h3 id="误区2向量数据库需要像大模型一样配显卡">误区2：向量数据库需要像大模型一样配显卡
+</h3><ul>
+<li>纠正：CPU即可，GPU非必需</li>
+</ul>
+<h3 id="误区3模型跑不完是算力不足">误区3：模型跑不完是算力不足
+</h3><ul>
+<li>纠正：多为内存/显存不足导致崩溃，非算力问题</li>
+</ul>
+<h3 id="误区4量化导致效果差是硬件问题">误区4：量化导致效果差是硬件问题
+</h3><ul>
+<li>纠正：数值精度损失，和硬件配置无关</li>
+</ul>
+<h3 id="误区5结果不同是硬件导致">误区5：结果不同是硬件导致
+</h3><ul>
+<li>纠正：多为随机采样参数未固定，与硬件无关</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/embedding/">Embedding</a>
+        
+            <a href="/tags/rag/">Rag</a>
+        
+            <a href="/tags/search/">Search</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.2">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
