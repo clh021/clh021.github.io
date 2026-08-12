@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Rag on 良宏</title>
+        <link>/tags/rag/</link>
+        <description>Recent content in Rag on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Mon, 17 Mar 2025 18:58:47 +0800</lastBuildDate><atom:link href="/tags/rag/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Embedding space and rag,llm</title>
+        <link>/post/tech/embedding-space-and-rag-llm/</link>
+        <pubDate>Mon, 17 Mar 2025 18:58:47 +0800</pubDate>
+        
+        <guid>/post/tech/embedding-space-and-rag-llm/</guid>
+        <description>&lt;h1 id=&#34;向量空间对大模型知识库上限的影响&#34;&gt;向量空间对大模型&amp;amp;知识库上限的影响
+&lt;/h1&gt;&lt;h2 id=&#34;一核心结论总览&#34;&gt;一、核心结论总览
+&lt;/h2&gt;&lt;h3 id=&#34;11-向量空间与上限关系&#34;&gt;1.1 向量空间与上限关系
+&lt;/h3&gt;&lt;h4 id=&#34;向量空间设计决定能力天花板&#34;&gt;向量空间设计决定能力天花板
+&lt;/h4&gt;&lt;h4 id=&#34;数据与训练决定接近上限的程度&#34;&gt;数据与训练决定接近上限的程度
+&lt;/h4&gt;&lt;h3 id=&#34;12-向量空间来源&#34;&gt;1.2 向量空间来源
+&lt;/h3&gt;&lt;h4 id=&#34;人为设计骨架&#34;&gt;人为设计（骨架）
+&lt;/h4&gt;&lt;h4 id=&#34;数据训练血肉&#34;&gt;数据训练（血肉）
+&lt;/h4&gt;&lt;h2 id=&#34;二向量空间的两类核心场景&#34;&gt;二、向量空间的两类核心场景
+&lt;/h2&gt;&lt;h3 id=&#34;21-大模型内部隐层向量空间&#34;&gt;2.1 大模型内部隐层向量空间
+&lt;/h3&gt;&lt;h4 id=&#34;token-映射为隐层状态&#34;&gt;Token 映射为隐层状态
+&lt;/h4&gt;&lt;h4 id=&#34;决定模型理解推理生成上限&#34;&gt;决定模型理解、推理、生成上限
+&lt;/h4&gt;&lt;h3 id=&#34;22-embedding-检索向量空间&#34;&gt;2.2 Embedding 检索向量空间
+&lt;/h3&gt;&lt;h4 id=&#34;文本图像映射为固定维度向量&#34;&gt;文本/图像映射为固定维度向量
+&lt;/h4&gt;&lt;h4 id=&#34;决定知识库召回精度上限&#34;&gt;决定知识库召回精度上限
+&lt;/h4&gt;&lt;h2 id=&#34;三向量空间的构成人为设计-vs-数据训练&#34;&gt;三、向量空间的构成：人为设计 VS 数据训练
+&lt;/h2&gt;&lt;h3 id=&#34;31-人为设计部分自上而下&#34;&gt;3.1 人为设计部分（自上而下）
+&lt;/h3&gt;&lt;h4 id=&#34;311-模型架构设计&#34;&gt;3.1.1 模型架构设计
+&lt;/h4&gt;&lt;h5 id=&#34;transformer-结构层数头数d_model&#34;&gt;Transformer 结构（层数、头数、d_model）
+&lt;/h5&gt;&lt;h5 id=&#34;归一化layernormrmsnorm&#34;&gt;归一化（LayerNorm/RMSNorm）
+&lt;/h5&gt;&lt;h5 id=&#34;残差连接位置编码rope等&#34;&gt;残差连接、位置编码（RoPE等）
+&lt;/h5&gt;&lt;h4 id=&#34;312-embedding-工程设计&#34;&gt;3.1.2 Embedding 工程设计
+&lt;/h4&gt;&lt;h5 id=&#34;向量维度76810241536&#34;&gt;向量维度（768/1024/1536）
+&lt;/h5&gt;&lt;h5 id=&#34;l2归一化余弦相似度&#34;&gt;L2归一化、余弦相似度
+&lt;/h5&gt;&lt;h5 id=&#34;池化方式cls均值池化&#34;&gt;池化方式（CLS/均值池化）
+&lt;/h5&gt;&lt;h4 id=&#34;313-训练目标设计&#34;&gt;3.1.3 训练目标设计
+&lt;/h4&gt;&lt;h5 id=&#34;预训练mlmnsp&#34;&gt;预训练（MLM、NSP）
+&lt;/h5&gt;&lt;h5 id=&#34;对比学习simcsee5bge&#34;&gt;对比学习（SimCSE、E5、BGE）
+&lt;/h5&gt;&lt;h5 id=&#34;对齐训练dpoppo&#34;&gt;对齐训练（DPO、PPO）
+&lt;/h5&gt;&lt;h4 id=&#34;314-系统工程设计&#34;&gt;3.1.4 系统工程设计
+&lt;/h4&gt;&lt;h5 id=&#34;文本分块chunk策略&#34;&gt;文本分块（Chunk）策略
+&lt;/h5&gt;&lt;h5 id=&#34;检索召回与重排机制&#34;&gt;检索召回与重排机制
+&lt;/h5&gt;&lt;h3 id=&#34;32-数据训练部分自下而上&#34;&gt;3.2 数据训练部分（自下而上）
+&lt;/h3&gt;&lt;h4 id=&#34;语义关系学习相似内容空间靠近&#34;&gt;语义关系学习（相似内容空间靠近）
+&lt;/h4&gt;&lt;h4 id=&#34;世界知识与领域知识编码&#34;&gt;世界知识与领域知识编码
+&lt;/h4&gt;&lt;h4 id=&#34;数据质量影响空间规整度&#34;&gt;数据质量影响空间规整度
+&lt;/h4&gt;&lt;h4 id=&#34;训练充分度决定收敛效果&#34;&gt;训练充分度决定收敛效果
+&lt;/h4&gt;&lt;h2 id=&#34;四上限决定机制&#34;&gt;四、上限决定机制
+&lt;/h2&gt;&lt;h3 id=&#34;41-上限锁死因素&#34;&gt;4.1 上限锁死因素
+&lt;/h3&gt;&lt;h4 id=&#34;向量维度不足&#34;&gt;向量维度不足
+&lt;/h4&gt;&lt;h4 id=&#34;模型架构过于简单&#34;&gt;模型架构过于简单
+&lt;/h4&gt;&lt;h4 id=&#34;训练目标与任务不匹配&#34;&gt;训练目标与任务不匹配
+&lt;/h4&gt;&lt;h4 id=&#34;embedding-空间设计不合理&#34;&gt;Embedding 空间设计不合理
+&lt;/h4&gt;&lt;h3 id=&#34;42-影响上限发挥的因素&#34;&gt;4.2 影响上限发挥的因素
+&lt;/h3&gt;&lt;h4 id=&#34;训练数据规模与质量&#34;&gt;训练数据规模与质量
+&lt;/h4&gt;&lt;h4 id=&#34;训练收敛程度&#34;&gt;训练收敛程度
+&lt;/h4&gt;&lt;h4 id=&#34;知识库构建工程切分索引&#34;&gt;知识库构建工程（切分、索引）
+&lt;/h4&gt;&lt;h4 id=&#34;检索策略优劣&#34;&gt;检索策略优劣
+&lt;/h4&gt;&lt;h2 id=&#34;五知识库大模型工作流程原理&#34;&gt;五、知识库+大模型工作流程原理
+&lt;/h2&gt;&lt;h3 id=&#34;51-知识库构建流程离线&#34;&gt;5.1 知识库构建流程（离线）
+&lt;/h3&gt;&lt;h4 id=&#34;原始文档处理&#34;&gt;原始文档处理
+&lt;/h4&gt;&lt;h5 id=&#34;文档清洗去重格式标准化&#34;&gt;文档清洗、去重、格式标准化
+&lt;/h5&gt;&lt;h4 id=&#34;文本分块chunking&#34;&gt;文本分块（Chunking）
+&lt;/h4&gt;&lt;h5 id=&#34;按语义长度段落切分&#34;&gt;按语义/长度/段落切分
+&lt;/h5&gt;&lt;h4 id=&#34;embedding-向量化&#34;&gt;Embedding 向量化
+&lt;/h4&gt;&lt;h5 id=&#34;调用-embedding-模型生成向量&#34;&gt;调用 Embedding 模型生成向量
+&lt;/h5&gt;&lt;h4 id=&#34;向量库索引存储&#34;&gt;向量库索引存储
+&lt;/h4&gt;&lt;h5 id=&#34;构建-faissmilvus-等索引&#34;&gt;构建 FAISS/Milvus 等索引
+&lt;/h5&gt;&lt;h3 id=&#34;52-用户问答流程在线&#34;&gt;5.2 用户问答流程（在线）
+&lt;/h3&gt;&lt;h4 id=&#34;用户问题输入&#34;&gt;用户问题输入
+&lt;/h4&gt;&lt;h4 id=&#34;问题-embedding-向量化&#34;&gt;问题 Embedding 向量化
+&lt;/h4&gt;&lt;h4 id=&#34;向量库检索召回&#34;&gt;向量库检索召回
+&lt;/h4&gt;&lt;h5 id=&#34;粗召回--重排精筛&#34;&gt;粗召回 → 重排精筛
+&lt;/h5&gt;&lt;h4 id=&#34;相关知识片段拼接&#34;&gt;相关知识片段拼接
+&lt;/h4&gt;&lt;h4 id=&#34;大模型输入prompt知识片段问题&#34;&gt;大模型输入（Prompt+知识片段+问题）
+&lt;/h4&gt;&lt;h4 id=&#34;大模型推理生成答案&#34;&gt;大模型推理生成答案
+&lt;/h4&gt;&lt;h4 id=&#34;答案输出给用户&#34;&gt;答案输出给用户
+&lt;/h4&gt;&lt;h3 id=&#34;53-双空间协同作用&#34;&gt;5.3 双空间协同作用
+&lt;/h3&gt;&lt;h4 id=&#34;embedding-空间精准找到知识&#34;&gt;Embedding 空间：精准找到知识
+&lt;/h4&gt;&lt;h4 id=&#34;大模型隐空间理解并使用知识&#34;&gt;大模型隐空间：理解并使用知识
+&lt;/h4&gt;&lt;h2 id=&#34;六总结要点&#34;&gt;六、总结要点
+&lt;/h2&gt;&lt;h3 id=&#34;设计定上限训练定水平&#34;&gt;设计定上限，训练定水平
+&lt;/h3&gt;&lt;h3 id=&#34;人为设计与数据训练缺一不可&#34;&gt;人为设计与数据训练缺一不可
+&lt;/h3&gt;&lt;h3 id=&#34;知识库大模型双空间共同决定系统效果&#34;&gt;知识库+大模型双空间共同决定系统效果
+&lt;/h3&gt;</description>
+        </item>
+        <item>
+        <title>Embedding and RAG searching</title>
+        <link>/post/tech/embedding-rag-search/</link>
+        <pubDate>Mon, 17 Mar 2025 18:57:47 +0800</pubDate>
+        
+        <guid>/post/tech/embedding-rag-search/</guid>
+        <description>&lt;h1 id=&#34;向量数据库与ai相似搜索&#34;&gt;向量数据库与AI相似搜索
+&lt;/h1&gt;&lt;h2 id=&#34;一基础认知&#34;&gt;一、基础认知
+&lt;/h2&gt;&lt;h3 id=&#34;11-核心定义&#34;&gt;1.1 核心定义
+&lt;/h3&gt;&lt;h4 id=&#34;向量数据库&#34;&gt;向量数据库
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;存储高维向量，支持高效相似检索&lt;/li&gt;
+&lt;li&gt;解决非结构化数据的相似度匹配问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;相似搜索原理&#34;&gt;相似搜索原理
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;数据→Embedding模型→向量→向量库→Top-K相似结果&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;配合ai模型价值&#34;&gt;配合AI模型价值
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;大模型负责理解生成，向量库负责记忆查找&lt;/li&gt;
+&lt;li&gt;弥补大模型实时性、知识时效性缺陷&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;12-核心技术流程&#34;&gt;1.2 核心技术流程
+&lt;/h3&gt;&lt;h4 id=&#34;标准工作流&#34;&gt;标准工作流
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;非结构化数据处理（文本/图片/音频/视频）&lt;/li&gt;
+&lt;li&gt;向量嵌入生成（Embedding Model）&lt;/li&gt;
+&lt;li&gt;向量入库与索引构建&lt;/li&gt;
+&lt;li&gt;用户查询向量化&lt;/li&gt;
+&lt;li&gt;向量相似度计算（余弦/欧氏距离）&lt;/li&gt;
+&lt;li&gt;返回相似结果&lt;/li&gt;
+&lt;li&gt;大模型后处理（总结/问答/推荐）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;关键技术点&#34;&gt;关键技术点
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;向量索引类型（IVF、HNSW、Annoy）&lt;/li&gt;
+&lt;li&gt;相似度度量方式&lt;/li&gt;
+&lt;li&gt;向量维度选择&lt;/li&gt;
+&lt;li&gt;检索精度与速度平衡&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二主流应用场景&#34;&gt;二、主流应用场景
+&lt;/h2&gt;&lt;h3 id=&#34;21-文本类场景&#34;&gt;2.1 文本类场景
+&lt;/h3&gt;&lt;h4 id=&#34;智能问答rag&#34;&gt;智能问答RAG
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;企业知识库、政务咨询、智能客服&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;语义搜索&#34;&gt;语义搜索
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;替代关键词搜索，理解语义意图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;内容治理&#34;&gt;内容治理
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;论文查重、文案去重、违规检测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;内容推荐&#34;&gt;内容推荐
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文章、小说、资讯相似推荐&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;22-图像视觉类场景&#34;&gt;2.2 图像视觉类场景
+&lt;/h3&gt;&lt;h4 id=&#34;以图搜图&#34;&gt;以图搜图
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;电商同款、文物检索、安防识别&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;相似风格推荐&#34;&gt;相似风格推荐
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;设计、服装、室内设计素材匹配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;工业质检&#34;&gt;工业质检
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;产品瑕疵异常检测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;23-多模态跨模态场景&#34;&gt;2.3 多模态跨模态场景
+&lt;/h3&gt;&lt;h4 id=&#34;图文互搜&#34;&gt;图文互搜
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文字搜图、图片搜文字&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;多模态rag&#34;&gt;多模态RAG
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文本提问召回图片/视频/音频资料&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;aigc素材管理&#34;&gt;AIGC素材管理
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;生成内容的语义检索与归类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;24-拓展创新场景&#34;&gt;2.4 拓展创新场景
+&lt;/h3&gt;&lt;h4 id=&#34;用户个性化推荐&#34;&gt;用户个性化推荐
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;用户行为向量+内容向量精准匹配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;风控异常检测&#34;&gt;风控异常检测
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;交易、登录行为向量异常识别&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;音频语音场景&#34;&gt;音频语音场景
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;声纹识别、哼唱搜歌、客服录音质检&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;医疗健康&#34;&gt;医疗健康
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;病历检索、医学影像匹配、药物研发&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;法律合规&#34;&gt;法律合规
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;裁判文书检索、合同风险匹配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;工业iot&#34;&gt;工业IoT
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;时序数据故障预测、设备异常检测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;教育人才&#34;&gt;教育人才
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;简历岗位匹配、错题精准推题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;代码研发&#34;&gt;代码研发
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;相似代码检索、漏洞检测&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三多模态统一向量空间&#34;&gt;三、多模态统一向量空间
+&lt;/h2&gt;&lt;h3 id=&#34;31-核心概念&#34;&gt;3.1 核心概念
+&lt;/h3&gt;&lt;h4 id=&#34;定义&#34;&gt;定义
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;不同模态数据映射到同一向量空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;优势&#34;&gt;优势
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;一套向量库管理多模态数据&lt;/li&gt;
+&lt;li&gt;跨模态任意检索&lt;/li&gt;
+&lt;li&gt;多模态Agent长期记忆&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;32-支持模型&#34;&gt;3.2 支持模型
+&lt;/h3&gt;&lt;h4 id=&#34;商用全模态模型&#34;&gt;商用全模态模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Gemini Embedding 2（文本/图像/音频/视频/PDF）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;开源全模态模型&#34;&gt;开源全模态模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;ImageBind（6模态：文本、图像、音频、深度、红外、IMU）&lt;/li&gt;
+&lt;li&gt;ONE-PEACE（文本、图像、音频、视频、3D点云）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;图文主流模型&#34;&gt;图文主流模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;CLIP（OpenAI，生态最完善）&lt;/li&gt;
+&lt;li&gt;Qwen-VL Embedding（中文友好）&lt;/li&gt;
+&lt;li&gt;LLaVA/BLIP-2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;音视频专用模型&#34;&gt;音视频专用模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;CLAP（文本-音频）&lt;/li&gt;
+&lt;li&gt;VideoCLIP（文本-视频）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;33-技术路线&#34;&gt;3.3 技术路线
+&lt;/h3&gt;&lt;h4 id=&#34;双塔对齐模型&#34;&gt;双塔对齐模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;CLIP、ImageBind&lt;/li&gt;
+&lt;li&gt;优点：快、稳定、适合检索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;单塔融合模型&#34;&gt;单塔融合模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;LLaVA、BLIP-2&lt;/li&gt;
+&lt;li&gt;优点：理解能力强&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;原生全模态模型&#34;&gt;原生全模态模型
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Gemini系列&lt;/li&gt;
+&lt;li&gt;优点：统一度最高，无模态边界&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;34-落地选型建议&#34;&gt;3.4 落地选型建议
+&lt;/h3&gt;&lt;h4 id=&#34;快速上线全模态&#34;&gt;快速上线全模态
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Gemini Embedding 2 API&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;开源本地部署&#34;&gt;开源本地部署
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;ImageBind/ONE-PEACE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;中文图文场景&#34;&gt;中文图文场景
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Qwen-VL Embedding&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;高性价比图文&#34;&gt;高性价比图文
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;CLIP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四落地实施方向&#34;&gt;四、落地实施方向
+&lt;/h2&gt;&lt;h3 id=&#34;41-优先切入方向&#34;&gt;4.1 优先切入方向
+&lt;/h3&gt;&lt;h4 id=&#34;现有搜索升级&#34;&gt;现有搜索升级
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;关键词搜索→语义搜索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;推荐系统增强&#34;&gt;推荐系统增强
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;协同过滤+向量召回&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;非结构化数据治理&#34;&gt;非结构化数据治理
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文档、图片、音视频统一管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;42-前沿延伸方向&#34;&gt;4.2 前沿延伸方向
+&lt;/h3&gt;&lt;h4 id=&#34;向量库知识图谱&#34;&gt;向量库+知识图谱
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;语义检索+关系推理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;多模态统一向量空间&#34;&gt;多模态统一向量空间
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;全模态互搜&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;ai-agent长期记忆&#34;&gt;AI Agent长期记忆
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;对话历史、偏好向量存储&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实时流式向量检索&#34;&gt;实时流式向量检索
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;直播、监控、实时风控&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Embedding and RAG</title>
+        <link>/post/tech/embedding-and-rag/</link>
+        <pubDate>Mon, 17 Mar 2025 18:54:47 +0800</pubDate>
+        
+        <guid>/post/tech/embedding-and-rag/</guid>
+        <description>&lt;h1 id=&#34;向量检索与-rag&#34;&gt;向量检索与 RAG
+&lt;/h1&gt;&lt;h2 id=&#34;一基础认知什么是向量--向量检索&#34;&gt;一、基础认知：什么是向量 &amp;amp; 向量检索
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;向量（Embedding）
+&lt;ul&gt;
+&lt;li&gt;语义的数学表示：一串浮点数数组&lt;/li&gt;
+&lt;li&gt;单向、有损编码，不可还原原文&lt;/li&gt;
+&lt;li&gt;意义：相近语义 → 空间距离近&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;向量检索 vs 传统搜索
+&lt;ul&gt;
+&lt;li&gt;传统：关键词精确匹配（SQL/ES）&lt;/li&gt;
+&lt;li&gt;向量：语义相似性搜索&lt;/li&gt;
+&lt;li&gt;核心计算：余弦相似度 / 欧氏距离&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;核心特点
+&lt;ul&gt;
+&lt;li&gt;理解意思，不看字面&lt;/li&gt;
+&lt;li&gt;支持近义词、意译、跨语言&lt;/li&gt;
+&lt;li&gt;无统一全球标准，模型决定空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二文档处理从原始文件到可向量化文本&#34;&gt;二、文档处理：从原始文件到可向量化文本
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;非纯文本文件解析
+&lt;ul&gt;
+&lt;li&gt;docx/pptx/xlsx 本质是 zip 包&lt;/li&gt;
+&lt;li&gt;必须专用工具提取纯文本&lt;/li&gt;
+&lt;li&gt;丢弃格式、XML、样式、冗余信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;文本分块（Chunking）
+&lt;ul&gt;
+&lt;li&gt;错误方式：按物理行、固定字符硬切&lt;/li&gt;
+&lt;li&gt;问题：切断语义，导致检索失效&lt;/li&gt;
+&lt;li&gt;正确方式：语义分块
+&lt;ul&gt;
+&lt;li&gt;按段落、句子边界切分&lt;/li&gt;
+&lt;li&gt;保持语义完整&lt;/li&gt;
+&lt;li&gt;可使用滑动窗口微调&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;分块目标
+&lt;ul&gt;
+&lt;li&gt;不长不短，适合 LLM 输入&lt;/li&gt;
+&lt;li&gt;语义独立，便于精准召回&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三embedding-模型整个系统的基石&#34;&gt;三、Embedding 模型：整个系统的基石
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;模型作用
+&lt;ul&gt;
+&lt;li&gt;文本 → 向量&lt;/li&gt;
+&lt;li&gt;图片 → 向量&lt;/li&gt;
+&lt;li&gt;多模态：文本↔图片同空间映射&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;模型尺寸差异（small/base/large）
+&lt;ul&gt;
+&lt;li&gt;小模型：语义粗糙、易混淆、空间混乱&lt;/li&gt;
+&lt;li&gt;大模型：细粒度区分强、专业领域更准&lt;/li&gt;
+&lt;li&gt;决定向量库质量与检索上限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;向量空间规则
+&lt;ul&gt;
+&lt;li&gt;不同模型 = 不同空间，不可混用&lt;/li&gt;
+&lt;li&gt;入库模型 = 查询模型，必须一致&lt;/li&gt;
+&lt;li&gt;维度必须统一（512/768/1024）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;主流模型类别
+&lt;ul&gt;
+&lt;li&gt;文本专用：BGE / GTE / E5 / OpenAI Embedding&lt;/li&gt;
+&lt;li&gt;多模态：CLIP（文搜图核心）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四向量数据库存储与检索结构&#34;&gt;四、向量数据库：存储与检索结构
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;存储内容（三元组）
+&lt;ul&gt;
+&lt;li&gt;向量：用于相似度检索&lt;/li&gt;
+&lt;li&gt;文本片段 chunk：给 LLM 使用&lt;/li&gt;
+&lt;li&gt;元数据：来源、页码、行号、偏移&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;向量是否足够？
+&lt;ul&gt;
+&lt;li&gt;向量不能还原原文&lt;/li&gt;
+&lt;li&gt;chunk 绝对不能删&lt;/li&gt;
+&lt;li&gt;原始文档可删（无需二次解析）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;检索方式
+&lt;ul&gt;
+&lt;li&gt;粗检索：定位段落/行&lt;/li&gt;
+&lt;li&gt;细检索：定位半句/跨行/中间片段&lt;/li&gt;
+&lt;li&gt;混合检索：向量 + 关键词（精确到词）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据量级与存储
+&lt;ul&gt;
+&lt;li&gt;向量本身极小（百万条仅几GB）&lt;/li&gt;
+&lt;li&gt;占空间的是文本 chunk&lt;/li&gt;
+&lt;li&gt;百万级文档约需 300GB~500GB 空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;五检索深度能力定位与可解释性&#34;&gt;五、检索深度能力：定位与可解释性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;基础定位
+&lt;ul&gt;
+&lt;li&gt;定位到：文档、段落、页码、行数&lt;/li&gt;
+&lt;li&gt;依靠元数据实现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;精细定位
+&lt;ul&gt;
+&lt;li&gt;行内：上半句 / 后半句 / 中间句&lt;/li&gt;
+&lt;li&gt;跨行：上下行拼接语义片段&lt;/li&gt;
+&lt;li&gt;方式：二次滑动窗口 + 细粒度匹配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;为什么搜到这一段？（可解释性）
+&lt;ul&gt;
+&lt;li&gt;向量本身是黑盒，不自带依据&lt;/li&gt;
+&lt;li&gt;方案：Token 贡献度分析&lt;/li&gt;
+&lt;li&gt;遮词→相似度下降→判断核心词&lt;/li&gt;
+&lt;li&gt;支持近义词、语义关联归因&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;六多模态检索用文字搜图片原理&#34;&gt;六、多模态检索：用文字搜图片原理
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;核心模型：CLIP 类多模态模型
+&lt;ul&gt;
+&lt;li&gt;两个编码器：文本编码器 + 图像编码器&lt;/li&gt;
+&lt;li&gt;同空间训练：语义对齐&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;建库流程
+&lt;ul&gt;
+&lt;li&gt;图片 → 图像向量 → 入库&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;查询流程
+&lt;ul&gt;
+&lt;li&gt;文字 → 文本向量 → 检索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;原理与文本 RAG 完全一致
+&lt;ul&gt;
+&lt;li&gt;只是“chunk”从文本变成图片&lt;/li&gt;
+&lt;li&gt;无分块问题，一张图一个语义单元&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;七rag-完整工作流程核心主线&#34;&gt;七、RAG 完整工作流程（核心主线）
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;离线构建阶段
+&lt;ol&gt;
+&lt;li&gt;原始文档 → 提取纯文本&lt;/li&gt;
+&lt;li&gt;文本 → 语义分块 chunk&lt;/li&gt;
+&lt;li&gt;chunk → Embedding 模型 → 向量&lt;/li&gt;
+&lt;li&gt;向量 + chunk + 元数据 → 向量库&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;在线问答阶段
+&lt;ol&gt;
+&lt;li&gt;用户问题 → 同一 Embedding 模型 → 查询向量&lt;/li&gt;
+&lt;li&gt;向量库检索 → 最相似文本片段&lt;/li&gt;
+&lt;li&gt;可做精细定位 + 归因分析&lt;/li&gt;
+&lt;li&gt;片段拼 Prompt → 送入 LLM&lt;/li&gt;
+&lt;li&gt;LLM 生成有据可查的回答&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;八关键误区与重要结论&#34;&gt;八、关键误区与重要结论
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;误区
+&lt;ul&gt;
+&lt;li&gt;向量可以还原原文 ❌&lt;/li&gt;
+&lt;li&gt;不同模型向量可以混用 ❌&lt;/li&gt;
+&lt;li&gt;按行切分文本效果好 ❌&lt;/li&gt;
+&lt;li&gt;模型大小只影响速度和长度 ❌&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;核心结论
+&lt;ul&gt;
+&lt;li&gt;Embedding 质量 = RAG 天花板&lt;/li&gt;
+&lt;li&gt;向量只负责检索，不负责存储内容&lt;/li&gt;
+&lt;li&gt;精细定位靠二次检索，不是向量自带&lt;/li&gt;
+&lt;li&gt;文搜图 = 多模态版 RAG，原理完全一致&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;附思维导图&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;向量检索与RAG全流程原理
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	基础认知：向量与向量检索
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		向量(Embedding)本质
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			语义的数学表示：浮点数数组
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			单向有损编码，不可还原原文
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			语义相近→空间距离相近
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		向量检索VS传统搜索
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			传统搜索：关键词精确匹配
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量检索：语义相似性搜索
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			核心计算：余弦相似度/欧氏距离
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		核心特性
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			理解语义而非字面
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			支持近义词、跨语言
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			无统一标准，模型决定向量空间
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	文档处理：原始文件到Chunk
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		非纯文本文档解析
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			docx/pptx/xlsx本质为zip压缩包
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			专用工具提取纯文本
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			丢弃格式、XML、冗余信息
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		文本分块(Chunking)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			错误方式：按物理行、固定字符硬切
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				问题：语义断裂，检索失效
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			正确方式：语义分块
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				按段落、句子边界切分
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				保证语义完整
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				滑动窗口辅助优化
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		分块目标
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			适配LLM输入长度
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			语义独立，提升召回精度
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	Embedding模型：系统核心基石
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		模型核心作用
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			文本转向量
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			图片转向量
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			多模态：图文同空间映射
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		模型尺寸差异
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			小模型：语义粗糙、易混淆、空间混乱
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			大模型：细粒度区分强、专业领域精准
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			尺寸决定检索上限与向量库价值
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		向量空间铁律
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			不同模型=不同空间，禁止混用
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			入库模型=查询模型，必须一致
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量维度必须统一
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		主流模型分类
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			文本模型：BGE/GTE/E5/OpenAI Embedding
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			多模态模型：CLIP(文搜图核心)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	向量数据库：存储与检索
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		存储三元结构
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量：用于相似度检索
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			文本Chunk：提供给LLM使用
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			元数据：来源、页码、行号、偏移量
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		存储关键说明
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量不可还原原文
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			Chunk禁止删除
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			原始文档可删除
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		检索方式
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			粗检索：定位段落、行
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			细检索：定位半句、跨行片段
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			混合检索：向量+关键词(精确到词)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		数据存储量级
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量本身占用空间极小
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			空间占用主力为文本Chunk
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			百万级文档总空间300GB~500GB
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	检索深度能力：定位与可解释
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		基础定位
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			定位文档、段落、页码、行数
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			依靠元数据实现
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		精细定位
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			行内：上半句/下半句/中间句
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			跨行：上下行拼接语义片段
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			实现方式：二次滑动窗口+细粒度匹配
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		匹配可解释性
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量为黑盒，无自带依据
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			方案：Token贡献度分析
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			遮词对比相似度，定位核心词汇
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			支持近义词语义归因
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	多模态检索：文搜图原理
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		核心模型：CLIP
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			文本编码器+图像编码器
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			同源训练，共享向量空间
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		离线建库流程
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			图片→图像向量→存入向量库
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		在线查询流程
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			文字→文本向量→向量检索
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		与文本RAG关系
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			原理完全一致
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			图片天然为一个Chunk，无分块问题
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	RAG完整工作流程
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		离线构建阶段
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			原始文档→提取纯文本
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			纯文本→语义分块生成Chunk
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			Chunk→Embedding模型→向量
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量+Chunk+元数据→入库
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		在线问答阶段
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			用户问题→同一模型→查询向量
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量库相似度检索
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			精细定位+归因分析(可选)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			Chunk拼接Prompt→送入LLM
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			LLM生成有据可依的回答
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	关键误区与核心结论
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		常见误区
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量可还原原文❌
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			不同模型向量可混用❌
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			按行切分效果更好❌
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			模型大小只影响速度长度❌
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		核心结论
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			Embedding质量=RAG系统天花板
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			向量仅负责检索，不负责内容存储
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			精细定位依靠二次检索实现
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			文搜图为多模态版本RAG，原理同源
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Embedding, llm and hardware</title>
+        <link>/post/tech/embedding-llm-hardware/</link>
+        <pubDate>Mon, 17 Mar 2025 17:00:47 +0800</pubDate>
+        
+        <guid>/post/tech/embedding-llm-hardware/</guid>
+        <description>&lt;h1 id=&#34;向量数据库与大模型硬件及运行原理全解&#34;&gt;向量数据库与大模型硬件及运行原理全解
+&lt;/h1&gt;&lt;h2 id=&#34;一核心结论总览&#34;&gt;一、核心结论总览
+&lt;/h2&gt;&lt;h3 id=&#34;1-通用核心结论&#34;&gt;1. 通用核心结论
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;输出质量与硬件算力无关，仅由算法、输入、精度决定&lt;/li&gt;
+&lt;li&gt;只要内存/显存足够加载数据，一定能运算结束&lt;/li&gt;
+&lt;li&gt;配置低仅导致运行速度慢，无结果质量下降&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-关键前提&#34;&gt;2. 关键前提
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;无程序崩溃、无数值溢出、无精度压缩改变&lt;/li&gt;
+&lt;li&gt;随机采样设置固定，否则结果本身存在随机性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二向量数据库详解&#34;&gt;二、向量数据库详解
+&lt;/h2&gt;&lt;h3 id=&#34;1-硬件需求&#34;&gt;1. 硬件需求
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;非必需显卡，CPU 即可正常运行&lt;/li&gt;
+&lt;li&gt;GPU仅用于高并发、亿级向量的检索加速&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-本质属性&#34;&gt;2. 本质属性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;存储+高维向量相似度检索&lt;/li&gt;
+&lt;li&gt;特殊数据库，无训练、无权重加载&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-运行特性&#34;&gt;3. 运行特性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;计算确定性，结果一致&lt;/li&gt;
+&lt;li&gt;内存足够则召回质量、排序不受硬件影响&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三大模型llm详解&#34;&gt;三、大模型(LLM)详解
+&lt;/h2&gt;&lt;h3 id=&#34;1-硬件需求-1&#34;&gt;1. 硬件需求
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;必需高性能显卡(显存充足)&lt;/li&gt;
+&lt;li&gt;核心消耗：模型权重+KV Cache&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-本质属性-1&#34;&gt;2. 本质属性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;神经网络推理计算&lt;/li&gt;
+&lt;li&gt;需加载权重，支持训练、微调、推理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-运行特性-1&#34;&gt;3. 运行特性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;推理计算确定性&lt;/li&gt;
+&lt;li&gt;配置低仅速度变慢，结果质量不变&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四两者核心对比&#34;&gt;四、两者核心对比
+&lt;/h2&gt;&lt;h3 id=&#34;1-相同点&#34;&gt;1. 相同点
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;结果质量不受硬件速度影响&lt;/li&gt;
+&lt;li&gt;内存/显存足够即可完成运算&lt;/li&gt;
+&lt;li&gt;仅存在运行速度差异&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-不同点&#34;&gt;2. 不同点
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;硬件依赖：向量库CPU优先，大模型GPU必需&lt;/li&gt;
+&lt;li&gt;核心逻辑：向量库是数据库，大模型是神经网络&lt;/li&gt;
+&lt;li&gt;流程环节：向量库无训练，大模型有训练微调&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;五工作流程原理梳理&#34;&gt;五、工作流程原理梳理
+&lt;/h2&gt;&lt;h3 id=&#34;1-向量数据库工作流程&#34;&gt;1. 向量数据库工作流程
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;向量生成(可搭配模型生成)&lt;/li&gt;
+&lt;li&gt;向量存储与索引构建&lt;/li&gt;
+&lt;li&gt;相似度检索计算&lt;/li&gt;
+&lt;li&gt;返回匹配结果&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;2-大模型推理工作流程&#34;&gt;2. 大模型推理工作流程
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;模型权重加载至显存/内存&lt;/li&gt;
+&lt;li&gt;输入文本向量化(Embedding)&lt;/li&gt;
+&lt;li&gt;逐层神经网络推理运算&lt;/li&gt;
+&lt;li&gt;Token采样生成输出文本&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;六常见误区纠正&#34;&gt;六、常见误区纠正
+&lt;/h2&gt;&lt;h3 id=&#34;误区1算力低会导致输出质量变差&#34;&gt;误区1：算力低会导致输出质量变差
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：仅速度变慢，质量不变&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;误区2向量数据库需要像大模型一样配显卡&#34;&gt;误区2：向量数据库需要像大模型一样配显卡
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：CPU即可，GPU非必需&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;误区3模型跑不完是算力不足&#34;&gt;误区3：模型跑不完是算力不足
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：多为内存/显存不足导致崩溃，非算力问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;误区4量化导致效果差是硬件问题&#34;&gt;误区4：量化导致效果差是硬件问题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：数值精度损失，和硬件配置无关&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;误区5结果不同是硬件导致&#34;&gt;误区5：结果不同是硬件导致
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;纠正：多为随机采样参数未固定，与硬件无关&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

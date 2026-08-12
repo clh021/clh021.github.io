@@ -1,0 +1,155 @@
+/**
+ * @fileOverview nsp中设置"ui=true"时自动引入此css，该css为UI框架内置css，故设为必须加载。由("base/comm","com.leadal.netiler.ui")演变而来
+ * 
+ * @author leadal
+ * 
+ * @created 2017-1-24
+ */
+ 
+/******************************reset.css******************************/
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+input{
+	outline:none;/**防止谷歌浏览器focus的时候有边框颜色**/
+}
+iframe{
+	vertical-align:top;/*防止铺满后出现滚动条问题*/
+}
+ul, li, dl, dt, dd {
+	list-style-type: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+a:link, a:visited {
+	color: #000;
+	text-decoration: none;
+	outline: none;
+}
+
+a:hover, a:active, a:focus {
+	text-decoration: none;
+	outline: none;
+}
+
+embed {
+	position: absolute;
+	z-index: -9999;
+	left: 0;
+	top: 0;
+}
+
+/******************************** css module********************************/
+.lf {
+	float: left;
+}
+
+.rf {
+	float: right;
+}
+.clearfloat::after{
+	display: block;
+	content: "";
+	clear: both;
+}
+.mod-user-unselect {
+	-moz-user-select: -moz-none;/*不加-moz-前缀会导致目标元素的子元素中的input中文字也禁止选中。从firefox21开始`none`才等价于`-moz-none`*/
+	cursor: default;
+}
+.full {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+.of {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.dn{
+	display:none !important;/*用于js中`addClass("dn")`控制DOM元素显示隐藏，代替show,hide方法。因为在特定情况下，show方法并不能控制显示为display:inline-block，只能控制显示为block*/
+}
+
+/**************************************others************************************/
+/** msgboxicon netilerUI.extend.js $window.alert()**/
+.ld-msgbox{
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAAAbCAYAAACZQWq0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3JpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1OWI3NWQzYi1lYTBjLTlmNGQtYTY4OC0yZDY3ZDMxNmVjNTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RDZBRUNCNjlFMjAwMTFFNkFCMkRCN0NEQzMwMDA4ODYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RDZBRUNCNjhFMjAwMTFFNkFCMkRCN0NEQzMwMDA4ODYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6YjBkY2JkYzEtOTkwMi1hODQwLTg1YTUtMzQ5OGYyZWU1ZWFhIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjg2REMyNkM3NTVCQzExRTQ5NTc0OUQyMUY2RDI0Mzk1Ii8+IDwv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);
+}
+.ld-msgbox.ok {
+	background-position: 0px 0px;
+}
+
+.ld-msgbox.error {
+	background-position: -27px 0px;
+}
+
+.ld-msgbox.warn {
+	background-position: -54px 0px;
+}
+
+.ld-msgbox.info {
+	background-position: -81px 0px;
+}
+.ld-msgBoxTheme{
+	transition : 0.5s;
+	-webkit-transition : 0.5s;
+	-o-transition : 0.5s; 
+	padding: 30px 25px;
+	font-size: 20px;
+	color: white;
+	border-radius: 5px;
+	position: fixed;
+	top: 155px; 
+	z-index: 9999;
+}
+.ld-msgbox{
+	float:left;
+	display:inline-block;
+	height:26px;
+	width:26px;
+	margin-right:10px;
+	background-repeat:no-repeat;
+}
+
+/** netilerUI.extend.js $window.confirm()*/
+.a-table{
+	display: table;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	table-layout: fixed;
+	position: relative;
+}
+.a-table-cell{
+	height: 100%;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+/** predator.js p.layer()*/
+.ld-layer {
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000;
+	filter: alpha(opacity = 50);
+	opacity: 0.5;
+	-webkit-opacity: 0.5;
+}
+.ld-layer-shen{
+	opacity: 0.8;
+	-webkit-opacity: 0.8;
+}

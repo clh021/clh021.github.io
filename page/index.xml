@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Pages on 良宏</title>
+        <link>/page/</link>
+        <description>Recent content in Pages on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 29 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/page/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>About</title>
+        <link>/page/about/</link>
+        <pubDate>Fri, 24 Dec 2021 00:00:00 +0000</pubDate>
+        
+        <guid>/page/about/</guid>
+        <description>&lt;p&gt;暮春者，春服既成，冠者五六人，童子六七人，浴乎沂，风乎舞雩，咏而归。&lt;/p&gt;
+&lt;h3 id=&#34;个人链&#34;&gt;个人链
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;/post/quick/&#34; &gt;知识笔记&lt;/a&gt; &lt;a class=&#34;link&#34; href=&#34;/post/tech/bash.script/&#34; &gt;脚本模板&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;工具站&#34;&gt;工具站
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://regex101.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;在线正则&lt;/a&gt; &lt;a class=&#34;link&#34; href=&#34;https://colorhunt.co&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;颜色搭配&lt;/a&gt; &lt;a class=&#34;link&#34; href=&#34;https://imageoptim.com/mac&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;图片压缩&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Archives</title>
+        <link>/page/archives/</link>
+        <pubDate>Fri, 24 Dec 2021 00:00:00 +0000</pubDate>
+        
+        <guid>/page/archives/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Search</title>
+        <link>/page/search/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>/page/search/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,160 @@
+@charset "gb2312";
+
+/* Reset/Base Styles */
+body, ul, li, h1, h4, p, article, div {
+    padding: 0;
+    margin: 0;
+}
+
+h1, h4 {
+    font-weight: normal;
+    font-size: 100%;
+}
+
+ul, li {
+    list-style: none;
+}
+
+strong {
+    font-weight: normal;
+}
+
+body {
+    font: 1.33333rem/1.5 "Microsoft YaHei", Helvetica;
+    color: #333;
+    -webkit-text-size-adjust: none;
+    background-color: #fcfcfc;
+    -webkit-backface-visibility: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: #666;
+}
+
+a:hover, a:visited {
+    color: #666;
+}
+
+/* Layout & Component Styles */
+.wrapper {
+    margin-bottom: -7.66667rem;
+}
+
+.article .content {
+    padding: 1.11111rem 6.25%;
+    word-break: break-all;
+    overflow: hidden;
+}
+
+.article .content h1 {
+    color: #333;
+    text-align: center;
+    line-height: 1.38;
+    font-size: 1.44444rem;
+    font-weight: bold;
+}
+
+.article .content h4 {
+    color: #2d87cc;
+    line-height: 2;
+    font-size: 1rem;
+}
+
+.article .content p {
+    color: #333;
+    text-indent: 2em;
+    line-height: 1.83;
+    font-size: 1.33333rem;
+}
+
+/* Styles for .fz28 variant */
+.article .content.fz28 h1 {
+    font-size: 1.66667rem;
+}
+
+.article .content.fz28 h4 {
+    font-size: 1.33333rem;
+}
+
+.article .content.fz28 p {
+    font-size: 1.33333rem;
+}
+
+.ats-b {
+    border-top: 1px solid #ddd;
+    text-align: center;
+    padding: 0.83333rem 6.25% 0;
+    margin-top: 0.83333rem;
+    margin-bottom: 0.83333rem;
+}
+
+.pagebreak {
+    padding: 1.11111rem 6.25%;
+}
+
+.pagebreak ul {
+    zoom: 1; /* For IE clearfix */
+}
+.pagebreak ul:before,
+.pagebreak ul:after {
+    content: "";
+    display: table;
+}
+.pagebreak ul:after {
+    clear: both;
+}
+
+.pagebreak li {
+    float: left;
+    width: 33.3%;
+}
+
+.pagebreak li a {
+    display: inline-block;
+    border: 1px solid #c5c5c5;
+    color: #2d87cc;
+    text-align: center;
+    width: 6.66667rem;
+    height: 2.88889rem;
+    line-height: 2.88889rem;
+    -moz-border-radius: 0.27778rem;
+    -webkit-border-radius: 0.27778rem;
+    border-radius: 0.27778rem;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+.pagebreak li:nth-child(1) {
+    text-align: left;
+}
+
+.pagebreak li:nth-child(2) {
+    text-align: center;
+    width: 33.4%;
+}
+
+.pagebreak li:nth-child(3) {
+    text-align: right;
+}
+
+/* Media Queries for responsive font size */
+@media only screen {
+    html {
+        font-size: 12px;
+    }
+}
+@media only screen and (min-width: 360px) and (max-width: 399px) {
+    html {
+        font-size: 13px;
+    }
+}
+@media only screen and (min-width: 400px) and (max-width: 479px) {
+    html {
+        font-size: 15px;
+    }
+}
+@media only screen and (min-width: 480px) {
+    html {
+        font-size: 18px;
+    }
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lnks.message.receive.test</title>
+</head>
+
+<body style="background-color: azure;">
+  <fieldset class="test1_pass">
+    <legend>演示消息接收接口 lnksWin.readHttpMsg()</legend>
+    <button onclick="beginGetMsgHttp()">开始接收消息</button>
+    <button onclick="endGetMsgHttp()">停止接收消息</button>
+    <div>
+      <textarea style="width:80%" rows="４" id="lnksWinMsgHttpResult"></textarea>
+    </div>
+    <script language="javascript">
+      function lnksWinMsgRead () {
+        window.win.readHttpMsg().then((m) => {
+          console.log(m, m.length);
+          if (m.length > 1) {
+            document.getElementById("lnksWinMsgHttpResult").value = m;
+          }
+        });
+      }
+      let listenLnksMsgRead = null;
+      function beginGetMsgHttp () {
+        listenLnksWinMsgRead = setInterval(function () { lnksWinMsgRead() }, 2000);
+      }
+      function endGetMsgHttp () {
+        clearInterval(listenLnksWinMsgRead);
+      }
+    </script>
+  </fieldset>
+
+  <fieldset class="test1_pass">
+    <legend>生产消息接收接口 lnksWin.onmessage</legend>
+    <pre id="lnksWinMsgResult"></pre>
+    <script language="javascript">
+      function output (str, Id) {
+        let res = document.getElementById(Id);
+        var pobj = document.createElement('p');
+        var textobj = document.createTextNode(str + "\r\n");
+        res.prepend(pobj.appendChild(textobj))
+      }
+    </script>
+  </fieldset>
+  <script>
+    // 全局变量准备
+    window.onload = function () {
+      if (window.lnks) {
+        window.win = new window.lnks.MainWindow(window);
+        window.win.onmessage = (msg) => {
+          let msgObj = "";
+          if (msg.charCodeAt(0)==116) {
+            try {
+                msgObj = JSON.parse(msg.substr(1));
+                console.log("收到消息对象: msgObj: ", msgObj)
+            } catch (e) {
+                msgObj = msg;
+                console.log("收到消息字符串: msgObj: ", msgObj)
+            }
+          } else {
+            msgObj = msg;
+            console.log("收到消息: ", msgObj)
+          }
+          output(JSON.stringify(msgObj), "lnksWinMsgResult");
+        };
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .notice {
+        border-left: 3px solid red;
+        padding: 5px;
+        margin: 5px 0;
+        background-color: brown;
+        color: whitesmoke;
+    }
+
+    span {
+        color: brown;
+    }
+
+    #box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 100px;
+    }
+</style>
+
+<body>
+    <div class="notice" style="display: none;">浏览器不支持本Demo</div>
+    <div style="display:flex;">
+        <div style="flex:0 0 50%;height:25px;background-color:blueviolet;color:white" onmousedown="begin_move(event)">
+            gecko引擎 拖拽区</div>
+        <div
+            style="-webkit-app-region: drag;flex:0 0 50%;height:25px;cursor:move;background-color:lightcoral;color:white">
+            chrome引擎 拖拽区</div>
+    </div>
+    <div style="background-color: aquamarine; padding: 10px;">
+        <span id="msg" style="font-size:larger;color:blueviolet;display:block"></span>
+        <span id="show" style="font-size: large;"></span>
+        <span id="user_args" style="font-size:larger;color:blue;display:none"></span>
+    </div>
+</body>
+<script>
+    var t = 5;//设定跳转的时间
+    function timeRefer() {
+        if (t <= 0) {
+            window.close();
+            document.getElementById('show').innerHTML = "页面关闭操作被浏览器拦截了"; // 显示倒计时
+        } else {
+            document.getElementById('show').innerHTML = "" + t + "秒后 页面自动关闭"; // 显示倒计时
+            t--; // 计数器递减
+        }
+    }
+    // 全局变量准备
+    window.onload = function () {
+        let msg = (new URL(location)).searchParams.get("msg");
+        if (msg) {
+            document.getElementById('msg').innerHTML = msg;
+        }
+        let time = (new URL(location)).searchParams.get("time");
+        if (time) {
+            t = parseInt(time);
+        }
+        if (window.lnks) {
+            window.win = new window.lnks.MainWindow(window);
+            let timeDown = setInterval("timeRefer()", 1000); //启动1秒定时
+            setTimeout(() => {
+                clearInterval(timeDown);
+            }, (t + 1) * 1000)
+            if (window.arguments) {
+                document.getElementById('user_args').innerHTML = JSON.stringify(window.arguments);
+                document.getElementById('user_args').style.display = "block";
+            }
+        } else {
+            document.getElementsByClassName("notice")[0].style.display = "block";
+        }
+    }
+</script>
+</body>
+
+</html>

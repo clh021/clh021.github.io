@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>AdGuard on 良宏</title>
+        <link>/tags/adguard/</link>
+        <description>Recent content in AdGuard on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sun, 05 Feb 2023 12:01:20 +0800</lastBuildDate><atom:link href="/tags/adguard/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Mi TV removes ads</title>
+        <link>/post/live/mi.tv/</link>
+        <pubDate>Sun, 05 Feb 2023 12:01:20 +0800</pubDate>
+        
+        <guid>/post/live/mi.tv/</guid>
+        <description>&lt;h1 id=&#34;打开开发者模式打开adb调试&#34;&gt;打开开发者模式，打开ADB调试
+&lt;/h1&gt;&lt;p&gt;小米电视设置 - 关于 - 产品型号 - 遥控器确定多按几次(看电视提示)
+小米电视设置 - 账号与安全 - 打开ADB调试(左右键)&lt;/p&gt;
+&lt;h1 id=&#34;使用-adb-命令连接到电视&#34;&gt;使用 ADB 命令连接到电视
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 不需要配对&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb connect 192.168.1.10
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 电视上提示是否允许调试，选择允许&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;执行停用命令&#34;&gt;执行停用命令
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#建议清除的应用&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xm.webcontent &lt;span style=&#34;color:#75715e&#34;&gt;#电视活动中心&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.sogou.speech.offlineservice &lt;span style=&#34;color:#75715e&#34;&gt;#搜狗离线语音识别引擎&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.tweather &lt;span style=&#34;color:#75715e&#34;&gt;#天气&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mimusic2 &lt;span style=&#34;color:#75715e&#34;&gt;#本地音乐播放器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.videoplayer &lt;span style=&#34;color:#75715e&#34;&gt;#小米TV播放器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.providers.downloads &lt;span style=&#34;color:#75715e&#34;&gt;#下载管理程序&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.handbook &lt;span style=&#34;color:#75715e&#34;&gt;#用户手册&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.certinstaller &lt;span style=&#34;color:#75715e&#34;&gt;#证书安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.captiveportallogin &lt;span style=&#34;color:#75715e&#34;&gt;#wifi认证&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.appstore.component.land &lt;span style=&#34;color:#75715e&#34;&gt;#应用商店内容land&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.tvmanager &lt;span style=&#34;color:#75715e&#34;&gt;#电视管家&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.alarmcenter &lt;span style=&#34;color:#75715e&#34;&gt;#定时提醒&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.calendar &lt;span style=&#34;color:#75715e&#34;&gt;#日历&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.gallery &lt;span style=&#34;color:#75715e&#34;&gt;#相册&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.gamecenter.sdk.service.mibox &lt;span style=&#34;color:#75715e&#34;&gt;#小米服务安全插件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mitv.care &lt;span style=&#34;color:#75715e&#34;&gt;#adcare&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.karaoke.service &lt;span style=&#34;color:#75715e&#34;&gt;#卡拉OK服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.miplay &lt;span style=&#34;color:#75715e&#34;&gt;#MIOTHOST&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mibox.gamecenter &lt;span style=&#34;color:#75715e&#34;&gt;#游戏中心&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.upgrade &lt;span style=&#34;color:#75715e&#34;&gt;#系统更新&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.account &lt;span style=&#34;color:#75715e&#34;&gt;#小米帐号&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.droidlogic &lt;span style=&#34;color:#75715e&#34;&gt;#droidlogic系统&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.payment &lt;span style=&#34;color:#75715e&#34;&gt;#小米支付&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.pay &lt;span style=&#34;color:#75715e&#34;&gt;#电视支付&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.tv.appupgrade &lt;span style=&#34;color:#75715e&#34;&gt;#应用更新&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.vpndialogs &lt;span style=&#34;color:#75715e&#34;&gt;#VPN&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.tvpush.tvpushservice &lt;span style=&#34;color:#75715e&#34;&gt;#电视推送&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.account.auth &lt;span style=&#34;color:#75715e&#34;&gt;#小米帐号授权&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.statistic &lt;span style=&#34;color:#75715e&#34;&gt;#统计&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mipay.wallet.tv &lt;span style=&#34;color:#75715e&#34;&gt;#小米钱包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.smarthome.tv &lt;span style=&#34;color:#75715e&#34;&gt;#米家&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.appstore &lt;span style=&#34;color:#75715e&#34;&gt;#应用商店&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.miui.tv.analytics &lt;span style=&#34;color:#75715e&#34;&gt;#分析&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.shop &lt;span style=&#34;color:#75715e&#34;&gt;#小米商城&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.devicereport &lt;span style=&#34;color:#75715e&#34;&gt;#设备报告&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mibox.lockscreen &lt;span style=&#34;color:#75715e&#34;&gt;#锁屏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mi.umi &lt;span style=&#34;color:#75715e&#34;&gt;#小米音响服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.mi.umifrontend &lt;span style=&#34;color:#75715e&#34;&gt;#音响前端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.proxyhandler &lt;span style=&#34;color:#75715e&#34;&gt;#代理&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.mitv.advertise &lt;span style=&#34;color:#75715e&#34;&gt;#广告应用&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.android.location.fused &lt;span style=&#34;color:#75715e&#34;&gt;#一体化位置信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.screenrecorder &lt;span style=&#34;color:#75715e&#34;&gt;#录屏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.miui.systemAdSolution &lt;span style=&#34;color:#75715e&#34;&gt;#去除开机广告&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.xiaomi.tv.gallery &lt;span style=&#34;color:#75715e&#34;&gt;#时尚画报&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb shell pm uninstall --user &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; com.duokan.videodaily &lt;span style=&#34;color:#75715e&#34;&gt;#今日头屏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#不建议清除的应用&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.mitv.screensaver #智能屏保&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.android.packageinstaller #软件包安装程序&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.sohu.inputmethod.sogou.tv #搜狗输入法&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.mitv.mivideoplayer #小米电视播放器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.pacprocessor #pacprocessor&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.mediaexplorer #高清播放器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.android.bluetooth #蓝牙共享&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.tvplayer #模拟电视&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.upnp #upnp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.smartshare #无线投屏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.milink.udt #米联&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.mi.miplay.mitvupnpsink #upnpapp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.dlnatvservice #DLNA连接&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.assistant.manual #投屏神器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.duokan.airkan.tvbox #milink服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.android.statementservice #AppLinks功能&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 mitv.service #无说明未测试&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.xiaomi.mitv.service #无说明未测试&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#adb shell pm uninstall --user 0 com.mitv.tvhome #桌面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;屏蔽小米广告&#34;&gt;屏蔽小米广告
+&lt;/h1&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;127.0.0.1 ad.xiaomi.com
+127.0.0.1 ad1.xiaomi.com
+127.0.0.1 ad.mi.com
+127.0.0.1 tat.pandora.xiaomi.com
+127.0.0.1 t7z.cupid.ptqy.gitv.tv
+127.0.0.1 de.pandora.xiaomi.com
+127.0.0.1 mishop.pandora.xiaomi.com
+127.0.0.1 auth.api.gitv.tv
+127.0.0.1 misc.pandora.xiaomi.com
+127.0.0.1 tvapi.kuyun.com
+127.0.0.1 data.mistat.xiaomi.com
+127.0.0.1 tv.aiseet.atianqi.com
+127.0.0.1 vv.play.aiseet.atianqi.com
+127.0.0.1 gallery.pandora.xiaomi.com
+127.0.0.1 config.kuyun.com
+127.0.0.1 bss.pandora.xiaomi.com
+127.0.0.1 o2o.api.xiaomi.com
+127.0.0.1 dvb.pandora.xiaomi.com
+127.0.0.1 alog.umeng.com
+127.0.0.1 pandora.mi.com
+127.0.0.1 api.ad.xiaomi.com
+127.0.0.1 tvapi.kuyun.com
+127.0.0.1 sdkconfig.ad.xiaomi.com
+127.0.0.1 assistant.pandora.xiaomi.com
+127.0.0.1 tracking.miui.com
+127.0.0.1 misc.pandora.xiaomi.com
+127.0.0.1 gvod.aiseejapp.atianqi.com
+127.0.0.1 omgmta.play.aiseet.atianqi.com
+127.0.0.1 jellyfish.pandora.xiaomi.com
+127.0.0.1 starfish.pandora.xiaomi.com
+127.0.0.1 misc.in.duokanbox.com
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;锁定第三方桌面&#34;&gt;锁定第三方桌面
+&lt;/h1&gt;&lt;p&gt;安装 &lt;a class=&#34;link&#34; href=&#34;https://www.dangbei.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;当贝桌面&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;./LMUltimate-TDUK-NOV.apk&#34; &gt;LM Ultimate&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;运行&lt;code&gt;当贝桌面&lt;/code&gt;进行简单设置后，打开&lt;code&gt;LM Ultimate&lt;/code&gt;设置&lt;code&gt;DISABLE STOCK LAUNCHER&lt;/code&gt; 就彻底禁止了 系统桌面应用(不建议卸载)。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一定要先安装好至少一个第三方桌面才应该进行配置操作。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;推荐应用&#34;&gt;推荐应用
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://tvhuoxing.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;火星直播&lt;/a&gt; 为父母准备的够看的电视直播应用。&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://m.dangbei.com/wap-view-7985.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;阿里云盘TV版&lt;/a&gt; 为家人下载保存的影片立刻就能看。唯一愿意充会员的网盘。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;别的启动器推荐&#34;&gt;别的启动器推荐
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;用来帮助锁定&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;halauncher&#34;&gt;HALauncher
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://halauncher.cn.uptodown.com/android&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://halauncher.cn.uptodown.com/android&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://download.cnet.com/halauncher-android-tv/3001-20432_4-78044530.html?dt=internalDownload&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://download.cnet.com/halauncher-android-tv/3001-20432_4-78044530.html?dt=internalDownload&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;projectivy-launcher&#34;&gt;Projectivy Launcher
+&lt;/h2&gt;&lt;p&gt;Simple TV Launcher 或 TV Launcher 是不错的选择。如果你需要高级调整，Projectivy 或 ATV Launcher Pro 是最佳选择
+避免突击广告。如果它们让你感到困扰，请优先选择无广告选项或可以禁用广告的程序，例如 HALauncher。
+在 Android TV/Google TV 上切换启动器是一个立竿见影的决定：界面更加人性化，电视响应更灵敏，干扰也随之消失。无论您是追求极简无广告的启动方式、支持通过 APK 安装的应用，还是即时访问外部输入，FLauncher、Projectivy、ATV Launcher Pro、HALauncher、Simple TV Launcher、TV Launcher、Sideload Launcher 和 Dispatch 等启动器都能满足您的各种使用需求，并结合了多种功能。 轻盈与控制.
+Sideload Launcher&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>lineageOS.MI</title>
+        <link>/post/live/lineageos.mi/</link>
+        <pubDate>Sun, 01 Aug 2021 12:01:20 +0800</pubDate>
+        
+        <guid>/post/live/lineageos.mi/</guid>
+        <description>&lt;h1 id=&#34;小米-6-使用-lineageos-181-和-gapps&#34;&gt;小米 6 使用 lineageOS 18.1 和 GApps
+&lt;/h1&gt;&lt;p&gt;有一台闲置的小米 6，拿来装了第三方 ROM lineageOS，配合 Google 套件使用。
+&lt;a class=&#34;link&#34; href=&#34;https://xiaomirom.com/series/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;小米设备ROM下载站&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://xiaomirom.com/rom/mi-6-sagit-global-fastboot-recovery-rom/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;小米6的ROM下载地址&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://xiaomirom.com/rom/mi-10-lite-monet-global-fastboot-recovery-rom/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;小米10青春版ROM下载地址&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://miuiver.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MIUI历史版本下载合集&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;前期准备工作&#34;&gt;前期准备工作
+&lt;/h2&gt;&lt;h3 id=&#34;打开开发者模式&#34;&gt;打开开发者模式
+&lt;/h3&gt;&lt;p&gt;设置-&amp;gt;我的设备-&amp;gt;全部参数，连续点击”MIUI 版本“&lt;/p&gt;
+&lt;h3 id=&#34;打开-usb-调试和设备解锁&#34;&gt;打开 usb 调试和设备解锁
+&lt;/h3&gt;&lt;p&gt;设置-&amp;gt;更多设置-&amp;gt;开发者选项&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;打开 usb 调试&lt;/li&gt;
+&lt;li&gt;点击“设备解锁状态”，输入账号密码即可。如果需要等待 24*7,168 个小时，建议等待解 BL 锁&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;需要下载的文件&#34;&gt;需要下载的文件
+&lt;/h2&gt;&lt;h3 id=&#34;安装机器固件&#34;&gt;安装机器固件
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://xiaomifirmwareupdater.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;机型固件下载&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://xiaomifirmwareupdater.com/firmware/sagit/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;直接点击下载&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/clh021/clh021.github.io/issues/1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;备用下载地址&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果出现以下问题就是此处下载没有安装&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Error: this package requires miui firmware version 9.5.16 or newer. Phone is freshly wiped with latest MIUI version&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;lineageos&#34;&gt;lineageOS
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://download.lineageos.org/sagit&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Builds for sagit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mirrorbits.lineageos.org/full/sagit/20210722/lineage-18.1-20210722-nightly-sagit-signed.zip&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;直接点击下载 zip&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;twrp&#34;&gt;TWRP
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://dl.twrp.me/sagit/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TWRP for sagit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://dl.twrp.me/sagit/twrp-3.5.2_9-0-sagit.img&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;点击直接下载 img&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;gapps&#34;&gt;GApps
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lineageos.org/gapps.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LineageOS Wiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://opengapps.org/?api=11.0&amp;amp;variant=nano&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Open GApps&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;刷机过程&#34;&gt;刷机过程
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;按住&lt;code&gt;音量-&lt;/code&gt;+&lt;code&gt;关机键&lt;/code&gt;进入 fastboot 模式
+&lt;code&gt;fastboot devices&lt;/code&gt; 查看设备是否正确连上&lt;/li&gt;
+&lt;li&gt;终端输入：&lt;code&gt;fastboot flash recovery ./twrp-3.5.2_9-0-sagit.img&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;刷入成功后按住&lt;code&gt;音量+&lt;/code&gt;+&lt;code&gt;关机键&lt;/code&gt;进入 TWRP&lt;/li&gt;
+&lt;li&gt;首次刷入会提示更改语言，选择中文&lt;/li&gt;
+&lt;li&gt;进入 TWRP，选择高级，选择 ADB Sideload&lt;/li&gt;
+&lt;li&gt;输入命令：&lt;code&gt;adb sideload ./fw_sagit_miui_MI6_20.6.18_3f5b90d469_9.0.zip&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;观察设备，会提示刷入成功，桌面也会提示 Success&lt;/li&gt;
+&lt;li&gt;输入命令：&lt;code&gt;adb sideload ./lineage-18.1-20210722-nightly-sagit-signed.zip&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;观察设备，会提示刷入成功，桌面也会提示 Success&lt;/li&gt;
+&lt;li&gt;继续刷入 GApps：&lt;code&gt;adb sideload open_gapps-arm64-11.0-nano-20210730.zip&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;全部安装完成后，重启手机，进行一系列设置就能开心使用了。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;也可以在 twrp 状态，将包全部拷贝进手机，一次性选好三个包，直接刷入，比起 adb 速度相当快。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;安装-magisk&#34;&gt;安装 Magisk
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;开机状态输入命令 adb reboot recovery，进入 TWRP
+adb push Magisk-v23.0.zip /sdcard/Download/，找到对应路径安装
+重启后开机 adb install Magisk-v23.0.apk 安装 Magisk 应用
+下载地址：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://magiskapp.com/zip/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://magiskapp.com/zip/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/topjohnwu/Magisk/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/topjohnwu/Magisk/releases&lt;/a&gt; &amp;gt; &lt;a class=&#34;link&#34; href=&#34;https://xiaomirom.com/series/sagit/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://xiaomirom.com/series/sagit/&lt;/a&gt; &amp;gt; &lt;a class=&#34;link&#34; href=&#34;https://mylovezcy.gitee.io/mylovezcy1/devices/sagit.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://mylovezcy.gitee.io/mylovezcy1/devices/sagit.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;其它&#34;&gt;其它
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;解压下载的线刷包&lt;code&gt;tgz&lt;/code&gt;，执行其中的 &lt;code&gt;./flash_all.sh&lt;/code&gt; 即可&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;下载 twrp 在类似 &lt;a class=&#34;link&#34; href=&#34;https://twrp.me/xiaomi/xiaomimi10lite.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://twrp.me/xiaomi/xiaomimi10lite.html&lt;/a&gt; 的地址
+在 &lt;a class=&#34;link&#34; href=&#34;https://twrp.me/Devices/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://twrp.me/Devices/&lt;/a&gt; 搜索手机型号即可获得&lt;/p&gt;
+&lt;p&gt;下载后通过 &lt;code&gt;fastboot flash recovery twrp.img&lt;/code&gt; 命令即可刷入
+通过 &lt;code&gt;fastboot reboot recovery&lt;/code&gt; 命令可以重启到 &lt;code&gt;twrp&lt;/code&gt; 系统
+通过 &lt;code&gt;adb push miui_MONETEEAGlobal_V13.0.3.0.SJIEUXM_4e384a605c_12.0.zip /data&lt;/code&gt; 可以将包拷贝到手机中
+通过 &lt;code&gt;adb sideload ./lineage-18.1-20210722-nightly-sagit-signed.zip&lt;/code&gt; 可以将包刷到手机中&lt;/p&gt;
+&lt;h3 id=&#34;how-to-install-adb-on-linux&#34;&gt;How to install adb on Linux?
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;Debian / Ubuntu
+`sudo apt install android-tools-adb`
+Centos / Fedora / openSUSE
+`sudo dnf install android-tools`
+ArchLinux 及其衍生产品
+`sudo pacman -Sy android-tools`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;how-to-use-adb&#34;&gt;How to use adb?
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;`adb devices` 检查设备是否正确连接到计算机。
+`adb push fichero ruta` 将文件或文件夹从计算机发送到智能手机
+`adb pull archivo` 将文件或文件夹从智能手机到电脑。
+`adb install app.apk` 此命令将在智能手机上安装应用程序
+`adb uninstall` 使用这个卸载应用程序。
+`adb shell` 加载一个终端来控制我们的设备。
+`adb reboot` 重新启动计算机。
+`adb reboot-bootloader` 以快速启动模式重新启动
+`adb reboot recovery` 使用此命令命令以恢复模式重新启动
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+        </item>
+        <item>
+        <title>lineageOS.OnePlus</title>
+        <link>/post/live/lineageos.oneplus/</link>
+        <pubDate>Sun, 01 Aug 2021 12:01:20 +0800</pubDate>
+        
+        <guid>/post/live/lineageos.oneplus/</guid>
+        <description>&lt;h1 id=&#34;oneplus9-使用-lineageos-20-和-gapps&#34;&gt;OnePlus9 使用 lineageOS 20 和 GApps
+&lt;/h1&gt;&lt;p&gt;京东入了一台二手OnePlus9，拿来装了第三方 ROM lineageOS。&lt;/p&gt;
+&lt;h2 id=&#34;前期准备工作&#34;&gt;前期准备工作
+&lt;/h2&gt;&lt;h3 id=&#34;打开开发者模式&#34;&gt;打开开发者模式
+&lt;/h3&gt;&lt;p&gt;设置-&amp;gt;关于手机-&amp;gt;版本信息，基带内核版本等-&amp;gt;连续点击”版本号“&lt;/p&gt;
+&lt;h3 id=&#34;打开-usb-调试和设备解锁&#34;&gt;打开 usb 调试和设备解锁
+&lt;/h3&gt;&lt;p&gt;设置-&amp;gt;更多设置-&amp;gt;开发者选项&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;打开 usb 调试&lt;/li&gt;
+&lt;li&gt;通过同时按住 &lt;code&gt;音量-&lt;/code&gt;+&lt;code&gt;关机键&lt;/code&gt; 进入 &lt;code&gt;fastboot&lt;/code&gt;,也可以通过 &lt;code&gt;adb reboot fastboot&lt;/code&gt; 的方法进入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;通过 &lt;code&gt;adb devices&lt;/code&gt; 的方法确认连接，如果提示 &lt;code&gt;no permissions&lt;/code&gt; 则将充电模式修改为文件传输模式&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;adb reboot fastboot&lt;/code&gt; 进入到一个选择语言的地方(假fastboot)，格式化数据，确认后将会重启，按住音量上下键可进入真正的 &lt;code&gt;FastBoot Mode&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo fastboot oem unlock&lt;/code&gt; # 解锁设备，会重启清楚数据，再次进入系统&lt;/li&gt;
+&lt;li&gt;重启进入后的系统默认就已经打开了 usb调试和设备锁, 但是默认并没有打开开发者模式&lt;/li&gt;
+&lt;li&gt;之后就可以非常稳定容易的通过 &lt;code&gt;音量-&lt;/code&gt; + &lt;code&gt;关机键&lt;/code&gt; 进入真正的 &lt;code&gt;FastBoot Mode&lt;/code&gt; 了&lt;/li&gt;
+&lt;li&gt;通过 &lt;code&gt;fastboot oem device-info&lt;/code&gt; 可以在电脑端查看 &lt;code&gt;oem&lt;/code&gt; 信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;也可以在 twrp 状态，将包全部拷贝进手机，一次性选好三个包，直接刷入，比起 adb 速度相当快。不过，我在刷 twrp 时，发现始终无法正常启动。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;需要下载的文件&#34;&gt;需要下载的文件
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lineageos.org/devices/lemonade/install&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;刷机文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mirror.math.princeton.edu/pub/lineageos/full/lemonade/20230101/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;镜像下载&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://lineage-archive.timschumi.net/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;老镜像下载&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://twrp.me/oneplus/oneplus9.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TWRP下载&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.lineageos.org/gapps.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LineageOS Wiki&lt;/a&gt; lemonade:一加9 sagit:小米6&lt;/li&gt;
+&lt;li&gt;文件列表:
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://twrp.me/oneplus/oneplus9.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;twrp-3.7.0_11-0-lemonadep.img&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mirrors.ustc.edu.cn/lineageos/full/lemonade/20230122/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;dtbo.img&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mirrors.ustc.edu.cn/lineageos/full/lemonade/20230122/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;vendor_boot.img&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mirrors.ustc.edu.cn/lineageos/recovery/lemonade/20230101/lineage-20.0-20230101-recovery-lemonade.img&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;lineage-20.0-20230101-recovery-lemonade.img&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mirrors.ustc.edu.cn/lineageos/full/lemonade/20230122/lineage-20.0-20230122-nightly-lemonade-signed.zip&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;lineage-20.0-20230101-nightly-lemonade-signed.zip&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://androidfilehost.com/?fid=14871746926876840643&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MindTheGapps-13.0.0-arm64-20221025_100653.zip&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;科学文明上网可以加快下载速度&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;救砖过程&#34;&gt;救砖过程
+&lt;/h2&gt;&lt;p&gt;要想刷机先要了解清楚如何救砖&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;下载并启动&lt;a class=&#34;link&#34; href=&#34;https://pan.baidu.com/s/1jbw8PjUFk-Vlw-wiJNrhLA?pwd=ayqz&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;救砖工具包&lt;/a&gt;程序 &lt;a class=&#34;link&#34; href=&#34;https://yun.daxiaamu.com/OnePlus_Roms_2/%E4%B8%80%E5%8A%A09/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;备用下载地址&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;音量+&lt;/code&gt;+&lt;code&gt;音量-&lt;/code&gt;+&lt;code&gt;关机键&lt;/code&gt; 工具提示连接上时，即可选择 &lt;code&gt;India&lt;/code&gt; 而后开始&lt;/li&gt;
+&lt;li&gt;等待自动刷入完成，机器自动重启，进入到系统&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;刷机过程&#34;&gt;刷机过程
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;音量-&lt;/code&gt;+&lt;code&gt;关机键&lt;/code&gt;进入 &lt;code&gt;fastboot 模式&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fastboot flash dtbo &amp;lt;dtbo&amp;gt;.img&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fastboot flash vendor_boot &amp;lt;vendor_boot&amp;gt;.img&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fastboot flash boot lineage-20.0-20230122-recovery-lemonade.img&lt;/code&gt; # 此处测试 twrp-3.7.0_11-0-lemonadep.img 失败&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fastboot set_active &amp;lt;a/b&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fastboot flash boot lineage-20.0-20230122-recovery-lemonade.img&lt;/code&gt; # 此处测试 twrp-3.7.0_11-0-lemonadep.img 失败&lt;/li&gt;
+&lt;li&gt;多重启两次 recovery 模式 &lt;code&gt;lineage recovery lemonade&lt;/code&gt; 成功&lt;/li&gt;
+&lt;li&gt;进入 lineage recovery &lt;code&gt;Factory reset&lt;/code&gt; -&amp;gt; &lt;code&gt;Format data&lt;/code&gt; 格式化所有数据&lt;/li&gt;
+&lt;li&gt;返回至 &lt;code&gt;Apply update&lt;/code&gt; -&amp;gt; &lt;code&gt;Apply from ADB&lt;/code&gt; -&amp;gt; &lt;code&gt;ADB Sideload&lt;/code&gt; 进入 &lt;code&gt;sideload&lt;/code&gt; 模式&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;adb sideload ~/lineage-20.0-20230122-nightly-lemonade-signed.zip&lt;/code&gt; # 操作停滞后，可能会失败，重新进入即可&lt;/li&gt;
+&lt;li&gt;观察设备，会提示刷入成功，桌面也会提示 Success&lt;/li&gt;
+&lt;li&gt;继续刷入 GApps：&lt;code&gt;adb sideload open_gapps-arm64-11.0-nano-20210730.zip&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;再次进入系统打开 usb 调试, 选择文件模式，在手机提示上允许你的电脑调试此设备&lt;/li&gt;
+&lt;li&gt;全部安装完成后，重启手机，进行一系列设置就能开心使用了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;oneplus 在 linux 下使用 adb 非常稳定，驱动都不用安装。小米却时不时的断开，需要反复尝试。
+oneplus9 一直无法正确启动 twrp &lt;code&gt;adb reboot bootloader&lt;/code&gt; -&amp;gt; &lt;code&gt;fastboot boot twrp.img&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;安装-magisk&#34;&gt;安装 Magisk
+&lt;/h3&gt;&lt;p&gt;下载准备&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/ssut/payload-dumper-go/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;手机镜像提取工具&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://hub.fgit.ml/barry-ran/QtScrcpy/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;手机桌面连接工具&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/topjohnwu/Magisk/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Magisk&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;操作步骤&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ROM 是一个 zip 压缩包，解压其中一个 payload.bin 文件&lt;/li&gt;
+&lt;li&gt;提取其中的 boot.img &lt;code&gt;./payload-dumper-go -p boot -o out2 ./payload.bin&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;打开 MagiskApp 安装-&amp;gt;修补一个文件-&amp;gt;选择&lt;code&gt;boot.img&lt;/code&gt;-&amp;gt;得到&lt;code&gt;magisk_patched-25200_HLBCc.img&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;进入&lt;code&gt;adb reboot recovery&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fastboot flash boot magisk_patched-25200_HLBCc.img&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;隐藏magisk&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://magiskcn.com/hide-magisk-app&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;隐藏Magisk&lt;/a&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Magisk设置-&amp;gt;隐藏Magisk应用-&amp;gt;允许来自此来源的应用安装-&amp;gt;隐藏输入框输入新的应用名-&amp;gt;确定-&amp;gt;继续安装-&amp;gt;成功修改包名(即隐藏成功)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;隐藏应用列表&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://magiskcn.com/hide-my-applist&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;隐藏应用列表&lt;/a&gt;
+&lt;/h4&gt;&lt;h5 id=&#34;安装隐藏应用列表&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://magiskcn.com/hide-my-applist-install&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;安装隐藏应用列表&lt;/a&gt;
+&lt;/h5&gt;&lt;p&gt;下载准备&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/LSPosed/LSPosed/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LSPosed模块(Zygisk版)&lt;/a&gt;&lt;a class=&#34;link&#34; href=&#34;https://hub.fgit.ml/LSPosed/LSPosed/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;备用镜像&lt;/a&gt; LSPosed-v1.8.5-6649-zygisk-release.zip&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dr-TSNG/Hide-My-Applist/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Hide-My-Applist&lt;/a&gt;&lt;a class=&#34;link&#34; href=&#34;https://hub.fgit.ml/Dr-TSNG/Hide-My-Applist/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;备用镜像&lt;/a&gt; HMA-V3.1.1.apk&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dr-TSNG/ApplistDetector/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ApplistDetector&lt;/a&gt;&lt;a class=&#34;link&#34; href=&#34;https://hub.fgit.ml/Dr-TSNG/ApplistDetector/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;备用镜像&lt;/a&gt; ApplistDetector.V2.4.apk&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;操作步骤&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Magisk设置-&amp;gt;开启Zygisk&lt;/li&gt;
+&lt;li&gt;Magisk模块-&amp;gt;从本地安装&lt;code&gt;LSPosed-v1.8.5-6649-zygisk-release.zip&lt;/code&gt;-&amp;gt;重启设备，打开&lt;code&gt;LSPosed&lt;/code&gt;显示&lt;code&gt;已激活&lt;/code&gt;则成功&lt;code&gt;安装LSPosed模块框架&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;LSPosed模块-&amp;gt;隐藏应用列表-&amp;gt;启用(勾选系统框架)-&amp;gt;重启设备，打开&lt;code&gt;隐藏应用列表&lt;/code&gt;首页显示&lt;code&gt;模块已激活&lt;/code&gt;则成功。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在未安装并激活任何「模块」的情况下，LSPosed 不会发挥任何作用。示意图中的「XX模块已启用」是针对已经设定好的情况，不代表初始效果。 - 安装隐藏应用列表&lt;code&gt;HMA-3.1.1.apk&lt;/code&gt;首页-&amp;gt;模板管理-&amp;gt;创建黑名单模板-&amp;gt;模板名称随意-&amp;gt;0个应用不可见-编辑列表-&amp;gt;勾选要隐藏的应用，如面具和模块&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;安装检测隐藏的App&lt;code&gt;ApplistDetector.V2.4.apk&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;隐藏应用列表-&amp;gt;应用管理-&amp;gt;选择应用-&amp;gt;启用隐藏(勾选模板)确定-&amp;gt;打开 ApplistDetector（检测器）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;其它&#34;&gt;其它
+&lt;/h2&gt;&lt;h3 id=&#34;how-to-use-adb&#34;&gt;How to use adb?
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;`adb devices` 检查设备是否正确连接到计算机。
+`adb push fichero ruta` 将文件或文件夹从计算机发送到智能手机
+`adb pull archivo` 将文件或文件夹从智能手机到电脑。
+`adb install app.apk` 此命令将在智能手机上安装应用程序
+`adb uninstall` 使用这个卸载应用程序。
+`adb shell` 加载一个终端来控制我们的设备。
+`adb reboot` 重新启动手机。
+`adb reboot-bootloader` 以快速启动模式重新启动
+`adb reboot recovery` 使用此命令命令以恢复模式重新启动
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;how-to-use-fastboot&#34;&gt;How to use fastboot?
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;`fastboot devices` #查看设备
+`fastboot reboot` #重新开机
+`fastboot reboot bootloader` #重新开机且进入bootloader
+`fastboot flash boot boot.img` #烧录kernel区
+`fastboot flash system system.img` #烧录系统区
+`fastboot flash vendor vendor.img` #烧录vendor区
+`fastboot flash persist persist.img` #烧录persist区
+`fastboot flash userdata userdata.img` #烧录用户数据区，包含一些安装的APP
+`fastboot oem device-info` #查询设备的基本信息
+`fastboot oem [COMMAND...]` #执行oem的特定命令
+`fastboot flashing unlock` #新的安卓设备需要用fastboot flashing unlock指令后才可解锁bootloader开机载入器，使用该指令可能会失去保固和手机资料(包含照片、影片、文件、app)，请记得备份
+`fastboot oem unlock` #解锁BL
+`fastboot getvar &amp;lt;变量名&amp;gt;` #查询设备bootloader的某变量
+`fastboot getvar all` #查询设备bootloader的所有变量
+`fastboot set_active &amp;lt;a/b&amp;gt;` #切换a/b槽(刷双系统要用到)
+`fastboot help` #查看说明
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+        </item>
+        <item>
+        <title>AdGuard搭建</title>
+        <link>/post/live/adguard/</link>
+        <pubDate>Tue, 01 Jun 2021 12:01:20 +0800</pubDate>
+        
+        <guid>/post/live/adguard/</guid>
+        <description>&lt;h2 id=&#34;快速使用&#34;&gt;快速使用
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 先在 NAS网络设置内 启用 Open vSwitch
+sudo docker network create --driver=macvlan --subnet=10.0.0.1/24 --gateway=10.0.0.1 --ip-range=10.0.0.32/28 --opt parent=ovs_eth0 Route
+
+
+# 如果命令无法执行，可以尝试UI添加网络
+docker pull adguard/adguardhome
+docker run --name adguardhome -v /my/own/workdir:/opt/adguardhome/work -v /my/own/confdir:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p 68:68/udp -p 80:80/tcp -p 443:443/tcp -p 853:853/tcp -p 3000:3000/tcp -d adguard/adguardhome
+# 脚本已包含
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;一般来说，设置好 3000 端口和 53 端口即可&lt;/p&gt;
+&lt;h2 id=&#34;优化&#34;&gt;优化
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;假设你已经成功跑起来，并设置好管理帐号，登录了管理面板&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;常规设置
+勾选【使用过滤器和 Hosts 文件以拦截指定域名】、【使用 AdGuard 浏览安全网页服务】、【强制安全搜索】，需要的话也可以勾选【使用 AdGuard 家长控制服务】。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;过滤器
+虽然 AdGuard 本身提供了 AdGuard、AdAway 的广告过滤规则，但在中国有点水土不服，如果要想更完美的实现广告屏蔽还需要自己添加规则，AdGuard 可以兼容 Adblock 的语法。最知名的过滤规则 EasyList 就是由 Adblock Plus 团队维护，过滤规则往往是一个 txt 文件，在文件的开头部分会显示规则的最后更新日期。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;推荐广告过滤规则：&lt;/p&gt;
+&lt;p&gt;EasyList China : 国内网站广告过滤的主规则。
+&lt;a class=&#34;link&#34; href=&#34;https://easylist-downloads.adblockplus.org/easylistchina.txt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://easylist-downloads.adblockplus.org/easylistchina.txt&lt;/a&gt;
+EasyPrivacy : EasyPrivacy 是隐私保护，不被跟踪。
+&lt;a class=&#34;link&#34; href=&#34;https://easylist-downloads.adblockplus.org/easyprivacy.txt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://easylist-downloads.adblockplus.org/easyprivacy.txt&lt;/a&gt;
+CJX’s Annoyance List : 过滤烦人的自我推广，并补充EasyPrivacy隐私规则。
+&lt;a class=&#34;link&#34; href=&#34;https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt&lt;/a&gt;
+广告净化器规则 : 国内大部分视频网站的广告过滤。
+&amp;hellip; &lt;a class=&#34;link&#34; href=&#34;http://tools.yiclear.com/ChinaList2.0.txt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://tools.yiclear.com/ChinaList2.0.txt&lt;/a&gt;
+I don’t care about cookies : 我不关心 Cookie 的问题，屏蔽网站的 cookies 相关的警告。
+&lt;a class=&#34;link&#34; href=&#34;https://www.i-dont-care-about-cookies.eu/abp/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.i-dont-care-about-cookies.eu/abp/&lt;/a&gt;
+优酷网如果播放无限加载，那在自定义静态规则（自定义过滤器规则）里加入一条规则 @@mp4.ts （参考下图）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;上游 DNS 设置
+官方默认使用 Cloudflare 的 DNS over HTTPS 作为上游服务器，在国内可能请求上游 DNS 延迟比较高，可以加上或替换国内的 DNS。我自己另外加了中科大的两组无污染 DNS，每次查询的时候会对所有的上游 DNS 同时查询，加速解析。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://ip.yqie.com/dns_jiaoyu.htm&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://ip.yqie.com/dns_jiaoyu.htm&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://lug.ustc.edu.cn/wiki/server/mirrors/start&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://lug.ustc.edu.cn/wiki/server/mirrors/start&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://tuna.moe/help/dns/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://tuna.moe/help/dns/&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://www.opendns.com/setupguide/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.opendns.com/setupguide/&lt;/a&gt;
+208.67.222.222
+208.67.220.220
+2620:119:35::35
+2620:119:53::53&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;提升 QPS
+有两个参数可以明显提升 QPS：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ratelimit : DDoS 保护，客户端每秒接收的数据包数。建议禁用该参数（将值改为 0），默认值是 20。（DNS 设置 - DNS服务设定 - 速度限制）
+blocked_response_ttl : TTL 缓存时间，建议设置为 60
+配置文件默认路径是 /opt/adguardhome/conf/AdGuardHome.yaml (具体路径通过启动参数查找，docker和软件安装不一样)&lt;/p&gt;
+&lt;p&gt;Linux全局智能分流方案
+&lt;a class=&#34;link&#34; href=&#34;https://fuckcloudnative.io/posts/linux-circumvent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://fuckcloudnative.io/posts/linux-circumvent/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;8.8.8.8太慢，
+114，阿里云(223.5.5.5)，DNSPod，百度DNS解析 &lt;a class=&#34;link&#34; href=&#34;https://www.google.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;www.google.com&lt;/a&gt;的ip地址都是不可用的，只有中科大的解析正常!!&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.liyuans.com/archives/pure-dns-collection.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.liyuans.com/archives/pure-dns-collection.html&lt;/a&gt;
+名称	DNS1	DNS2	官网	其他
+PdoMo-DNS	101.132.183.99	123.207.40.32	官网	博客 DNS2 将于 11 月 3 日停止服务
+Mogu DNS	115.159.96.69	122.114.245.45	官网
+XsicoDNS	115.159.157.26		官网
+AIXYZ DNS	115.159.146.99	123.206.21.48	官网
+FUN DNS	119.23.248.241		官网
+阿里 DNS	223.5.5.5	223.6.6.6	官网
+OpenDNS	208.67.222.222	208.67.220.220	官网	支持 443 端口，有效防止 DNS 污染
+114DNS	114.114.114.114	114.114.115.115	官网
+oneDNS	114.215.126.16	112.124.47.27	官网	恶意网站实验室旗下，有恶意网站拦截和广告过滤功能
+百度 DNS	180.76.76.76		官网
+DNSpod	119.29.29.29	182.254.116.116	官网	腾讯旗下
+cloudxns	124.251.124.251		官网	世纪互联旗下快网
+SDNS	1.2.4.8	210.2.4.8	官网	官方机构 CNNIC 旗下
+Yandex Basic	77.88.8.8	77.88.8.1	官网	毛子的良心企业
+Yandex Basic	77.88.8.8	77.88.8.2	官网	毛子的良心企业
+Yandex Basic	77.88.8.7	77.88.8.3	官网	毛子的良心企业
+BAI DNS	223.113.97.99		来自龙文	科学使用务必 HTTPS，支持 EDNS 并且为无污染 DNS&lt;/p&gt;
+&lt;p&gt;港澳台DNS服务器地址&lt;/p&gt;
+&lt;p&gt;香港：&lt;/p&gt;
+&lt;p&gt;205.252.144.228&lt;/p&gt;
+&lt;p&gt;208.151.69.65&lt;/p&gt;
+&lt;p&gt;202.181.202.140&lt;/p&gt;
+&lt;p&gt;202.181.224.2&lt;/p&gt;
+&lt;p&gt;香港宽频 Hong Kong BroadBand Network DNS
+203.80.96.10
+203.80.96.9&lt;/p&gt;
+&lt;p&gt;HKNet 宽频 DNS
+202.67.240.222
+202.67.240.221&lt;/p&gt;
+&lt;p&gt;和记环球电讯DNS
+202.45.84.58
+202.45.84.59&lt;/p&gt;
+&lt;p&gt;NetFront前线
+202.81.252.1
+202.81.252.2&lt;/p&gt;
+&lt;p&gt;Pacific SuperNet
+202.14.67.4
+202.14.67.14&lt;/p&gt;
+&lt;p&gt;CyberExpress
+202.85.146.104
+202.60.252.8&lt;/p&gt;
+&lt;p&gt;澳门：
+202.175.3.8
+202.175.3.3&lt;/p&gt;
+&lt;p&gt;台湾：
+168.95.192.1
+168.95.1.1&lt;/p&gt;
+&lt;p&gt;国外DNS服务器地址&lt;/p&gt;
+&lt;p&gt;美国：
+208.67.222.222
+208.67.220.220
+165.87.13.129
+165.87.201.244
+205.171.3.65
+205.171.2.65
+198.41.0.4
+198.41.0.4
+198.32.64.12
+192.33.4.12
+192.203.230.10
+192.5.5.241
+192.112.36.4
+192.36.148.17
+192.58.128.30
+192.9.9.3
+193.0.14.129
+128.9.0.107
+128.8.10.90
+66.33.206.206.
+208.96.10.221
+66.33.216.216
+205.171.3.65
+205.171.2.65
+165.87.13.129
+165.87.201.244
+A INTERNIC.NET（美国，弗吉尼亚州） 198.41.0.4
+B 美国信息科学研究所（美国，加利弗尼亚州） 128.9.0.107
+C PSINet公司（美国，弗吉尼亚州） 192.33.4.12
+D 马里兰大学（美国马里兰州） 128.8.10.90
+E 美国航空航天管理局[NASA]（美国加利弗尼亚州） 192.203.230.10
+F 因特网软件联盟（美国加利弗尼亚州） 192.5.5.241
+G 美国国防部网络信息中心（美国弗吉尼亚州） 192.112.36.4
+H 美国陆军研究所（美国马里兰州） 128.63.2.53
+I Autonomica公司（瑞典，斯德哥尔摩） 192.36.148.17
+J VeriSign公司（美国，弗吉尼亚州） 192.58.128.30
+K RIPE NCC（英国，伦敦） 193.0.14.129
+L IANA （美国，弗吉尼亚州） 198.32.64.12‍&lt;/p&gt;
+&lt;p&gt;OpenDNS
+208.67.222.222
+208.67.220.220&lt;/p&gt;
+&lt;p&gt;GoogleDNS
+8.8.8.8
+8.8.4.4&lt;/p&gt;
+&lt;p&gt;加拿大：
+209.166.160.36
+209.166.160.132&lt;/p&gt;
+&lt;p&gt;英国：
+193.0.14.129&lt;/p&gt;
+&lt;p&gt;日本
+202.12.27.33
+202.216.228.18&lt;/p&gt;
+&lt;p&gt;韩国：
+164.124.101.31
+203.248.240.31
+168.126.63.60
+168.126.63.61&lt;/p&gt;
+&lt;p&gt;新西兰：
+202.27.184.3&lt;/p&gt;
+&lt;p&gt;泰国：
+209.166.160.132
+202.44.8.34
+202.44.8.2&lt;/p&gt;
+&lt;p&gt;印度：
+202.138.103.100
+202.138.96.2&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

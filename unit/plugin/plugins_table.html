@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插件</title>
+</head>
+<style>
+    body {
+        margin: 20px 30px;
+        background: #000;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        color: #ccc;
+    }
+    table {
+        border-spacing: 0;
+        border-collapse: collapse;
+        text-align: left;
+        height: 100%;
+    }
+    table-tbody {
+        display: block;
+        height: 80px;
+        overflow-y: scroll;
+    }
+    table thead,
+    tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+    table thead {
+        width: calc(100% -lem)
+    }
+</style>
+<body>
+    <button onclick="window.close()" style="float: right;">关闭</button>
+</body>
+<script lang="javascript">
+    getPluginsList()
+    function getPluginsList() {
+        var pluginsLength = navigator.plugins.length;
+        document.body.innerHTML = pluginsLength + " Plugin(s)<br>"
+            + '<table id="pluginTable"><thead>'
+            + '<tr><th>Name</th><th>Filename</th><th>description</th><th>version</th></tr>'
+            + '</thead><tbody></tbody></table>';
+
+        var table = document.getElementById('pluginTable');
+
+        for (var i = 0; i < pluginsLength; i++) {
+            let newRow = table.insertRow();
+            newRow.insertCell().textContent = navigator.plugins[i].name;
+            newRow.insertCell().textContent = navigator.plugins[i].filename;
+            newRow.insertCell().textContent = navigator.plugins[i].description;
+            newRow.insertCell().textContent = navigator.plugins[i].version ? navigator.plugins[i].version : "";
+        }
+    }
+    function getPluginVersion() {
+
+    }
+    function getFlashVersion() {
+        var flash = navigator.plugins.namedItem('Shockwave Flash');
+        if (typeof flash != 'object') {
+            // flash is not present
+            return undefined;
+        }
+        if (flash.version) {
+            return flash.version;
+        } else {
+            //No version property (e.g. in Chrome)
+            return flash.description.replace(/Shockwave Flash /, "");
+        }
+    }
+</script>
+
+</html>

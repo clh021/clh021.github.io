@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Impress on 良宏</title>
+        <link>/tags/impress/</link>
+        <description>Recent content in Impress on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 16 Dec 2016 22:01:20 +0800</lastBuildDate><atom:link href="/tags/impress/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>有趣的PPT替代方案</title>
+        <link>/post/live/instead-ppt/</link>
+        <pubDate>Fri, 16 Dec 2016 22:01:20 +0800</pubDate>
+        
+        <guid>/post/live/instead-ppt/</guid>
+        <description>&lt;h1 id=&#34;有趣的ppt&#34;&gt;有趣的PPT
+&lt;/h1&gt;&lt;h2 id=&#34;直接上干货&#34;&gt;直接上干货
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/LeaVerou/csss&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LeaVerou/csss&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/impress/impress.js&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;impress&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/hakimel/reveal.js&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;reveal&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;参考工具 &lt;a class=&#34;link&#34; href=&#34;https://slides.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;为什么不用ppt或者keynote&#34;&gt;为什么不用PPT或者keynote
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;方便贴代码&lt;/li&gt;
+&lt;li&gt;模板的使用、制作和分享非常方便&lt;/li&gt;
+&lt;li&gt;不想安装500M+的软件&lt;/li&gt;
+&lt;li&gt;不想所有的东西都必须手动鼠标完成，最好大部分工作可以自动完成&lt;/li&gt;
+&lt;li&gt;不俗的风格以及动画&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

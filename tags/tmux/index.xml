@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Tmux on 良宏</title>
+        <link>/tags/tmux/</link>
+        <description>Recent content in Tmux on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 24 Dec 2021 15:57:05 +0800</lastBuildDate><atom:link href="/tags/tmux/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Tmux</title>
+        <link>/post/tech/tmux/</link>
+        <pubDate>Fri, 24 Dec 2021 15:57:05 +0800</pubDate>
+        
+        <guid>/post/tech/tmux/</guid>
+        <description>&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;tmux的快捷键以ctrl+B起始，也就是以下所有快捷键之前先用ctrl+B进入tmux快捷键模式
+
+快捷键
+s　　列出会话，可进行切换
+$　　重命名会话
+d　　分离当前会话
+D　　分离指定会话
+
+窗口快捷键
+c　　创建一个新窗口
+,　　重命名当前窗口
+w　　列出所有窗口，可进行切换
+n　　进入下一个窗口
+p　　进入上一个窗口
+l　　进入之前操作的窗口
+0 ~ 9　　选择编号0 ~ 9对应的窗口
+.　　修改当前窗口索引编号
+’　　切换至指定编号（可大于9）的窗口
+f　　根据显示的内容搜索窗格
+&amp;amp;　　关闭当前窗口
+
+窗格快捷键
+%　　水平方向创建窗格
+&amp;#34;　　垂直方向创建窗格
+Up|Down|Left|Right　　根据箭头方向切换窗格
+q　　显示窗格编号
+o　　顺时针切换窗格
+}　　与下一个窗格交换位置
+{　　与上一个窗格交换位置
+x　　关闭当前窗格
+space(空格键)　　重新排列当前窗口下的所有窗格
+!　　将当前窗格置于新窗口
+Ctrl+o　　逆时针旋转当前窗口的窗格
+t　　在当前窗格显示时间
+z　　放大当前窗格(再次按下将还原)
+i　　显示当前窗格信息
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux ls                        &lt;span style=&#34;color:#75715e&#34;&gt;# 查看已有的终端列表&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux new -s name               &lt;span style=&#34;color:#75715e&#34;&gt;# 新建并命名终端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux a                         &lt;span style=&#34;color:#75715e&#34;&gt;# 打开最近一次打开的终端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux a -t name                 &lt;span style=&#34;color:#75715e&#34;&gt;# 打开指定名字的终端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux rename -t oldname newname &lt;span style=&#34;color:#75715e&#34;&gt;# 重命名终端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux kill-session              &lt;span style=&#34;color:#75715e&#34;&gt;# 删除上次打开的终端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux kill-session -t name      &lt;span style=&#34;color:#75715e&#34;&gt;# 删除指定名字的终端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux kill-session -a -t s1     &lt;span style=&#34;color:#75715e&#34;&gt;# 关闭除了指定名字以外的其他所有终端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux kill-server               &lt;span style=&#34;color:#75715e&#34;&gt;# 关闭所有终端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux list-key                  &lt;span style=&#34;color:#75715e&#34;&gt;# 列出所有绑定的键，等同于prefix ?&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tmux list-command              &lt;span style=&#34;color:#75715e&#34;&gt;# 列出所有命令&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

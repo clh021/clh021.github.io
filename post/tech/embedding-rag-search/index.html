@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="向量数据库与AI相似搜索 一、基础认知 1.1 核心定义 向量数据库 存储高维向量，支持高效相似检索 解决非结构化数据的相似度匹配问题 相似搜索原理 数据→Embedding模型→向量→向量库→Top-K相似结果 配合AI模型价值 大模型负责理解生成，向量库负责记忆查找 弥补大模型实时性、知识时效性缺陷 1.2 核心技术流程 标准工作流 非结构化数据处理（文本/图片/音频/视频） 向量嵌入生成（Embedding Model） 向量入库与索引构建 用户查询向量化 向量相似度计算（余弦/欧氏距离） 返回相似结果 大模型后处理（总结/问答/推荐） 关键技术点 向量索引类型（IVF、HNSW、Annoy） 相似度度量方式 向量维度选择 检索精度与速度平衡 二、主流应用场景 2.1 文本类场景 智能问答RAG 企业知识库、政务咨询、智能客服 语义搜索 替代关键词搜索，理解语义意图 内容治理 论文查重、文案去重、违规检测 内容推荐 文章、小说、资讯相似推荐 2.2 图像视觉类场景 以图搜图 电商同款、文物检索、安防识别 相似风格推荐 设计、服装、室内设计素材匹配 工业质检 产品瑕疵异常检测 2.3 多模态跨模态场景 图文互搜 文字搜图、图片搜文字 多模态RAG 文本提问召回图片/视频/音频资料 AIGC素材管理 生成内容的语义检索与归类 2.4 拓展创新场景 用户个性化推荐 用户行为向量+内容向量精准匹配 风控异常检测 交易、登录行为向量异常识别 音频语音场景 声纹识别、哼唱搜歌、客服录音质检 医疗健康 病历检索、医学影像匹配、药物研发 法律合规 裁判文书检索、合同风险匹配 工业IoT 时序数据故障预测、设备异常检测 教育人才 简历岗位匹配、错题精准推题 代码研发 相似代码检索、漏洞检测 三、多模态统一向量空间 3.1 核心概念 定义 不同模态数据映射到同一向量空间 优势 一套向量库管理多模态数据 跨模态任意检索 多模态Agent长期记忆 3.2 支持模型 商用全模态模型 Gemini Embedding 2（文本/图像/音频/视频/PDF） 开源全模态模型 ImageBind（6模态：文本、图像、音频、深度、红外、IMU） ONE-PEACE（文本、图像、音频、视频、3D点云） 图文主流模型 CLIP（OpenAI，生态最完善） Qwen-VL Embedding（中文友好） LLaVA/BLIP-2 音视频专用模型 CLAP（文本-音频） VideoCLIP（文本-视频） 3.3 技术路线 双塔对齐模型 CLIP、ImageBind 优点：快、稳定、适合检索 单塔融合模型 LLaVA、BLIP-2 优点：理解能力强 原生全模态模型 Gemini系列 优点：统一度最高，无模态边界 3.4 落地选型建议 快速上线全模态 Gemini Embedding 2 API 开源本地部署 ImageBind/ONE-PEACE 中文图文场景 Qwen-VL Embedding 高性价比图文 CLIP 四、落地实施方向 4.1 优先切入方向 现有搜索升级 关键词搜索→语义搜索 推荐系统增强 协同过滤+向量召回 非结构化数据治理 文档、图片、音视频统一管理 4.2 前沿延伸方向 向量库+知识图谱 语义检索+关系推理 多模态统一向量空间 全模态互搜 AI Agent长期记忆 对话历史、偏好向量存储 实时流式向量检索 直播、监控、实时风控 ">
+<title>Embedding and RAG searching</title>
+
+<link rel='canonical' href='/post/tech/embedding-rag-search/'>
+
+<link rel="stylesheet" href="/scss/style.min.7515681f56b61e847ded17c6a8b7b4ee262cdb4aff4693d5495dd335c7403ef6.css"><meta property='og:title' content="Embedding and RAG searching">
+<meta property='og:description' content="向量数据库与AI相似搜索 一、基础认知 1.1 核心定义 向量数据库 存储高维向量，支持高效相似检索 解决非结构化数据的相似度匹配问题 相似搜索原理 数据→Embedding模型→向量→向量库→Top-K相似结果 配合AI模型价值 大模型负责理解生成，向量库负责记忆查找 弥补大模型实时性、知识时效性缺陷 1.2 核心技术流程 标准工作流 非结构化数据处理（文本/图片/音频/视频） 向量嵌入生成（Embedding Model） 向量入库与索引构建 用户查询向量化 向量相似度计算（余弦/欧氏距离） 返回相似结果 大模型后处理（总结/问答/推荐） 关键技术点 向量索引类型（IVF、HNSW、Annoy） 相似度度量方式 向量维度选择 检索精度与速度平衡 二、主流应用场景 2.1 文本类场景 智能问答RAG 企业知识库、政务咨询、智能客服 语义搜索 替代关键词搜索，理解语义意图 内容治理 论文查重、文案去重、违规检测 内容推荐 文章、小说、资讯相似推荐 2.2 图像视觉类场景 以图搜图 电商同款、文物检索、安防识别 相似风格推荐 设计、服装、室内设计素材匹配 工业质检 产品瑕疵异常检测 2.3 多模态跨模态场景 图文互搜 文字搜图、图片搜文字 多模态RAG 文本提问召回图片/视频/音频资料 AIGC素材管理 生成内容的语义检索与归类 2.4 拓展创新场景 用户个性化推荐 用户行为向量+内容向量精准匹配 风控异常检测 交易、登录行为向量异常识别 音频语音场景 声纹识别、哼唱搜歌、客服录音质检 医疗健康 病历检索、医学影像匹配、药物研发 法律合规 裁判文书检索、合同风险匹配 工业IoT 时序数据故障预测、设备异常检测 教育人才 简历岗位匹配、错题精准推题 代码研发 相似代码检索、漏洞检测 三、多模态统一向量空间 3.1 核心概念 定义 不同模态数据映射到同一向量空间 优势 一套向量库管理多模态数据 跨模态任意检索 多模态Agent长期记忆 3.2 支持模型 商用全模态模型 Gemini Embedding 2（文本/图像/音频/视频/PDF） 开源全模态模型 ImageBind（6模态：文本、图像、音频、深度、红外、IMU） ONE-PEACE（文本、图像、音频、视频、3D点云） 图文主流模型 CLIP（OpenAI，生态最完善） Qwen-VL Embedding（中文友好） LLaVA/BLIP-2 音视频专用模型 CLAP（文本-音频） VideoCLIP（文本-视频） 3.3 技术路线 双塔对齐模型 CLIP、ImageBind 优点：快、稳定、适合检索 单塔融合模型 LLaVA、BLIP-2 优点：理解能力强 原生全模态模型 Gemini系列 优点：统一度最高，无模态边界 3.4 落地选型建议 快速上线全模态 Gemini Embedding 2 API 开源本地部署 ImageBind/ONE-PEACE 中文图文场景 Qwen-VL Embedding 高性价比图文 CLIP 四、落地实施方向 4.1 优先切入方向 现有搜索升级 关键词搜索→语义搜索 推荐系统增强 协同过滤+向量召回 非结构化数据治理 文档、图片、音视频统一管理 4.2 前沿延伸方向 向量库+知识图谱 语义检索+关系推理 多模态统一向量空间 全模态互搜 AI Agent长期记忆 对话历史、偏好向量存储 实时流式向量检索 直播、监控、实时风控 ">
+<meta property='og:url' content='/post/tech/embedding-rag-search/'>
+<meta property='og:site_name' content='良宏'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='embedding' /><meta property='article:tag' content='rag' /><meta property='article:tag' content='search' /><meta property='article:published_time' content='2025-03-17T18:57:47&#43;08:00'/><meta property='article:modified_time' content='2025-03-17T18:57:47&#43;08:00'/>
+<meta name="twitter:title" content="Embedding and RAG searching">
+<meta name="twitter:description" content="向量数据库与AI相似搜索 一、基础认知 1.1 核心定义 向量数据库 存储高维向量，支持高效相似检索 解决非结构化数据的相似度匹配问题 相似搜索原理 数据→Embedding模型→向量→向量库→Top-K相似结果 配合AI模型价值 大模型负责理解生成，向量库负责记忆查找 弥补大模型实时性、知识时效性缺陷 1.2 核心技术流程 标准工作流 非结构化数据处理（文本/图片/音频/视频） 向量嵌入生成（Embedding Model） 向量入库与索引构建 用户查询向量化 向量相似度计算（余弦/欧氏距离） 返回相似结果 大模型后处理（总结/问答/推荐） 关键技术点 向量索引类型（IVF、HNSW、Annoy） 相似度度量方式 向量维度选择 检索精度与速度平衡 二、主流应用场景 2.1 文本类场景 智能问答RAG 企业知识库、政务咨询、智能客服 语义搜索 替代关键词搜索，理解语义意图 内容治理 论文查重、文案去重、违规检测 内容推荐 文章、小说、资讯相似推荐 2.2 图像视觉类场景 以图搜图 电商同款、文物检索、安防识别 相似风格推荐 设计、服装、室内设计素材匹配 工业质检 产品瑕疵异常检测 2.3 多模态跨模态场景 图文互搜 文字搜图、图片搜文字 多模态RAG 文本提问召回图片/视频/音频资料 AIGC素材管理 生成内容的语义检索与归类 2.4 拓展创新场景 用户个性化推荐 用户行为向量+内容向量精准匹配 风控异常检测 交易、登录行为向量异常识别 音频语音场景 声纹识别、哼唱搜歌、客服录音质检 医疗健康 病历检索、医学影像匹配、药物研发 法律合规 裁判文书检索、合同风险匹配 工业IoT 时序数据故障预测、设备异常检测 教育人才 简历岗位匹配、错题精准推题 代码研发 相似代码检索、漏洞检测 三、多模态统一向量空间 3.1 核心概念 定义 不同模态数据映射到同一向量空间 优势 一套向量库管理多模态数据 跨模态任意检索 多模态Agent长期记忆 3.2 支持模型 商用全模态模型 Gemini Embedding 2（文本/图像/音频/视频/PDF） 开源全模态模型 ImageBind（6模态：文本、图像、音频、深度、红外、IMU） ONE-PEACE（文本、图像、音频、视频、3D点云） 图文主流模型 CLIP（OpenAI，生态最完善） Qwen-VL Embedding（中文友好） LLaVA/BLIP-2 音视频专用模型 CLAP（文本-音频） VideoCLIP（文本-视频） 3.3 技术路线 双塔对齐模型 CLIP、ImageBind 优点：快、稳定、适合检索 单塔融合模型 LLaVA、BLIP-2 优点：理解能力强 原生全模态模型 Gemini系列 优点：统一度最高，无模态边界 3.4 落地选型建议 快速上线全模态 Gemini Embedding 2 API 开源本地部署 ImageBind/ONE-PEACE 中文图文场景 Qwen-VL Embedding 高性价比图文 CLIP 四、落地实施方向 4.1 优先切入方向 现有搜索升级 关键词搜索→语义搜索 推荐系统增强 协同过滤+向量召回 非结构化数据治理 文档、图片、音视频统一管理 4.2 前沿延伸方向 向量库+知识图谱 语义检索+关系推理 多模态统一向量空间 全模态互搜 AI Agent长期记忆 对话历史、偏好向量存储 实时流式向量检索 直播、监控、实时风控 ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/wx_150x150_hu_5d63c7cc8dd1cf82.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">良宏</a></h1>
+            <h2 class="site-description">好好学习，天天向上。</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/tech/" style="background-color: blueviolet; color: #fff;">
+                Tech
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/tech/embedding-rag-search/">Embedding and RAG searching</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-03-17T18:57:47&#43;08:00'>2025-03-17 18:57:47</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="向量数据库与ai相似搜索">向量数据库与AI相似搜索
+</h1><h2 id="一基础认知">一、基础认知
+</h2><h3 id="11-核心定义">1.1 核心定义
+</h3><h4 id="向量数据库">向量数据库
+</h4><ul>
+<li>存储高维向量，支持高效相似检索</li>
+<li>解决非结构化数据的相似度匹配问题</li>
+</ul>
+<h4 id="相似搜索原理">相似搜索原理
+</h4><ul>
+<li>数据→Embedding模型→向量→向量库→Top-K相似结果</li>
+</ul>
+<h4 id="配合ai模型价值">配合AI模型价值
+</h4><ul>
+<li>大模型负责理解生成，向量库负责记忆查找</li>
+<li>弥补大模型实时性、知识时效性缺陷</li>
+</ul>
+<h3 id="12-核心技术流程">1.2 核心技术流程
+</h3><h4 id="标准工作流">标准工作流
+</h4><ol>
+<li>非结构化数据处理（文本/图片/音频/视频）</li>
+<li>向量嵌入生成（Embedding Model）</li>
+<li>向量入库与索引构建</li>
+<li>用户查询向量化</li>
+<li>向量相似度计算（余弦/欧氏距离）</li>
+<li>返回相似结果</li>
+<li>大模型后处理（总结/问答/推荐）</li>
+</ol>
+<h4 id="关键技术点">关键技术点
+</h4><ul>
+<li>向量索引类型（IVF、HNSW、Annoy）</li>
+<li>相似度度量方式</li>
+<li>向量维度选择</li>
+<li>检索精度与速度平衡</li>
+</ul>
+<h2 id="二主流应用场景">二、主流应用场景
+</h2><h3 id="21-文本类场景">2.1 文本类场景
+</h3><h4 id="智能问答rag">智能问答RAG
+</h4><ul>
+<li>企业知识库、政务咨询、智能客服</li>
+</ul>
+<h4 id="语义搜索">语义搜索
+</h4><ul>
+<li>替代关键词搜索，理解语义意图</li>
+</ul>
+<h4 id="内容治理">内容治理
+</h4><ul>
+<li>论文查重、文案去重、违规检测</li>
+</ul>
+<h4 id="内容推荐">内容推荐
+</h4><ul>
+<li>文章、小说、资讯相似推荐</li>
+</ul>
+<h3 id="22-图像视觉类场景">2.2 图像视觉类场景
+</h3><h4 id="以图搜图">以图搜图
+</h4><ul>
+<li>电商同款、文物检索、安防识别</li>
+</ul>
+<h4 id="相似风格推荐">相似风格推荐
+</h4><ul>
+<li>设计、服装、室内设计素材匹配</li>
+</ul>
+<h4 id="工业质检">工业质检
+</h4><ul>
+<li>产品瑕疵异常检测</li>
+</ul>
+<h3 id="23-多模态跨模态场景">2.3 多模态跨模态场景
+</h3><h4 id="图文互搜">图文互搜
+</h4><ul>
+<li>文字搜图、图片搜文字</li>
+</ul>
+<h4 id="多模态rag">多模态RAG
+</h4><ul>
+<li>文本提问召回图片/视频/音频资料</li>
+</ul>
+<h4 id="aigc素材管理">AIGC素材管理
+</h4><ul>
+<li>生成内容的语义检索与归类</li>
+</ul>
+<h3 id="24-拓展创新场景">2.4 拓展创新场景
+</h3><h4 id="用户个性化推荐">用户个性化推荐
+</h4><ul>
+<li>用户行为向量+内容向量精准匹配</li>
+</ul>
+<h4 id="风控异常检测">风控异常检测
+</h4><ul>
+<li>交易、登录行为向量异常识别</li>
+</ul>
+<h4 id="音频语音场景">音频语音场景
+</h4><ul>
+<li>声纹识别、哼唱搜歌、客服录音质检</li>
+</ul>
+<h4 id="医疗健康">医疗健康
+</h4><ul>
+<li>病历检索、医学影像匹配、药物研发</li>
+</ul>
+<h4 id="法律合规">法律合规
+</h4><ul>
+<li>裁判文书检索、合同风险匹配</li>
+</ul>
+<h4 id="工业iot">工业IoT
+</h4><ul>
+<li>时序数据故障预测、设备异常检测</li>
+</ul>
+<h4 id="教育人才">教育人才
+</h4><ul>
+<li>简历岗位匹配、错题精准推题</li>
+</ul>
+<h4 id="代码研发">代码研发
+</h4><ul>
+<li>相似代码检索、漏洞检测</li>
+</ul>
+<h2 id="三多模态统一向量空间">三、多模态统一向量空间
+</h2><h3 id="31-核心概念">3.1 核心概念
+</h3><h4 id="定义">定义
+</h4><ul>
+<li>不同模态数据映射到同一向量空间</li>
+</ul>
+<h4 id="优势">优势
+</h4><ul>
+<li>一套向量库管理多模态数据</li>
+<li>跨模态任意检索</li>
+<li>多模态Agent长期记忆</li>
+</ul>
+<h3 id="32-支持模型">3.2 支持模型
+</h3><h4 id="商用全模态模型">商用全模态模型
+</h4><ul>
+<li>Gemini Embedding 2（文本/图像/音频/视频/PDF）</li>
+</ul>
+<h4 id="开源全模态模型">开源全模态模型
+</h4><ul>
+<li>ImageBind（6模态：文本、图像、音频、深度、红外、IMU）</li>
+<li>ONE-PEACE（文本、图像、音频、视频、3D点云）</li>
+</ul>
+<h4 id="图文主流模型">图文主流模型
+</h4><ul>
+<li>CLIP（OpenAI，生态最完善）</li>
+<li>Qwen-VL Embedding（中文友好）</li>
+<li>LLaVA/BLIP-2</li>
+</ul>
+<h4 id="音视频专用模型">音视频专用模型
+</h4><ul>
+<li>CLAP（文本-音频）</li>
+<li>VideoCLIP（文本-视频）</li>
+</ul>
+<h3 id="33-技术路线">3.3 技术路线
+</h3><h4 id="双塔对齐模型">双塔对齐模型
+</h4><ul>
+<li>CLIP、ImageBind</li>
+<li>优点：快、稳定、适合检索</li>
+</ul>
+<h4 id="单塔融合模型">单塔融合模型
+</h4><ul>
+<li>LLaVA、BLIP-2</li>
+<li>优点：理解能力强</li>
+</ul>
+<h4 id="原生全模态模型">原生全模态模型
+</h4><ul>
+<li>Gemini系列</li>
+<li>优点：统一度最高，无模态边界</li>
+</ul>
+<h3 id="34-落地选型建议">3.4 落地选型建议
+</h3><h4 id="快速上线全模态">快速上线全模态
+</h4><ul>
+<li>Gemini Embedding 2 API</li>
+</ul>
+<h4 id="开源本地部署">开源本地部署
+</h4><ul>
+<li>ImageBind/ONE-PEACE</li>
+</ul>
+<h4 id="中文图文场景">中文图文场景
+</h4><ul>
+<li>Qwen-VL Embedding</li>
+</ul>
+<h4 id="高性价比图文">高性价比图文
+</h4><ul>
+<li>CLIP</li>
+</ul>
+<h2 id="四落地实施方向">四、落地实施方向
+</h2><h3 id="41-优先切入方向">4.1 优先切入方向
+</h3><h4 id="现有搜索升级">现有搜索升级
+</h4><ul>
+<li>关键词搜索→语义搜索</li>
+</ul>
+<h4 id="推荐系统增强">推荐系统增强
+</h4><ul>
+<li>协同过滤+向量召回</li>
+</ul>
+<h4 id="非结构化数据治理">非结构化数据治理
+</h4><ul>
+<li>文档、图片、音视频统一管理</li>
+</ul>
+<h3 id="42-前沿延伸方向">4.2 前沿延伸方向
+</h3><h4 id="向量库知识图谱">向量库+知识图谱
+</h4><ul>
+<li>语义检索+关系推理</li>
+</ul>
+<h4 id="多模态统一向量空间">多模态统一向量空间
+</h4><ul>
+<li>全模态互搜</li>
+</ul>
+<h4 id="ai-agent长期记忆">AI Agent长期记忆
+</h4><ul>
+<li>对话历史、偏好向量存储</li>
+</ul>
+<h4 id="实时流式向量检索">实时流式向量检索
+</h4><ul>
+<li>直播、监控、实时风控</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/embedding/">Embedding</a>
+        
+            <a href="/tags/rag/">Rag</a>
+        
+            <a href="/tags/search/">Search</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/tech/embedding-llm-hardware/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Embedding, llm and hardware</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/embedding-and-rag/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Embedding and RAG</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/post/tech/llm-safe-or-blackbox/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">llm-safe-or-blackbox</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="clh021/clh021.github.io"
+    data-repo-id="R_kgDOGk8ygA"
+    data-category="Blog Comments"
+    data-category-id="DIC_kwDOGk8ygM4Cv_Pt"
+    data-mapping="title"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="light"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 良宏
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.2">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script><script type="text/javascript" src="/ts/custom.5d2d89147455f23ab63a1b667d73a3f9adfb4e6e5226d9ad593562aa281b3665.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

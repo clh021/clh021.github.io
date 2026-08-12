@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>半自动测试</title>
+    <script src="/tabs/autoTest/auto.test.js"></script>
+  </head>
+  <body>
+    <!-- 手动测试项：1、中文输入法，2、窗口拖拽，3、机器闲置时间 -->
+    <button onclick="nowTest(JSFuncTest, 'JS函数测试')">JS函数测试</button>
+    <button class="hand-test" onclick="nowTest(JSAPITest, 'JS API参数 有效性测试')">
+      JS API参数 有效性测试
+    </button>
+    <button class="hand-test" onclick="nowTest(windowCtrlTest, '窗口间接控制API')">
+      窗口间接控制API
+    </button>
+    <!-- <buttononclick="nowTest(dragTest, '窗口拖拽测试')">窗口拖拽测试</button> -->
+    <button class="hand-test" onclick="nowTest(CmdAPITestOld, '命令行 API参数 有效性测试')">
+      命令行 API参数 有效性测试
+    </button>
+    <!-- <button onclick="nowTest(userAgentTest, '测试 useragent 修改')">
+      测试 useragent 修改
+    </button> -->
+    <!-- TODO: 自动识别安装目录旁的 preferences.json 配置文件，改写文件内容 的测试 -->
+    <!-- <button onclick="nowTest(trayTest, '托盘测试')">托盘测试</button> -->
+
+    <button class="hand-test" onclick="nowTest(windowStateTest, '窗口状态测试，请留意窗口状态')">
+      窗口状态测试
+    </button>
+    <button onclick="nowTest(SSLErrorTest, '证书错误页面测试')">
+      证书错误页面测试
+    </button>
+    <button onclick="nowTest(_404ErrorTest, '404错误页面测试')">
+      404错误页面测试
+    </button>
+    <!-- <button onclick="nowTest(Test, '窗口列表管理测试')">窗口列表管理测试</button> -->
+    <!-- TODO: 查看标题，聚焦状态，控制其中之一位置，大小，最大化，隐藏，关闭 -->
+    <button class="hand-test" onclick="nowTest(engineCtrlTest, '引擎间调度测试')">引擎间调度测试</button>
+    <button class="hand-test" onclick="nowTest(engineSizeGetTest, '引擎间宽高读取')">引擎间宽高读取</button>
+    <button class="hand-test" onclick="nowTest(engineSizeSetTest, '引擎间宽高设置')">引擎间宽高设置</button>
+    <button onclick="nowTest(syncCookieTest, 'Cookie 同步')">
+      Cookie 同步
+    </button>
+    <button onclick="nowTest(syncStorageTest, 'LocalStorage 同步')">
+      LocalStorage 同步
+    </button>
+    <button class="hand-test" onclick="nowTest(messageTest, '消息发送与接收')">消息发送与接收</button>
+    <button class="hand-test" onclick="nowTest(logTest, '日志分类写入')">日志分类写入</button>
+    <button class="hand-test" onclick="nowTest(innerPageTest, '内部协议资源页面')">内部协议资源页面</button>
+    <button class="hand-test" onclick="nowTest(refeshTest, '刷新测试')">刷新测试</button>
+    <button class="hand-test" onclick="nowTest(refeshTest1, '刷新测试1')">刷新测试1</button>
+    <button class="hand-test" onclick="nowTest(refeshTest2, '刷新测试2')">刷新测试2</button>
+    <button class="hand-test" onclick="nowTest(refeshTest3, '刷新测试3')">刷新测试3</button>
+    <!-- <button onclick="nowTest(Test, '测试')">有效性测试</button> -->
+    <script>
+      async function nowTest(funcCallBack, title) {
+        $(".testModal").show();
+        let autoTest = new AutoTest();
+        await autoTest.test(funcCallBack, title);
+        AutoTest.report("----------------------------------------------------------");
+        AutoTest.report(`(${title}) 测试进程结束！`);
+      }
+    </script>
+    <br /> 页面中按钮 <span class="hand-test-label"> * </span> 为手动测试的部分
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取用户离开时间</title>
+    <script src="./index/global.js"></script>
+</head>
+<body style="background-color: azure;">
+<pre id="focusResult" style="float: left;"></pre>
+
+<script>
+    function output(str, Id){
+        //console.info(str);
+        let res = document.getElementById(Id);
+        var pobj=document.createElement('p');
+        var textobj=document.createTextNode(str+"\r\n");
+        res.appendChild(pobj.appendChild(textobj))
+    }
+    output(`此页面用于更充分(需要互动)测试闲置时间，10秒自动关，可手动提前关`, "focusResult");
+    output(`互动: 触动键盘鼠标将重置计时，毫秒单位`, "focusResult");
+    output(`------------------------------------`, "focusResult");
+    setInterval(()=>{
+        console.log(lnks.getIdleTime());
+        output("用户离开时间:"+lnks.getIdleTime(), "focusResult");
+    }, 2000)
+    setTimeout(()=>{
+        window.close();
+    }, 10000); // 10秒后自动关闭
+    // 全局变量准备
+    window.onload = function () {
+        if (window.lnks) {
+            window.document.title="用户离开时间测试"+getRandomInt(99);
+            this.win = new window.lnks.MainWindow(window);
+        }
+    }
+</script>
+</body>
+</html>

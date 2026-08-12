@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Emacs on 良宏</title>
+        <link>/tags/emacs/</link>
+        <description>Recent content in Emacs on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 24 Dec 2021 15:55:51 +0800</lastBuildDate><atom:link href="/tags/emacs/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Emacs</title>
+        <link>/post/tech/emacs/</link>
+        <pubDate>Fri, 24 Dec 2021 15:55:51 +0800</pubDate>
+        
+        <guid>/post/tech/emacs/</guid>
+        <description>&lt;h1 id=&#34;常用指令&#34;&gt;常用指令
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Emacs 快捷鍵是可以修改的，所以不一定要全部記住，只需要熟悉基本功能和知道有其他方便的擴充功能即可&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;emacs-基本&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%9f%ba%e6%9c%ac&#34;  title=&#34;Emacs基本&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 基本
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;C → Ctrl&lt;/li&gt;
+&lt;li&gt;M → Alt 或 esc&lt;/li&gt;
+&lt;li&gt;S → Shift&lt;/li&gt;
+&lt;li&gt;[Ret] → return(enter)&lt;/li&gt;
+&lt;li&gt;範例
+&lt;ul&gt;
+&lt;li&gt;C-c → Ctrl + c&lt;/li&gt;
+&lt;li&gt;C-c C-f → Ctrl + c, 放開 c, 按下 f，也可以分開來按，但較慢&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;「hello.c」的自動儲存檔案的檔名就是「#hello.c#」。儲存檔案後，自動儲存檔就會被刪除&lt;/li&gt;
+&lt;li&gt;Ctrl 通常是對一個字操作， Alt 通常是對一個詞，或一個句子操作&lt;/li&gt;
+&lt;li&gt;每一個 Emacs 的指令都有名稱，可以用 &lt;code&gt;M-x [command]&lt;/code&gt; 來下指令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;emacs-移動&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e7%a7%bb%e5%8b%95&#34;  title=&#34;Emacs移動&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 移動
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/img/Other/emacs-move.png&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;http://gitqwerty777.github.io/img/Other/emacs-move.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;M-v, C-v&lt;/p&gt;
+&lt;p&gt;上翻 / 下翻一頁&lt;/p&gt;
+&lt;p&gt;M-b, M-f&lt;/p&gt;
+&lt;p&gt;往前 / 往後 移動一個詞&lt;/p&gt;
+&lt;p&gt;M-a, M-e&lt;/p&gt;
+&lt;p&gt;移動到一句的開始 / 結尾 (程式碼的一個段落)&lt;/p&gt;
+&lt;p&gt;C-l&lt;/p&gt;
+&lt;p&gt;移動視窗 (遊標分別在中間、最上方、最下方)&lt;/p&gt;
+&lt;p&gt;M-g M-g&lt;/p&gt;
+&lt;p&gt;跳至指定行 (= M-g g)&lt;/p&gt;
+&lt;p&gt;M-m&lt;/p&gt;
+&lt;p&gt;將游標移到該行第一個字元 (比 C-a 好用)&lt;/p&gt;
+&lt;h3 id=&#34;emacs-編輯&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e7%b7%a8%e8%bc%af&#34;  title=&#34;Emacs編輯&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 編輯
+&lt;/h3&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;C-j&lt;/p&gt;
+&lt;p&gt;換行並自動縮排 (newline-and-indent)&lt;/p&gt;
+&lt;p&gt;C-SPACE&lt;/p&gt;
+&lt;p&gt;開始選取文字 (再按一次結束選取)&lt;/p&gt;
+&lt;p&gt;C-x C-x&lt;/p&gt;
+&lt;p&gt;改變選取的方向&lt;/p&gt;
+&lt;p&gt;C-x h&lt;/p&gt;
+&lt;p&gt;全選&lt;/p&gt;
+&lt;p&gt;M-h&lt;/p&gt;
+&lt;p&gt;選擇遊標所在的段落&lt;/p&gt;
+&lt;p&gt;C-w/M-w&lt;/p&gt;
+&lt;p&gt;剪下 / 複製 選取文字&lt;/p&gt;
+&lt;p&gt;C-y&lt;/p&gt;
+&lt;p&gt;貼上選取文字&lt;/p&gt;
+&lt;p&gt;M-y&lt;/p&gt;
+&lt;p&gt;改變貼上的文字 (從之前剪下 / 複製過的文字中，由新到舊出現)&lt;/p&gt;
+&lt;p&gt;C-d&lt;/p&gt;
+&lt;p&gt;同 &lt;code&gt;delete&lt;/code&gt; 鍵 (刪除後一個字)&lt;/p&gt;
+&lt;p&gt;M-d&lt;/p&gt;
+&lt;p&gt;刪除後一個詞&lt;/p&gt;
+&lt;p&gt;M-del&lt;/p&gt;
+&lt;p&gt;刪除前一個詞&lt;/p&gt;
+&lt;p&gt;C-g&lt;/p&gt;
+&lt;p&gt;取消尚未完成的指令&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;C-k&lt;/code&gt; : 刪除從游標到「行尾」間的字元
+單獨的 C-k 會把一行的內容殺掉
+而第二個 C-k 則會殺掉那一行本身 (‘\n’)。使所有其他的行向上移動&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;C-x u&lt;/code&gt; : 還原
+(1) 沒有改變文字的指令不算（移動游標和視窗等）
+(2) 自行鍵入的字元 一次最多還原 20 個&lt;/p&gt;
+&lt;h3 id=&#34;重複&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e9%87%8d%e8%a4%87&#34;  title=&#34;重複&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;重複
+&lt;/h3&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;示範&lt;/p&gt;
+&lt;p&gt;C-u [數字] [指令 or 字元]&lt;/p&gt;
+&lt;p&gt;重複執行&lt;/p&gt;
+&lt;p&gt;C-u 8 a → aaaaaaaa&lt;/p&gt;
+&lt;p&gt;M-[數字] [指令 or 字元]&lt;/p&gt;
+&lt;p&gt;重複執行&lt;/p&gt;
+&lt;p&gt;M-8 a → aaaaaaaa&lt;/p&gt;
+&lt;h3 id=&#34;emacs-搜尋&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%90%9c%e5%b0%8b&#34;  title=&#34;Emacs搜尋&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 搜尋
+&lt;/h3&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;C-s&lt;/p&gt;
+&lt;p&gt;往後搜尋 (再按一次：找下一個)&lt;/p&gt;
+&lt;p&gt;C-r&lt;/p&gt;
+&lt;p&gt;往前搜尋&lt;/p&gt;
+&lt;p&gt;M-C-s&lt;/p&gt;
+&lt;p&gt;正規表示式搜尋&lt;/p&gt;
+&lt;p&gt;M-%&lt;/p&gt;
+&lt;p&gt;取代&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;y&lt;/code&gt; 或 space：置換目前游標所在的字串，並且移到下一個可被置換的字串&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;n&lt;/code&gt;：跳過目前游標所在的字串。移到下一個可被置換的字串&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ESC&lt;/code&gt;：結束置換模式&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.&lt;/code&gt;：置換目前的字串，並離開置換模式&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;!&lt;/code&gt;：將整個檔案一次置換完畢，不進行任何詢問&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;^&lt;/code&gt;：回到前一個符合置換的地方&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C-r&lt;/code&gt;: 進入 recursive-edit 模式
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;M-C-c&lt;/code&gt;: 結束 recursive-edit 模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;emacs-分割-window&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%88%86%e5%89%b2-window&#34;  title=&#34;Emacs分割(window)&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 分割 (window)
+&lt;/h3&gt;&lt;p&gt;在螢幕上顯示多個編輯區，我稱為分割&lt;/p&gt;
+&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;C-x 0&lt;/p&gt;
+&lt;p&gt;關閉目前分割&lt;/p&gt;
+&lt;p&gt;C-x 1&lt;/p&gt;
+&lt;p&gt;關閉其他分割 (只留下目前的分割)&lt;/p&gt;
+&lt;p&gt;C-x 2&lt;/p&gt;
+&lt;p&gt;新增水平分割&lt;/p&gt;
+&lt;p&gt;C-x 3&lt;/p&gt;
+&lt;p&gt;新增垂直分割&lt;/p&gt;
+&lt;p&gt;C-x o&lt;/p&gt;
+&lt;p&gt;跳到別的分割 (在現有的分割循環)&lt;/p&gt;
+&lt;p&gt;M-C-v&lt;/p&gt;
+&lt;p&gt;捲動另一個分割&lt;/p&gt;
+&lt;p&gt;C-x 5 2&lt;/p&gt;
+&lt;p&gt;開新視窗 (frame)&lt;/p&gt;
+&lt;h3 id=&#34;emacs-檔案&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%aa%94%e6%a1%88&#34;  title=&#34;Emacs檔案&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 檔案
+&lt;/h3&gt;&lt;h4 id=&#34;emacs-檔案切換&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%aa%94%e6%a1%88%e5%88%87%e6%8f%9b&#34;  title=&#34;Emacs檔案切換&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 檔案切換
+&lt;/h4&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;C-x C-b&lt;/p&gt;
+&lt;p&gt;列出檔案清單 (&lt;em&gt;Buffer List&lt;/em&gt;)&lt;/p&gt;
+&lt;p&gt;C-x b&lt;/p&gt;
+&lt;p&gt;切換至其他開啟的檔案&lt;/p&gt;
+&lt;p&gt;C-x k&lt;/p&gt;
+&lt;p&gt;關閉目前編輯的檔案 (不存檔)&lt;/p&gt;
+&lt;h4 id=&#34;emacs-檔案指令&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%aa%94%e6%a1%88%e6%8c%87%e4%bb%a4&#34;  title=&#34;Emacs檔案指令&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 檔案指令
+&lt;/h4&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;C-x C-f&lt;/p&gt;
+&lt;p&gt;開新檔案，開啟舊檔&lt;/p&gt;
+&lt;p&gt;C-x 4 f&lt;/p&gt;
+&lt;p&gt;在新分割開啟檔案&lt;/p&gt;
+&lt;p&gt;C-x C-s&lt;/p&gt;
+&lt;p&gt;儲存檔案&lt;/p&gt;
+&lt;p&gt;C-x s&lt;/p&gt;
+&lt;p&gt;全部檔案儲存&lt;/p&gt;
+&lt;p&gt;C-x C-w&lt;/p&gt;
+&lt;p&gt;另存新檔&lt;/p&gt;
+&lt;p&gt;C-x d&lt;/p&gt;
+&lt;p&gt;開啟資料夾 (Dired)&lt;/p&gt;
+&lt;p&gt;C-x C-v&lt;/p&gt;
+&lt;p&gt;取代目前檔案 (find-alternate-file, 開錯檔案的時候用)&lt;/p&gt;
+&lt;h3 id=&#34;emacs-系統&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e7%b3%bb%e7%b5%b1&#34;  title=&#34;Emacs系統&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 系統
+&lt;/h3&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;C-x C-c&lt;/p&gt;
+&lt;p&gt;結束 Emacs&lt;/p&gt;
+&lt;p&gt;C-z&lt;/p&gt;
+&lt;p&gt;暫時離開 Emacs (Suspend)&lt;/p&gt;
+&lt;p&gt;用 &lt;code&gt;fg&lt;/code&gt; 或 &lt;code&gt;%emacs&lt;/code&gt; 恢復 Emacs&lt;/p&gt;
+&lt;h3 id=&#34;emacs-函式&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%87%bd%e5%bc%8f&#34;  title=&#34;Emacs函式&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 函式
+&lt;/h3&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;M-x [function]&lt;/p&gt;
+&lt;p&gt;執行名為 [function] 的指令&lt;/p&gt;
+&lt;p&gt;M-x compile&lt;/p&gt;
+&lt;p&gt;編譯 (會開啟 &lt;em&gt;compilation&lt;/em&gt; 分割)&lt;/p&gt;
+&lt;p&gt;M-x recompile&lt;/p&gt;
+&lt;p&gt;重覆執行上次執行過的 compile 指令&lt;/p&gt;
+&lt;p&gt;C-x `&lt;/p&gt;
+&lt;p&gt;跳到下一個有編譯錯誤的地方&lt;/p&gt;
+&lt;p&gt;M-x gdb&lt;/p&gt;
+&lt;p&gt;用 gdb 除錯&lt;/p&gt;
+&lt;p&gt;M-x shell&lt;/p&gt;
+&lt;p&gt;開啟 shell 分割&lt;/p&gt;
+&lt;p&gt;需要在 Shell 下的慣用命令前加上 C-c
+如 &lt;code&gt;C-c C-c&lt;/code&gt; 為中止程式；&lt;code&gt;C-c C-z&lt;/code&gt; 為暫停程式等&lt;/p&gt;
+&lt;h3 id=&#34;emacs-幫助&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%b9%ab%e5%8a%a9&#34;  title=&#34;Emacs幫助&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 幫助
+&lt;/h3&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;C-h ?&lt;/p&gt;
+&lt;p&gt;開啟 &lt;em&gt;Help&lt;/em&gt; 分割&lt;/p&gt;
+&lt;p&gt;C-h c [指令]&lt;/p&gt;
+&lt;p&gt;在命令列顯示簡短解釋&lt;/p&gt;
+&lt;p&gt;C-h k [指令]&lt;/p&gt;
+&lt;p&gt;在新分割顯示詳細解釋&lt;/p&gt;
+&lt;p&gt;C-h f [函數]&lt;/p&gt;
+&lt;p&gt;在新分割顯示說明文件&lt;/p&gt;
+&lt;p&gt;C-h w [函數]&lt;/p&gt;
+&lt;p&gt;查詢此函數的快捷鍵&lt;/p&gt;
+&lt;p&gt;C-h m&lt;/p&gt;
+&lt;p&gt;瀏覽現在模式的文件 (C, C++, text…)&lt;/p&gt;
+&lt;p&gt;C-h a&lt;/p&gt;
+&lt;p&gt;列出所有「含有此關鍵字」的全部函式（Command Apropos）&lt;/p&gt;
+&lt;p&gt;C-h i&lt;/p&gt;
+&lt;p&gt;開啟 &lt;em&gt;info&lt;/em&gt; 分割&lt;/p&gt;
+&lt;h3 id=&#34;其他&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e5%85%b6%e4%bb%96&#34;  title=&#34;其他&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;其他
+&lt;/h3&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;M-C-\&lt;/p&gt;
+&lt;p&gt;選擇區塊自動縮排 (indent-region)&lt;/p&gt;
+&lt;p&gt;M-;&lt;/p&gt;
+&lt;p&gt;在句尾加入註解&lt;/p&gt;
+&lt;p&gt;M-^&lt;/p&gt;
+&lt;p&gt;將此行併入上一行&lt;/p&gt;
+&lt;p&gt;C-t&lt;/p&gt;
+&lt;p&gt;對調兩字元&lt;/p&gt;
+&lt;p&gt;M-t&lt;/p&gt;
+&lt;p&gt;對調兩單字&lt;/p&gt;
+&lt;p&gt;C-x C-t&lt;/p&gt;
+&lt;p&gt;對調兩行&lt;/p&gt;
+&lt;p&gt;M-c&lt;/p&gt;
+&lt;p&gt;將字的第一個字母改為大寫 (Capitalize)&lt;/p&gt;
+&lt;p&gt;M-u&lt;/p&gt;
+&lt;p&gt;將單字改為大寫 (Upper)&lt;/p&gt;
+&lt;p&gt;M-l&lt;/p&gt;
+&lt;p&gt;將單字改為小寫 (Lower)&lt;/p&gt;
+&lt;p&gt;C-x i&lt;/p&gt;
+&lt;p&gt;插入其他檔案的內容 (insert-file)&lt;/p&gt;
+&lt;h2 id=&#34;emacs-技巧&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e6%8a%80%e5%b7%a7&#34;  title=&#34;Emacs技巧&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 技巧
+&lt;/h2&gt;&lt;h3 id=&#34;自動完成&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e8%87%aa%e5%8b%95%e5%ae%8c%e6%88%90&#34;  title=&#34;自動完成&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;自動完成
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;M-/&lt;/code&gt;
+可重複輸入以改變&lt;/p&gt;
+&lt;h3 id=&#34;移動至定義-goto-declaration&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e7%a7%bb%e5%8b%95%e8%87%b3%e5%ae%9a%e7%be%a9-goto-declaration&#34;  title=&#34;移動至定義(goto declaration)&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;移動至定義 (goto declaration)
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;建立 tag 檔&lt;/p&gt;
+&lt;p&gt;1
+2
+3
+4&lt;/p&gt;
+&lt;p&gt;# for c, c++ file
+find . | grep &amp;ldquo;.*\.\(c\|h\|cpp\)&amp;rdquo; | xargs etags -f tags # output filename &amp;ldquo;tags&amp;rdquo;
+# for python file
+find . -type f -name &amp;lsquo;*.py&amp;rsquo; | xargs etags -f tags&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在 Emacs 中用 &lt;code&gt;M-.&lt;/code&gt; 進行搜尋&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;C-x 4 .&lt;/code&gt;: 在另一個分割開啟定義&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;M-*&lt;/code&gt; 回到前一個定義的位置&lt;/p&gt;
+&lt;h3 id=&#34;回到之前的遊標位置&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e5%9b%9e%e5%88%b0%e4%b9%8b%e5%89%8d%e7%9a%84%e9%81%8a%e6%a8%99%e4%bd%8d%e7%bd%ae&#34;  title=&#34;回到之前的遊標位置&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;回到之前的遊標位置
+&lt;/h3&gt;&lt;p&gt;在搜尋或尋找定義之後很好用
+&lt;code&gt;C-u C-space&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;emacs-作為-ide-使用&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e4%bd%9c%e7%82%baIDE%e4%bd%bf%e7%94%a8&#34;  title=&#34;Emacs作為IDE使用&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 作為 IDE 使用
+&lt;/h3&gt;&lt;p&gt;function &lt;code&gt;compile&lt;/code&gt; 執行編譯命令 (make, g++ …)
+function &lt;code&gt;recompile&lt;/code&gt; 重復之前的編譯命令
+可將其設為快捷鍵&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://stackoverflow.com/questions/11043004/emacs-compile-buffer-auto-close&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;編譯成功後自動關閉 &lt;em&gt;compilnation&lt;/em&gt; 分割&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;http://lifegoo.pluskid.org/wiki/EmacsSmartCompile.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;智慧編譯：自動偵測檔名或 makefile 並編譯&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;sublime-text--emacs-快速鍵&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Sublime-Text-Emacs%e5%bf%ab%e9%80%9f%e9%8d%b5&#34;  title=&#34;Sublime Text &amp;#43; Emacs快速鍵&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Sublime Text + Emacs 快速鍵
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/grundprinzip/sublemacspro&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/grundprinzip/sublemacspro&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;emacs-巨集-macro&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%b7%a8%e9%9b%86-Macro&#34;  title=&#34;Emacs巨集(Macro)&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 巨集 (Macro)
+&lt;/h3&gt;&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;C-x (&lt;/p&gt;
+&lt;p&gt;開始定義巨集&lt;/p&gt;
+&lt;p&gt;C-x )&lt;/p&gt;
+&lt;p&gt;結束巨集定義&lt;/p&gt;
+&lt;p&gt;C-x e&lt;/p&gt;
+&lt;p&gt;執行上一個定義的巨集&lt;/p&gt;
+&lt;p&gt;M-[Num] C-x e&lt;/p&gt;
+&lt;p&gt;將上一個定義的巨集執行 Num 次&lt;/p&gt;
+&lt;p&gt;C-u C-x (&lt;/p&gt;
+&lt;p&gt;執行上一個定義的巨集，然後可以加上按鍵以重新定義巨集&lt;/p&gt;
+&lt;p&gt;C-x q&lt;/p&gt;
+&lt;p&gt;將巨集定義中插入查詢&lt;/p&gt;
+&lt;p&gt;C-u C-x q&lt;/p&gt;
+&lt;p&gt;將巨集定義中插入遞迴編輯&lt;/p&gt;
+&lt;p&gt;M-C-c&lt;/p&gt;
+&lt;p&gt;跳出遞迴編輯&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;name-last-kbd-macro&lt;/code&gt;: 將上一個定義的巨集存檔之前予以命名
+&lt;code&gt;load-file&lt;/code&gt;: 載入儲存的 lisp 程式碼巨集
+&lt;code&gt;macroname&lt;/code&gt;: 執行儲存過的”macroname” 巨集
+&lt;code&gt;insert-kbd-macro&lt;/code&gt;: 將命名過的巨集以 lisp 程式碼印出&lt;/p&gt;
+&lt;p&gt;應用：在 &lt;code&gt;EmacsMacro.el&lt;/code&gt; 中儲存巨集程式碼，並在&lt;code&gt;.emacs&lt;/code&gt; 中寫入&lt;/p&gt;
+&lt;p&gt;1
+2&lt;/p&gt;
+&lt;p&gt;;;load my macro file
+(load &amp;ldquo;~/EmacsMacro&amp;rdquo;)&lt;/p&gt;
+&lt;h3 id=&#34;emacs--latex&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs-Latex&#34;  title=&#34;Emacs &amp;#43; Latex&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs + Latex
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://bbs3.nsysu.edu.tw/txtVersion/treasure/IUT/M.1006868352.A/M.1006952678.G.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;參考資料&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;安裝: sudo apt-get install texlive-full&lt;/p&gt;
+&lt;p&gt;“：插入 ```’ 或 &lt;code&gt;&#39;&#39;&#39; 或&lt;/code&gt; “‘ 符號
+M-x validate-tex-region：檢查每一段文稿是否有不平衡的大括號
+或錢字號。
+C-c {：插入 &lt;code&gt;{}&#39; 並將游標移至左右大括號之間 C-c }：將游標移至下一個右大括號的右端 C-c C-o：插入 LaTeX 區段標記&lt;/code&gt; \begin’ 及 \end’ 並將游標移至
+二者間的空行
+C-c C-e：為前一個不平衡的 `\begin’ 加上 \end’&lt;/p&gt;
+&lt;p&gt;編譯&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;C-c C-f：對目前所在的檔案執行 TeX/LaTeX 的編譯&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C-c C-r：對一段區域 (region) 執行 TeX/LaTeX 的編譯&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不論是 TeX 或 LaTeX 都包含了一段有關全文的訊息在整篇文稿的開端，若是僅僅編譯所指定的區域而忽略了這段訊息的話，將會產生錯誤的結果。為了解決這個問題，必需在文稿中標明 header 的位置，然後在 用 C-c C-r 命令時 emacs 會自動將 header 中的訊息讀入處理。在 TeX 中標明 header 的方法是在 header 段落前後插入 &lt;code&gt;%start of header&#39; 和&lt;/code&gt; %end of header}’&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C-c C-b：對整個目前所在的緩衝區 (buffer) 執行 TeX/LaTeX 的編譯&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C-c C-r 和 C-c C-b 並不會產生如 *.aux 等的附屬檔，因此無法執行 cross-reference 等工作。如果需要產生附屬檔則必需使用 C-c C-f&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C-c TAB：對目前所在的檔案執行 BibTeX 的編譯&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C-c C-v：預覽 C-c C-r, C-c C-b 或 C-c C-f 編譯的結果&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C-c C-k：終結 (kill) 目前進行中的 TeX/LaTeX 程序 (process)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C-c C-p：列印 C-c C-r、C-c C-b 或 C-cC-f 編譯的結果&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C-c C-q：顯示目前的 printer queue&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;emacs--git&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs-Git&#34;  title=&#34;Emacs &amp;#43; Git&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs + Git
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.cnblogs.com/holbrook/archive/2012/04/26/2470923.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;使用 git-emacs&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;畫簡單的-ascii-圖&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e7%95%ab%e7%b0%a1%e5%96%ae%e7%9a%84ASCII%e5%9c%96&#34;  title=&#34;畫簡單的ASCII圖&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;畫簡單的 ASCII 圖
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://emacser.com/artist-mode.htm&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Artist Mode&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;http://emacser.com/emacs-ditaa.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;輸出成圖片檔&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;emacs--markdown-mode&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs-Markdown-Mode&#34;  title=&#34;Emacs &amp;#43; Markdown Mode&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs + Markdown Mode
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://linuxtoy.org/archives/emacs-markdown-mode.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Emacs Markdown 模式&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;有些指令直接輸入比較快…&lt;/p&gt;
+&lt;p&gt;指令&lt;/p&gt;
+&lt;p&gt;介紹&lt;/p&gt;
+&lt;p&gt;C-c C-t [N]&lt;/p&gt;
+&lt;p&gt;插入第 N 級的標題&lt;/p&gt;
+&lt;p&gt;C-c C-a l&lt;/p&gt;
+&lt;p&gt;插入鏈接，格式為 &lt;code&gt;[text](url)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;C-c C-i i&lt;/p&gt;
+&lt;p&gt;插入圖像，格式為 &lt;code&gt;![text](url)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;C-c -&lt;/p&gt;
+&lt;p&gt;插入水平線&lt;/p&gt;
+&lt;p&gt;S-Tab&lt;/p&gt;
+&lt;p&gt;在大綱視圖、目錄視圖、及正常視圖間切換&lt;/p&gt;
+&lt;p&gt;C-c C-c m&lt;/p&gt;
+&lt;p&gt;預覽 HTML&lt;/p&gt;
+&lt;p&gt;C-c C-c p&lt;/p&gt;
+&lt;p&gt;在瀏覽器中預覽&lt;/p&gt;
+&lt;h3 id=&#34;emacs--screen&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs-Screen&#34;  title=&#34;Emacs &amp;#43; Screen&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs + Screen
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://lagunawang.pixnet.net/blog/post/2836825-linux-screen%E6%8C%87%E4%BB%A4&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Screen 指令表&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;因為 Emacs 的快捷鍵和 Screen 重複，要自己在&lt;code&gt;.screenrc&lt;/code&gt; 設定檔修改&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 &lt;code&gt;.screenrc&lt;/code&gt; 中新增 &lt;code&gt;escape ^vv&lt;/code&gt;
+即可將 所有 C-a 改為 C-v&lt;/li&gt;
+&lt;li&gt;在 &lt;code&gt;.screenrc&lt;/code&gt; 中新增 &lt;code&gt;escape ^l^l&lt;/code&gt;
+即可將 所有 &lt;code&gt;C-a&lt;/code&gt; 改為 &lt;code&gt;C-l&lt;/code&gt;，且在輸入 &lt;code&gt;C-l C-l&lt;/code&gt; 時可以跳脫 screen 指令 (等同在 terminal 輸入 &lt;code&gt;C-l&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://lifegoo.pluskid.org/wiki/Screen.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;修改教學&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在使用 Emacs 時，適合 bind 到 screen 的 key:
+C-v(scroll-up-command), C-space(set-mark-command), C-t(transpose-chars), C-d(delete char), C-l(recenter-top-bottom)
+其他都太常用或是不能 bind (C-z, C-q, C-m, C-i)，不然就要用 C-S 系列&lt;/p&gt;
+&lt;p&gt;終端機指令
+screen -list 可以列出你目前的所有 screen 會話 (同時可有多個 screen)
+screen -r [detached screen] 回復 detach 的 screen
+screen -wipe 砍掉不要的 screen&lt;/p&gt;
+&lt;p&gt;screen 內指令共同前綴 C-a
+C-a c - 開新分頁
+C-a n - 切換到下一個分頁
+C-a p - 切換到前一個分頁
+C-a C-a - 切換到最近用過的分頁
+C-a [N] - 跳到編號 N 的分頁
+C-a w - 列出開啟的分頁 (簡短)
+C-a “ - 列出所有的分頁提供切換
+C-a k - 關閉目前分頁&lt;/p&gt;
+&lt;p&gt;C-a S - 將螢幕水平分割
+C-a - 在分割的區域之間切換焦點&lt;/p&gt;
+&lt;p&gt;C-a C - 清除目前的分頁內容
+C-a H - 儲存目前分頁記錄（檔名為 screenlog.n, n 為視窗號碼）
+C-a x - 鎖定 screen，需要輸入使用者密碼
+C-a d - Detach screen，暫時脫離 screen，程式會持續進行，你可以在重開終端機或重新登入後再連接到剛才的那個 screen (當然，重開機會不見)&lt;/p&gt;
+&lt;p&gt;C-a [- 編輯模式 (操作和 vi 相似…)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;h, j, k, l 分別為向左，向下，向上，向右移動一格（或是一行）&lt;/li&gt;
+&lt;li&gt;^ 與 $ 分別移到該行最左邊及最右邊的非空白字元&lt;/li&gt;
+&lt;li&gt;w 以字為單位往前移動並移到字首&lt;/li&gt;
+&lt;li&gt;b 以字為單位往後移動並移到字首&lt;/li&gt;
+&lt;li&gt;e 以字為單位往前移動並移到字尾&lt;/li&gt;
+&lt;li&gt;C-b 向上捲一頁&lt;/li&gt;
+&lt;li&gt;C-f 向下捲一頁&lt;/li&gt;
+&lt;li&gt;/ 與？向下或向上尋找字串&lt;/li&gt;
+&lt;li&gt;space 第一次按下到第二次按下的區域會被複製
+&lt;ul&gt;
+&lt;li&gt;C-a ] 貼上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;非指令的輸入會離開編輯模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;套件安裝&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e5%a5%97%e4%bb%b6%e5%ae%89%e8%a3%9d&#34;  title=&#34;套件安裝&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;套件安裝
+&lt;/h3&gt;&lt;h3 id=&#34;其他功能&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e5%85%b6%e4%bb%96%e5%8a%9f%e8%83%bd&#34;  title=&#34;其他功能&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;其他功能
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.gnu.org/software/emacs/manual/html_node/efaq/Replacing-text-across-multiple-files.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Replacing-text-across-multiple-files&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;不重要的功能&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e4%b8%8d%e9%87%8d%e8%a6%81%e7%9a%84%e5%8a%9f%e8%83%bd&#34;  title=&#34;不重要的功能&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;不重要的功能
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;放大字體: C-x C-+ 或 C-x C-=&lt;/li&gt;
+&lt;li&gt;縮小字體: C-x C-–&lt;/li&gt;
+&lt;li&gt;重置字體: C-x C-0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;emacs-小知識&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Emacs%e5%b0%8f%e7%9f%a5%e8%ad%98&#34;  title=&#34;Emacs小知識&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Emacs 小知識
+&lt;/h2&gt;&lt;p&gt;名稱: Emacs 是 「編輯巨集」[Editing MACroS] 的簡稱&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://lifegoo.pluskid.org/wiki/Emacs.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;參考資料&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;前綴&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一些不是特別常用的函數綁定到前綴 C-x 上。例如 C-x C-c 退出 Emacs， C-x 2 水平分割當前 window&lt;/li&gt;
+&lt;li&gt;與某個 mode 相關的的函數被綁定到前綴 C-c 上&lt;/li&gt;
+&lt;li&gt;最不常用的函數根本沒有鍵綁定，而是使用 M-x 然後輸入函數名來調用他們&lt;/li&gt;
+&lt;li&gt;前綴 C-x 4 被保留作操作另外一個 window 用的函數，例如 C-x 4 C-f 在另 外一個 window 裡面打開文件&lt;/li&gt;
+&lt;li&gt;前綴 C-x 5 被綁定到操縱其他 frame 的 函數上面&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;殺掉&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;被殺掉的可以拉回，而被刪除的則不能
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;delete&lt;/code&gt;, &lt;code&gt;backspace&lt;/code&gt; 都是刪除&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C-k&lt;/code&gt;, &lt;code&gt;C-w&lt;/code&gt;, &lt;code&gt;M-w&lt;/code&gt; 等指令都是殺掉
+&lt;ul&gt;
+&lt;li&gt;如果連續地做了數次 C-k，所有被殺掉的文字都會被儲存在一起，因此做一次 C-y 就會把所有這些行都拉回來&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;將被殺掉的文字回復的動作稱為「拉回（ yanking ）」
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;C-y&lt;/code&gt; 會把最近殺掉的拉回來，前幾次殺掉的文字可以用 &lt;code&gt;M-y&lt;/code&gt; 來回複&lt;/li&gt;
+&lt;li&gt;可以給 &lt;code&gt;M-y&lt;/code&gt; 正的或是負的參數來回到之前殺掉的東西&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;搜尋&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Emacs 搜尋指令是「漸進的（ incremental ）」，搜尋發生在遊標後
+&lt;ul&gt;
+&lt;li&gt;如果鍵入『u』，游標會移動到「cu」的第一次出現位置。將「u」從 s 搜尋字串中消除，游標會移回到「c」的第一次出現位置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;設定檔：家目錄的&lt;code&gt;.emacs&lt;/code&gt;，可修改 Emacs 設定&lt;/p&gt;
+&lt;p&gt;BASH 上預設的控制模式是 Emacs，也就是說可以使用 C-a, C-f, C-b 等移動鍵，C-r 搜尋歷史指令，C-n, C-p 切換歷史指令，C-k 殺掉文字， C-j 執行指令等等。
+和 Emacs 不一樣的地方有 &lt;code&gt;C-h&lt;/code&gt; 往前刪除一字元，&lt;code&gt;C-w&lt;/code&gt; 清除游標以前的一個單字，&lt;code&gt;C-u&lt;/code&gt; 清除游標以前所有的字元。&lt;/p&gt;
+&lt;h2 id=&#34;快速設定&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#%e5%bf%ab%e9%80%9f%e8%a8%ad%e5%ae%9a&#34;  title=&#34;快速設定&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;快速設定
+&lt;/h2&gt;&lt;p&gt;使用現成的設定檔&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;優點&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不用搞 lisp&lt;/li&gt;
+&lt;li&gt;經過優化&lt;/li&gt;
+&lt;li&gt;較完整&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缺點&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不夠客製化&lt;/li&gt;
+&lt;li&gt;功能太多，搞不清&lt;/li&gt;
+&lt;li&gt;難以修改&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/bbatsov/prelude&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;prelude&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/purcell/emacs.d&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;purcell&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;reference&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;http://gitqwerty777.github.io/Emacs-tips//#Reference&#34;  title=&#34;Reference&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;/a&gt;Reference
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://clipthat.blogspot.tw/2010/01/emacs.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;指令大全&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;http://www.emacs.uniyar.ac.ru/doc/em24h/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Sams Teach Yourself Emacs in 24 Hours&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;http://blog.csdn.net/redguardtoo/article/details/7222501&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;一年成為 Emacs 高手 (有常用套件推薦)&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

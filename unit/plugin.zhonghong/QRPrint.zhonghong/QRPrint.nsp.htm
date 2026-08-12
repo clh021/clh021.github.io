@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="basepath" content="/doc">
+<meta name="provider" content="北京中宏立达科技发展有限公司">
+<link rel="stylesheet" rev="stylesheet" href="QRPrint.nsp_files/style_004.css" type="text/css" media="all">
+<link rel="stylesheet" rev="stylesheet" href="QRPrint.nsp_files/style_003.css" type="text/css" media="all">
+<link rel="stylesheet" rev="stylesheet" href="QRPrint.nsp_files/custom-animate.css" type="text/css" media="all">
+<link rel="stylesheet" rev="stylesheet" href="QRPrint.nsp_files/custom-base.css" type="text/css" media="all">
+<script type="text/javascript" src="QRPrint.nsp_files/Netiler.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/JTemplate.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/NetilerUI_002.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/NetilerUI.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/custom-kmsUI_DEBUG.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/custom-predator_DEBUG.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/custom-nExtend_DEBUG.js"></script>
+<link href="QRPrint.nsp_files/style_002.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="QRPrint.nsp_files/custom-theme_DEBUG.js"></script>
+<link id="netileruiFontSizeLink" href="QRPrint.nsp_files/fontSize.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="QRPrint.nsp_files/custom-offline_DEBUG.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/custom-animate_DEBUG.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/custom-nbCompatible_DEBUG.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/com.js"></script>
+<link rel="stylesheet" type="text/css" href="QRPrint.nsp_files/grid.css">
+<link rel="stylesheet" type="text/css" href="QRPrint.nsp_files/comm.css">
+<link rel="stylesheet" type="text/css" href="QRPrint.nsp_files/style.css">
+<link rel="stylesheet" type="text/css" href="QRPrint.nsp_files/pxTheme.css">
+</head>
+<body basepath="/doc" style="">
+<style>
+	embed{
+		width:1px;
+		height:1px;
+	}
+</style>
+<button onclick="testPrintQR()">执行条码打印</button>
+<embed id="qrObj" type="application/top-barcode-printer-plugin" hidden="true">	
+<script type="text/javascript" src="QRPrint.nsp_files/com.leadal.top.dispatch.service.DispatchService.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/com.leadal.top.dispatch.service.DispatchQRCodeService.js"></script>
+<script type="text/javascript" src="QRPrint.nsp_files/qrPrinter.js"></script>
+<script type="text/javascript">	
+	
+	function testPrintQR(){
+		//  qrList: Array[1]
+		//0: Object
+		//copyNum: 1
+		//qrCode: "GB0626-2005^机关代字.20200707.发.00001-001^^null^〔2020〕 号^null^防止疫情期间交叉感染工作时间调整的请示^null^加急^20200310^^^20200707^null|^"
+		//qrCodeId: "机关代字.20200707.发.00001-001"
+		// var jservice = DispatchService;
+		// var callback = function(qrList) {
+			qrList=[{
+				copyNum:1,
+				qrCode:"GB0626-2005^机关代字.20200708.发.00001-001^^null^〔2020〕 号^null^防止疫情期间交叉感染工作时间调整的请示^null^加急^20200310^^^20200708^null|^",
+				qrCodeId: "机关代字.20200708.发.00001-001"
+			}]
+			QRPrinter.print(qrList);
+		// };
+		// $request.jservice(
+		// 	DispatchQRCodeService,
+		// 	'printQRCode',
+		// 	["f691a3268f484864a8830f73e0e2e8e1",[],1],
+		// 	callback,
+		// 	{msg : '数据处理中'}
+		// );
+	}
+	var docInfoId = "3357b5df22cd494ca3cc57092e5eb41a";
+	
+	var dispatchCount = 0;
+
+	var gridRender = {
+	
+		booleanRender : function(name,map){
+			if(map.hasElectronic==true){
+				return '是';
+			}else{
+				return '否';
+			}
+		},
+		
+		printQrRender : function(name,map){
+			if(!map.paperNums || map.paperNums==''){
+				return '<input type="checkbox"  name="printQr_checkbox" disabled/>';
+			}
+			var paperCount = map.paperNums.split(',').length;
+			dispatchCount += paperCount;
+			var str =  '<input type="checkbox" onchange="checkPrintQR(this,\''+paperCount+'\')" paperCount="'+paperCount+'" name="printQr_checkbox" ';
+			if(map.printQR){
+				var value = document.forms[0].printCount.value;
+				document.forms[0].printCount.value= strToInt(value) + paperCount;
+			
+				str += 'checked ';
+			}
+			str += '/>';
+			return str;
+		}
+	}
+	
+	function maxCount(){
+		var objs =  document.getElementsByName("printQr_checkbox");
+		for(var i=0;i<objs.length;i++){
+			if(objs[i].checked){
+				continue;
+			}
+			objs[i].checked=true;
+			var count = objs[i].getAttribute('paperCount');
+			checkPrintQR(objs[i],count);
+		}
+	}
+	
+	function checkPrintQR(obj,count){
+		var checked = obj.checked;
+		var value = document.forms[0].printCount.value;
+		if(checked){
+			document.forms[0].printCount.value = strToInt(value) + strToInt(count);
+		}else{
+			document.forms[0].printCount.value = strToInt(value) - strToInt(count);
+		}
+	}
+	
+	function strToInt(str){
+		return parseInt(str);
+	}
+	
+	function doPrintQR(cb){
+		var formObj = document.forms[0];
+		var printCount = formObj['printCount'].value;
+		if(printCount==0){
+			$window.alert('请选择打印条码数量','info');
+			return ;
+		}
+		
+		var gridObj = netiler.$('#gridObj');
+		var data = gridObj.data();
+		
+		var printQRCheckboxs =  document.getElementsByName("printQr_checkbox");
+		
+		var dispatchList = [];
+		if(data.length!=0){
+			for(var i=0;i<data.length;i++){
+				var item = data[i];
+				if(printQRCheckboxs[i].checked){
+					item.printQR = true;
+					
+					var dis = {
+						id : item.id,
+						paperNums:item.paperNums,
+						printQR : item.printQR,
+						qROrganAlias : item.qROrganAlias,
+						paperDefStatus:item.paperDefStatus,
+						unitName : item.unitName
+					}
+					dispatchList.push(dis);
+				}
+			}
+		}
+		
+		var execute = function(list,extraCount){
+			var jservice = DispatchService;
+			var callback = function(qrList){
+				QRPrinter.print(qrList);
+				if(cb){
+					cb();
+				}
+			};
+			
+			var config = {
+			   msg : '数据处理中'
+			};
+			
+			$request.jservice(DispatchQRCodeService,'printQRCode',[docInfoId,list,extraCount],callback,config);
+		}
+		
+		var printCount = document.forms[0].printCount.value;
+		
+		var extraCount = printCount - dispatchList.length;
+		
+		if(extraCount==0){
+			execute(dispatchList,extraCount);
+			return ;
+		}
+		
+		var _callback  = function(){
+			execute(dispatchList,extraCount);
+		};
+		var msg = '您需要在已保存的分发记录条数额外打印<span style="color:red">'+extraCount+'</span>份条码,是否确定？';
+		$window.confirm(msg,_callback);
+	}
+
+</script>
+</body>
+</html>

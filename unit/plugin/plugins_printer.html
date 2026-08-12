@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插件</title>
+</head>
+
+<script type="text/javascript" src="./plugins.js/Netiler.js"></script>
+<script type="text/javascript" src="./plugins.js/JTemplate.js"></script>
+<script type="text/javascript" src="./plugins.js/NetilerUI_002.js"></script>
+<script type="text/javascript" src="./plugins.js/NetilerUI.js"></script>
+
+
+<script type="text/javascript" src="/doc/netilerui/NetilerUI.def.js"></script>
+<script type="text/javascript" src="/doc/netilerui/custom-kmsUI_DEBUG.js"></script>
+<script type="text/javascript" src="/doc/jservice/com.leadal.top.dispatch.service.DispatchQRCodeService.js"></script>
+
+<script type="text/javascript" src="./plugins.js/qrPrinter.js"></script>
+
+
+<script type="text/javascript" src="./plugins.js/custom-kmsUI_DEBUG.js"></script>
+<script type="text/javascript" src="./plugins.js/custom-predator_DEBUG.js"></script>
+<script type="text/javascript" src="./plugins.js/custom-nExtend_DEBUG.js"></script>
+<script type="text/javascript" src="./plugins.js/custom-theme_DEBUG.js"></script>
+<script type="text/javascript" src="./plugins.js/custom-offline_DEBUG.js"></script>
+<script type="text/javascript" src="./plugins.js/custom-animate_DEBUG.js"></script>
+<script type="text/javascript" src="./plugins.js/custom-nbCompatible_DEBUG.js"></script>
+<body>
+    <button onclick="window.close()" style="float: right;">关闭</button>
+    <button onclick="getPrinterList()">获取打印机</button>
+    <select name="devicesName" id="devicesName"></select>
+    <div id="preparePrint" style="display: none;">
+
+        <input type="text" style="width: 80%;" name="fileUrl" id="fileUrl" value="http://192.168.61.44:8099/doc/top.resource/docFile/download.nsp?id=3983b6ee2984411f8c1cb6381c580379&extname=pdf">
+        <a onclick="downloadPdf()">查看</a>
+        <span>http://192.168.61.44:8099/doc/top.resource/docFile/download.nsp?id=6599aa30ce4f4466981cc3cbf7885084&extname=pdf</span>
+        <br>
+    
+        <button onclick="doPrintList()">开始打印</button>
+        
+    </div>
+    <br>
+    <textarea id="result" cols="80" rows="10"></textarea>
+    <embed id="netilerPrinter" type="application/netiler-printer-plugin" hidden="true">
+</body>
+<script lang="javascript">
+    var printer= document.getElementById('netilerPrinter');
+	var currPrinterName = "";
+
+    var printedCallback = function(){
+        for(var i=0;i<fileArr.length;i++){
+            DocFileService.printLog(fileArr[i].id);
+        }
+        $window.alert("打印完毕！","ok");
+        pop.close();
+    }
+    function downloadPdf() {
+        var fileUrl = document.getElementById('fileUrl').val();
+        window.open(fileUrl);
+    }
+	function doPrintList(){
+        console.info(document.getElementById("devicesName").val());
+        var printFiles = [];
+        var fileArgs = {
+            url:document.getElementById('fileUrl').val(),
+            filename:'6599aa30ce4f4466981cc3cbf7885084.pdf',
+            printer:document.getElementById("devicesName").val(),
+            settings:"",
+            duplex:0,
+            boundType:1,
+            paperSize:1,
+            copies:1
+        };
+        printFiles.push(fileArgs);
+        var printFilesJson = $o(printFiles).toJSON();
+        console.info("printFilesJson1", printFilesJson);
+        // var printFilesJson = '[{"url":"file:///C:/Users/cetc15/Downloads/0702.pdf","filename":"0702.pdf","printer":"专用双色激光打印机","duplex":0,"boundType":1,"paperSize":1,"copies":1}]';
+        // console.info("printFilesJson2", printFilesJson);
+		printer.PrintDocList(printFilesJson,function(result){
+			// if(printedCallback){
+			// 	printedCallback();
+            // }
+            console.log("printer.PrintDocList callback result");
+            console.log(result);
+		});	
+    }
+    function updatePrinterSelect(devs) {
+		document.getElementById("devicesName").innerHTML="";
+		if (devs) {
+			devs = eval('('+devs+')');
+			for(var i=0;i<devs.length;i++){
+                var dev = devs[i];
+                console.info
+				var option = document.createElement("option");
+				option.innerHTML = dev.name
+                option.value = dev.name;
+                if(dev.default) {
+                    option.selected = true;
+                }
+				document.getElementById("devicesName").appendChild(option);
+			}
+			
+			// var paramTrs = document.getElementsByName("linuxparams");
+			// if(devs[0] && paramTrs && paramTrs.length>0){
+			// 	this.getDeviceSolution(devs[0].id);
+			// }
+		}
+    }
+    function getPrinterList() {
+		// var netilerPrinter = document.getElementById('netilerPrinter');
+		// var printers =netilerPrinter.GetPrinterList();
+        var printers =document.getElementById('netilerPrinter').GetPrinterList();
+        updatePrinterSelect(printers);
+        if (printers.length > 0) {
+            document.getElementById('preparePrint').style.display = 'block';
+        }
+        document.getElementById('result').val(printers)
+    }
+</script>
+
+</html>

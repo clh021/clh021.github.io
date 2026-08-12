@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrayIcon</title>
+</head>
+
+<body>
+  <button class="test1_error" onclick="addTray()">创建托盘</button>
+  <script>
+    let getLnksTrayGeometry = () => {
+      return new Promise(function (resolve, reject) {
+        let wait = () => {
+          if (window.trayIcon.geometry.x === 0) {
+            console.log("getLnksTrayGeometry Func:", window.trayIcon.geometry)
+            setTimeout(wait, 300);
+          } else {
+            resolve(win);
+          }
+        };
+        wait();
+      });
+    }
+    function addTray() {
+      window.trayIcon = new lnks.TrayIcon(window);
+      getLnksTrayGeometry(window.trayIcon).then((e) => {
+        console.log("getLnksTrayGeometry.then:", e);
+      });
+      let g = this.trayIcon.geometry;
+      let width = 100;
+      let height = 200;
+      console.log("g:", g)
+      console.log('p:', g.x - (100 / 2), g.y - height);
+      lnks.openWindow2({
+        "url": "./apps/popup.html",
+        "skipBar": true,
+        "width": width,
+        "height": height,
+        "positionX": g.x - (width / 2),
+        "positionY": g.y - height,
+        "hideChrome": true,
+        "hidden": true
+      });
+    }
+  </script>
+</body>
+
+</html>

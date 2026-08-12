@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signaling Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-size: 12px;
+        }
+        body {
+            background-color: #ffa200;
+        }
+    </style>
+</head>
+<body>
+    <pre id="result" style="float: left;"></pre>
+
+<script>
+    function output(...str){
+        let lastStr=("["+(new Date()).toLocaleString('zh-CN')+"]:")
+        str.forEach((s) => {
+            if ('object' == typeof s) {
+                let seen = [];
+                let replacer = function(key, value) {
+                    if (typeof value === "object" && value !== null) {
+                        if (seen.indexOf(value) >= 0) {
+                            return;
+                        }
+                        seen.push(value);
+                    }
+                    return value;
+                };
+                lastStr += (JSON.stringify(s, replacer));
+            } else {
+                lastStr += s;
+            }
+        });
+        let res = document.getElementById("result");
+        var pobj=document.createElement('p');
+        var textobj=document.createTextNode(lastStr + "\r\n");
+        res.appendChild(pobj.appendChild(textobj))
+    }
+    output("消息和日志将输出至此：[您可以参考如下命令示例]");
+    output("打印时间：", `./lithium -cmd '{"func":"printTime"}'`)
+    output("改变宽高：", `./lithium -cmd '{"func":"setSize","args":{"width":800,"height":600}}'`)
+    output("-------------------------------------------");
+    output("jsjsjs",{"ja":"asd","num":890});
+    class Demo {
+        constructor() {
+            this.ws = undefined;
+        }
+        
+        run() {
+            lnks.signalingRegistry.init();
+            lnks.signalingRegistry.addCommandListener("printTime", () => {
+              console.log("timestamp: ", new Date());
+              output("timestamp: ", new Date());
+            });
+            lnks.signalingRegistry.addCommandListener("setSize", (s) => {
+              console.log("setSize: ", s);
+              output("setSize: ", s);
+              if (s.width && s.height) {
+                window.w.setSize(s.width, s.height);
+              }
+            });
+        }
+    }
+    
+    window.addEventListener("load", () => {
+      if (!window.lnks || !window.lnks.signalingRegistry) {
+        console.warn("signalingRegistry object not found!");
+        return;
+      }
+      const demo = new Demo();
+      demo.run();
+      window.demo = demo;
+      window.w = new window.lnks.MainWindow(window);
+    });
+</script>
+</body>
+</html>

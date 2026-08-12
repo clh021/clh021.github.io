@@ -1,0 +1,2860 @@
+[
+  {
+    "type": 1,
+    "title": "Bazarr",
+    "description": "Subtitles Manager",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/bazarr.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "subtitles"
+    ],
+    "image": "linuxserver/bazarr:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "6767/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/tv"
+      },
+      {
+        "container": "/movies"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Beets",
+    "description": "Music Library Manager",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/beets-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "audio"
+    ],
+    "image": "linuxserver/beets:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8337/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      },
+      {
+        "container": "/music"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Booksonic",
+    "description": "Streaming Audiobook Server",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/booksonic.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "epubs"
+    ],
+    "image": "linuxserver/booksonic:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "CONTEXT_PATH",
+        "label": "Context Path for setting url-base in reverse proxy setups"
+      }
+    ],
+    "ports": [
+      "4040/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/books"
+      },
+      {
+        "container": "/podcasts"
+      },
+      {
+        "container": "/media"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "COPS",
+    "description": "Calibre Library Database OPDS/HTML Server",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/cops-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "epubs"
+    ],
+    "image": "linuxserver/cops:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/books"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "CouchPotato",
+    "description": "Movie Manager",
+    "logo": "https://couchpota.to/media/images/full.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "video"
+    ],
+    "image": "linuxserver/couchpotato:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "5050/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      },
+      {
+        "container": "/movies"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "DAAPD",
+    "description": "iTunes Media Server",
+    "logo": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS-5fQa-7g8_seCZAI8Xy7_jv7AUi3takuV3dMDu-7gshPYxZp9PA",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "media"
+    ],
+    "image": "linuxserver/daapd:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/music"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Davos",
+    "description": "FTP Automation Tool",
+    "logo": "http://www.computerhope.com/issues/pictures/ftp.jpg",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "storage"
+    ],
+    "image": "linuxserver/davos:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8080/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Deluge",
+    "description": "Bittorrent Client",
+    "logo": "https://avatars2.githubusercontent.com/u/6733935?v=3&s=200",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "downloader"
+    ],
+    "image": "linuxserver/deluge:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8112/tcp",
+      "58846/tcp",
+      "58946/tcp",
+      "58946/udp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Domoticz",
+    "description": "Home Automation Server",
+    "logo": "https://github.com/domoticz/domoticz/raw/master/www/images/logo.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "automation"
+    ],
+    "image": "linuxserver/domoticz:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "1443/tcp",
+      "6144/tcp",
+      "8080/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "DuckDNS",
+    "description": "On-demand DNS",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/duckdns.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "networking"
+    ],
+    "image": "linuxserver/duckdns:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "SUBDOMAINS",
+        "label": "Subdomains (below duckdns.org)"
+      },
+      {
+        "name": "TOKEN",
+        "label": "Authorization Token for DuckDNS.org"
+      }
+    ],
+    "ports": [
+      "53/udp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "ELK Stack",
+    "description": "Elasticsearch, Logstash, Kibana Stack",
+    "logo": "https://www.elastic.co/static/images/elastic-logo-200.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "logging"
+    ],
+    "image": "sebp/elk:latest",
+    "env": [
+      {
+        "name": "CLUSTER_NAME",
+        "label": "Cluster Name"
+      },
+      {
+        "name": "ES_CONNECT_RETRY",
+        "label": "Kibana to Elasticsearch Connect Retry (seconds)",
+        "default": "90"
+      },
+      {
+        "name": "ES_HEAP_SIZE",
+        "label": "Elasticsearch Heap Size (256M to 1G)"
+      },
+      {
+        "name": "LS_HEAP_SIZE",
+        "label": "Logstash Heap Size (Default 500M)"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "514/udp",
+      "5044/tcp",
+      "5601/tcp",
+      "6514/tcp",
+      "9200/tcp",
+      "9300/tcp",
+      "9600/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/etc/localtime:ro"
+      },
+      {
+        "container": "/etc/logstash/conf.d/90-gnas-logs.conf"
+      },
+      {
+        "container": "/var/lib/elasticsearch"
+      },
+      {
+        "container": "/var/log"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "FreshRSS",
+    "description": "RSS Aggregator",
+    "logo": "https://avatars1.githubusercontent.com/u/9414285?v=3&s=400",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "epubs"
+    ],
+    "image": "linuxserver/freshrss:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Grafana",
+    "description": "Metrics Graphing Tool",
+    "logo": "https://github.com/grafana/grafana/blob/master/docs/logo-swirl.svg",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "monitoring"
+    ],
+    "image": "grafana/grafana:latest",
+    "ports": [
+      "3000/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/etc/grafana/grafana.ini"
+      },
+      {
+        "container": "/var/lib/grafana"
+      },
+      {
+        "container": "/var/log/grafana"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Headphones",
+    "description": "Audio Manager",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/headphones-banner.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "searcher"
+    ],
+    "image": "linuxserver/headphones:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8181/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      },
+      {
+        "container": "/music"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "HTPC Manager",
+    "description": "Web Front-End for Home Theater PCs",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/htpcmanager-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "audio"
+    ],
+    "image": "linuxserver/htpcmanager:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8085/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Jackett",
+    "description": "Torznab/Torrentpotato Proxy",
+    "logo": "https://dominicm.com/wp-content/uploads/2016/05/jackett-arch-linux-450x489.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "searcher"
+    ],
+    "image": "linuxserver/jackett:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "9117/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Jellyfin",
+    "description": "Open source streaming media server",
+    "logo": "https://raw.githubusercontent.com/jellyfin/jellyfin-ux/master/branding/SVG/banner-logo-solid.svg",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "searcher"
+    ],
+    "image": "linuxserver/jellyfin:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8096/tcp",
+      "8920/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/data/tvshows"
+      },
+      {
+        "container": "/data/movies"
+      },
+      {
+        "container": "/data/music"
+      },
+      {
+        "container": "/data/pictures"
+      },
+      {
+        "container": "/transcode"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "KODI Headless",
+    "description": "KODI Media Center Library Backend",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/kodi-banner.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "media"
+    ],
+    "image": "linuxserver/kodi-headless:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "CUSTOM",
+        "label": "Custom",
+        "default": "Cusomthing"
+      }
+    ],
+    "ports": [
+      "8080/tcp",
+      "9777/udp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config/.kodi"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "LazyLibrarian",
+    "description": "Digital Publication Metadata Collector",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/lazylibrarian-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "epubs"
+    ],
+    "image": "linuxserver/lazylibrarian:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "5299/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/books"
+      },
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Let's Encrypt",
+    "description": "Free Automated SSL Certificate Provisioning",
+    "logo": "https://letsencrypt.org/images/le-logo-lockonly.svg",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "security"
+    ],
+    "image": "linuxserver/letsencrypt:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "DHLEVEL",
+        "label": "Diffie-Hellmann bit value (4096 recommended)"
+      },
+      {
+        "name": "EMAIL",
+        "label": "Email Address"
+      },
+      {
+        "name": "SUBDOMAINS",
+        "label": "Subdomains"
+      },
+      {
+        "name": "URL",
+        "label": "URL"
+      },
+      {
+        "name": "ONLY_SUBDOMAINS",
+        "label": "Generate certificates for subdomains, not the main domain (default is false)"
+      }
+    ],
+    "ports": [
+      "443/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Lidarr",
+    "description": "Music Collection Manager",
+    "logo": "https://github.com/lidarr/Lidarr/blob/develop/Logo/128.png?raw=true",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "audio"
+    ],
+    "image": "linuxserver/lidarr:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8686/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/music"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Lychee",
+    "description": "Photo management server",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/lychee-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "photo"
+    ],
+    "image": "linuxserver/lychee:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/data"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Maraschino",
+    "description": "Web Front-End for Kodi",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/maraschino.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "frontend"
+    ],
+    "image": "linuxserver/maraschino:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "7000/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "MariaDB",
+    "description": "SQL Server",
+    "logo": "https://global.download.synology.com/download/Package/img/MariaDB/5.5.53-0070/thumb_256.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "database"
+    ],
+    "image": "linuxserver/mariadb:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "MYSQL_ROOT_PASSWORD",
+        "label": "MySQL Root Password"
+      }
+    ],
+    "ports": [
+      "3306/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config/linuxserver/mariadb"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Medusa",
+    "description": "TV Series Manager",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/medusa-readme.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "video"
+    ],
+    "image": "linuxserver/medusa:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8081/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      },
+      {
+        "container": "/tv"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Minetest",
+    "description": "Minecraft-like Game Server",
+    "logo": "https://raw.githubusercontent.com/linuxserver/beta-templates/master/lsiodev/img/minetest-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "gaming"
+    ],
+    "image": "linuxserver/minetest:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "30000/udp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config/.minetest"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Minisatip",
+    "description": "Satellite TV to IP (satip) Server",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/minisatip-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "video"
+    ],
+    "image": "linuxserver/minisatip:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "RUN_OPTS",
+        "label": "Runtime Parameters"
+      }
+    ],
+    "ports": [
+      "8875/tcp",
+      "1900/tcp",
+      "554/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "MusicBrainz",
+    "description": "Music Manager",
+    "logo": "https://raw.githubusercontent.com/linuxserver/beta-templates/master/lsiodev/img/musicbrainzgitlogo.jpg",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "audio"
+    ],
+    "image": "linuxserver/musicbrainz:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "BRAINZCODE",
+        "label": "MusicBrainz API Key",
+        "default": ""
+      },
+      {
+        "name": "WEBADDRESS",
+        "label": "IP Address of the server running Musicbrainz",
+        "default": ""
+      }
+    ],
+    "ports": [
+      "5000/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/data"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Muximux",
+    "description": "HTPC Management Interface",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/muximux-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "frontend"
+    ],
+    "image": "linuxserver/muximux:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Mylar",
+    "description": "Comic Book Library Manager",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/mylar-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "epubs"
+    ],
+    "image": "linuxserver/mylar:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8090:8090/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/comics"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "MySQL",
+    "description": "Database Server",
+    "logo": "https://raw.githubusercontent.com/docker-library/docs/c408469abbac35ad1e4a50a6618836420eb9502e/mysql/logo.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "database"
+    ],
+    "image": "mysql:latest",
+    "env": [
+      {
+        "name": "MYSQL_ROOT_PASSWORD",
+        "label": "Mandatory.  Specifies the password that will be set for the MySQL root superuser account."
+      },
+      {
+        "name": "MYSQL_DATABASE",
+        "label": "Optional.  Allows you to specify the name of a database to be created on image startup. If a user/password was supplied (see additional variables) then that user will be granted superuser access (corresponding to GRANT ALL) to this database."
+      },
+      {
+        "name": "MYSQL_USER",
+        "label": "Optional.  Used to create a new user.  This user will be granted superuser permissions (see above) for the database specified by the MYSQL_DATABASE variable. This variable and MYSQL_PASSWORD variables are required for a user to be created.  Use the MYSQL_ROOT_PASSWORD variable separately to set the database root user password."
+      },
+      {
+        "name": "MYSQL_PASSWORD",
+        "label": "Optional.  Used in conjunction to create a new user and to set that user's password. This user will be granted superuser permissions for the database specified by the MYSQL_DATABASE variable.  Both variables are required for a user to be created.  Use the MYSQL_ROOT_PASSWORD variable separately to set the database root user password."
+      },
+      {
+        "name": "MYSQL_ALLOW_EMPTY_PASSWORD",
+        "label": "Optional. Set to yes to allow the container to be started with a blank password for the root user. NOTE: Setting this variable to yes is not recommended unless you really know what you are doing, since this will leave your MySQL instance completely unprotected, allowing anyone to gain complete superuser access."
+      },
+      {
+        "name": "MYSQL_RANDOM_ROOT_PASSWORD",
+        "label": "Optional. Set to yes to generate a random initial password for the root user (using pwgen). The generated root password will be printed to stdout (GENERATED ROOT PASSWORD: .....)."
+      },
+      {
+        "name": "MYSQL_ONETIME_PASSWORD",
+        "label": "Sets root (not the user specified in MYSQL_USER!) user as expired once init is complete, forcing a password change on first login. NOTE: This feature is supported on MySQL 5.6+ only. Using this option on MySQL 5.5 will throw an appropriate error during initialization."
+      }
+    ],
+    "ports": [
+      "3306/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/etc/mysql/my.cnf"
+      },
+      {
+        "container": "/etc/mysql/conf.d"
+      },
+      {
+        "container": "/data"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Nextcloud",
+    "description": "Personal Cloud Storage",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/nextcloud-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "storage"
+    ],
+    "image": "linuxserver/nextcloud:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "443/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/data"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Nginx",
+    "description": "Web Server",
+    "logo": "https://www.logolynx.com/images/logolynx/61/61c738af9de36116116271f3003c9f07.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "web"
+    ],
+    "image": "linuxserver/nginx:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp",
+      "443/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "NZBGet",
+    "description": "Newsnab Binary Downloader",
+    "logo": "https://avatars3.githubusercontent.com/u/3368377?v=3&s=400",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "downloader"
+    ],
+    "image": "linuxserver/nzbget:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "6789/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "NZBHydra2",
+    "description": "Newznab Indexer Proxy",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/hydra-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "searcher"
+    ],
+    "image": "linuxserver/hydra2:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "5076/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "OMBI",
+    "description": "Plex Multiuser Management Server",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/ombi.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "frontend"
+    ],
+    "image": "linuxserver/ombi:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "3579/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/etc/localtime:ro"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "OpenVPN-AS",
+    "description": "OpenVPN Access Server",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/openvpn-as-banner.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "vpn"
+    ],
+    "image": "linuxserver/openvpn-as:latest",
+    "env": [
+      {
+        "name": "INTERFACE",
+        "label": "Interface in container (bridge networking) or on "
+      },
+      {
+        "name": "PGID",
+        "label": "Group ID for user in the container",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID for user in the container",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "943",
+      "9443",
+      "1194/udp"
+    ],
+    "privileged": true,
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "OpenVPN Client",
+    "description": "OpenVPN Client for routing Docker traffic",
+    "logo": "https://raw.githubusercontent.com/dperson/openvpn-client/master/logo.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "vpn"
+    ],
+    "image": "dperson/openvpn-client:latest",
+    "env": [
+      {
+        "name": "CERT_AUTH",
+        "label": "Configure an authentication password to open the cert (Optional)"
+      },
+      {
+        "name": "DNS",
+        "label": "Use the VPN provider's DNS resolvers (IP address or leave empty.  Optional)"
+      },
+      {
+        "name": "FIREWALL",
+        "label": "Set Firewall to restrict Internet traffic if VPN is offline (Port number or leave empty. Optional)"
+      },
+      {
+        "name": "MSS",
+        "label": "Maximum Segment Size (Size in bytes or leave empty. Optional)"
+      },
+      {
+        "name": "ROUTE6",
+        "label": "IPv6 Network for which to add a route (IPv6 CIDR or leave empty. Optional)"
+      },
+      {
+        "name": "ROUTE",
+        "label": "IPv4 Network for which to add a route (IPv4 CIDR or leave empty. Optional)"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'PST8PDT'. Optional)"
+      },
+      {
+        "name": "VPN",
+        "label": "VPN server to connect. (vpn.domain.com;username;password or leave empty. Optional)"
+      },
+      {
+        "name": "VPNPORT",
+        "label": "Set up port forwarding. Can be used multiple times by appending numbers such as _1, _2, etc. (Port number or leave empty. Optional)"
+      },
+      {
+        "name": "GROUPID",
+        "label": "Set the Group ID for the VPN user. (Optional)"
+      }
+    ],
+    "network": "bridge",
+    "privileged": true,
+    "volumes": [
+      {
+        "container": "/vpn"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "OSCAM",
+    "description": "DVB Descrambler Server/Client",
+    "logo": "https://i2.wp.com/stoffl.info/wp-content/uploads/2013/10/Logo.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "video"
+    ],
+    "image": "linuxserver/oscam:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8888/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Photoshow",
+    "description": "Photo Management Server",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/photoshow-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "photo"
+    ],
+    "image": "linuxserver/photoshow:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/Pictures"
+      },
+      {
+        "container": "/Thumbs"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Piwigo",
+    "description": "Photo Management Server",
+    "logo": "https://piwigo.us/dev/mistic100/logo-svg/piwigo-full.svg",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "photo"
+    ],
+    "image": "linuxserver/piwigo:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/etc/localtime:ro"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Plex",
+    "description": "Media Management Server",
+    "logo": "https://cdn.mos.cms.futurecdn.net/6a72657b487e2e48980ba8a09938b384-1200-80.jpg",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "media"
+    ],
+    "image": "plexinc/pms-docker:latest",
+    "env": [
+      {
+        "name": "ADVERTISE_IP",
+        "label": "Additional IPs on which the server may be found (for use with bridge networking)"
+      },
+      {
+        "name": "ALLOWED_NETWORKS",
+        "label": "CIDR notation for networks whitelisted against authentication",
+        "default": "192.168.1.0/24"
+      },
+      {
+        "name": "CHANGE_CONFIG_DIR_OWNERSHIP",
+        "label": "Change ownership of Plex config directory (defaults to true)"
+      },
+      {
+        "name": "HOSTNAME",
+        "label": "Hostname (for use with bridge networking)"
+      },
+      {
+        "name": "PLEX_CLAIM",
+        "label": "One-use claim token to activate a server (ignored if already active. obtain at https://www.plex.tv/claim)"
+      },
+      {
+        "name": "PLEX_GID",
+        "label": "Group ID for Plex user in the container",
+        "default": "65534"
+      },
+      {
+        "name": "PLEX_UID",
+        "label": "User ID for Plex user in the container",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "network": "host",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/data"
+      },
+      {
+        "container": "/transcode"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Prometheus Server",
+    "description": "Systems and service monitoring application server",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/3/38/Prometheus_software_logo.svg/230px-Prometheus_software_logo.svg.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "monitoring"
+    ],
+    "image": "prom/prometheus:latest",
+    "ports": [
+      "9090/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/etc/prometheus/prometheus.yml"
+      },
+      {
+        "container": "/prometheus"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Prometheus Alertmanager",
+    "description": "Systems and service monitoring alert management",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/3/38/Prometheus_software_logo.svg/230px-Prometheus_software_logo.svg.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "monitoring"
+    ],
+    "image": "prom/alertmanager:latest",
+    "ports": [
+      "9093/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/etc/prometheus/alertmanager.yml"
+      },
+      {
+        "container": "/alertmanager"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Prometheus Pushgateway",
+    "description": "Systems and service monitoring scheduled jobs report receiver",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/3/38/Prometheus_software_logo.svg/230px-Prometheus_software_logo.svg.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "monitoring"
+    ],
+    "image": "prom/pushgateway:latest",
+    "ports": [
+      "9091/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/pushgateway"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Prometheus Alertmanager",
+    "description": "Systems and service monitoring alert management",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/3/38/Prometheus_software_logo.svg/230px-Prometheus_software_logo.svg.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "monitoring"
+    ],
+    "image": "prom/alertmanager:latest",
+    "ports": [
+      "9093/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/etc/prometheus/alertmanager.yml"
+      },
+      {
+        "container": "/alertmanager"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Pydio",
+    "description": "Personal Cloud Storage",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/pydio-banner.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "storage"
+    ],
+    "image": "linuxserver/pydio:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "443/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/data"
+      },
+      {
+        "container": "/etc/localtime:ro"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Pyload",
+    "description": "Web Download Client for NAS",
+    "logo": "https://pyload.net/img/banner.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "storage"
+    ],
+    "image": "linuxserver/pyload:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8000/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Quassel-Core",
+    "description": "IRC Server and Web Client",
+    "logo": "http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/256/Apps-quassel-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "chat"
+    ],
+    "image": "linuxserver/quassel-core:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "4242/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/etc/localtime:ro"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "QBittorrent",
+    "description": "Bittorrent Client",
+    "logo": "https://github.com/linuxserver/docker-templates/raw/master/linuxserver.io/img/qbittorrent-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "downloader"
+    ],
+    "image": "linuxserver/qbittorrent:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "WEBUI_PORT",
+        "label": "For changing the port of the Web UI",
+        "default": "8080"
+      }
+    ],
+    "ports": [
+      "6881/tcp",
+      "6881/udp",
+      "8080/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Radarr",
+    "description": "Movie Manager",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "video"
+    ],
+    "image": "linuxserver/radarr:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "7878/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      },
+      {
+        "container": "/movies"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Resilio-Sync",
+    "description": "Bittorrent-based File Synchronization Server",
+    "logo": "https://index.tnwcdn.com/images/d07f5726fcc0fbaa09e0afee611212256ca75e19.jpeg",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "storage"
+    ],
+    "image": "linuxserver/resilio-sync:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8888/tcp",
+      "55555/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/sync"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "RUTorrent",
+    "description": "Bittorrent Client",
+    "logo": "https://dominicm.com/wp-content/uploads/2017/03/rutorrent-arch-linux-1024x1024.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "downloader"
+    ],
+    "image": "linuxserver/rutorrent:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp",
+      "5000/tcp",
+      "51413/tcp",
+      "6881/udp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "SABnzbd",
+    "description": "Newznab Binary Downloader",
+    "logo": "http://www.filesharingguides.com/wp-content/uploads/2014/02/sab2_512.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "downloader"
+    ],
+    "image": "linuxserver/sabnzbd:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8080/tcp",
+      "9090/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "SABnzbd Prom Exporter",
+    "description": "SABnzbd Prometheus Exporter",
+    "logo": "http://www.filesharingguides.com/wp-content/uploads/2014/02/sab2_512.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "downloader"
+    ],
+    "image": "msroest/sabnzbd_exporter:latest",
+    "env": [
+      {
+        "name": "SABNZBD_BASEURL",
+        "label": "SabNZBd Base URL",
+        "default": "65534"
+      },
+      {
+        "name": "SABNZBD_APIKEY",
+        "label": "SabNZBd API Key",
+        "default": "65534"
+      }
+    ],
+    "ports": [
+      "9387/tcp"
+    ],
+    "network": "bridge"
+  },
+  {
+    "type": 1,
+    "title": "SickGear",
+    "description": "TV Series Manager",
+    "logo": "https://raw.githubusercontent.com/wiki/SickGear/SickGear.Wiki/images/SickGearLogo.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "video"
+    ],
+    "image": "linuxserver/sickgear:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8081/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      },
+      {
+        "container": "/tv"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Smokeping",
+    "description": "Network Latency Monitor",
+    "logo": "http://www.oetiker.ch//assets/OssProject/Logo/_resampled/CroppedFocusedImage600400-logo-smokeping.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "networking"
+    ],
+    "image": "linuxserver/smokeping:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8080/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/data"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Sonarr",
+    "description": "TV Series Manager",
+    "logo": "https://www.freebsdnews.com/wp-content/uploads/sonarr.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "video"
+    ],
+    "image": "linuxserver/sonarr:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      }
+    ],
+    "ports": [
+      "8989/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/dev/rtc:ro"
+      },
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      },
+      {
+        "container": "/tv"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Splunk",
+    "description": "Log Analytics Tool",
+    "logo": "http://sl.com/wp-content/uploads/2016/10/mzl.tfigcody.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "logging"
+    ],
+    "image": "splunk/splunk:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "SPLUNK_START_ARGS",
+        "label": "Splunk Startup Arguments",
+        "default": "--accept-license"
+      }
+    ],
+    "ports": [
+      "514/udp",
+      "6514/tcp",
+      "8000/tcp",
+      "8089/tcp",
+      "9997/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/dev/rtc:ro"
+      },
+      {
+        "container": "/opt/splunk/etc"
+      },
+      {
+        "container": "/opt/splunk/var"
+      },
+      {
+        "container": "/var/log:ro"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Syncthing",
+    "description": "Personal Cloud File Synchronization Tool",
+    "logo": "https://www.unixmen.com/wp-content/uploads/2015/01/Syncthing.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "storage"
+    ],
+    "image": "linuxserver/syncthing:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "8384/tcp",
+      "22000/tcp",
+      "21027/udp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/path/to/sync/target/dir"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Tautulli",
+    "description": "Plex Analytics",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/tautulli-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "media"
+    ],
+    "image": "linuxserver/plex:latest",
+    "env": [
+      {
+        "name": "PLEX_GID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PLEX_UID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/logs"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "TheLounge",
+    "description": "IRC Server and Web Client",
+    "logo": "https://raw.githubusercontent.com/linuxserver/community-templates/master/lsiocommunity/img/shout-icon.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "chat"
+    ],
+    "image": "linuxserver/thelounge:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "9000/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Teamspeak 3",
+    "description": "VoIP Communications Server",
+    "logo": "https://www.teamspeak.com/user/themes/teamspeak/img/favicon/mstile-144x144.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "chat"
+    ],
+    "image": "linuxserver/gsm-ts3:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "9987/udp",
+      "10011/tcp",
+      "30033"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/etc/localtime:ro"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Transmission",
+    "description": "Torrent Downloader",
+    "logo": "http://www.filesharingguides.com/wp-content/uploads/2014/04/transmission.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "downloader"
+    ],
+    "image": "linuxserver/transmission:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "9091/tcp",
+      "51413/tcp",
+      "51413/udp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/downloads"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Transmission Prom Exporter",
+    "description": "Transmission Prometheus Exporter",
+    "logo": "http://www.filesharingguides.com/wp-content/uploads/2014/04/transmission.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "downloader"
+    ],
+    "image": "metalmatze/transmission-exporter:latest",
+    "env": [
+      {
+        "name": "WEB_ADDR",
+        "label": "Exporter Port",
+        "default": "19091"
+      },
+      {
+        "name": "TRANSMISSION_ADDR",
+        "label": "Transmission Address",
+        "default": "http://gnas:9099"
+      }
+    ],
+    "ports": [
+      "19091/tcp"
+    ],
+    "network": "bridge"
+  },
+  {
+    "type": 1,
+    "title": "TT-RSS",
+    "description": "RSS Aggregator",
+    "logo": "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/tt-rss-banner.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "epubs"
+    ],
+    "image": "linuxserver/tt-rss:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "80/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/etc/localtime:ro"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "TVheadend",
+    "description": "Live TV Transcoder Server",
+    "logo": "https://s31.postimg.io/8urk8vdu3/logobig.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "video"
+    ],
+    "image": "linuxserver/tvheadend:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "RUN_OPTS",
+        "label": "Runtime Parameters"
+      }
+    ],
+    "ports": [
+      "9881/tcp",
+      "9882/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/recordings"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "Ubooquity",
+    "description": "E-book and Comic Book Manager",
+    "logo": "https://i.ytimg.com/vi/qfLG9nKt3ew/hqdefault.jpg",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "epubs"
+    ],
+    "image": "linuxserver/ubooquity:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      },
+      {
+        "name": "MAXMEM",
+        "label": "Maximum Memory"
+      }
+    ],
+    "ports": [
+      "2202/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/books"
+      },
+      {
+        "container": "/comics"
+      },
+      {
+        "container": "/config"
+      },
+      {
+        "container": "/files"
+      }
+    ]
+  },
+  {
+    "type": 1,
+    "title": "ZNC",
+    "description": "IRC Bouncer",
+    "logo": "http://wiki.znc.in/resources/assets/wiki.png",
+    "platform": "linux",
+    "restart_policy": "unless-stopped",
+    "categories": [
+      "chat"
+    ],
+    "image": "linuxserver/znc:latest",
+    "env": [
+      {
+        "name": "PGID",
+        "label": "Group ID",
+        "default": "65534"
+      },
+      {
+        "name": "PUID",
+        "label": "User ID",
+        "default": "65534"
+      },
+      {
+        "name": "TZ",
+        "label": "Timezone (i.e. 'America/Los Angeles')"
+      }
+    ],
+    "ports": [
+      "6501/tcp"
+    ],
+    "network": "bridge",
+    "volumes": [
+      {
+        "container": "/config"
+      }
+    ]
+  }
+]

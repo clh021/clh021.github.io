@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>3ROM on 良宏</title>
+        <link>/tags/3rom/</link>
+        <description>Recent content in 3ROM on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 27 Jan 2023 12:01:20 +0800</lastBuildDate><atom:link href="/tags/3rom/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>3ROM apps</title>
+        <link>/post/live/3rom.app/</link>
+        <pubDate>Fri, 27 Jan 2023 12:01:20 +0800</pubDate>
+        
+        <guid>/post/live/3rom.app/</guid>
+        <description>&lt;h1 id=&#34;应用商店&#34;&gt;应用商店
+&lt;/h1&gt;&lt;p&gt;需求:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不使用 google play 最大限度自主可控&lt;/li&gt;
+&lt;li&gt;不使用任何手机制造商自带的系统&lt;/li&gt;
+&lt;li&gt;不纵容任何自称小而美的App&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;解决方案：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;商店: &lt;a class=&#34;link&#34; href=&#34;https://f-droid.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://f-droid.org/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;更新: App一般有自更新检查 PlayStore 和其他来源的更新 备用~ 不用太考虑更新问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;应用使用&#34;&gt;应用使用
+&lt;/h1&gt;&lt;p&gt;核心需求:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以冻结和自动冻结 指定的应用&lt;/li&gt;
+&lt;li&gt;可以隔离各个应用到独立空间或某个隔离空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;应用列表&#34;&gt;应用列表
+&lt;/h2&gt;&lt;h3 id=&#34;adb-install&#34;&gt;adb Install
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb devices
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;List of devices attached
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;68f2e7a9        no permissions &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;missing udev rules? user is in the plugdev group&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;; see &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;http://developer.android.com/tools/device.html&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;lsusb | grep OnePlus
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Bus &lt;span style=&#34;color:#ae81ff&#34;&gt;001&lt;/span&gt; Device 070: ID 22d9:2769 OPPO Electronics Corp. OnePlus &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SUBSYSTEM==&amp;#34;usb&amp;#34;, ATTR{idVendor}==&amp;#34;22d9&amp;#34;, ATTR{idProduct}==&amp;#34;2769&amp;#34;, MODE=&amp;#34;0666&amp;#34;, GROUP=&amp;#34;plugdev&amp;#34;&amp;#39;&lt;/span&gt; &amp;gt; 51-android.rules
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo cp 51-android.rules /etc/udev/rules.d/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo udevadm control --reload-rules
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# unplug/replug the device.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb devices
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;List of devices attached
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;68f2e7a9        unauthorized
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# If it still doesn&amp;#39;t work, restart your OS.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 授权主机调试，以解决 unauthorized&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb devices
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;List of devices attached
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;68f2e7a9        device
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb install org.kde.kdeconnect_tp_12101.apk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;初始化&#34;&gt;初始化
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;安装好zerotier,github,Kiwi&lt;/li&gt;
+&lt;li&gt;安装好浏览器扩展和数据恢复文件&lt;/li&gt;
+&lt;li&gt;安装好neostore配置好镜像&lt;/li&gt;
+&lt;li&gt;安装好fcitx,shelter,kde connect&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;工作应用&#34;&gt;工作应用
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://mirrors.tuna.tsinghua.edu.cn/fdroid/repo/?fingerprint=43238D512C1E5EB2D6569F4A3AFBF5523418B82E0A3ED1552770ABB9A9C9CCAB&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;F-droid镜像&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Obtainium&lt;/code&gt; 开源应用更新追踪工具，帮助用户从 GitHub、GitLab、Bitbucket 等代码托管平台获取开源应用程序的发行版，并且在新版本发布时发送通知提醒用户更新。添加不同的应用程序源，并在应用程序源中搜索他们感兴趣的应用程序。当新版本发布时，Obtainium 会自动提醒用户进行更新，并帮助用户快速安装最新版本的应用程序。这种方式使得用户不再需要依赖应用商店或第三方的下载网站，同时也保证了应用程序的来源可靠性，从而提高了用户的安全性和可信度。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://f-droid.org/zh_Hant/packages/com.machiav3lli.fdroid/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Neo Store&lt;/a&gt; 直接添加 F-droid 仓库即可使用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://f-droid.org/zh_Hant/packages/com.aurora.store/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Aurora Store&lt;/a&gt; 可免登陆代为下載Google Play上的免費APP。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;应用&lt;/th&gt;
+          &lt;th&gt;来源&lt;/th&gt;
+          &lt;th&gt;作用&lt;/th&gt;
+          &lt;th&gt;冻结&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Shelter&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;隔离空间&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PlainApp&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;电脑链接&lt;/td&gt;
+          &lt;td&gt;笔记备份&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Bodhi Timer&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;冥想放松&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Simpletask&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;任务清单(todo on webdav)&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;fcitx&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;输入法&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Kiwi&lt;/td&gt;
+          &lt;td&gt;FFUpdater&lt;/td&gt;
+          &lt;td&gt;chrome&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Github&lt;/td&gt;
+          &lt;td&gt;aurora&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Zerotier one&lt;/td&gt;
+          &lt;td&gt;aurora&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Cast to TV-XCast&lt;/td&gt;
+          &lt;td&gt;aurora&lt;/td&gt;
+          &lt;td&gt;电视投屏(Xcast)&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;FFUpdater&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;浏览器安装与更新&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Gotify&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;通知&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;7ziper&lt;/td&gt;
+          &lt;td&gt;aurora&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;MuPDF mini&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;PDF阅读&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Nocie&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;自然平静的噪音&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;FreshRSS&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;阅读订阅&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;APKShare&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;导出与备份&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Syncopoli&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;同步与备份&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ntfy&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;通知服务&lt;/td&gt;
+          &lt;td&gt;冻结&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;KDEConnect&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;电脑链接&lt;/td&gt;
+          &lt;td&gt;崩溃&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Termux&lt;/td&gt;
+          &lt;td&gt;F-Droid&lt;/td&gt;
+          &lt;td&gt;linux命令行工具&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;fcitx &lt;a class=&#34;link&#34; href=&#34;https://github.com/clh021/CustomPinyinDictionary&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;词库&lt;/a&gt; ,还可以自定义词库&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;国产小而美应用&#34;&gt;国产小而美应用
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;微信&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.miwifi.com/miwifi_download.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;小米WiFi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://sj.qq.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;应用宝&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://lestore.lenovo.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;联想软件商店&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://3g.lenovomm.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;联想应用商店&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;网页应用&#34;&gt;网页应用
+&lt;/h3&gt;&lt;p&gt;天气
+直接找到一个预报靠谱的网页搜索区级地址的天气，添加链接到桌面即可(百度,bing,MSN)&lt;/p&gt;
+&lt;p&gt;节假日
+直接找到一个体验好一点的网页显示日历，添加链接到桌面即可(百度,bing,MSN)&lt;/p&gt;
+&lt;h1 id=&#34;数据&#34;&gt;数据
+&lt;/h1&gt;&lt;h2 id=&#34;通讯录&#34;&gt;通讯录
+&lt;/h2&gt;&lt;p&gt;通过自带&lt;code&gt;通讯录&lt;/code&gt;应用导入导出的方式备份和恢复&lt;/p&gt;
+&lt;h2 id=&#34;wifi记录&#34;&gt;Wifi记录
+&lt;/h2&gt;&lt;p&gt;有一个 wifi password recovery 需要 root 所以决定自己记录下，几年下来常用的只有几个&lt;/p&gt;
+&lt;h2 id=&#34;浏览器书签&#34;&gt;浏览器书签
+&lt;/h2&gt;&lt;p&gt;使用导入导出的方式&lt;/p&gt;
+&lt;h1 id=&#34;设置&#34;&gt;设置
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;禁止使用5G网络&lt;/em&gt; 网络和互联网-&amp;gt;SIM卡-&amp;gt;首选网络类型-&amp;gt;(5G改为LTE)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;关闭运营商视频通话&lt;/em&gt; 网络和互联网-&amp;gt;SIM卡-&amp;gt;运营商视频通话-&amp;gt;(取消勾选)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;触摸亮屏(点按唤醒)&lt;/em&gt; 显示-&amp;gt;点按唤醒(屏幕上点按两次唤醒设备)-&amp;gt;(勾选)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;触摸息屏(点按锁屏)&lt;/em&gt; 显示-&amp;gt;双击关屏(状态栏或锁屏)-&amp;gt;(勾选)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;显示流量速度&lt;/em&gt; 系统-&amp;gt;状态栏-&amp;gt;网络流量监视-&amp;gt;显示模式(上传下载)-&amp;gt;自动隐藏(无速度隐藏)-&amp;gt;网络流量单位(自动)-&amp;gt;显示单位&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;关闭双行时钟&lt;/em&gt; 显示-&amp;gt;双行时钟-&amp;gt;关闭&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;控制状态栏图表&lt;/em&gt; 系统 -&amp;gt; 状态栏 -&amp;gt; 系统图标-&amp;gt;(关闭不想显示的图标)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;状态栏电量显示&lt;/em&gt; 系统-&amp;gt;状态栏-&amp;gt;电量指示器(环形，图标内)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;禁止应用自动到桌面&lt;/em&gt; 长按桌面 -&amp;gt; 主屏幕设置 -&amp;gt; 将应用图标添加到主屏幕(取消勾选)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;隐藏和保护应用&lt;/em&gt; 长按桌面 -&amp;gt; 主屏幕设置 -&amp;gt; 隐藏和保护应用&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;省电.关闭流畅画面&lt;/em&gt; 显示-&amp;gt;流畅画面-&amp;gt;(取消勾选) 会关闭 120Hz 刷新率&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;锁屏文字&lt;/em&gt; 显示-&amp;gt;锁定屏幕-&amp;gt;在锁屏上添加文字 放松 自在 清新 明净&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;屏保时钟低亮度&lt;/em&gt; 显示-&amp;gt;屏保-&amp;gt;启用时机(充电时)，选择屏保(时钟)-&amp;gt;自定义-&amp;gt;夜间模式(勾选)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;锁屏键盘乱序&lt;/em&gt; 安全-&amp;gt;屏幕锁定-&amp;gt;设置-&amp;gt;乱序布局&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;触摸(高级)重启&lt;/em&gt; 系统-&amp;gt;按键-&amp;gt;电源菜单-&amp;gt;高级重启(可避免每次必须按实体按键，增加按键使用寿命，有启动到 fastboot,recovery 等选项)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;em&gt;设置设备管理应用&lt;/em&gt; 安全和隐私 -&amp;gt; 更多安全设置 -&amp;gt; 设备管理应用(一般在应用都安装好后设置)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;快捷按钮排布&#34;&gt;快捷按钮排布
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Wifi, 移动数据, 蓝牙, 手电筒, 麦克风, 摄像头, 位置， 热点
+省电，流量节省，自动旋转，VP，屏幕录制，二维码扫描，剪贴板发送
+
+工作应用, 情景模式, 省电模式, 流量节省程序, 自动旋转屏幕, VP, 屏幕录制, 屏保
+二维码, 护眼模式, 飞行模式, 阅读模式, 闹钟, NFC, 主动显示, 勿扰
+保持亮屏, 屏幕投放, 深色主题, 设备控制器, 极暗, 互联网, 颜色反转, 息屏常亮
+单手模式, 色彩校正, 浮动通知, 同步, 无线反充, USB共享网络
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;桌面图标排布&#34;&gt;桌面图标排布
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;天气预报(江夏,汉南,武昌),日历,
+娱乐(淘宝,京东,阿里云,百度云,联通,移动,castToTV,bilibili,dyls.app)
+家电(米家,小米WIFI,万能遥控,米兔)
+工具(企业微信,支付宝,高德地图,wps,qq,onedrive,x浏览器,KDEConn)
+
+拨号,千问,微信,LZC,sleep
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;termux&#34;&gt;termux
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;termux-change-repo &lt;span style=&#34;color:#75715e&#34;&gt;# 选择最快的镜像&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg upgrade
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install openssh &lt;span style=&#34;color:#75715e&#34;&gt;# 安装 sshd&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ssh-keygen -A
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;passwd &lt;span style=&#34;color:#75715e&#34;&gt;# 设置 root 密码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sshd &lt;span style=&#34;color:#75715e&#34;&gt;# 启动 sshd 服务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ssh root@192.168.31.178 -p &lt;span style=&#34;color:#ae81ff&#34;&gt;8022&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install zsh vim curl wget git tree htop xz-utils coreutils -y
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install golang nodejs python python-yt-dlp -y
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;termux-setup-storage &lt;span style=&#34;color:#75715e&#34;&gt;# 弹窗授权后会出现 ~/storage/download 等共享目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;chsh -s zsh &lt;span style=&#34;color:#75715e&#34;&gt;# 使用 zsh&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg i git-lfs keychain
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg i termux-services
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sv-enable ssh-agent
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sv-enable sshd
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install termux-api &lt;span style=&#34;color:#75715e&#34;&gt;# 需要安装 Termux:API , 推荐装 termux:Tasker 等应用并都给予完整权限&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# https://search.f-droid.org/?q=termux&amp;amp;lang=zh_Hans&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install cronie &lt;span style=&#34;color:#75715e&#34;&gt;# 启动服务: cron &amp;amp;（后台运行）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 设置开机自启: 配合其他工具（如Termux:API的wakelock，Tasker），确保Termux和Cron服务在手机重启后能自动运行。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 避免任务过于耗时，在夜间执行，并尽量让任务能“幂等”（重复执行无害）。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Docker 的使用&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 以下一条命令安装整个 docker 套件，只留下 Tini 需要手动编译&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# pkg install root-repo &amp;amp;&amp;amp; pkg install docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;termux-docker&#34;&gt;termux docker
+&lt;/h1&gt;&lt;p&gt;以下操作建议在电脑上连接手机后操作，因为中途要编辑一个文件，否则需要借助网络&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;termux-change-repo &lt;span style=&#34;color:#75715e&#34;&gt;# 选择最快的镜像&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg upgrade
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Install QEMU 安装 QEMU&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pkg install qemu-utils qemu-common qemu-system-x86_64-headless
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 下载 Alpine Linux 3.12 （virt optimized） ISO&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir alpine &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; cd $_
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# https://alpinelinux.org/downloads/ 从这里选择不同镜像下载，此处注意选择 virt 版本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# wget http://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-virt-3.12.3-x86_64.iso&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.12/releases/x86_64/alpine-virt-3.12.9-x86_64.iso
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# wget https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-virt-3.18.4-x86_64.iso&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 镜像站点&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/releases/x86_64/alpine-virt-3.18.4-x86_64.iso
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 创建磁盘（请注意，它实际上不会占用4GB的空间，更像是500MB）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-img create -f qcow2 alpine.img 4G
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 启动它&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-system-x86_64 -machine q35 -m &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt; -smp cpus&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; -cpu qemu64 &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  -drive &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;pflash,format&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;raw,read-only&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;on,file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;$PREFIX/share/qemu/edk2-x86_64-code.fd &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  -netdev user,id&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;n1,hostfwd&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;tcp::2222-:22 -device virtio-net,netdev&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;n1 &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  -cdrom alpine-virt-3.18.4-x86_64.iso &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  -nographic alpine.img
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# https://gist.github.com/oofnikj/e79aef095cd08756f7f26ed244355d62&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 使用用户 root 登录（无密码）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 设置网络（按回车键使用默认值）：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;setup-interfaces
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Available interfaces are: eth0.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Enter &amp;#39;?&amp;#39; for help on bridges, bonding and vlans.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Which one do you want to initialize? (or &amp;#39;?&amp;#39; or &amp;#39;done&amp;#39;) [eth0]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Ip address for eth0? (or &amp;#39;dhcp&amp;#39;, &amp;#39;none&amp;#39;, &amp;#39;?&amp;#39;) [dhcp]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Do you want to do any manual network configuration? [no]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ifup -a
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;nameserver 223.5.5.5&amp;#34;&lt;/span&gt; &amp;gt; /etc/resolv.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 用于在启动时启用串行控制台输出的修补程序 setup-disk&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sed -i -E &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/(local kernel_opts)=.*/\1=&amp;#34;console=ttyS0&amp;#34;/&amp;#39;&lt;/span&gt; /sbin/setup-disk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;编辑应答文件
+vi answerfile&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;KEYMAPOPTS=&amp;#34;us us&amp;#34;
+HOSTNAMEOPTS=&amp;#34;-n alpine&amp;#34;
+INTERFACESOPTS=&amp;#34;auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+    hostname alpine
+&amp;#34;
+TIMEZONEOPTS=&amp;#34;-z UTC&amp;#34;
+PROXYOPTS=&amp;#34;none&amp;#34;
+APKREPOSOPTS=&amp;#34;https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/main https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/community&amp;#34;
+DNSOPTS=&amp;#34;223.5.5.5&amp;#34;
+SSHDOPTS=&amp;#34;-c openssh&amp;#34;
+NTPOPTS=&amp;#34;-c busybox&amp;#34;
+DISKOPTS=&amp;#34;-v -m sys -s 0 /dev/sda&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用应答文件快速设置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;setup-alpine -f answerfile
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 应该明显看到安装到硬盘，安装 efi 等信息，否则就是网络链接问题导致无法获取到包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装完成后，关闭虚拟机（命令 poweroff ）的电源，然后再次启动，而无需 cdrom：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-system-x86_64 -machine q35 -m &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt; -smp cpus&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; -cpu qemu64 &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  -drive &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;pflash,format&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;raw,read-only,file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;$PREFIX/share/qemu/edk2-x86_64-code.fd &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  -netdev user,id&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;n1,hostfwd&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;tcp::2222-:22 -device virtio-net,netdev&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;n1 &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  -nographic alpine.img
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装 docker 并在启动虚拟机时启用：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;apk update
+apk add docker
+service docker start
+rc-update add docker
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Useful keys: 有用的键：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ctrl+a x: quit emulation&lt;/li&gt;
+&lt;li&gt;Ctrl+a x：退出仿真&lt;/li&gt;
+&lt;li&gt;Ctrl+a h: toggle QEMU console&lt;/li&gt;
+&lt;li&gt;Ctrl+a h：切换 QEMU 控制台&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;铃声设置&#34;&gt;铃声设置
+&lt;/h1&gt;&lt;p&gt;起床闹钟 Rooster alarm&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;默认铃声&lt;/li&gt;
+&lt;li&gt;通知 merope&lt;/li&gt;
+&lt;li&gt;闹钟 Beep-beep-beep alarm&lt;/li&gt;
+&lt;li&gt;铃声渐强 打开&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;系统备份&#34;&gt;系统备份
+&lt;/h1&gt;&lt;p&gt;设置 -&amp;gt; 系统 -&amp;gt; 备份(个人) -&amp;gt; Seedvault备份&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;保管好所有代码&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

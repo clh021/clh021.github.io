@@ -1,0 +1,42 @@
+{
+    "model": "ty",
+    "_model": "isKJ isXBJD ty jxb",
+    "address": "http://192.168.65.14:8081",
+    "noCacheList": ["*://jckjrjgl.bg.tyfw.jgbg.ez/", "*://21.122.98.246/", "*://192.168.65.14/", "*://jckjrjgl.bg.gfdx.mtn/", "*://jckjrjgl.oa.tybg.jl/"],
+    "startBySlide": false,
+	"showTaskBar": false,
+	"kjDomain": {
+		"kjjg.yw.kj": {
+			"address": "http://21.122.98.246:8086/#/"
+		},
+		"zbzq.yw.kj": {
+			"address": "http://21.127.104.224:8086/#/"
+		},
+		"sxjd.yw.kj": {
+			"address": "http://24.47.13.24:8300/#/"
+		},
+		"zhxy.kjjg.yw.kj": {
+			"address": "http://127.0.0.1:8080/#/"
+		},
+		"hkdx.kjjg.yw.kj": {
+			"address": "http://127.0.0.1:8080/#/"
+		},
+		"kzy.mil.yw.kj": {
+			"address": "http://2.2.2.176:8700/#/"
+		}
+	},
+    "center": [
+    	{
+    		"name": "中心1",
+    		"url": "http://1.1.1.1"
+    	},
+    	{
+    		"name": "中心2",
+    		"url": "http://1.1.1.2"
+    	},
+    	{
+    		"name": "中心3",
+    		"url": "http://1.1.1.3"
+    	}
+    ]
+}

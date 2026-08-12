@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自动聚焦测试</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .notice {
+        border-left: 3px solid red;
+        padding: 5px;
+        margin: 5px 0;
+        background-color: brown;
+        color: whitesmoke;
+    }
+    span {
+        color:brown;
+    }
+    #box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 100px;
+    }
+</style>
+<body>
+    <div class="notice" style="display: none;">浏览器不支持本Demo</div>
+    <div id="box">
+        <h1><span id="secondFocus">***</span>秒后，自动聚焦</h1>
+    </div>
+    <div id="box">
+        <h1><span id="secondClose">***</span>秒后，自动关闭</h1>
+    </div>
+    <script>
+        var focusTime = 3; // 每几秒聚焦一次
+        var closeTime = 15; // 多少秒后关闭页面
+        var focusEle = document.getElementById("secondFocus");
+        var closeEle = document.getElementById("secondClose");
+        function countDown() {
+            focusVal = closeTime % focusTime;
+            focusEle.innerHTML = focusVal;
+            if (focusVal === 0) {
+                win.setFocus();
+            }
+
+            closeEle.innerHTML = closeTime;
+            if (closeTime === 0) {
+                clearInterval(set);
+                window.close();
+            }
+            closeTime--;
+        }
+
+        // 全局变量准备
+        window.onload = function () {
+            if (window.lnks) {
+                this.win = new window.lnks.MainWindow(window);
+                this.set = setInterval(countDown, 1000);
+            } else {
+                document.getElementsByClassName("notice")[0].style.display = "block";
+            }
+        }
+    </script>
+</body>
+
+</html>

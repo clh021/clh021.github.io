@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Qemu on 良宏</title>
+        <link>/tags/qemu/</link>
+        <description>Recent content in Qemu on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sun, 24 Apr 2022 01:04:47 +0800</lastBuildDate><atom:link href="/tags/qemu/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>qemu</title>
+        <link>/post/tech/qemu/</link>
+        <pubDate>Sun, 24 Apr 2022 01:04:47 +0800</pubDate>
+        
+        <guid>/post/tech/qemu/</guid>
+        <description>&lt;h2 id=&#34;check&#34;&gt;Check
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;kubuntu 22.04&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;egrep -c &amp;#39;(vmx|svm)&amp;#39; /proc/cpuinfo
+# 返回不是 0 则表示支持虚拟化
+sudo apt install cpu-checker &amp;amp;&amp;amp; kvm-ok
+# 返回文字直接显示当前环境下 kvm 是否可用
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;install&#34;&gt;Install
+&lt;/h2&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virt-manager ovmf
+# 安装包
+sudo adduser $USER kvm
+# 将自己加入 kvm 组
+sudo systemctl enable --now libvirtd
+# 启动 libvirt 服务
+sudo systemctl status libvirtd
+# 查看 libvirt 服务状态
+# 建议重启一下主机
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;use&#34;&gt;Use
+&lt;/h2&gt;&lt;h3 id=&#34;图形界面&#34;&gt;图形界面
+&lt;/h3&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;virt-manager #启动虚拟机 也可以从系统菜单中启动
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;架构模拟&#34;&gt;架构模拟
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;x86_64 8G Debian bullseye&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ uname -m
+x86_64
+
+$ docker run --rm -t arm64v8/ubuntu uname -m
+standard_init_linux.go:211: exec user process caused &amp;#34;exec format error&amp;#34;
+
+$ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+$ docker run --rm -t arm64v8/ubuntu uname -m
+aarch64
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;window虚拟机&#34;&gt;window虚拟机
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://gist.github.com/luk6xff/9f8d2520530a823944355e59343eadc1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;待续&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

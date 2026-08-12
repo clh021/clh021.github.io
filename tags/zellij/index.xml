@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Zellij on 良宏</title>
+        <link>/tags/zellij/</link>
+        <description>Recent content in Zellij on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Mon, 23 Mar 2026 11:04:47 +0800</lastBuildDate><atom:link href="/tags/zellij/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>zellij</title>
+        <link>/post/live/zellij/</link>
+        <pubDate>Mon, 23 Mar 2026 11:04:47 +0800</pubDate>
+        
+        <guid>/post/live/zellij/</guid>
+        <description>&lt;h2 id=&#34;问题&#34;&gt;问题
+&lt;/h2&gt;&lt;p&gt;zellij 不是占用完整 terminal 界面，看起来像是上一次在笔记本远程连接过 zellij 之后，现在在 pc 大尺寸屏幕上 就不能完整面积占用了。可是我的笔记本早已关机，如何消除这个影响呢？&lt;/p&gt;
+&lt;h2 id=&#34;回答&#34;&gt;回答
+&lt;/h2&gt;&lt;p&gt;这个情况非常典型：之前在笔记本（小屏幕）上 attach 过同一个 zellij session，zellij 会记住“所有当前连接客户端里最小的终端尺寸”，即使笔记本已经关机，这个尺寸信息仍然被保存在 session 里。现在 PC 大屏幕 attach 上去，它仍然使用旧的小尺寸，导致画面占不满终端。&lt;/p&gt;
+&lt;p&gt;zellij 目前（截至 2025–2026 年版本）&lt;strong&gt;没有内置的类似 screen 的 “fit” 命令&lt;/strong&gt;来强制当前连接重新适配尺寸，但有几种实用解决方法，按推荐顺序排列：&lt;/p&gt;
+&lt;h3 id=&#34;方法-1最简单最常用推荐先试&#34;&gt;方法 1：最简单、最常用（推荐先试）
+&lt;/h3&gt;&lt;p&gt;进入 session 后，按下面组合键操作：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Ctrl + o&lt;/strong&gt; → &lt;strong&gt;w&lt;/strong&gt;&lt;br&gt;
+（打开 session-manager 界面）&lt;/p&gt;
+&lt;p&gt;然后按 &lt;strong&gt;Ctrl + x&lt;/strong&gt;&lt;br&gt;
+→ 选择 &lt;strong&gt;Disconnect others&lt;/strong&gt; 或 &lt;strong&gt;Close all other clients&lt;/strong&gt;（根据版本措辞可能略有不同）&lt;/p&gt;
+&lt;p&gt;这会强行断开所有“隐形残留”的其他客户端连接（包括已经关机的笔记本那个），当前这个大屏幕的连接就会立刻变成“唯一客户端”，zellij 几乎总是会立刻适配成当前终端的完整尺寸。&lt;/p&gt;
+&lt;p&gt;做完后直接 Esc 或选择继续使用当前 session 即可。&lt;/p&gt;
+&lt;h3 id=&#34;方法-2如果上面没生效杀掉残留连接&#34;&gt;方法 2：如果上面没生效，杀掉残留连接
+&lt;/h3&gt;&lt;p&gt;在当前 session 里运行：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;zellij list-clients
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;看看有没有多余的客户端（有时候会显示已经断开的，但还占着尺寸）。&lt;/p&gt;
+&lt;p&gt;或者直接在 session-manager（Ctrl+o w）里把所有其他客户端都 close。&lt;/p&gt;
+&lt;h3 id=&#34;方法-3最暴力但一定有效会丢失当前布局&#34;&gt;方法 3：最暴力但一定有效（会丢失当前布局）
+&lt;/h3&gt;&lt;p&gt;如果以上都不行，或者不在乎当前 tab/pane 布局：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;先把重要命令/布局记一下（或拍照）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ctrl + q&lt;/strong&gt; 退出当前 session（会问是否 kill）&lt;/li&gt;
+&lt;li&gt;然后重新创建同名 session：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;zellij attach -c session名字
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 或者直接&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;zellij session名字
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;因为是新建的 session，就完全使用当前大终端尺寸了。&lt;/p&gt;
+&lt;h3 id=&#34;方法-4临时-workaround不杀-session&#34;&gt;方法 4：临时 workaround（不杀 session）
+&lt;/h3&gt;&lt;p&gt;在当前 tab 里疯狂按几次 &lt;strong&gt;Alt + + + +&lt;/strong&gt;（增大当前 pane），有时能把界面撑满（尤其在 stacked_resize 模式下）。&lt;/p&gt;
+&lt;p&gt;或者把当前 pane 最大化：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Ctrl + p&lt;/strong&gt; → &lt;strong&gt;f&lt;/strong&gt; （或 &lt;strong&gt;Ctrl + o&lt;/strong&gt; → &lt;strong&gt;f&lt;/strong&gt;，看配置）&lt;/p&gt;
+&lt;p&gt;然后再 &lt;strong&gt;Ctrl + p&lt;/strong&gt; → &lt;strong&gt;n&lt;/strong&gt; 新建 pane，把旧的小 pane 替换掉。&lt;/p&gt;
+&lt;h3 id=&#34;小结建议执行顺序&#34;&gt;小结建议执行顺序
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;Ctrl+o → w → Ctrl+x → Disconnect others（最推荐，基本都解决）&lt;/li&gt;
+&lt;li&gt;如果没反应 → zellij list-clients 看情况 → 再 Ctrl+x&lt;/li&gt;
+&lt;li&gt;还不成 → 直接 Ctrl+q 杀掉 session 重开（最干净）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一般第一步就能搞定，因为笔记本已经关机了，相当于“幽灵客户端”，Disconnect others 之后尺寸就会恢复正常。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

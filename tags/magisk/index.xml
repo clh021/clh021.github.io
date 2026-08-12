@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Magisk on 良宏</title>
+        <link>/tags/magisk/</link>
+        <description>Recent content in Magisk on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 27 Jan 2023 12:01:20 +0800</lastBuildDate><atom:link href="/tags/magisk/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Magisk</title>
+        <link>/post/live/magisk/</link>
+        <pubDate>Fri, 27 Jan 2023 12:01:20 +0800</pubDate>
+        
+        <guid>/post/live/magisk/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/topjohnwu/Magisk/releases/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方下载&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://www.magisk.cool&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;社区资源&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/LSPosed/LSPosed.github.io/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/LSPosed/LSPosed.github.io/releases&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/LSPosed/LSPosed/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/LSPosed/LSPosed/releases&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;备用命令&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb devices
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb reboot recovery
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 确保手机连接上了&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;fastboot devices
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 刷入 Recovery&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;fastboot flash recovery recovery.img
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 进入 Recovery 环境刷入系统，进入 ADB Sideload 模式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb sideload lineageos.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 刷入 GApps&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb sideload GApps.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 刷入 Magisk&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;adb sideload Magisk.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 刷入打过补丁的 boot_patch # 如果有的话，没有就是安装app启动app打补丁后得到补丁镜像再来操作&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 也有的是使用 recovery 子命令刷入 recovery ，主要看官网操作最后打补丁是哪个镜像&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;fastboot flash boot boot_patch.img
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;验证-magisk-是否正确运行加载&#34;&gt;验证 Magisk 是否正确运行加载
+&lt;/h3&gt;&lt;p&gt;看启动后，能否在第一个卡片中，正常显示当前版本号。如果可以，应该同时可以在设置中，看到 Magisk 设置类，打开 Zygisk 开关。打开后，提示重启，重启后能够在启动后的第一个卡片中看到 Zygisk 也显示了是。&lt;/p&gt;
+&lt;h3 id=&#34;安装-lsposed-模块&#34;&gt;安装 LSPosed 模块
+&lt;/h3&gt;&lt;p&gt;拷贝 &lt;a class=&#34;link&#34; href=&#34;https://github.com/LSPosed/LSPosed/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LSPosed&lt;/a&gt; 版本到后记，在 Magisk 底部&lt;code&gt;模块&lt;/code&gt;导航菜单中，并选择从本地安装，选择拷贝好的zip包。&lt;/p&gt;
+&lt;h2 id=&#34;启动系统-usb-有线连接电脑拷贝以下包并依次安装&#34;&gt;启动系统 USB 有线连接电脑拷贝以下包，并依次安装
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;F-Droid.apk&lt;/li&gt;
+&lt;li&gt;Magisk.apk&lt;/li&gt;
+&lt;li&gt;应用宝.apk&lt;/li&gt;
+&lt;li&gt;LSPosed-v1.9.1-6990-zygisk-release.zip&lt;/li&gt;
+&lt;li&gt;Shamiko-v0.7.3-174-release.zip&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Xposed-Modules-Repo&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;所有模块仓库&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://modules.lsposed.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;所有模块列表&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

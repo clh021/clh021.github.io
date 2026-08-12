@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="basepath" content="/doc">
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/Netiler.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/JTemplate.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/NetilerUI_002.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/NetilerUI.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/custom-kmsUI_DEBUG.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/custom-predator_DEBUG.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/custom-nExtend_DEBUG.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/custom-theme_DEBUG.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/custom-offline_DEBUG.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/custom-animate_DEBUG.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/custom-nbCompatible_DEBUG.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/com_002.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/com.js"></script>
+
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/comm.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/scanutil.js"></script>
+<script type="text/javascript" src="./scaning.zhonghong/scaning.nsp_files/scan.js"></script>
+</head>
+<body basepath="/doc" style="">
+<style>
+	body{
+		overflow:hidden;
+	}
+	.settingTable{
+		margin : 0px auto;
+	}
+	.settingTable td{
+		text-align : left;
+		font-weight: bold;
+	}
+</style>
+<script>
+    var scannerObj = window.document.getElementById('top_scanner');
+    var leadalUtilObj = document.getElementById('leadal_util');
+	//扫描中回调用事件,source 原图路径，thumb 缩略图路径
+    function scanImage(source,thumb){
+        ScanUtil.scanImage(source,thumb);
+    }
+    //扫描完毕回调事件
+    function scanImageComplete(result){
+        ScanUtil.scanImageComplete(result);
+    }
+    //合并上传回调事件
+    function mergeImageComplete(result){
+        ScanUtil.mergeImageComplete(result);
+    }
+    //读取扫描设备回调事件
+    function listDataSources(devs){
+        if(typeof devs == 'undefined' || devs==null || devs.trim()=='null' || devs.trim()==''){
+            $loading.hide();
+            $window.alert('未能识别到扫描设备，请检查','info');
+            return ;
+        }
+        ScanUtil.findDevices(devs); //此处调用的JS函数会硬改写 DOM 元素
+        $loading.hide();
+    }
+
+
+	function autoLoadEmbed(){
+	    var win = window.parent;
+		var obj=win.document.getElementById('top_scanner');
+		if(obj){
+			return;
+		}
+	    var embed =win.document.createElement("embed");
+		embed.setAttribute('id','top_scanner');
+		embed.setAttribute('type','application/top-scanner-plugin');
+		embed.setAttribute('thumbnailPX','200');
+		embed.setAttribute('style','width:1px;height:1px');
+		win.document.body.appendChild(embed);
+	}
+	// autoLoadEmbed();
+    function testGetListDataSources() {
+        // var leadalUtilObj = document.getElementById('leadal_util');
+        scannerObj = window.document.getElementById('top_scanner');
+        scannerObj.copyImage = scanResult;
+        // scannerObj.copyImageComplete = scanImageComplete;
+        // scannerObj.mergeImageComplete = mergeImageComplete;
+        scannerObj.listDataSources = listDataSources; //此处JS部分会改写DOM元素
+        scannerObj.GetListDataSources();
+    }
+    function testBeginScanning() {
+        // ScanUtil.start();// 涉及大量 DOM 操作和 parentPage 的操作。 //决定自写关键JS。
+        
+        //显示扫描界面
+        // var paperbody = document.getElementById("paperbodyId");
+        // if(paperbody.style.display=='none')
+        //     paperbody.style.display = 'block';
+
+        let scannerObj = window.document.getElementById('top_scanner');
+        var dev = netiler.$('#devicesName').value;
+        dev = parseInt(dev);
+        scannerObj.StartScan(dev,0,0,0,true); //此操作会直接调用 扫描插件，打开扫描软件的设置窗口
+    }
+	//自定义 扫描中回调用事件,source 原图路径，thumb 缩略图路径
+    function scanResult(source,thumb) {
+	    var review =window.document.createElement("img");
+		review.setAttribute('src','file:///'+source);
+		review.setAttribute('style','max-width:30%');
+		window.document.body.appendChild(review);
+    }
+</script>
+<!-- <embed id="leadal_util" type="application/leadal-util-plugin" height="40" width="200"> -->
+<embed id="top_scanner" type="application/top-scanner-plugin" height="1" width="1" thumbnailPX="200">
+<button onclick="window.close()" style="float: right;">关闭</button>
+<div style="width:100%;height:100%;position:relative;" id="paperscanningId"></div>
+<button onclick="testGetListDataSources()">读取扫描仪设备</button>
+<select name="devicesName" id="devicesName"></select><br>
+<button onclick="testBeginScanning()">开始扫描</button><br>
+</body>
+</html>

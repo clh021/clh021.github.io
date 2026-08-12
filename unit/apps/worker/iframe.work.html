@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>#iframeSrc{width: 200px;}</style>
+    <button onclick="screenFull()">screen全屏</button>
+    <button onclick="setSize()">半屏居中</button>
+    <input type="text" value="https://baidu.com" id="iframeSrc">
+    <button onclick="setIframeSrc()">设置iframe</button>
+    <button onclick="setLocalSrc()">设置当前页</button>
+    <br />
+    <script>
+		function setTitle() {
+		    document.title=document.title=(new Date()).toISOString();
+		}
+        function setIframeSrc() {
+            document.getElementById("iframe").src=document.getElementById("iframeSrc").value;
+        }
+        function setLocalSrc() {
+            window.location.href=document.getElementById("iframeSrc").value;
+        }
+        function screenFull() {
+            this.win.setPosition(0,0);
+            this.win.setSize(screen.availWidth, screen.availHeight);
+        }
+        function setSize() {
+            let width=800,height=600;
+            console.log((screen.availWidth - width) / 2, ", ", (screen.availHeight - height) / 2);
+            this.win.setPosition((screen.availWidth - width) / 2, (screen.availHeight - height) / 2);
+            this.win.setSize(width, height);
+        }
+        // 全局变量准备
+        window.onload = function () {
+            if (window.lnks) {
+                this.win = new window.lnks.MainWindow(window);
+            }
+        }
+    </script>
+     <iframe id="iframe" src="./webworkers.html" frameborder="1" width="800px" height="800px"></iframe>
+</body>
+</html>

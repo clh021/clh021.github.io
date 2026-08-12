@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Virsh on 良宏</title>
+        <link>/tags/virsh/</link>
+        <description>Recent content in Virsh on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 14 Jan 2026 11:04:47 +0800</lastBuildDate><atom:link href="/tags/virsh/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>virsh</title>
+        <link>/post/tech/virsh/</link>
+        <pubDate>Wed, 14 Jan 2026 11:04:47 +0800</pubDate>
+        
+        <guid>/post/tech/virsh/</guid>
+        <description>&lt;h2 id=&#34;snap&#34;&gt;snap
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 ~&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh list --all
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; Id   Name                      State
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    kylin-v10                 running
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; -    chenlianghong             shut off
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 ~&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh dumpxml chenlianghong | grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;source file&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &amp;lt;source file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/var/lib/libvirt/filesystems/chenglianghong.qcow2&amp;#39;&lt;/span&gt;/&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &amp;lt;source file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/tmp/alpine-virt-3.22.2-aarch64.iso&amp;#39;&lt;/span&gt;/&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 ~&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ ls -lah /var/lib/libvirt/filesystems/chenglianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-rw-r--r-- &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; root root 157M Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 10:56 /var/lib/libvirt/filesystems/chenglianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 ~&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ sudo qemu-img snapshot -c &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;afterInstall&amp;#34;&lt;/span&gt; /var/lib/libvirt/filesystems/chenglianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;sudo&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; password &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; lnks: 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 ~&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ qemu-img snapshot -l /var/lib/libvirt/filesystems/chenglianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Snapshot list:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;         afterInstall          &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; B 2026-01-14 11:04:57 00:00:00.000          &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;use-snap&#34;&gt;Use snap
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 以后想回滚（危险！会覆盖当前状态）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-img snapshot -a &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;afterInstall&amp;#34;&lt;/span&gt; /var/lib/libvirt/filesystems/chenglianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 回滚后重新启动虚拟机即可&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 优点：快照速度极快，空间效率高，不会损坏 UEFI 变量&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 缺点：必须关机 + 手动管理（建议自己建个小脚本或别名）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 连快照一起备份&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-img convert -O qcow2 -c chenglianghong.qcow2 chenlianghong-back-compressed.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 验证备份文件的快照是否正常&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-img snapshot -l chenlianghong-back-compressed.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 查看备份文件的快照详细信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-img info --output&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;json backup.qcow2 | grep -A &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt; snapshots
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;backup-virsh-machine&#34;&gt;Backup virsh machine
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# virsh dumpxml --inactive chenlianghong &amp;gt; ~/vm-backups/chenlianghong.virsh-$(date +%Y%m%d).xml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 virsh&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh dumpxml --inactive chenlianghong &amp;gt; chenlianghong.virsh-&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;date +%Y%m%d%H&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 virsh&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh domblklist chenlianghong
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; Target   Source
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; sda      /var/lib/libvirt/filesystems/chenglianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; sdb      /tmp/alpine-virt-3.22.2-aarch64.iso
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 virsh&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ cp --sparse&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;always /var/lib/libvirt/filesystems/chenglianghong.qcow2 chenlianghong.virsh-&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;date +%Y%m%d%H&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 virsh&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ ls -lah
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;total 139M
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drwxr-xr-x  &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; lnks lnks 4.0K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 11:21 .
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drwxr-xr-x. &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt; lnks lnks 4.0K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 11:17 ..
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-rw-r--r--  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; lnks lnks 157M Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 11:21 chenlianghong.virsh-20260114.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-rw-r--r--  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; lnks lnks 4.8K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 11:18 chenlianghong.virsh-20260114.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 virsh&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;restore-virsh-machine&#34;&gt;ReStore virsh machine
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ sudo mv chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ sudo ls -lah /var/lib/libvirt/filesystems/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;total 230G
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drwx--x--x. &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; root root 4.0K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 13:04 .
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drwxr-xr-x. &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt; root root 4.0K Dec  &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt; 19:36 ..
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-rw-r--r--  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; root root  66G Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 13:02 chenglianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-rw-r--r--  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; root root 157M Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 13:02 chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh edit chenlianghong
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Domain chenlianghong XML configuration edited.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo cp --sparse&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;always /sda/lianghong/virsh/chenlianghong.virsh-20260114.qcow2 /var/lib/libvirt/filesystems/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 如果磁盘路径变了，先编辑 XML 文件，把 &amp;lt;source file=&amp;#39;...&amp;#39;&amp;gt; 改成新路径&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# virsh define ~/vm-backups/某个备份.xml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 把指定的 XML 文件注册/定义到 libvirt 系统中，成为一个新的（或覆盖现有的）持久化虚拟机&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;virsh define /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;virsh start myvm
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 最可靠的做法&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# virsh dumpxml --inactive 你的虚拟机名 &amp;gt; ~/vm-backups/你的虚拟机名-$(date +%Y%m%d).xml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;virsh dumpxml --inactive chenlianghong &amp;gt; /sda/lianghong/virsh/chenlianghong.virsh-20260114.xml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;other&#34;&gt;Other
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh shutdown chenlianghong
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Domain chenlianghong is being shutdown
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh list --all --persistent
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; Id   Name                      State
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    kylin-v10                 running
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; -    chenlianghong             shut off
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ sudo ls -lah /etc/libvirt/qemu/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;sudo&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; password &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; lnks: 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;total 152K
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drwx------. &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt; root root 4.0K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 10:45 .
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drwx------. &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt; root root 4.0K Jan  &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt; 17:37 ..
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drwxr-xr-x. &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; root root 4.0K Jul &lt;span style=&#34;color:#ae81ff&#34;&gt;25&lt;/span&gt; 22:53 autostart
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-rw-------  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; root root 5.0K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 10:45 chenlianghong.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-rw-------  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; root root 4.1K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt; 20:46 kylin-v10.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh edit chenlianghong
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Domain chenlianghong XML configuration edited.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh start chenlianghong
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Domain chenlianghong started
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh list --all --persistent
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; Id   Name                      State
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    kylin-v10                 running
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;   chenlianghong             running
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 sda&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh shutdown chenlianghong
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Domain chenlianghong is being shutdown
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 lianghong&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Snapshot list:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;         afterInstall          &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; B 2026-01-14 11:04:57 00:00:00.000          &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 lianghong&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ sudo qemu-img snapshot -c &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;add-user-docker&amp;#34;&lt;/span&gt; /var/lib/libvirt/filesystems/chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 lianghong&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Snapshot list:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;         afterInstall          &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; B 2026-01-14 11:04:57 00:00:00.000          &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;         add-user-docker       &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; B 2026-01-14 13:22:30 00:00:00.000          &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 lianghong&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh domblklist chenlianghong
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; Target   Source
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; sda      /var/lib/libvirt/filesystems/chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; sdb      -
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 lianghong&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ virsh dumpxml --inactive chenlianghong &amp;gt; chenlianghong.virsh-&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;date +%Y%m%d%H&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 lianghong&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ cp --sparse&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;always /var/lib/libvirt/filesystems/chenlianghong.qcow2 chenlianghong.virsh-&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;date +%Y%m%d%H&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;lnks@kp920 lianghong&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;$ ls -lah
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;total 386M
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drwxr-xr-x  &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; lnks lnks 4.0K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 13:24 .
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drwxr-xr-x &lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt; lnks lnks 4.0K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 13:17 ..
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-rw-r--r--  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; lnks lnks 419M Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 13:24 chenlianghong.virsh-2026011413.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-rw-r--r--  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; lnks lnks 4.7K Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; 13:24 chenlianghong.virsh-2026011413.xml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;just-quick&#34;&gt;Just Quick
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;virsh shutdown chenlianghong
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;virsh list --all --persistent
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo qemu-img snapshot -l /var/lib/libvirt/filesystems/chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 创建快照&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo qemu-img snapshot -c &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;deploy sync customer&amp;#34;&lt;/span&gt; /var/lib/libvirt/filesystems/chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 使用ID恢复快照（例如恢复ID为1的快照）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo qemu-img snapshot -a &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; /var/lib/libvirt/filesystems/chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 使用快照名称恢复（例如恢复&amp;#34;afterInstall&amp;#34;快照）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo qemu-img snapshot -a afterInstall /var/lib/libvirt/filesystems/chenlianghong.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;virsh start chenlianghong
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

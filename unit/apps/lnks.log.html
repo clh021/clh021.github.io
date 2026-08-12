@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lnks.log.test</title>
+</head>
+
+<body style="background-color: azure;">
+
+  <fieldset class="test1_pass">
+    <legend>演示日志接口 lnksWin.log()</legend>
+    日志等级：
+    <select id="lnksWinLogLevel">
+      <option value="INFO">INFO</option>
+      <option value="DEBUG">DEBUG</option>
+      <option value="WARN">WARN</option>
+      <option value="ERROR">ERROR</option>
+    </select>
+    <button onclick="lnksWinLogWrite()">日志写入</button><br />
+    日志内容：<input id="lnksWinLogContent" type="text" style="width:50%" value="Try to write log content success!" /><br />
+    <div id="lnksWinLogResult" style="display: none;">
+      日志输出路径：<div id="lnksWinLogPath"></div> <br>
+      日志文件内容: <button onclick="lnksWinLogRead()">读取日志内容</button> <br />
+      <textarea style="width:80%" rows="12" id="lnksWinLogCommandResultInfo" placeholder="标准输出"></textarea>
+      <textarea style="width:45%;display: none;" rows="12" id="lnksWinLogCommandResultError" placeholder="其它输出"></textarea>
+    </div>
+    <script language="javascript">
+      let lnksWinLogPath = "/tmp/lithium.test.log";
+      function lnksWinLogWrite () {
+        let level = document.getElementById("lnksWinLogLevel").value;
+        let msg = document.getElementById("lnksWinLogContent").value;
+        console.log(msg);
+        win.log(level, msg, lnksWinLogPath);
+        document.getElementById("lnksWinLogPath").innerHTML = lnksWinLogPath;
+        document.getElementById("lnksWinLogResult").style.display = "block";
+      }
+      function lnksWinLogRead () {
+        let command = `cat ${lnksWinLogPath}`;
+        window.lnks.$(
+          command,
+          (result) => { commandResultSet('lnksWinLogCommandResultInfo', result) },
+          (result) => { commandResultSet('lnksWinLogCommandResultError', result) }
+        );
+      }
+      // let listenLnksWinLogRead = setInterval(function () { lnksWinLogRead() }, 2000);
+      function stopListenLnksWinLogRead () {
+        clearInterval(listenLnksWinLogRead);
+      }
+    </script>
+  </fieldset>
+
+  <fieldset class="test1_pass">
+    <legend>生产日志接口 lnks.log.info() </legend>
+    日志等级：
+    <select id="lnksLogLevel">
+      <option value="info">INFO</option>
+      <option value="warn">WARN</option>
+      <option value="debug">DEBUG</option>
+      <option value="trace">TRACE</option>
+      <option value="error">ERROR</option>
+    </select>
+    <button onclick="lnksLogWrite()">日志写入</button><br />
+    日志内容：<input id="lnksLogContent" type="text" style="width:50%" value="Try to write log content success!" /><br />
+    <div id="lnksLogResult" style="display: none;">
+      日志输出路径：<div id="lnksLogPath"></div> <br>
+      日志文件内容: <button onclick="lnksLogRead()">读取日志内容</button> <br />
+      <textarea style="width:80%" rows="12" id="lnksLogCommandResultInfo" placeholder="标准输出"></textarea>
+      <textarea style="width:45%;display: none;" rows="12" id="lnksLogCommandResultError" placeholder="其它输出"></textarea>
+    </div>
+    <script language="javascript">
+      let lnksLogPath = "~/.lnks.com/lithium2/Logs/web.log";
+      function lnksLogWrite () {
+        let level = document.getElementById("lnksLogLevel").value;
+        let msg = document.getElementById("lnksLogContent").value;
+        lnks.logger[level](msg);
+        document.getElementById("lnksLogPath").innerHTML = lnksLogPath;
+        document.getElementById("lnksLogResult").style.display = "block";
+      }
+      function lnksLogRead () {
+        let command = `cat ${lnksLogPath}`;
+        window.lnks.$(
+          command,
+          (result) => { commandResultSet('lnksLogCommandResultInfo', result) },
+          (result) => { commandResultSet('lnksLogCommandResultError', result) }
+        );
+      }
+      // let listenLnksLogRead = setInterval(function () { lnksLogRead() }, 2000);
+      function stopListenLnksLogRead () {
+        clearInterval(listenLnksLogRead);
+      }
+    </script>
+  </fieldset>
+  <script>
+    function commandResultSet (id, error) {
+      document.getElementById(id).value = error;
+      console.info("id:", error);
+    }
+    // 全局变量准备
+    window.onload = function () {
+      if (window.lnks) {
+        this.win = new window.lnks.MainWindow(window);
+      }
+    }
+  </script>
+</body>
+
+</html>

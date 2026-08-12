@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <script src="./index/jquery-3.6.0.min.js"></script>
+    <title>示例</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background-color: whitesmoke;
+    }
+    .contain,
+    fieldset {
+        padding: 8px;
+        font-size: 12px;
+    }
+    .notice {
+        border-left: 3px solid red;
+        padding: 5px;
+        margin: 5px 0;
+        background-color: brown;
+        color: whitesmoke;
+    }
+    label {
+        width: 110px;
+        display: inline-block;
+        text-align: right;
+        margin-right: 5px;
+    }
+    input, button {
+        margin-left: 4px;
+    }
+    .terminal_only {
+        color:rgb(49, 224, 49);
+    }
+    .jsapi_only {
+        color:rgb(61, 49, 224);
+    }
+    .terminal-textarea {
+        width: 100%;
+        font-size: 10px;
+        border-radius: 3px;
+        background-color: rgb(36, 36, 36);
+        padding: 1rem 0;
+        color: rgb(49, 224, 49);
+    }
+    .terminal-command {
+        font-weight: bold;
+        overflow: hidden;
+        overflow-x: auto;
+        position: relative;
+        background-color: rgb(36, 36, 36);
+        padding: 1rem 0;
+        color: rgb(49, 224, 49);
+        border-radius: 8px;
+    }
+    .terminal-command:before {
+        content: "";
+        border-radius: 9999px;
+        display: block;
+        height: .75rem;
+        margin-bottom: 1rem;
+        opacity: .3;
+        width: .75rem;
+        box-shadow: 1.4em 0, 2.8em 0, 4.2em 0;
+    }
+    .terminal-command pre[data-prefix]:before {
+        content: attr(data-prefix);
+        display: inline-block;
+        text-align: right;
+        opacity: .5;
+        width: 2rem;
+    }
+    .terminal-command pre:before {
+        content: "";
+        margin-right: 2ch;
+    }
+</style>
+
+<body>
+    <div class="contain">
+        <div class="msg">Test by http://localhost:3000/apps/windowOpen.html</div>
+        <div class="notice" style="display: none;">浏览器不支持本Demo</div>
+        <div class="terminal-command" style="display: none;"></div>
+        <textarea class="terminal-textarea" style="display: none;"></textarea>
+        <fieldset>
+            <legend>打开窗口</legend>
+            <label>目标地址</label>
+            <select id="newUrl">
+                <option value="./apps/child.html">普通子页</option>
+                <option value="./index.topbar.html">子应用</option>
+                <option value="http://lithium-demo.linakesi.com">demo</option>
+                <option value="https://lithium-demo.lianghong.top">demo.mirror</option>
+                <option value="https://lithium1.lianghong.top">desktop1</option>
+                <option value="https://lithium2.lianghong.top">desktop2</option>
+                <option value="https://element.eleme.cn/2.0/#/zh-CN/component/dropdown">Element</option>
+                <option value="about:config">配置界面</option>
+                <option value="https://baidu.com">百度</option>
+                <option value="https://qq.com">QQ</option>
+                <option value="https://training.linakesi.com">sllErrUrl</option>
+            </select><br />
+            <label for="preload"><span class="terminal_only">*</span>加载动画</label>
+            <input type="checkbox" id="preload"><br />
+            <label for="debug"><span class="terminal_only">*</span>调试日志</label>
+            <input type="checkbox" id="debug"><br />
+            <label for="mode">窗口模式</label>
+            <select id="mode">
+                <option value="">-空-</option>
+                <option value="default">default</option>
+                <option value="topBar">topBar</option>
+            </select><br />
+            <label for="appId">appId</label>
+            <select id="appId">
+                <option value="">-空-</option>
+                <option value="12as.ji_a.com">12as.ji_a.com</option>
+                <option value="as49.j_i.a.com">as49.j_i.a.com</option>
+            </select><br />
+            <label>默认标题</label>
+            <select id="newTitle">
+                <option value="">-空-</option>
+                <option value="测试标题1">测试标题1</option>
+                <option value="测试页2">测试页2</option>
+            </select><br />
+            <label>默认图标</label>
+            <select id="newIcon">
+                <option value="" selected>-空-</option>
+                <option value="./icon/tree.ico">tree</option>
+                <option value="./icon/nazha.ico">nazha</option>
+                <option value="./icon/lnks.ico">lnks</option>
+                <option value="./icon/weibo.ico">weibo</option>
+            </select><br />
+            <label>宽高</label>
+            <!--当窗口大小和位置超出桌面时，桌面窗口管理器会重置超出的那部分位置。比如只是高度超出，就重置高度位置。-->
+            <select id="size">
+                <option value="*">-空-</option>
+                <option value="900*600">900*600</option>
+                <option value="800*600">800*600</option>
+                <option value="1500*1030">1500*1030</option>
+                <option value="1200*800">1200*800</option>
+            </select><br />
+            <label>位置</label>
+            <!--当位置是 0 时，有的桌面窗口管理器会认为是默认值而自行处理相同来源窗口的位置。比如打开多个资源管理器，每次都会不一样。-->
+            <select id="position">
+                <option value=",">-空-</option>
+                <option value="0,0">0,0</option>
+                <option value="10,20">10,20</option>
+                <option value="20,30">20,30</option>
+            </select><br />
+            <label>窗口状态</label>
+            <select id="winMode">
+                <option value="">-空-</option>
+                <option value="maximize">maximize</option>
+                <option value="normal">normal</option>
+                <option value="minimize">minimize</option>
+                <option value="fullscreen">fullscreen</option>
+            </select><br />
+            <label>背景</label>
+            <!--Windows 只要有设置背景色的透明 rgba 的第四个值，就会隐藏系统边框, 与 moz-appearance 无关-->
+            <select id="style">
+                <option value="background:rgba(0,0,0,0); -moz-appearance: none;">完全透明</option>
+                <option value="background:rgba(100,250,0,0.5); -moz-appearance: none;">浅绿色透明0.5</option>
+                <option value="background:rgba(100,250,0,0); -moz-appearance: none;">浅绿色透明0</option>
+                <option value="background:rgba(100,250,0,1); -moz-appearance: none;">浅绿色透明1</option>
+                <option value="-moz-appearance: none;">moz-appearance</option>
+                <option value="background:blue;">bg(设置背景色)</option>
+                <option value="" selected>不透明(不设置)</option>
+            </select><br />
+            <label for="skipBar">跳过任务栏</label><input type="checkbox" id="skipBar"><br />
+            <label for="hideChrome">隐藏系统边框</label><input type="checkbox" id="hideChrome"><br />
+            <label for="hidden"><span class="jsapi_only">*</span>隐藏窗口</label><input type="checkbox" id="hidden"><br />
+            <label>页面参数</label>
+            <select id="user_args">
+                <option value="{}">{}</option>
+                <option value='{"fdsa":"f","jgk":33, "topBar":111}'>{"fdsa":"f","jgk":33, "topBar":111}</option>
+            </select><br />
+            <label>打开方式</label>
+            <select id="openType">
+                <option value="lnks.openWindow2">lnks.openWindow2</option>
+                <option value="lnks.openTopBarWindow">lnks.openTopBarWindow</option>
+                <option value="window.open">window.open</option>
+                <option value="Terminal" selected>Terminal by lnks.$()</option>
+            </select><br />
+            <label></label>
+            <span class="terminal_only">*</span> 命令行独有选项<br />
+            <label></label>
+            <span class="jsapi_only">*</span> JSAPI独有选项<br />
+            <label></label>
+            <button onclick="open_handle()">打开</button>
+        </fieldset>
+    </div>
+</body>
+
+<script language="javascript" charset="utf-8">
+    // 全局变量准备
+    window.onload = function () {
+        if (window.lnks) {
+            this.win = new window.lnks.MainWindow(window);
+        } else {
+            $(".notice").show();
+        }
+    }
+    function show_terminal_command(win_args, user_args) {
+        console.log(win_args);
+        console.log(user_args);
+        let bin = `./lithium/lithium \\`;
+        if (window.lnks) {
+            if (typeof (window.lnks.env.get("lithiumPath")) !== "undefined") {
+                bin = window.lnks.env.get("lithiumPath") + "/lithium \\";
+            }
+            typeof(window.lnks.env.get("lithiumPath"))
+        }
+        let data = [bin];
+        if (win_args.preload) {
+            data.push(`    -preload \\`);
+        }
+        if (win_args.debug) {
+            data.push(`    -debug \\`);
+        }
+        if (win_args.appId) {
+            data.push(`    -app-id=${win_args.appId} \\`);
+        }
+        if (win_args.title) {
+            data.push(`    -title=${win_args.title} \\`);
+        }
+        if (win_args.icon) {
+            data.push(`    -icon=${win_args.icon} \\`);
+        }
+        if (win_args.width) {
+            data.push(`    -width=${win_args.width} \\`);
+        }
+        if (win_args.height) {
+            data.push(`    -height=${win_args.height} \\`);
+        }
+        if (win_args.positionX) {
+            data.push(`    -position-x=${win_args.positionX} \\`);
+        }
+        if (win_args.positionY) {
+            data.push(`    -position-y=${win_args.positionY} \\`);
+        }
+        if (win_args.mode) {
+            data.push(`    -mode=${win_args.mode} \\`);
+        }
+        if (win_args.winMode) {
+            data.push(`    -win-mode=${win_args.winMode} \\`);
+        }
+        if (win_args.style) {
+            data.push(`    -style=${win_args.style} \\`);
+        }
+        if (win_args.skipBar) {
+            data.push(`    -skip-bar=${win_args.skipBar} \\`);
+        }
+        if (win_args.hideChrome) {
+            data.push(`    -hide-chrome \\`);
+        }
+        if (win_args.hidden) {
+            // data.push(`    -hidden \\`); // jsapi only
+        }
+        if (JSON.stringify(user_args) !== JSON.stringify({})) {
+            data.push(`    -user_args='${JSON.stringify(user_args)}' \\`);
+        }
+        data.push(`    ${win_args.url} `);
+        let template = "";
+        data.forEach((q,index) => {
+            template += `<pre data-prefix="${index + 1}"><code>${q}</code></pre>`;
+        })
+        // $('.terminal-command').html(template).show();
+        $('.terminal-textarea').html(data.join("\r\n")).show().attr('rows', data.length);
+        $('.terminal-textarea').click(() => {
+            $(".msg").html("命令已复制到剪贴板。" + (new Date($.now()))).attr("color","blue");
+            $(".terminal-textarea").select();
+            document.execCommand('copy');
+        });
+        return data;
+    }
+    function open_handle() {
+        let win_args = {
+            url: $("#newUrl").val(),
+            preload: $("#preload")[0].checked,
+            debug: $("#debug")[0].checked,
+            appId: $("#appId").val(),
+            title: $("#newTitle").val(),
+            icon: $("#newIcon").val(),
+            mode: $("#mode").val(),
+            width: $("#size").val().split("*")[0],
+            height: $("#size").val().split("*")[1],
+            positionX: $("#position").val().split(",")[0],
+            positionY: $("#position").val().split(",")[1],
+            winMode: $("#winMode").val(),
+            style: $("#style").val(),
+            skipBar: $("#skipBar")[0].checked,
+            hideChrome: $("#hideChrome")[0].checked,
+            hidden: $("#hidden")[0].checked
+        };
+        // let user_args={
+        // "HomeWindow": this.win,
+        // "TrayIcon": this.trayIcon,
+        // };
+        let user_args = JSON.parse($("#user_args").val());
+        let terminal_command_arr = show_terminal_command(win_args, user_args);
+        if ("window.open" == $("#openType").val()) {
+            let w = win_args;
+            window.open(w.url, 'child', `width=${w.width},height=${w.height},left=${w.positionX},top=${w.positionY}`)
+        } else if ("Terminal" == $("#openType").val()) {
+            terminal_command = terminal_command_arr.join(" ").split("\\").join("");
+            console.log("Terminal:", terminal_command);
+            window.lnks.$(terminal_command, console.log, console.error);
+        } else if ("lnks.openTopBarWindow" == $("#openType").val()) {
+            window.lnks.openTopBarWindow(win_args, user_args);
+        } else {
+            window.lnks.openWindow2(win_args, user_args);
+            console.log(`lnks.openWindow2(${JSON.stringify(win_args)},${JSON.stringify(user_args)})`);
+        }
+    }
+</script>
+
+</html>

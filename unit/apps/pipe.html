@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> fd 测试 </title>
+    <script src="./index/global.js"></script>
+</head>
+<body style="background-color: azure;">
+    <button onclick="pipeTest()">开始测试</button><br/>
+    本页面运行50秒左右会无法正常退出。命令行的崩溃需要多等一会儿。
+    <pre id="pidResult"></pre>
+    <pre id="pipeResult"></pre>
+
+    <script>
+    function output(str, Id){
+        //console.info(str);
+        let res = document.getElementById(Id);
+        var pobj=document.createElement('p');
+        var textobj=document.createTextNode(str);
+        res.prepend(pobj.appendChild(textobj))
+    }
+    window.startTime = getDateString();
+    window.lithiumPid = [];
+    window.lithiumLsofWc = "0";
+    window.syspidmax = "0";
+    window.threadsmax = "0";
+    window.lithiumThreads = "0";
+    function pipeTest() {
+        window.startTime = getDateString();
+        window.lnks.$(`pidof lithium`,(resp) => {
+            window.lithiumPids = resp.split(" ");
+            output(`lithiumPids: ${resp} pid[${window.lithiumPids[0]}]${window.lithiumThreads}`, "pidResult");
+            createMsgBox();
+            window.lnks.$(`mkdir -p /tmp/testlithiumpipe/`, console.log, console.error);
+
+            let testMsg=setInterval(()=>{
+                sendMsg()
+            }, 1000);
+            let testException=setInterval(()=>{
+                printLsofWc()
+            }, 200);// 相比客户环境 触发频率增加了一百倍
+        }, console.error);
+    }
+    function createMsgBox() {
+        lnks.openWindow2({url:"/apps/lnks.message.receive.html", appId: 'EzworkMsgBox', width: 800, height: 600, winMode: 'normal'}).onSuccess((win) => {
+                window.openWindow2SuccessResult = win; // debug and check continue;
+                console.log("openWindow2 success:", win);
+            }).onFailure((e) => {
+                window.openWindow2FailureResult = e; // debug and check continue;
+                console.log("openWindow2 failure:", e);
+            })
+    }
+    function sendMsg() {
+        if (! window.msgBoxWin) {
+            window.msgBoxWin = window.getLnksWin({appId: 'EzworkMsgBox'},true);
+        }
+        if (window.msgBoxWin) {
+            let msg = `${getDateString()}: lsof_lithium:${window.lithiumLsofWc} pid[${window.lithiumPids[0]}]${window.lithiumThreads} ${window.lithiumVmRSS}`;
+            msg += ` threadsmax:${window.threadsmax} pidmax:${window.syspidmax} startAt:${window.startTime}`;
+            window.msgBoxWin.sendMessage(msg.replace(/\n/g,"").replace(/\t/g,""));
+        }
+    }
+    function printLsofWc() {
+        if (window.lithiumPids.length) {
+            for (let i = 0; i < 10; i++) {// 相比客户环境 一次触发执行的命令(包含sendMsg)增加了10倍
+                let cmd = `lsof -c lithium | wc -l`
+                window.lnks.$(cmd, (resp) => {
+                    window.lithiumLsofWc = resp;
+                }, console.error);
+                cmd = `cat /proc/sys/kernel/threads-max`
+                window.lnks.$(cmd, (resp) => {
+                    window.threadsmax = resp;
+                }, console.error);
+                cmd = `cat /proc/sys/kernel/pid_max`
+                window.lnks.$(cmd, (resp) => {
+                    window.syspidmax = resp;
+                }, console.error);
+                cmd = `cat /proc/${window.lithiumPids[0]}/status | grep Threads`
+                window.lnks.$(cmd, (resp) => {
+                    window.lithiumThreads = resp;
+                }, console.error);
+                cmd = `cat /proc/${window.lithiumPids[0]}/status | grep VmRSS`;
+                window.lnks.$(cmd, (resp) => {
+                    window.lithiumVmRSS = resp;
+                    let msg = getDateString() + ` lsof: ${window.lithiumLsofWc} ${window.lithiumThreads} ${window.lithiumVmRSS}`;
+                    output(msg.replace(/\n/g,"").replace(/\t/g,"") + "\n", "pipeResult")
+                }, console.error);
+                // output("-------------------------------", "pipeResult");
+            }
+        }
+    }
+    // 全局变量准备
+    window.onload = function () {
+        if (window.lnks) {
+            window.win = new window.lnks.MainWindow(window);
+            win.normal();
+            win.setSize(600,600)
+        }
+    }
+    </script>
+</body>
+</html>

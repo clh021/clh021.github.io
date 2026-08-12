@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Vultr on 良宏</title>
+        <link>/tags/vultr/</link>
+        <description>Recent content in Vultr on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Tue, 20 Sep 2022 19:54:47 +0800</lastBuildDate><atom:link href="/tags/vultr/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>vultr</title>
+        <link>/vultr/</link>
+        <pubDate>Tue, 20 Sep 2022 19:54:47 +0800</pubDate>
+        
+        <guid>/vultr/</guid>
+        <description>&lt;h2 id=&#34;介绍&#34;&gt;介绍
+&lt;/h2&gt;&lt;p&gt;Vultr提供的CLI命令行工具采用Golang语言编写，提供的命令行可以完成绝大部分操作，包括：vps的创建、删除、重装等，甚至你可以修改修改账号的用户名、密码等。&lt;/p&gt;
+&lt;h2 id=&#34;安装命令行&#34;&gt;安装命令行
+&lt;/h2&gt;&lt;p&gt;安装 Vultr-CLI 命令行有多种方法：&lt;/p&gt;
+&lt;h3 id=&#34;github安装&#34;&gt;github安装
+&lt;/h3&gt;&lt;p&gt;前往 &lt;a class=&#34;link&#34; href=&#34;https://github.com/vultr/vultr-cli/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;github releases&lt;/a&gt; 下载安装对应操作系统的文件。&lt;/p&gt;
+&lt;h3 id=&#34;源码安装&#34;&gt;源码安装
+&lt;/h3&gt;&lt;p&gt;安装前确保你已经安装好了Golang。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;go get -u github.com/vultr/vultr-cli
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;配置api-key&#34;&gt;配置api key
+&lt;/h2&gt;&lt;p&gt;首先登陆 Vultr 后台，右上角获取你的 api key，然后在下方白名单允许所有 ipv4, ipv6 可以访问。&lt;/p&gt;
+&lt;p&gt;将 api key 添加到系统环境变量里，vultr-cli 工具在使用时会自动查找 VULTR_API_KEY 变量并使用。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;export VULTR_API_KEY=your_api_key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;export只对当前 bash 环境有效，下次使用再重新导入比较麻烦。我们可以变量添加到 /etc/profile 文件里，或者使用 Vultr-CLI 提供的配置文件里。默认的配置文件路径 &lt;code&gt;~/.vultr-cli.yaml&lt;/code&gt;。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;api-key: your-api-key
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;创建sshkey&#34;&gt;创建sshkey
+&lt;/h2&gt;&lt;p&gt;现在最新版的 Vultr CLI 创建 vps 不再返回root密码，也不能使用参数添加root密码，官方的意思很明确，就是推荐使用sshkey，所以我们需要先创建 sshkey。如果不创建sshkey，那么创建 vps 后的root密码只能登陆 Vultr 后台查看了。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli ssh create --name ssh-cli --key SSH public key
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;name：ssh名，自定义&lt;/li&gt;
+&lt;li&gt;key：公钥内容，非路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;返回示例：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{
+    &amp;#34;ssh_key&amp;#34;: {
+    &amp;#34;id&amp;#34;: &amp;#34;cb676a46-66fd-4dfb-b839-443f2e6c0b60&amp;#34;,
+    &amp;#34;date_created&amp;#34;: &amp;#34;2020-10-10T01:56:20+00:00&amp;#34;,
+    &amp;#34;name&amp;#34;: &amp;#34;ssh-cli&amp;#34;,
+    &amp;#34;ssh_key&amp;#34;: &amp;#34;ssh-rsa AA... user@example.com&amp;#34;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;创建 ssh 后，记住此 ssh 的 id，之后创建 vps 需要通过 id 来指定 ssh。&lt;/p&gt;
+&lt;h2 id=&#34;创建密码&#34;&gt;创建密码
+&lt;/h2&gt;&lt;p&gt;官方虽然明确表示 password 无法查看，相比较而言密钥登陆是安全的更多，但他们是不是忽略了一个问题：Windows系统。当你创建 Windows系统 就知道有多难受，password看不到、密钥还没用！密码要去控制台查看是不是“有悖” CLI？这里提供一个“绕过”它的方法。
+Vultr 提供 Startup Scripts 方法，一段创建后运行的脚本，通过修改密码来达到获取密码。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli script -n script-name -s script-string -t script-type
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;参数n：脚本名&lt;/li&gt;
+&lt;li&gt;参数s：脚本内容以base64加密&lt;/li&gt;
+&lt;li&gt;参数t：可选值 pxe 和 boot，默认boot&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果我们要修改 root 密码为 Abcd1234，那么我们的shell脚本可以这么写：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;echo root:Abcd1234 | chpasswd root
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后我们将其转换成base64加密&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;echo &amp;#34;echo root:Abcd1234 | chpasswd root&amp;#34; | base64
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;得到结果：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ZWNobyByb290OkFiY2QxMjM0Cg==
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;那么这段 Startup Script 可以写成：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli script -n setpasswd -s ZWNobyByb290OkFiY2QxMjM0Cg== -t boot
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;创建后返回这条脚本的一些基本信息，记住脚本的 id。现在添加 script-id 参数通过添加脚本来创建一台实例&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance create --region region-id --plan plan-id --os os-id --ssh-keys ssh-id --script-id script-id --label label
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面命令的各项参数参考下方介绍。创建后我们使用 ssh 命令快速验证一下 root 密码是否生效。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ssh -p 22 root@ip
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;创建vps&#34;&gt;创建vps
+&lt;/h2&gt;&lt;p&gt;基本命令如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance create --region region-id --plan plan-id --os os-id --ssh-keys ssh-id --label label
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;region：指定地区&lt;/li&gt;
+&lt;li&gt;plan：指定套餐，套餐对应配置&lt;/li&gt;
+&lt;li&gt;os：操作系统&lt;/li&gt;
+&lt;li&gt;ssh-keys：ssh的id&lt;/li&gt;
+&lt;li&gt;label：标签&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通过如上参数，我们就可以正常创建一台 vps 了，非常方便。创建vps后的返回里不带 ip 地址，我们需要下面的命令查看：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance list
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果我们创建了比较多的 vps，那么我们指定 label 就可以派上用场了，通过 label 即可快速找到刚创建的 vps。&lt;/p&gt;
+&lt;h3 id=&#34;地区&#34;&gt;地区
+&lt;/h3&gt;&lt;p&gt;Vultr 一共有17个数据中心，美国数据中心就占了8个。地区及其对应的 id 只能通过 api 获取，这里我获取整理了一下，方便使用（地址：id）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;荷兰阿姆斯特丹：ams&lt;/li&gt;
+&lt;li&gt;法国巴黎：cdg&lt;/li&gt;
+&lt;li&gt;德国法兰克福：fra&lt;/li&gt;
+&lt;li&gt;韩国首尔：icn&lt;/li&gt;
+&lt;li&gt;英国伦敦：lhr&lt;/li&gt;
+&lt;li&gt;日本东京：nrt&lt;/li&gt;
+&lt;li&gt;美国硅谷：sjc&lt;/li&gt;
+&lt;li&gt;美国芝加哥：ord&lt;/li&gt;
+&lt;li&gt;美国迈亚密：mia&lt;/li&gt;
+&lt;li&gt;美国洛杉矶：lax&lt;/li&gt;
+&lt;li&gt;美国达拉斯：dfw&lt;/li&gt;
+&lt;li&gt;美国新泽西：ewr&lt;/li&gt;
+&lt;li&gt;美国亚特兰大：atl&lt;/li&gt;
+&lt;li&gt;美国西雅图：Seattle&lt;/li&gt;
+&lt;li&gt;新加坡：sgp&lt;/li&gt;
+&lt;li&gt;澳洲悉尼：syd&lt;/li&gt;
+&lt;li&gt;加拿大多伦多：yto&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;套餐&#34;&gt;套餐
+&lt;/h3&gt;&lt;p&gt;plan 指的是价格，在这里它更多意味“配置”，因为不同套餐价格对应不同配置。整理如下（id：配置）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vc2-1c-1gb：1G内存、1vCPU、25G SSD、1T流量，价格 $5&lt;/li&gt;
+&lt;li&gt;vc2-1c-2gb：2G内存、1vCPU、55G SSD、2T流量，价格 $10&lt;/li&gt;
+&lt;li&gt;vc2-2c-4gb：4G内存、2vCPU、80G SSD、3T流量，价格 $20&lt;/li&gt;
+&lt;li&gt;vc2-4c-8gb：8G内存、4vCPU、160G SSD、4T流量，价格 $40&lt;/li&gt;
+&lt;li&gt;vc2-8c-32gb：32G内存、8vCPU、640G SSD、6T流量，价格 $160&lt;/li&gt;
+&lt;li&gt;……&lt;/li&gt;
+&lt;li&gt;……&lt;/li&gt;
+&lt;li&gt;……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;操作系统&#34;&gt;操作系统
+&lt;/h3&gt;&lt;p&gt;os参数指定的操作系统，跟 os 相近的是 iso 参数，它指定的是镜像。下面是我整理的操作系统及其对应id（id：操作系统）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;124：Windows 2012 R2 x64&lt;/li&gt;
+&lt;li&gt;240：Windows 2016 x64&lt;/li&gt;
+&lt;li&gt;371：Windows 2019 x64&lt;/li&gt;
+&lt;li&gt;167：CentOS 7 x64&lt;/li&gt;
+&lt;li&gt;381：CentOS 7 SELinux x64&lt;/li&gt;
+&lt;li&gt;194：Debian 8 i386 (jessie)&lt;/li&gt;
+&lt;li&gt;352：Debian 10 x64 (buster)&lt;/li&gt;
+&lt;li&gt;244：Debian 9 x64 (stretch)&lt;/li&gt;
+&lt;li&gt;216：Ubuntu 16.04 i386&lt;/li&gt;
+&lt;li&gt;270：Ubuntu 18.04 x64&lt;/li&gt;
+&lt;li&gt;387：Ubuntu 20.04 x64&lt;/li&gt;
+&lt;li&gt;413：Ubuntu 20.10 x64&lt;/li&gt;
+&lt;li&gt;445：Ubuntu 21.04 x64&lt;/li&gt;
+&lt;li&gt;230：FreeBSD 11 x6&lt;/li&gt;
+&lt;li&gt;327：FreeBSD 12 x64&lt;/li&gt;
+&lt;li&gt;401：CentOS 8 Stream x64&lt;/li&gt;
+&lt;li&gt;362：CentOS 8 x64&lt;/li&gt;
+&lt;li&gt;389：Fedora 32 x6&lt;/li&gt;
+&lt;li&gt;391：Fedora CoreOS&lt;/li&gt;
+&lt;li&gt;415：Fedora 33 x64&lt;/li&gt;
+&lt;li&gt;446：Fedora 34 x64&lt;/li&gt;
+&lt;li&gt;412：OpenBSD 6.8 x64&lt;/li&gt;
+&lt;li&gt;450：OpenBSD 6.9 x64&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;更换ip地址&#34;&gt;更换ip地址
+&lt;/h2&gt;&lt;p&gt;Vultr 提供一项名为 保留ip（Reserved IP）的功能。当我们销毁一台 vps ，跟随这台 vps 的 ip 地址也将一同“丢失”，保留 ip 可以允许我们销毁 vps 而保留 ip。借助 保留ip 和 备份 功能，我们可以实现同地区 vps 的迁移而不丢失数据（备份）和ip（保留ip）。
+除了它常规的用法，保留ip 其实也可以充当动态ip的功能，实现更换 ip地址 目的。接触过 aws 和阿里云 的用户应该对 动态IP 不陌生，动态ip 并不是完全意义上的 “更换ip”。
+举个例子：现在创建一台 vps A，创建的同时会自带一个 ip地址，我们将其自带的ip地址称为固定ip。创建一个 保留ip，因为它没有依附任何实例，那么保留ip可以看作是动态ip。我们可以将动态ip绑定到 vps A上作为其第二个ip地址，也可以解绑然后删除。虽然 vps A 自带的固定ip可以转换成动态ip，但是它还是属于 vps A，只有当 vps A 被销毁后，这种 “隐形绑定” 关系才被解除。&lt;/p&gt;
+&lt;h3 id=&#34;创建一个新的保留ip&#34;&gt;创建一个新的保留ip
+&lt;/h3&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli reserved-ip create -r region-id -l label -t v4
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;参数r：地区id&lt;/li&gt;
+&lt;li&gt;参数l：标签&lt;/li&gt;
+&lt;li&gt;参数t：ip类型，只能是v4或者v6&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;需要注意的是ip地址有 “区域限制”，你必需指定要创建哪个地址的ip，ip也只能绑定在同地区的vps上。创建之后返回保留ip的信息，包括id、地区、ip地址等。&lt;/p&gt;
+&lt;h3 id=&#34;绑定到实例&#34;&gt;绑定到实例
+&lt;/h3&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli reserved-id attach &amp;lt;reservedIPID&amp;gt; -i instance-id
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;reservedIPID：保留ip的id&lt;/li&gt;
+&lt;li&gt;instance-id：实例id&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;绑定之后我们需要重启这台实例。必需要用 Vultr-CLI 命令行工具重启，在实例里 &lt;code&gt;reboot&lt;/code&gt; 是无效的。&lt;/p&gt;
+&lt;h3 id=&#34;配置多ip&#34;&gt;配置多ip
+&lt;/h3&gt;&lt;p&gt;重启后还需要手动配置网卡，才能使绑定的ip可用。不同的系统配置方式不同，具体方法参见 单网卡多ip 的配置方式，或者参考 Vultr 给出的教程：
+&lt;a class=&#34;link&#34; href=&#34;https://www.mebi.me/go/aHR0cHM6Ly93d3cudnVsdHIuY29tL2RvY3MvYWRkLXNlY29uZGFyeS1pcHY0LWFkZHJlc3M&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;/docs/add-secondary-ipv4-address&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;下面是我写的，仅供参考。系统是 debian 10，默认的网卡配置：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;auto lo
+iface lo inet loopback
+
+allow-hotplug ens3
+iface ens3 inet dhcp
+iface ens3 inet6 auto
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看到 Vultr 默认使用 DHCP 自动配置网络，我们要将其改成手动配置。先将网卡配置文件备份，备份是个好习惯。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;cp /etc/network/interfaces /etc/network/interfaces.bak
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;修改 &lt;code&gt;/etc/network/interfaces&lt;/code&gt; 配置文件：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;auto lo
+iface lo inet loopback
+
+auto ens3
+iface ens3 inet static
+address ipv4
+netmask xx.xx.xx.xx
+gateway xx.xx.xx.xx
+dns-nameservers 108.61.10.10
+post-up ip route add 169.254.0.0/16 dev ens3
+
+auto ens3:1
+iface ens3:1 inet static
+address 保留ip
+netmask 255.255.255.255
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面的 ipv4 就是 vps A 的固定ip，使用 &lt;code&gt;instance get&lt;/code&gt; 命令不仅可以看到 ipv4，还能看到子网掩码（netmask）和网关（gateway）信息。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance get instance-id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后重启网络。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;systemctl restart networking.service
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用 &lt;code&gt;ip a&lt;/code&gt; 命令，可以看到 ens3 网卡下面两个ip都在了，现在 ping 绑定到保留地址，发现通了。&lt;/p&gt;
+&lt;h3 id=&#34;解绑&#34;&gt;解绑
+&lt;/h3&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli reserved-id detach &amp;lt;reservedIPID&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;解绑之后 保留ip 可以绑定到任何其他同地区实例上，实例需要恢复网卡配置文件然后使用命令行重启。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;mv /etc/network/interfaces.bak /etc/network/interfaces
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;价格&#34;&gt;价格
+&lt;/h3&gt;&lt;p&gt;保留ip 的价格为每小时$0.0003，或者每月$2，现在很多博客说是$3/月的该更新了。如果不想要，解绑后删除就可以停止收费。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli reserved-ip delete &amp;lt;reservedIPID&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;其他操作&#34;&gt;其他操作
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;列出所有创建的vps&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance list
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里可以看到 vps 的一些重要信息，除了 ip 外，我们还可以看到 id，这个 id 就是 instance-id。如果要对某个 vps 进行操作，就要用到这个 id。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;删除vps&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance delete instance-id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;重启vps&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance restart instance-id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;开机&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance start instance-id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;关机&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance stop instance-id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;重装&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance reinstall instance-id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;获取具体信息&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance get instance-id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;添加标签&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance label instance-id -l label-name
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;升级套餐&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance plan upgrade instance-id -p plan-id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;更改操作系统&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;vultr-cli instance os change instance-id -o os-id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;通过 CLI 命令行无法更换 ip 地址，还是需要先创建一个 vps，再删除原来的 vps 来达到目的。&lt;/p&gt;
+&lt;h2 id=&#34;install&#34;&gt;Install
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get install apache2-utils
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;use&#34;&gt;Use
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./ab -c &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt; -n &lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt; http://127.0.0.1/index.php
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#-c 100 即：每次并发100个&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#-n 10000 即： 共发送10000个请求&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#用ab测试时，最大并发不能超过1024，其实ab本身没有做这个限制，而是系统限制每个进程打开的最大的文件数为1024&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#ulimit -a&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#ulimit -n 1020&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#-n 可以指定最大请求数，但是也不能超过50000&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#-v n   当n&amp;gt;=2 时，可以显示发送的http请求头，和响应的http头及内容； 压力测试时不要这么做&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

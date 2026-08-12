@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>所有 input 测试</title>
+</head>
+<body>
+    <br> <input type="text">
+    <br> <input type="password">
+    <br> <input type="file">
+    <br> <input type="hidden" value="gghkkkt">
+    <br> <input type="button" value="buttonnn">
+    <br> <input type="checkbox">
+    <br> a:<input type="radio" name="checkit" value="a" checked><br>
+    <br> b:<input type="radio" name="checkit" value="b"><br>
+    <br> c:<input type="radio" name="checkit" value="c"><br>
+    <br> <input type="image">
+    <br> <input type="image" src="/icon/tree.ico">
+    <br> <input type="submit" value="dd">
+    <br> <input type="reset" value="aa">
+    <br> <br> <button onclick="consoleLogAllInputValue()">console.log(allInputValue)</button>
+    <form id="upload">
+        <label for="file">选择要解析的文本</label><br />
+        <input type="file" id="file" accept=".json,.xml,.ini">
+        <button>上传</button>
+    </form><br />
+    <pre id="result"></pre>
+    <script language="javascript">
+        let upload = document.querySelector('#upload');
+        let file = document.querySelector('#file');
+        upload.addEventListener('submit', handleSubmit);
+        function handleSubmit(event) {
+            event.preventDefault();
+            if (!file.value.length) return;
+            console.log("上传成功");
+            let reader = new FileReader();
+            reader.onload = parseFile;
+            reader.readAsText(file.files[0]);
+        }
+        function parseFile(event) {
+            let str = event.target.result;
+            let ext = file.value.split('.').pop();
+            console.log('file.ext', ext);
+            let result = null;
+            switch (ext) {
+                case "json":
+                    result = parseJson(str);
+                    break;
+                case "ini":
+                    result = parseINI(str);
+                    break;
+                case "xml":
+                    result = parseXML(str);
+                    break;
+                default:
+                    break;
+            }
+            console.log('string', str);
+            console.log('result', result);
+            document.getElementById("result").innerHTML = JSON.stringify(result, null, 2);
+        }
+        function parseJson(jsonStr) {
+            let json = JSON.parse(jsonStr);
+            console.log('json', json);
+            return json;
+        }
+        function parseINI(iniStr) {
+            var regex = {
+                section: /^\s*\[\s*([^\]]*)\s*\]\s*$/,
+                param: /^\s*([^=]+?)\s*=\s*(.*?)\s*$/,
+                comment: /^\s*;.*$/
+            };
+            var value = {};
+            var lines = iniStr.split(/[\r\n]+/);
+            var section = null;
+            lines.forEach(function (line) {
+                if (regex.comment.test(line)) {
+                    return;
+                } else if (regex.param.test(line)) {
+                    var match = line.match(regex.param);
+                    if (section) {
+                        value[section][match[1]] = match[2];
+                    } else {
+                        value[match[1]] = match[2];
+                    }
+                } else if (regex.section.test(line)) {
+                    var match = line.match(regex.section);
+                    value[match[1]] = {};
+                    section = match[1];
+                } else if (line.length == 0 && section) {
+                    section = null;
+                };
+            });
+            console.log("ini", value);
+            return value;
+        }
+        function parseXML(xmlStr) {
+            let xml = null;
+            if (window.DOMParser) {
+                parser = new DOMParser();
+                xml = parser.parseFromString(xmlStr, "text/xml");
+            }
+            else // Internet Explorer
+            {
+                xml = new ActiveXObject("Microsoft.XMLDOM");
+                xml.async = false;
+                xml.loadXML(xmlStr);
+            }
+            let res = xmlToJson(xml);
+            console.log("xml", res);
+            return res;
+        }
+        function xmlToJson(xml) {
+            // Create the return object
+            var obj = {};
+
+            if (xml.nodeType == 1) { // element
+                // do attributes
+                if (xml.attributes.length > 0) {
+                    obj["@attributes"] = {};
+                    for (var j = 0; j < xml.attributes.length; j++) {
+                        var attribute = xml.attributes.item(j);
+                        obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                    }
+                }
+            } else if (xml.nodeType == 3) { // text
+                obj = xml.nodeValue;
+            }
+
+            // do children
+            if (xml.hasChildNodes()) {
+                for (var i = 0; i < xml.childNodes.length; i++) {
+                    var item = xml.childNodes.item(i);
+                    var nodeName = item.nodeName;
+                    if (typeof (obj[nodeName]) == "undefined") {
+                        obj[nodeName] = xmlToJson(item);
+                    } else {
+                        if (typeof (obj[nodeName].push) == "undefined") {
+                            var old = obj[nodeName];
+                            obj[nodeName] = [];
+                            obj[nodeName].push(old);
+                        }
+                        obj[nodeName].push(xmlToJson(item));
+                    }
+                }
+            }
+            return obj;
+        }
+        function consoleLogAllInputValue() {
+            console.log("-------------------------------------");
+            document.querySelectorAll('input').forEach((e) => {
+                console.log(e.type, e.value);
+                switch (e.type) {
+                    case "checkbox":
+                    case "radio":
+                        console.log("      value:  ", e.checked)
+                        break;
+                    case "image":
+                        console.log("      value:  ", e.src)
+                        break;
+                
+                    default:
+                        break;
+                }
+            })
+        }
+    </script>
+</body>
+</html>

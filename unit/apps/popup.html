@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>托盘示例</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .tray-container {
+        background: rgba(0, 0, 0. 0);
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .tray-container button {
+        width: 100%;
+        height: 30px;
+        padding: auto;
+        margin: auto;
+        text-align: center;
+    }
+</style>
+
+<body style="background:rgba(175, 175, 175, 0.3);">
+    <div class="tray-container">
+        <button onclick="homeWindow.skip_bar(false)">显示任务栏</button>
+        <button onclick="homeWindow.skip_bar()">跳过任务栏</button>
+        <button onclick="homeWindow.visibility=true">显示</button>
+        <button onclick="homeWindow.visibility=false">隐藏</button>
+        <button onclick="homeWindow.maximize()">最大化</button>
+        <button onclick="homeWindow.minimize()">最小化</button>
+        <button onclick="lnks.exit()">退出程序</button>
+    </div>
+</body>
+<script>
+    window.onload = function () {
+        if (window.lnks && window.arguments) {
+            // 获取主窗口Window实例
+            // window.homeWindow = window.arguments.HomeWindow; // 打开本窗口时传递过来的参数
+            // window.trayIcon = window.arguments.TrayIcon; // 打开本窗口时传递过来的参数
+            // window.win = new window.lnks.MainWindow(window);
+            // onclick = () => {  //任何点击事件后都隐藏窗口，这个可以根据应用逻辑自行调整。
+            //     console.info("点击事件:onclick");
+            //     window.win.visibility = false;
+            //     return true;
+            // }
+
+            // //trayicon的鼠标右键处理逻辑
+            // window.trayIcon.onMenuPopup = (a, b) => {
+            //     console.info("右键:onMenuPopup:a", a);
+            //     console.info("右键:onMenuPopup:b", b);
+            //     console.info("右键:onMenuPopup:b", window.win.visibility);
+            //     if (!window.win.visibility) {
+            //         // 隐藏后再显示会丢失位置，特此修复
+            //         let g = window.trayIcon.geometry;
+            //         console.info("g:", g);
+            //         console.log('p:', g.x - (win.size.width / 2), g.y - win.size.height);
+            //         this.win.setPosition(g.x - (win.size.width / 2), g.y - win.size.height); //移动本窗口到托盘上方
+            //         setTimeout(() => {
+            //             window.win.visibility = true;
+            //         }, 200);
+            //         window.focus(); //强制获取焦点
+            //     } else {
+            //         window.win.visibility = false
+            //     }
+            // }
+
+            // if (window.homeWindow) {
+            //     //主窗口关闭或刷新时候销毁trayicon以及关闭本窗口。
+            //     window.homeWindow.win.addEventListener("unload", function (tray) {
+            //         if (tray) {
+            //             tray.destroy()
+            //         }
+            //         window.win.close()
+            //     })
+            // }
+
+            // //trayicon的鼠标左键处理逻辑
+            // window.trayIcon.onActivate = function (a, b) {
+            //     console.info("左键:onActivate:a", a)
+            //     console.info("左键:onActivate:b", b)
+            //     if (window.homeWindow) {
+            //         window.homeWindow.visibility = true
+            //         window.homeWindow.minimize()
+            //         window.homeWindow.win.focus() // win7 激活的窗口没有出现在最顶层
+            //     } else {
+            //         window.win.minimize()
+            //     }
+            // }
+        } else {
+            alert("浏览器不支持本Demo")
+        }
+    }
+</script>
+
+</html>

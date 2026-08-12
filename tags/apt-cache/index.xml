@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Apt-Cache on 良宏</title>
+        <link>/tags/apt-cache/</link>
+        <description>Recent content in Apt-Cache on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Tue, 26 Apr 2022 08:01:47 +0800</lastBuildDate><atom:link href="/tags/apt-cache/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>apt-cache</title>
+        <link>/post/tech/apt-cache/</link>
+        <pubDate>Tue, 26 Apr 2022 08:01:47 +0800</pubDate>
+        
+        <guid>/post/tech/apt-cache/</guid>
+        <description>&lt;h2 id=&#34;install&#34;&gt;Install
+&lt;/h2&gt;&lt;p&gt;debian 系的发行版自带，无需安装。&lt;/p&gt;
+&lt;h2 id=&#34;use&#34;&gt;Use
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://debian-handbook.info/browse/zh-CN/stable/sect.apt-cache.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方解释&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;重点摘录:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-cache search php &lt;span style=&#34;color:#75715e&#34;&gt;# 搜索包含关键词的包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-cache show php &lt;span style=&#34;color:#75715e&#34;&gt;# 显示包名信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-cache policy php &lt;span style=&#34;color:#75715e&#34;&gt;# 显示软件包来源及个别软件包的优先级&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-cache depends php &lt;span style=&#34;color:#75715e&#34;&gt;# 显示依赖的软件包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-cache rdepends php &lt;span style=&#34;color:#75715e&#34;&gt;# 递归显示所有依赖的软件包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-cache showsrc php &lt;span style=&#34;color:#75715e&#34;&gt;# 显示&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-cache pkgnames php &lt;span style=&#34;color:#75715e&#34;&gt;# 显示出现在缓存至少一次的软件包清单&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;除了 &lt;code&gt;apt-cache pkgnames php&lt;/code&gt; 外，其它命令都 将 &lt;code&gt;apt-cache&lt;/code&gt; 简写为 &lt;code&gt;apt&lt;/code&gt; 之后，使用起来没有发现什么区别(search 命令的输出略有不同)，都可以离线使用。&lt;/p&gt;
+&lt;h2 id=&#34;扩展阅读&#34;&gt;扩展阅读
+&lt;/h2&gt;&lt;h3 id=&#34;优先级&#34;&gt;优先级
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;    &amp;lt; 0
+        will never be installed,
+        永远不会被安装
+    1..99
+        will only be installed if no other version of the package is already installed,
+        只在没有其它版本的包时才安装
+    100..499
+        will only be installed if there is no other newer version installed or available in another distribution,
+        只在没有别的更新版本时(或另发行版可用时)才安装
+    500....989
+        will only be installed if there is no newer version installed or available in the target distribution,
+        只在目标发行版中没有安装或没有可用的新版本时才会安装
+    990..1000
+        will be installed except if the installed version is newer,
+        将安装，除非安装的版本较新
+    &amp;gt; 1000
+        will always be installed, even if it forces APT to downgrade to an older version.
+        将始终安装，即使它强制 APT 降级到旧版本
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

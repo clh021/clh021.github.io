@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>引擎切换</title>
+</head>
+<body>
+<fieldset>
+    <legend>关闭</legend>
+    任务栏右键关闭时触发事件已绑定 <br>
+    任务栏右键关闭时触发事件已绑定 <br>
+    <button onclick="window.close()">window.close</button>
+    <button onclick="lnks_MainWindow_close()">lnks.MainWindow.close()</button>
+    <script type="text/javascript" charset="utf-8">
+        window.win = new window.lnks.MainWindow(window);
+        window.addEventListener('beforeunload', function(event) {
+            console.log('1 beforeunload 关闭绑定事件触发成功');
+            alert("1");
+        });
+        window.addEventListener('unload', function(event) {
+            console.log('2 unload 关闭绑定事件触发成功');
+            alert("2");
+        });
+        // window.onbeforeunload = function(e) {e.preventDefault();}; // 不会覆盖 x11.close 事件
+        // window.onunload = function(e) {e.preventDefault();}; // 不会覆盖 x11.close 事件
+        function lnks_MainWindow_close() {
+            window.win.close();
+        }
+    </script>
+</fieldset>
+<fieldset>
+    <legend>移动</legend>
+    <button onclick="repeatFunc((i)=>{console.log(`${i}: `,document.cookie)})">Cookie读取</button>
+    <script type="text/javascript" charset="utf-8">
+    </script>
+</fieldset>
+<fieldset>
+    <legend>大小调整</legend>
+    <button onclick="openGeckoWindow()">打开Gecko引擎</button>
+    
+    <script type="text/javascript" charset="utf-8">
+        // if (window.lnks && win && !win.isGecko()) {
+        //     lnks.openWindow2({
+        //         url: `${location.href}`,
+        //         useGecko: true,
+        //     });
+        // }
+
+    </script>
+</fieldset>
+</body>
+</html>

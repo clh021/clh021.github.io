@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Binwalk on 良宏</title>
+        <link>/tags/binwalk/</link>
+        <description>Recent content in Binwalk on 良宏</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 24 Dec 2021 15:55:36 +0800</lastBuildDate><atom:link href="/tags/binwalk/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Binwalk</title>
+        <link>/post/tech/binwalk/</link>
+        <pubDate>Fri, 24 Dec 2021 15:55:36 +0800</pubDate>
+        
+        <guid>/post/tech/binwalk/</guid>
+        <description>&lt;p&gt;本周一 &lt;code&gt;安恒萌新粉丝群：928102972&lt;/code&gt;分享的工具为 &lt;code&gt;binwalk&lt;/code&gt;。 &lt;code&gt;Binwalk&lt;/code&gt;是一款快速、易用，用于分析，逆向工程和提取固件映像的工具。简单易用，完全自动化脚本，并通过自定义签名，提取规则和插件模块，还重要一点的是可以轻松地扩展。 在CTF的MISC类题型和IOT安全的固件解包分析中广泛应用，可以大大提高效率。该工具对linux支持较好，对于windows功能支持较差，有条件的童鞋可以在linux上使用练习该神器。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;binwalk&lt;/code&gt;github项目：https://github.com/ReFirmLabs/binwalk &lt;code&gt;binwalk&lt;/code&gt;的wiki：https://github.com/devttys0/binwalk/wiki &lt;code&gt;binwalk&lt;/code&gt;是一款 &lt;code&gt;python&lt;/code&gt;编写的工具，目前 &lt;code&gt;python2.x&lt;/code&gt;和 &lt;code&gt;python3.x&lt;/code&gt;都较好的支持，不过在 &lt;code&gt;Python3.x&lt;/code&gt;中运行速度更快。在 &lt;code&gt;kali&lt;/code&gt;里面已经预装了，在其他发行版 &lt;code&gt;linux&lt;/code&gt;中安装也很简单，不过在 &lt;code&gt;windows&lt;/code&gt;上会稍微繁琐一些。 &lt;code&gt;windows&lt;/code&gt;下的安装和使用方法可以参考 &lt;code&gt;pcat&lt;/code&gt;大表哥的方法https://www.cnblogs.com/pcat/p/5256288.html。 &lt;code&gt;wiki&lt;/code&gt;上对于安装使用已经说的非常详细了。建议英文好的童鞋可以直接看官方的资料。网上资料也很多，这里就简单的翻译总结一下。 这里使用 &lt;code&gt;kali linux&lt;/code&gt;演示（基于Debian的linux发行版开发的一个渗透数字取证的系统） &lt;strong&gt;注意：&lt;/strong&gt; 如果原来系统已经安装了旧版 &lt;code&gt;binwalk&lt;/code&gt;，这里建议先卸载再安装新版本，以防止出现不兼容和API冲突等问题。&lt;/p&gt;
+&lt;p&gt;$ sudo su
+$ binwalk
+$ sudo apt-get remove binwalk
+$ sudo apt-get update
+$ git clone &lt;a class=&#34;link&#34; href=&#34;https://github.com/ReFirmLabs/binwalk&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/ReFirmLabs/binwalk&lt;/a&gt;
+$ cd binwalk
+$ sudo python setup.py install
+$ sudo apt-get install python-lzma&lt;/p&gt;
+&lt;p&gt;如果执行命令的中途出现了 &lt;code&gt;无法获得锁/var/lib/dpkg/lock-open(11:资源暂时不可用)ubuntu安装vim及遇到的错误处理&lt;/code&gt;，执行下面命令:&lt;/p&gt;
+&lt;p&gt;sudo rm /var/cache/apt/archives/lock
+sudo rm /var/lib/dpkg/lock&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;binwalk&lt;/code&gt;还需要安装一些依赖项，具体的大家可以去 &lt;code&gt;Wilk&lt;/code&gt;上查看，如果是 &lt;code&gt;Debian/Ubuntu&lt;/code&gt;源代码里已经给了一键自动安装依赖项的脚本，运行命令：&lt;/p&gt;
+&lt;p&gt;$ sudo ./deps.sh&lt;/p&gt;
+&lt;h3 id=&#34;安装ida插件&#34;&gt;安装IDA插件
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;binwalk&lt;/code&gt;还可以安装 &lt;code&gt;binwalk IDA&lt;/code&gt;插件，这个功能对于做固件逆向的功能是非常方便的。安装：&lt;/p&gt;
+&lt;p&gt;$ python setup.py idainstall --idadir = / home / user / ida&lt;/p&gt;
+&lt;p&gt;卸载：&lt;/p&gt;
+&lt;p&gt;$ python setup.py idauninstall --idadir = / home / user / ida&lt;/p&gt;
+&lt;h3 id=&#34;显示binwalk帮助输出-h-help&#34;&gt;显示binwalk帮助输出(`-h, &amp;ndash;help)
+&lt;/h3&gt;&lt;p&gt;$ binwalk --help&lt;/p&gt;
+&lt;h3 id=&#34;扫描固件&#34;&gt;扫描固件
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;binwalk&lt;/code&gt;的主要功能 - 也是迄今为止最受欢迎的功能。 &lt;code&gt;Binwalk&lt;/code&gt;可以扫描许多不同嵌入式文件类型和文件系统的固件映像，只需给它一个要扫描的文件列表：&lt;/p&gt;
+&lt;p&gt;$ binwalk firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+0             0x0         DLOB firmware header, boot partition: &amp;ldquo;dev=/dev/mtdblock/2&amp;rdquo;
+112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432 bytes, uncompressed size: 3797616 bytes
+1310832       0x140070    PackImg section delimiter tag, little endian size: 13644032 bytes; big endian size: 3264512 bytes
+1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma, size: 3264162 bytes,  1866 inodes, blocksize: 65536 bytes, created: Tue Apr  3 04:12:22 2012&lt;/p&gt;
+&lt;p&gt;这个功能也是一个常用的功能，在CTF中很多文件分解的 &lt;code&gt;misc题&lt;/code&gt;都可以使用 &lt;code&gt;binwalk&lt;/code&gt;提高效率相对于使用 &lt;code&gt;winhex&lt;/code&gt;这类工具。 可以使用 &lt;code&gt;-e&lt;/code&gt;选项提取它在固件映像中找到的任何文件。&lt;/p&gt;
+&lt;p&gt;$ binwalk -e firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;签名分析--b--signature&#34;&gt;签名分析( &lt;code&gt;-B,--signature&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;对目标文件执行签名分析，如果未指定其他分析选项，则这是默认值。 如果希望将签名分析与其他分析器（例如 - 熵）结合使用，请使用此选项：&lt;/p&gt;
+&lt;p&gt;$ binwalk --signature firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+0             0x0         DLOB firmware header, boot partition: &amp;ldquo;dev=/dev/mtdblock/2&amp;rdquo;
+112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432 bytes, uncompressed size: 3797616 bytes
+1310832       0x140070    PackImg section delimiter tag, little endian size: 13644032 bytes; big endian size: 3264512 bytes
+1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma, size: 3264162 bytes,  1866 inodes, blocksize: 65536 bytes, created: Tue Apr  3 04:12:22 2012&lt;/p&gt;
+&lt;h3 id=&#34;熵分析--e--entropy&#34;&gt;熵分析( &lt;code&gt;-E,--entropy&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;对输入文件执行熵分析，打印原始熵数据并生成熵图。 熵分析可以与&amp;ndash;signature，&amp;ndash; raw或&amp;ndash;opcodes结合使用，以便更好地理解目标文件。 用于识别签名扫描可能遗漏的有趣数据部分：&lt;/p&gt;
+&lt;p&gt;$ binwalk -E firmware.bin
+DECIMAL       HEXADECIMAL     ENTROPY
+--------------------------------------------------------------------------------
+0             0x0             Rising entropy edge (0.983751)
+1155072       0x11A000        Falling entropy edge (0.000000)
+1181696       0x120800        Rising entropy edge (0.990546)
+3780608       0x39B000        Falling entropy edge (0.000000)&lt;/p&gt;
+&lt;p&gt;与&amp;ndash;verbose选项结合使用时，将打印为每个数据块计算的原始熵：&lt;/p&gt;
+&lt;p&gt;$ binwalk -E --verbose firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL         HEX             ENTROPY ANALYSIS
+--------------------------------------------------------------------------------
+0               0x0             0.964914
+1024            0x400           0.978591
+2048            0x800           0.973048
+3072            0xC00           0.976195
+4096            0x1000          0.976072
+5120            0x1400          0.976734
+6144            0x1800          0.976861
+7168            0x1C00          0.972385
+8192            0x2000          0.972518
+&amp;hellip;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt; 如果是使用 &lt;code&gt;python API&lt;/code&gt;调用熵分析，需要禁用图形（&amp;ndash;nplot）以防止脚本过早退出。&lt;/p&gt;
+&lt;h3 id=&#34;保存熵图为png文件并不显示--j--save&#34;&gt;保存熵图为PNG文件并不显示( &lt;code&gt;-J,--save&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;$ binwalk --save -E firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;搜索字符串--r--rawstring&#34;&gt;搜索字符串( &lt;code&gt;-R，--raw=&amp;lt;string&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;搜索字符串包括转义的八进制和/或十六进制值。 需要搜索自定义的原始字节序列时，可以使用此选项：&lt;/p&gt;
+&lt;p&gt;$ binwalk -R &amp;ldquo;\x00\x01\x02\x03\x04&amp;rdquo; firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+377654        0x5C336     Raw string signature&lt;/p&gt;
+&lt;h3 id=&#34;搜索各种cpu架构常见的可执行操作码--a--opcodes&#34;&gt;搜索各种CPU架构常见的可执行操作码( &lt;code&gt;-A,--opcodes&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;binwalk&lt;/code&gt;可以在指定文件中搜索各种CPU架构常见的可执行操作码。&lt;strong&gt;注：&lt;/strong&gt; 某些操作码签名很短，因此容易产生误报结果。 当需要在文件中找到可执行代码时，如果需要确定可执行文件的体系结构时，可以使用此选项：&lt;/p&gt;
+&lt;p&gt;$ binwalk -A firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL         HEX             DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+268             0x10C           MIPS instructions, function prologue
+412             0x19C           MIPS instructions, function prologue
+636             0x27C           MIPS instructions, function prologue
+812             0x32C           MIPS instructions, function epilogue
+920             0x398           MIPS instructions, function epilogue
+948             0x3B4           MIPS instructions, function prologue
+1056            0x420           MIPS instructions, function epilogue
+1080            0x438           MIPS instructions, function prologue
+1356            0x54C           MIPS instructions, function epilogue
+1392            0x570           MIPS instructions, function prologue
+1836            0x72C           MIPS instructions, function epilogue
+2012            0x7DC           MIPS instructions, function prologue
+2260            0x8D4           MIPS instructions, function epilogue
+2512            0x9D0           MIPS instructions, function prologue
+2552            0x9F8           MIPS instructions, function epilogue&lt;/p&gt;
+&lt;h3 id=&#34;搜索签名的自定义魔术签名文件--m--magicfile&#34;&gt;搜索签名的自定义魔术签名文件( &lt;code&gt;-m，--magic=&amp;lt;file&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;加载备用魔术签名文件而不是默认文件。&lt;/p&gt;
+&lt;p&gt;$ binwalk -m ./foobar.mgc firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL         HEX             DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+268             0x10C           Foobar
+412             0x19C           Foobar
+636             0x27C           Foobar&lt;/p&gt;
+&lt;h3 id=&#34;禁用智能签名匹配--b--dumb&#34;&gt;禁用“智能”签名匹配( &lt;code&gt;-b,--dumb&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;智能签名匹配可能导致错过其他有效签名时（例如，通过jump-to-offset关键字），可以使用：&lt;/p&gt;
+&lt;p&gt;$ binwalk -b firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;显示所有包括误标记为无效结果--i--invalid&#34;&gt;显示所有包括误标记为无效结果( &lt;code&gt;-I,--invalid&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;binwalk将有效结果误标记为无效结果，并产生大量垃圾输出，可以使用：&lt;/p&gt;
+&lt;p&gt;$ binwalk -I firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;签名排除过滤器--x--excludefilter&#34;&gt;签名排除过滤器( &lt;code&gt;-x，--exclude=&amp;lt;filter&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;不过滤被过滤器匹配的签名，过滤器是小写的正则表达式; 可以指定多个过滤器。第一行与指定过滤器匹配的魔术签名根本不会被加载; 因此，使用此过滤器可以帮助减少签名扫描时间。用于排除不需要或不感兴趣的结果：&lt;/p&gt;
+&lt;p&gt;$ binwalk -x &amp;lsquo;mach-o&amp;rsquo; -x &amp;lsquo;^hp&amp;rsquo; firmware.bin # exclude HP calculator and OSX mach-o signatures&lt;/p&gt;
+&lt;h3 id=&#34;签名过滤器--y--includefilter&#34;&gt;签名过滤器( &lt;code&gt;-y，--include=&amp;lt;filter&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;过滤被过滤器匹配的签名，过滤器是小写的正则表达式; 可以指定多个过滤器。只会加载第一行与指定过滤器匹配的魔术签名; 因此，使用此过滤器可以帮助减少签名扫描时间。仅搜索特定签名或签名类型时很有用：&lt;/p&gt;
+&lt;p&gt;$ binwalk -y &amp;lsquo;filesystem&amp;rsquo; firmware.bin # only search for filesystem signatures&lt;/p&gt;
+&lt;h3 id=&#34;识别反汇编代码的cpu体系结构--y--disasm&#34;&gt;识别反汇编代码的CPU体系结构( &lt;code&gt;-Y，--disasm&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;使用 &lt;code&gt;capstone&lt;/code&gt;反汇编程序识别文件中包含的可执行代码的CPU体系结构。 使用此扫描指定 &lt;code&gt;--verbose&lt;/code&gt;将另外打印反汇编的指令。 通常比 &lt;code&gt;--opcodes&lt;/code&gt;执行的简单签名分析更健壮，但支持更少的体系结构：&lt;/p&gt;
+&lt;p&gt;$ binwalk --disasm firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+428           0x1AC           MIPS executable code, 32/64-bit, little endian, at least 750 valid instructions&lt;/p&gt;
+&lt;h3 id=&#34;设置反汇编结果的最小连续指令数--t--minsn&#34;&gt;设置反汇编结果的最小连续指令数( &lt;code&gt;-T,--minsn&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;将&amp;ndash;disasm结果的最小连续指令数设置为有效。默认值为500条指令：&lt;/p&gt;
+&lt;p&gt;$ binwalk --minsn=1200 -Y firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+428           0x1AC           MIPS executable code, 32/64-bit, little endian, at least 1250 valid instructions&lt;/p&gt;
+&lt;h3 id=&#34;反汇编结果连续执行--k--continue&#34;&gt;反汇编结果连续执行( &lt;code&gt;-k,--continue&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;指示 - disasm不会停在第一个结果：&lt;/p&gt;
+&lt;p&gt;$ binwalk --continue -Y firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+428           0x1AC           MIPS executable code, 32/64-bit, little endian, at least 1250 valid instructions
+1048576       0x100000        MIPS executable code, 32/64-bit, little endian, at least 1250 valid instructions
+&amp;hellip;&lt;/p&gt;
+&lt;h3 id=&#34;忽略entropy生成的熵图中的图例--q--nngend&#34;&gt;忽略&amp;ndash;entropy生成的熵图中的图例( &lt;code&gt;-Q，--nngend&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;$ binwalk --entropy -Q firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;禁止对图形熵地块entropy扫描--n--nplot&#34;&gt;禁止对图形熵地块&amp;ndash;entropy扫描( &lt;code&gt;-N，--nplot&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;$ binwalk --entropy -N firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;设置上升沿熵触发电平--h--highfloat&#34;&gt;设置上升沿熵触发电平( &lt;code&gt;-H，--high=&amp;lt;float&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;仅在与&amp;ndash;entropy一起使用时有效。指定的值应介于0和1之间：&lt;/p&gt;
+&lt;p&gt;$ binwalk --entropy -H .9 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;设置下降沿熵触发电平--l--lowfloat&#34;&gt;设置下降沿熵触发电平( &lt;code&gt;-L，--low=&amp;lt;float&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;仅在与&amp;ndash;entropy一起使用时有效。指定的值应介于0和1之间：&lt;/p&gt;
+&lt;p&gt;$ binwalk --entropy -L .3 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;十六进制字节彩色输出--w--hexdump&#34;&gt;十六进制字节彩色输出( &lt;code&gt;-W，--hexdump&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;绿色 - 所有文件中的这些字节都相同 红色 - 这些字节在所有文件中都不同 蓝色 - 这些字节在某些文件中只有不同 可以任意数量的任意文件; 其他有用的选项是&amp;ndash;block， - offset， - length和&amp;ndash;terse：&lt;/p&gt;
+&lt;p&gt;$ binwalk -W --block = 8 --length = 64 firmware1.bin firmware2.bin firmware3.bin&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt; 如果您需要页面输出安装most实用程序，因为它更好地支持彩色输出的分页。 仅在&amp;ndash;hexdump期间显示包含 &lt;code&gt;绿色&lt;/code&gt;字节的行：&lt;/p&gt;
+&lt;p&gt;$ binwalk -W --green firmware1.bin firmware2.bin firmware3.bin&lt;/p&gt;
+&lt;p&gt;仅在&amp;ndash;hexdump期间显示包含 &lt;code&gt;红色&lt;/code&gt;字节的行：&lt;/p&gt;
+&lt;p&gt;$ binwalk -W --red firmware1.bin firmware2.bin firmware3.bin&lt;/p&gt;
+&lt;p&gt;仅在&amp;ndash;hexdump期间显示包含 &lt;code&gt;蓝色&lt;/code&gt;字节的行：&lt;/p&gt;
+&lt;p&gt;$ binwalk -W --blue firmware1.bin firmware2.bin firmware3.bin&lt;/p&gt;
+&lt;h3 id=&#34;提取签名扫描期间识别的文件--d--ddtypeextcmd&#34;&gt;提取签名扫描期间识别的文件( &lt;code&gt;-D,--dd=&amp;lt;type[:ext[:cmd]]&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;提取 - 签名扫描期间识别的文件。可以指定多个&amp;ndash;dd选项。 type是签名描述中包含的小写字符串（支持正则表达式） ext是保存数据磁盘时使用的文件扩展名（默认为none） cmd是在将数据保存到磁盘后执行的可选命令 默认情况下，文件名是找到签名的十六进制偏移量，除非在签名本身中指定了备用文件名。 以下示例演示如何使用&amp;ndash;dd选项指定提取规则，该选项将提取包含文件扩展名为“zip”的字符串“zip archive”的任何签名，然后执行“unzip”命令。此外，PNG图像按原样提取，带有&amp;rsquo;png&amp;rsquo;文件扩展名。 请注意使用&amp;rsquo;％e&amp;rsquo;占位符。执行unzip命令时，此占位符将替换为解压缩文件的相对路径：&lt;/p&gt;
+&lt;p&gt;$ binwalk -D &amp;lsquo;zip archive:zip:unzip %e&amp;rsquo; -D &amp;lsquo;png image:png&amp;rsquo; firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;签名扫描期间递归扫描提取的文件--m--matryoshka&#34;&gt;签名扫描期间递归扫描提取的文件( &lt;code&gt;-M,--matryoshka&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;只有有效使用时&amp;ndash;extract或&amp;ndash;dd。&lt;/p&gt;
+&lt;p&gt;$ binwalk -e -M firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;设置提取数据的输出目录--c--directorystr&#34;&gt;设置提取数据的输出目录( &lt;code&gt;-C,--directory=&amp;lt;str&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;默认值：当前工作目录 仅适用与使用时&amp;ndash;extract或&amp;ndash;dd选项：&lt;/p&gt;
+&lt;p&gt;$ binwalk -e --directory = / tmp firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;限制matryoshka递归深度--d--depthint&#34;&gt;限制&amp;ndash;matryoshka递归深度( &lt;code&gt;-d,--depth=&amp;lt;int&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;限制&amp;ndash;matryoshka递归深度。默认情况下，深度设置为8。 仅在与&amp;ndash;matryoshka选项一起使用时才适用：&lt;/p&gt;
+&lt;p&gt;$ binwalk -Me -d 5 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;限制从目标文件中分割出的数据大小--j--sizeint&#34;&gt;限制从目标文件中分割出的数据大小( &lt;code&gt;-j,--size=&amp;lt;int&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;默认情况下，没有大小限制。 只有有效使用时&amp;ndash;extract或&amp;ndash;dd。 请注意，此选项不限制外部提取实用程序提取/解压缩的数据大小。 从具有有限磁盘空间的大型文件中雕刻或提取数据时非常有用：&lt;/p&gt;
+&lt;p&gt;$ binwalk -e --size=0x100000 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;清除无法处理的零文件和文件--r--rm&#34;&gt;清除无法处理的零文件和文件( &lt;code&gt;-r,--rm&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;只有有效使用时&amp;ndash;extract或&amp;ndash;dd。 用于清除在提取期间从目标文件复制的误报文件：&lt;/p&gt;
+&lt;p&gt;$ binwalk -e -r firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;刻录数据但不自动提取解压缩该数据--z--carve&#34;&gt;刻录数据但不自动提取/解压缩该数据( &lt;code&gt;-z,--carve&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;只有有效使用时&amp;ndash;extract或&amp;ndash;dd。&lt;/p&gt;
+&lt;p&gt;$ binwalk -e --carve firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;暴力识别原始deflate压缩数据流--x--deflate&#34;&gt;暴力识别原始deflate压缩数据流( &lt;code&gt;-X,--deflate&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;用于从具有损坏/修改/缺少标头的文件中恢复数据。可以与&amp;ndash;lzma结合使用。 此扫描可能很慢，因此使用&amp;ndash;offset和/或&amp;ndash;length限制扫描区域非常有用：&lt;/p&gt;
+&lt;p&gt;$ binwalk --deflate -o 0x100 -l 10000 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;暴力识别原始lzma压缩数据流--z--lzma&#34;&gt;暴力识别原始LZMA压缩数据流( &lt;code&gt;-Z,--lzma&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;用于从具有损坏/修改/缺少标头的文件中恢复数据。可以与&amp;ndash;deflate结合使用。 由于LZMA压缩选项的数量不同，此扫描可能非常慢，因此使用&amp;ndash;offset和/或&amp;ndash;length限制扫描区域非常有用：&lt;/p&gt;
+&lt;p&gt;$ binwalk --lzma -o 0x100 -l 10000 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;常见压缩选项搜索压缩流--p--partial&#34;&gt;常见压缩选项搜索压缩流( &lt;code&gt;-P,--partial&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;可以显着提高&amp;ndash;lzma扫描的速度：&lt;/p&gt;
+&lt;p&gt;$ binwalk --partial -Z -o 0x100 -l 10000 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;在扫描到第一个结果停止--s--stop&#34;&gt;在扫描到第一个结果停止( &lt;code&gt;-S,--stop&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;与&amp;ndash;lzma和/或&amp;ndash;deflate选项一起使用时，这将在显示第一个结果后停止扫描：&lt;/p&gt;
+&lt;p&gt;$ binwalk --stop -Z firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;设置目标文件中要分析的字节数--l--lengthint&#34;&gt;设置目标文件中要分析的字节数( &lt;code&gt;-l,--length=&amp;lt;int&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;$ binwalk --length=0x100 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;设置起始偏移量--o--offsetint&#34;&gt;设置起始偏移量( &lt;code&gt;-o,--offset=&amp;lt;int&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;设置开始分析目标文件的起始偏移量。还可以指定负偏移（距文件结束的距离）：&lt;/p&gt;
+&lt;p&gt;$ binwalk --offset=0x100 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;设置所有打印偏移的基址--o--baseint&#34;&gt;设置所有打印偏移的基址( &lt;code&gt;-O,--base=&amp;lt;int&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;此值将添加到所有打印结果的原始文件偏移量中：&lt;/p&gt;
+&lt;p&gt;$ binwalk --base=0x80001000 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;设置分析期间使用的块大小--k--blockint&#34;&gt;设置分析期间使用的块大小( &lt;code&gt;-K,--block=&amp;lt;int&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;设置分析期间使用的块大小（以字节为单位）。 与 - 熵一起使用时，这决定了在熵分析期间分析的每个块的大小。 与&amp;ndash;hexdump一起使用时，它设置十六进制输出中每行显示的字节数。&lt;/p&gt;
+&lt;p&gt;$ binwalk --diff -K 8 firmware1.bin firmware2.bin&lt;/p&gt;
+&lt;h3 id=&#34;扫描之前反转n个字节--g--swapint&#34;&gt;扫描之前反转n个字节( &lt;code&gt;-g,--swap=&amp;lt;int&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;$ binwalk --swap=2 firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;扫描结果记录到指定的文件--f--logfile&#34;&gt;扫描结果记录到指定的文件( &lt;code&gt;-f,--log=&amp;lt;file&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;除非指定了&amp;ndash;csv，否则保存到日志文件的数据将与终端中显示的数据相同。 即使指定了&amp;ndash;quiet，数据也将保存到日志文件中：&lt;/p&gt;
+&lt;p&gt;$ binwalk --log=binwalk.log firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;日志数据以csv格式保存--c--csv&#34;&gt;日志数据以CSV格式保存( &lt;code&gt;-c,--csv&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;如果与&amp;ndash;cast或&amp;ndash;hexdump一起使用，则忽略此选项。 仅在与&amp;ndash;log选项结合使用时才有效：&lt;/p&gt;
+&lt;p&gt;$ binwalk --log=binwalk.log --csv firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;格式输出适应终端窗口宽度--t--term&#34;&gt;格式输出适应终端窗口宽度( &lt;code&gt;-t,--term&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;使输出更具可读性:&lt;/p&gt;
+&lt;p&gt;$ binwalk --term firmware.bin&lt;/p&gt;
+&lt;p&gt;DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------
+0             0x0         DLOB firmware header, boot partition: &amp;ldquo;dev=/dev/mtdblock/2&amp;rdquo;
+112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432
+bytes, uncompressed size: 3805904 bytes
+1310832       0x140070    PackImg section delimiter tag, little endian size: 15741184 bytes; big
+endian size: 3272704 bytes
+1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma,
+size: 3268870 bytes,  1860 inodes, blocksize: 65536 bytes, created:
+Mon Apr 22 04:56:42 2013&lt;/p&gt;
+&lt;h3 id=&#34;禁用输出到stdout--q--quiet&#34;&gt;禁用输出到stdout( &lt;code&gt;-q,--quiet&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;与&amp;ndash;log或verbose扫描一起使用时最方便，例如&amp;ndash;entropy：&lt;/p&gt;
+&lt;p&gt;$ binwalk --quiet -f binwalk.log firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;启用详细输出包括目标文件md5和扫描时间戳--v--verbose&#34;&gt;启用详细输出，包括目标文件MD5和扫描时间戳( &lt;code&gt;-v,--verbose&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;如果指定了两次，如果还指定了&amp;ndash;extract，则将显示外部提取实用程序的输出：&lt;/p&gt;
+&lt;p&gt;$ binwalk --verbose firmware.bin&lt;/p&gt;
+&lt;p&gt;Scan Time:     2013-11-10 21:04:04
+Signatures:    265
+Target File:   firmware.bin
+MD5 Checksum:  6b91cdff1b4f0134b24b7041e079dd3e&lt;/p&gt;
+&lt;p&gt;DECIMAL       HEX         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------
+0             0x0         DLOB firmware header, boot partition: &amp;ldquo;dev=/dev/mtdblock/2&amp;rdquo;
+112           0x70        LZMA compressed data, properties: 0x5D, dictionary size: 33554432 bytes, uncompressed size: 3805904 bytes
+1310832       0x140070    PackImg section delimiter tag, little endian size: 15741184 bytes; big endian size: 3272704 bytes
+1310864       0x140090    Squashfs filesystem, little endian, version 4.0, compression:lzma, size: 3268870 bytes,  1860 inodes, blocksize: 65536 bytes, created: Mon Apr 22 04:56:42 2013&lt;/p&gt;
+&lt;h3 id=&#34;扫描名称与给定正则表达式字符串匹配的文件--a--fincludestr&#34;&gt;扫描名称与给定正则表达式字符串匹配的文件( &lt;code&gt;-a,--finclude=&amp;lt;str&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;当与组合&amp;ndash;matryoshka和&amp;ndash;extract&lt;/p&gt;
+&lt;p&gt;$ binwalk -M -e --finclude=&amp;rsquo;\.bin$&amp;rsquo; firmware.bin&lt;/p&gt;
+&lt;h3 id=&#34;不要扫描名称与给定正则表达式字符串匹配的文件--p--fexcludestr&#34;&gt;不要扫描名称与给定正则表达式字符串匹配的文件( &lt;code&gt;-p,--fexclude=&amp;lt;str&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;当与组合&amp;ndash;matryoshka和&amp;ndash;extract&lt;/p&gt;
+&lt;p&gt;$ binwalk -M -e --fexclude=&amp;rsquo;\.pdf$&amp;rsquo; firmware_archive.zip&lt;/p&gt;
+&lt;h3 id=&#34;指定的端口号上启用状态服务器--s--statusint&#34;&gt;指定的端口号上启用状态服务器( &lt;code&gt;-s,--status=&amp;lt;int&amp;gt;&lt;/code&gt;)
+&lt;/h3&gt;&lt;p&gt;状态服务器仅侦听localhost并打印出与当前扫描状态相关的人类可读ASCII数据。您可以使用telnet，netcat等连接到它。&lt;/p&gt;
+&lt;p&gt;$ binwalk --status=8080 firmware_archive.zip&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结
+&lt;/h3&gt;&lt;p&gt;binwalk还有很多功能，比如python API，和IDA配合使用，以及实际应用会遇到很多小技巧，能大大提高取证，逆向固件和CTF misc的效率。当然也存在特别多的问题，也欢迎童鞋们去使用解决这些问题提交 &lt;code&gt;issue&lt;/code&gt;。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
